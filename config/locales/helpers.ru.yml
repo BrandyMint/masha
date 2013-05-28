@@ -1,0 +1,8 @@
+ru:
+  helpers:
+    people: "%{count} чел."
+    years: "%{count} лет."
+    days: "%{count} дн."
+    submit:
+      create: Создать
+      update: Изменить

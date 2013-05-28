@@ -1,0 +1,35 @@
+ru:
+  date:
+    order: [day, month, year]
+    month_names: [~, Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь]
+    formats:
+      short_human: '%e %B'
+      human: '%e %B %Y'
+      input: '%e/%m/%Y'
+      default: '%e %B %Y'
+  time:
+    formats:
+      time: "%H:%M"
+      default: "%e %B %Y %H:%M"
+      today: 'today at %H:%M'
+      this_year: '%e %B at %H:%M'
+      yesterday: 'yesterday at %H:%M'
+      csv: '%Y-%m-%d %H:%M:%S'
+      file: '%Y-%m-%d-%H-%M-%S'
+      human: '%e %B %Y at %H:%M'
+      rss_pub_date: "%a, %d %b %Y %H:%M:%S %z"
+      short: "%e %B %Y %H:%M"
+      short_human: '%e %B'
+      human: '%e %B %Y'
+      input: '%e/%m/%Y'
+  activerecord:
+    errors:
+      messages:
+        record_invalid: Испорченная запись
+        invalid_range: Дата окончания периода должна быть больше даты начала
+        intersection: Период пересекается с другим (id = %{id})
+  form_objects:
+    errors:
+      messages:
+        invalid_range: Дата окончания периода должна быть больше даты начала
+        intersection: Период пересекается с другим

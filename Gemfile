@@ -25,6 +25,8 @@ gem 'rolify'
 gem 'active_attr'
 gem 'validates'
 gem 'hashie'
+
+gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
 # берется последняя версия для совместимости с rails 4
 # gem 'state_machine', :git => 'git://github.com/pluginaweek/state_machine.git'
 # gem 'simple_enum'
@@ -45,7 +47,9 @@ gem 'recipient_interceptor'
 
 # Контроллеры
 #gem 'has_scope'
-gem 'inherited_resources'
+gem 'inherited_resources', :git => 'git://github.com/josevalim/inherited_resources.git'
+
+#"~> 1.4.0"
 
 # Используется для сидирования обьектов
 #gem 'forgery'

@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 # configures your navigation
+#
+# ListBootstrap - https://gist.github.com/gmjorge/2572869
 
 SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
     if current_user.present?
+      primary.item :times, 'Время', time_shifts_url
+      primary.item :projects, 'Проекты', projects_url, :highlights_on => %r(/projects)
+      primary.item :users, 'Люди', users_url if current_user.has_role? :admin
       primary.item :user, current_user.to_s, user_url(current_user)
-      primary.item :signout, 'выйти', signout_url, :method => :destroy
+      primary.item :signout, 'выйти', signout_url, :icon => 'icon-off', :method => :destroy
     else
       primary.item :developer, 'developer', '/auth/developer'
       primary.item :github, 'github', '/auth/github'
