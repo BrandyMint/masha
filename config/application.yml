@@ -1,0 +1,43 @@
+defaults: &defaults
+  app:
+    title: RailsApp
+
+    asset_host: http://RailsApp.icfdev.ru/
+
+    default_url_options: &default_url_options
+      host: HOSTNAME
+      port: 80
+
+  action_mailer: &action_mailer
+    raise_delivery_errors: false
+    default_url_options:
+      <<: *default_url_options
+
+  mailer_defaults:
+    from: 'noreply@HOSTNAME'
+    host: HOSTNAME
+
+development:
+  <<: *defaults
+  action_mailer:
+    <<: *action_mailer
+    delivery_method: :smtp
+    smtp_settings:
+      address: localhost
+      port: 1025   # mailcatcher
+    raise_delivery_errors: true
+
+test:
+  <<: *defaults
+  capybara:
+    port: 57500
+
+  action_mailer:
+    <<: *action_mailer
+    delivery_method: :test
+
+production:
+  <<: *defaults
+
+stage:
+  <<: *defaults

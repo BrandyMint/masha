@@ -1,0 +1,23 @@
+!!!
+%html
+  %head
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
+    %title= content_for?(:title) ? yield(:title) : Settings.app.title
+    %meta{:content => content_for?(:description) ? yield(:description) : Settings.app.title, :name => "description"}
+    = stylesheet_link_tag :application, :media => "all"
+    = javascript_include_tag :application
+    = csrf_meta_tags
+    = yield(:head)
+  %body{:class => "#{controller_name} #{action_name}"}
+    %header.navbar.navbar-fixed-top
+      %nav.navbar-inner
+        .container
+          = render 'layouts/navigation'
+    #main{:role => "main"}
+      .container
+        .content
+          .row
+            .span12
+              = render 'layouts/messages'
+              = yield
+          %footer
