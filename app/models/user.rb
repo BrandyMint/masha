@@ -2,15 +2,20 @@ class User < ActiveRecord::Base
   rolify
 
   has_many :time_shifts
-  has_many :owner_projects, :foreign_key => :owner_id
+  has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
   has_many :authentications
 
   def to_s
     name
   end
 
+  def email
+    # TODO change :develop to :email
+    authentications.where(:provider=>:developer).pluck(:uid).first
+  end
+
   def available_projects
-    Project.with_roles(:any, self).map &:resource
+    owned_projects + Project.with_roles(:any, self).map(&:resource)
   end
 
 end

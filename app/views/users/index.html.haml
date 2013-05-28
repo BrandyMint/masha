@@ -1,0 +1,13 @@
+%table.table.table-condensed
+  %thead
+    %tr
+      %th Имя
+      %th email
+  %tbody
+    - @users.each do |u|
+      %tr
+        %td= link_to u, user_url(u)
+        %td= mail_to u.email
+        %td
+          = link_to 'изменить', edit_user_url(u), :class => 'btn btn-small'
+

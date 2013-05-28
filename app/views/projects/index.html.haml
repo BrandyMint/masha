@@ -1,9 +1,22 @@
 .pull-right
   = link_to 'Создать', new_project_url, :class => 'btn btn-primary'
-.clear
+.clearfix
 
 %table.table.table-condensed
+  %thead
+    %tr
+      %th Проект
+      %th Людей
+      %th Часов за месяц
+      %th Часов за эту неделю
+      %th Действия
   %tbody
     - @projects.each do |p|
       %tr
-        %td= p.name
+        %td= link_to p.name, project_url(p)
+        %td
+          = p.people.count
+        %td
+        %td
+        %td
+          = link_to 'изменить', edit_project_url(p), :class => 'btn btn-small'
