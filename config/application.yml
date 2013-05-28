@@ -1,12 +1,17 @@
 defaults: &defaults
   app:
-    title: RailsApp
+    title: Маша учетчица
 
-    asset_host: http://RailsApp.icfdev.ru/
+    asset_host: http://masha.brandymint.ru/
 
     default_url_options: &default_url_options
-      host: HOSTNAME
+      host: masha.brandymint.ru
       port: 80
+
+  omniauth:
+    github:
+      client_id: 064fcd9bf0ac4c24d206
+      client_secret: ca666af5e5172406ac8655b0af781d7d233ae081
 
   action_mailer: &action_mailer
     raise_delivery_errors: false
@@ -14,8 +19,8 @@ defaults: &defaults
       <<: *default_url_options
 
   mailer_defaults:
-    from: 'noreply@HOSTNAME'
-    host: HOSTNAME
+    from: 'masha@brandymint.ru'
+    host: masha.brandymint.ru
 
 development:
   <<: *defaults

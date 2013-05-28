@@ -15,8 +15,10 @@ gem 'pg_array_parser'
 gem 'settingslogic'
 
 # Авторизация и аутентификация
+gem 'omniauth'
+gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'
 gem 'authority'
-# gem 'rolify'
+gem 'rolify'
 
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'

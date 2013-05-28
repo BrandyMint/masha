@@ -3,7 +3,13 @@
 
 SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
-    # primary.item :hotels, I18n.t("admin.menu.hotels"), hotels_url
+    if current_user.present?
+      primary.item :user, current_user.to_s, user_url(current_user)
+      primary.item :signout, 'выйти', signout_url, :method => :destroy
+    else
+      primary.item :developer, 'developer', '/auth/developer'
+      primary.item :github, 'github', '/auth/github'
+    end
 
     primary.dom_class = 'nav pull-right'
 
