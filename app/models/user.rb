@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
     name
   end
 
+  def by_provider prov
+    authentications.by_provider(prov).first
+  end
+
   def email
     # TODO change :develop to :email
     authentications.where(:provider=>:developer).pluck(:uid).first

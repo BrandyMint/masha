@@ -2,7 +2,7 @@ Masha::Application.routes.draw do
   root 'welcome#index'
 
   post '/auth/:provider/callback', to: 'sessions#create'
-  delete "/signout" => "sessions#destroy", :as => :signout
+  delete "signout" => "sessions#destroy", :as => :signout
 
   resources :projects
   resources :users do

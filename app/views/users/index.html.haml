@@ -8,6 +8,8 @@
     %tr
       %th Имя
       %th email
+      - Authentication.providers do |prov|
+        %th= prov
       %th Проекты
       %th Действия
   %tbody
@@ -16,6 +18,8 @@
       %tr
         %td= link_to u, user_url(u)
         %td= mail_to u.email
+        - Authentication.providers do |prov|
+          %td= u.by_provider(prov).uid
         %td= ud.available_projects
         %td
           = link_to 'изменить', edit_user_url(u), :class => 'btn btn-small'

@@ -3,6 +3,10 @@ class UsersController < ApplicationController
 
   custom_actions :add_role => :post, :remove_role => :delete
 
+  def show
+    redirect_to users_url
+  end
+
   def add_role
     resource.add_role params[:role], project
     redirect_to :back
