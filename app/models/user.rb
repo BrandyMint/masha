@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
-  rolify
+  include Authority::UserAbilities
 
   has_many :time_shifts
   has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
   has_many :authentications
+  has_many :memberships
+  has_many :projects, :through => :memberships
 
   validates :name, :presence => true, :uniqueness => true
   validates :email, :email => true, :uniqueness => true, :allow_blank => true
@@ -21,8 +23,19 @@ class User < ActiveRecord::Base
     authentications.where(:provider=>:developer).pluck(:uid).first
   end
 
-  def available_projects
-    owned_projects + Project.with_roles(:any, self).map(&:resource)
+  def membership_of project
+    memberships.where( :project_id=>project.id ).first
+  end
+
+  def has_role? role, project
+    membership_of( project ).try( :role ) == role
+  end
+
+  def set_role role, project
+    member = membership_of(project) || memberships.build(:project_id=>project.id)
+
+    member.role = role
+    member.save!
   end
 
 end

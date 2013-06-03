@@ -3,10 +3,11 @@
 
 %h2 Доступные проекты
 
-- @user.available_projects.each do |project|
-  %h3
-    = project
-    %small
-      = role_label :owner if project.owner == @user
-      - Project::ROLES.each do |role|
-        = change_role_link @user, project, role
+- @projects.each do |project|
+  %table.table.table-condensed
+    %tr
+      %th= project
+      %td
+        %ul.horizontal-list
+          - Membership::ROLES.each do |role|
+            %li= change_role_link @user, project, role

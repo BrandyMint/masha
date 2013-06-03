@@ -440,7 +440,6 @@ GEM
     resque_spec (0.13.0)
       resque (>= 1.19.0)
       rspec (>= 2.5.0)
-    rolify (3.2.0)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -478,6 +477,8 @@ GEM
     sexp_processor (4.2.1)
     simple-navigation-bootstrap (0.0.4)
       simple-navigation (>= 3.7.0)
+    simple_enum (1.6.4)
+      activesupport (>= 3.0.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -609,7 +610,6 @@ DEPENDENCIES
   rb-inotify (~> 0.9)
   recipient_interceptor
   resque_spec
-  rolify
   rspec-console
   rspec-prof
   rspec-rails (>= 2.11.0)
@@ -622,6 +622,7 @@ DEPENDENCIES
   settingslogic
   simple-navigation!
   simple-navigation-bootstrap
+  simple_enum
   simple_form!
   simplecov
   simplecov-rcov

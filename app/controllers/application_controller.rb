@@ -5,12 +5,19 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
 
-  private
 
   def current_user
     @current_user ||= User.find session[:user_id] if session[:user_id]
   rescue ActiveRecord::RecordNotFound
     self.current_user = nil
+  end
+
+  def logout
+    current_uset=nil
+  end
+
+  def auto_login user
+    self.current_user= user
   end
 
   def current_user= user

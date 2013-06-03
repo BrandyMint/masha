@@ -2,17 +2,21 @@ module ApplicationHelper
   ROLES_LABELS = {
     :admin => 'important',
     :owner => 'warning',
-    :timekeeper => 'info',
-    :time_enterer => 'success'
+    :viewer => 'info',
+    :member => 'success'
   }
   def user_roles user
     buffer = ''
     # TODO Показывтаь все роли на классы и глобальные
-    buffer << role_label(:admin) if user.has_role? :admin
+    buffer << role_label(:admin) if user.is_root?
     buffer.html_safe
   end
 
   def role_label role, active = true
+    return unless role.present?
+
+    role = role.role if role.is_a? Membership
+
     label_class = active ? "label-#{ROLES_LABELS[role]}" : ''
     content_tag :span, I18n.t(role, :scope => [:roles]), :class => "label #{label_class}"
   end
@@ -26,13 +30,14 @@ module ApplicationHelper
   end
 
   def change_role_link user, project, role
-    if user.has_role? role, project
-      link_to remove_role_user_url(user, :role => role, :project_id => project.id), :method => :delete do
-        role_label role, user.has_role?(role, project)
+    active = user.has_role?(role, project)
+    if active
+      link_to remove_role_project_url(project, :user_id => user.id, :role => role), :method => :delete do
+        role_label role, active
       end
     else
-      link_to add_role_user_url(user, :role => role, :project_id => project.id), :method => :post do
-        role_label role, user.has_role?(role, project)
+      link_to set_role_project_url(project, :user_id => user.id, :role => role), :method => :post do
+        role_label role, active
       end
     end
   end

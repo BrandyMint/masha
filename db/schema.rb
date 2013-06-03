@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130528072846) do
+ActiveRecord::Schema.define(version: 20130603182212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,27 +27,26 @@ ActiveRecord::Schema.define(version: 20130528072846) do
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true, using: :btree
   add_index "authentications", ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true, using: :btree
 
+  create_table "memberships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.integer  "role_cd",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "memberships", ["project_id"], name: "index_memberships_on_project_id", using: :btree
+  add_index "memberships", ["user_id", "project_id"], name: "index_memberships_on_user_id_and_project_id", unique: true, using: :btree
+  add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
+
   create_table "projects", force: true do |t|
     t.string   "name"
-    t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "slug",       null: false
   end
 
-  add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
-
-  create_table "roles", force: true do |t|
-    t.string   "name",          null: false
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", unique: true, using: :btree
-  add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "time_shifts", force: true do |t|
     t.integer  "project_id", null: false
@@ -55,6 +54,7 @@ ActiveRecord::Schema.define(version: 20130528072846) do
     t.integer  "minutes",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "date",       null: false
   end
 
   add_index "time_shifts", ["project_id"], name: "index_time_shifts_on_project_id", using: :btree
@@ -66,12 +66,5 @@ ActiveRecord::Schema.define(version: 20130528072846) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "users_roles", id: false, force: true do |t|
-    t.integer "user_id", null: false
-    t.integer "role_id", null: false
-  end
-
-  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", unique: true, using: :btree
 
 end

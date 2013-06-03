@@ -2,5 +2,5 @@ ru:
   roles:
     admin: Супер-админ
     owner: Владелец
-    timekeeper: Timekeeper
-    time_enterer: Time enterer
+    viewer: Timekeeper
+    member: Time enterer

@@ -4,13 +4,14 @@ Masha::Application.routes.draw do
   post '/auth/:provider/callback', to: 'sessions#create'
   delete "signout" => "sessions#destroy", :as => :signout
 
-  resources :projects
-  resources :users do
+  resources :projects do
     member do
-      post :add_role
+      post :set_role
       delete :remove_role
     end
   end
+
+  resources :users
   resources :time_shifts
 
 end

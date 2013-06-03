@@ -1,0 +1,16 @@
+.page-header
+  %h1 Журнал расхода времени
+
+%table.table.table-condensed
+  %tr
+    %th Проект
+    %th Человек
+    %th Дата
+    %th Время
+  - @time_shifts.each do |ts|
+    %tr
+      %td= ts.project
+      %td= ts.user
+      %td= ts.date
+      %td= ts.minutes
+

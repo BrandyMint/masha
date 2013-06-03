@@ -1,16 +1,16 @@
 class Project < ActiveRecord::Base
+  include Authority::Abilities
   extend FriendlyId
-  resourcify
 
-  ROLES = [:timekeeper, :time_enterer]
-  # :owner
-  # :admin (global)
+  ROLES = [:owner, :viewer, :member]
 
   friendly_id :name, use: :slugged
 
   belongs_to :owner, :class_name => 'User'
 
   has_many :time_shifts
+  has_many :memberships
+  has_many :users, :through => :memberships
 
   scope :ordered, order(:name)
 
@@ -19,10 +19,6 @@ class Project < ActiveRecord::Base
 
   def to_s
     name
-  end
-
-  def people
-    applied_roles.map &:user
   end
 
   def roles_of_user user

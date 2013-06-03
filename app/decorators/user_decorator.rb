@@ -4,7 +4,7 @@ class UserDecorator < ApplicationDecorator
   def available_projects
     arbre :user => source do
       ul :class => 'horizontal-list' do
-        user.available_projects.each do |p|
+        user.projects.each do |p|
           li do
             helpers.link_to p, helpers.project_url(p)
           end

@@ -18,7 +18,8 @@ gem 'settingslogic'
 gem 'omniauth'
 gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'
 gem 'authority'
-gem 'rolify'
+#gem 'rolify'
+gem 'simple_enum'
 
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
@@ -37,7 +38,7 @@ gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
 
 
 # Авторизация
-# gem 'switch_user'
+#gem 'switch_user'
 
 # Почта
 gem 'recipient_interceptor'
