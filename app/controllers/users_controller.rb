@@ -15,6 +15,10 @@ class UsersController < ApplicationController
 
   private
 
+  def permitted_params
+    params.permit :user => [:name, :is_root]
+  end
+
   def project
     @project ||= Project.find params[:project_id]
   end

@@ -25,11 +25,16 @@ ru:
       defaults:
         name: Название
         title: Название
+      user:
+        name: Полное имя
+        is_root: Супер-админ
     placeholders:
       defaults:
         title: Название
         name: Название
         slug: Путь
+      user:
+        name: Иванов Василий
     hints:
       defaults:
         price: руб.

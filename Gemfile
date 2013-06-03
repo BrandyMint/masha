@@ -59,7 +59,8 @@ gem 'inherited_resources', :git => 'git://github.com/josevalim/inherited_resourc
 # Вьюхи и презентеры
 gem 'active_link_to'
 
-#gem 'draper'
+gem 'draper'
+gem 'arbre'
 #gem 'cells'
 #gem 'breadcrumbs_on_rails'
 #gem 'tabulous'

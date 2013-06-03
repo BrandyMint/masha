@@ -1,0 +1,7 @@
+= simple_form_for @user, :html => { :class => 'form-horizontal' }, :method => :post do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :name
+    = f.input :is_root
+  .form-actions
+    = f.button :submit, :html => { :class => 'btn-primary'}
