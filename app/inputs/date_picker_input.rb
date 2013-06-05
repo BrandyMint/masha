@@ -8,7 +8,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
 
   protected
 
-  def date_picker_options(value = nil)
+  def date_picker_options value = nil
     {:value => value, :class => css_class}
   end
 

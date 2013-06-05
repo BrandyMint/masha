@@ -3,11 +3,12 @@
 
 %h2 Доступные проекты
 
-- @projects.each do |project|
-  %table.table.table-condensed
-    %tr
-      %th= project
-      %td
-        %ul.horizontal-list
-          - Membership::ROLES.each do |role|
-            %li= change_role_link @user, project, role
+%table.table.table-condensed
+  %tbody
+    - @projects.each do |project|
+      %tr
+        %th= project
+        %td
+          %ul.horizontal-list
+            - Membership::ROLES.each do |role|
+              %li= change_role_link @user, project, role

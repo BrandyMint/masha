@@ -6,7 +6,9 @@ class UserDecorator < ApplicationDecorator
       ul :class => 'horizontal-list' do
         user.projects.each do |p|
           li do
-            helpers.link_to p, helpers.project_url(p)
+            helpers.link_to helpers.project_url(p) do
+              helpers.role_label user.membership_of(p), true, p.to_s
+            end
           end
         end
       end

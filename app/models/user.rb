@@ -1,11 +1,17 @@
 class User < ActiveRecord::Base
   include Authority::UserAbilities
 
-  has_many :time_shifts
   has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
+
+  has_many :time_shifts
+  has_many :timed_projects, :through => :time_shift, :class_name => 'Project'
+
   has_many :authentications
   has_many :memberships
+
   has_many :projects, :through => :memberships
+
+  scope :ordered, -> { order(:name) }
 
   validates :name, :presence => true, :uniqueness => true
   validates :email, :email => true, :uniqueness => true, :allow_blank => true

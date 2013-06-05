@@ -7,6 +7,12 @@ require 'csv'
 #4 "Project",
 #5 "Hours",
 #6 "Description"
+#
+
+if User.exists?
+  raise 'В продакшене не работаею' if Rails.env.production?
+  User.destroy_all
+end
 
 CSV.foreach "#{Rails.root}/db/pivotal.csv" do |row|
   date, last_name, given_name, person_id, project_id, hours, description = row
@@ -20,7 +26,7 @@ CSV.foreach "#{Rails.root}/db/pivotal.csv" do |row|
 
     user_name = row.slice(1,2) * ' '
 
-    user = User.where(:name=>user_name).first || User.create!(:name=>user_name)
+    user = User.where(:pivotal_person_id=>person_id).first || User.create!(:name=>user_name, :pivotal_person_id => person_id)
 
     project.time_shifts.create! :user => user, :hours => hours,
       :description => description, :date => date

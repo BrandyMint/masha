@@ -7,7 +7,6 @@
   %thead
     %tr
       %th Имя
-      %th email
       - Authentication.providers do |prov|
         %th= prov
       %th Проекты
@@ -16,8 +15,7 @@
     - @users.each do |u|
       - ud = UserDecorator.new u
       %tr
-        %td= link_to u, user_url(u)
-        %td= mail_to u.email
+        %td= link_to u, user_url(u), :rel => :tooltip, :title => u.email
         - Authentication.providers do |prov|
           %td= u.by_provider(prov).uid
         %td= ud.available_projects

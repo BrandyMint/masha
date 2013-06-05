@@ -6,6 +6,23 @@ module ApplicationHelper
     :member => 'success'
   }
 
+  def title_of_group_results g
+    dates = g[:min_date].present? ? ", с #{l g[:min_date]} по #{l g[:max_date]}" : ''
+    "#{g[:total]} часов #{dates}"
+  end
+
+  def available_projects_collection
+    available_projects
+  end
+
+  def available_users_collection
+    if current_user.is_root?
+      User.ordered
+    else
+      [current_user]
+    end
+  end
+
   def available_projects
     if current_user.is_root?
       Project.ordered
@@ -21,13 +38,13 @@ module ApplicationHelper
     buffer.html_safe
   end
 
-  def role_label role, active = true
+  def role_label role, active = true, title = nil
     return unless role.present?
 
     role = role.role if role.is_a? Membership
 
     label_class = active ? "label-#{ROLES_LABELS[role]}" : ''
-    content_tag :span, I18n.t(role, :scope => [:roles]), :class => "label #{label_class}"
+    content_tag :span, (title || I18n.t(role, :scope => :roles)), :class => "label #{label_class}", :rel => :tooltip, :title => role
   end
 
   def user_roles_of_project user, project

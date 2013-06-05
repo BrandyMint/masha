@@ -1,9 +1,10 @@
 = simple_form_for @time_shift do |f|
   = f.error_notification
   .form-inputs
-    = f.input :project, :include_blank => false
-    = f.input :user, :include_blank => false
-    = f.input :date
-    = f.input :minutes
+    = f.input :date, :as => :date_picker, :input_html => { :value => Date.today }
+    = f.association :project, :include_blank => false, :collection => available_projects_collection
+    = f.association :user, :include_blank => false, :collection => available_users_collection
+    = f.input :hours
+    = f.input :description
   .form-actions
-    = f.button :submit
+    = f.button :submit, :class => 'btn-primary'
