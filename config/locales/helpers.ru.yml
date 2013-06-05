@@ -6,3 +6,5 @@ ru:
     submit:
       create: Создать
       update: Изменить
+      time_sheet_form:
+        create: Отправить

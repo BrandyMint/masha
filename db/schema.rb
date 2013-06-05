@@ -49,12 +49,13 @@ ActiveRecord::Schema.define(version: 20130603182212) do
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
 
   create_table "time_shifts", force: true do |t|
-    t.integer  "project_id", null: false
-    t.integer  "user_id",    null: false
-    t.integer  "minutes",    null: false
+    t.integer  "project_id",  null: false
+    t.integer  "user_id",     null: false
+    t.decimal  "hours",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.date     "date",       null: false
+    t.date     "date",        null: false
+    t.text     "description", null: false
   end
 
   add_index "time_shifts", ["project_id"], name: "index_time_shifts_on_project_id", using: :btree

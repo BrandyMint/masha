@@ -5,6 +5,15 @@ module ApplicationHelper
     :viewer => 'info',
     :member => 'success'
   }
+
+  def available_projects
+    if current_user.is_root?
+      Project.ordered
+    else
+      current_user.projects.ordered
+    end
+  end
+
   def user_roles user
     buffer = ''
     # TODO Показывтаь все роли на классы и глобальные

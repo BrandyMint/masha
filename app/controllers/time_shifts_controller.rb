@@ -1,6 +1,14 @@
 class TimeShiftsController < ApplicationController
   inherit_resources
 
+  def index
+    @time_sheet_form = TimeSheetForm.new
+
+    query = TimeSheetQuery.new collection, @time_sheet_form
+
+    @time_shifts = query.perform
+  end
+
   protected
 
   def collection

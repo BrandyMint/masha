@@ -1,0 +1,14 @@
+= simple_form_for @time_sheet_form, :url => time_shifts_url, :method => :get do |f|
+  = f.error_notification
+  .form-inputs
+    .row
+      .span3
+        = f.input :date_from, :as => :date_picker
+      .span3
+        = f.input :date_to, :as => :date_picker
+    = f.input :project_id, :collection => available_projects
+    = f.input :user_id, :collection => User.all
+    = f.input :group_by, :collection => TimeSheetForm::GROUP_BY
+  .form-actions
+    = f.button :submit, :class => 'btn-primary'
+

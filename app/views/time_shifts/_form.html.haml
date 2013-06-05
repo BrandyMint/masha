@@ -1,0 +1,9 @@
+= simple_form_for @time_shift do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :project, :include_blank => false
+    = f.input :user, :include_blank => false
+    = f.input :date
+    = f.input :minutes
+  .form-actions
+    = f.button :submit
