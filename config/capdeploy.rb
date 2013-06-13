@@ -29,6 +29,7 @@ before 'deploy:restart', 'deploy:migrate'
 after 'deploy:restart', "deploy:cleanup"
 
 #RVM, Bundler
+load 'deploy/assets'
 require 'airbrake/capistrano'
 require "bundler/capistrano"
 require "capistrano-rbenv"
