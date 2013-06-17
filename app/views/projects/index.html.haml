@@ -4,21 +4,26 @@
   %h1 Проекты
 .clearfix
 
-%table.table.table-condensed
-  %thead
-    %tr
-      %th Проект
-      %th Людей
-      %th Часов за месяц
-      %th Часов за эту неделю
-      %th Действия
-  %tbody
-    - @projects.each do |p|
+- if @projects.empty?
+  .alert.alert-success
+    Нет доступных проектов.
+
+- else
+  %table.table.table-condensed
+    %thead
       %tr
-        %td= link_to p.name, project_url(p)
-        %td
-          = p.users.count
-        %td
-        %td
-        %td
-          = link_to 'изменить', edit_project_url(p), :class => 'btn btn-small'
+        %th Проект
+        %th Людей
+        %th Часов за месяц
+        %th Часов за эту неделю
+        %th Действия
+    %tbody
+      - @projects.each do |p|
+        %tr
+          %td= link_to p.name, project_url(p)
+          %td
+            = p.users.count
+          %td
+          %td
+          %td
+            = link_to 'изменить', edit_project_url(p), :class => 'btn btn-small'
