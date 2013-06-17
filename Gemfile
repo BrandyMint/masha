@@ -14,6 +14,8 @@ gem 'pg_array_parser'
 
 gem 'settingslogic'
 
+gem 'breadcrumbs_on_rails'
+
 # Авторизация и аутентификация
 gem 'omniauth'
 gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'

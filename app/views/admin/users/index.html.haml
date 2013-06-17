@@ -1,7 +1,7 @@
 .page-header
   .pull-right
-    = link_to 'Добавить', new_user_path, :class => 'btn btn-primary'
-  %h1 Люди
+    = link_to 'Добавить', new_admin_user_path, :class => 'btn btn-primary'
+  %h1 Управление пользователям
 
 %table.table.table-condensed
   %thead
@@ -15,10 +15,10 @@
     - @users.each do |u|
       - ud = UserDecorator.new u
       %tr
-        %td= link_to u, user_url(u), :rel => :tooltip, :title => u.email
+        %td= link_to u, admin_user_url(u), :rel => :tooltip, :title => u.email
         - Authentication.providers do |prov|
           %td= u.by_provider(prov).uid
         %td= ud.available_projects
         %td
-          = link_to 'изменить', edit_user_url(u), :class => 'btn btn-small'
+          = link_to 'изменить', edit_admin_user_url(u), :class => 'btn btn-small'
 

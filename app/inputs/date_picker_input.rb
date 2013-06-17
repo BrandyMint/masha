@@ -1,5 +1,5 @@
 class DatePickerInput < SimpleForm::Inputs::StringInput
-  disable :label
+  #disable :label
   enable :placeholder
 
   def input_type

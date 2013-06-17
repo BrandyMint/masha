@@ -5,12 +5,22 @@
 
 SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
-    if current_user.present?
+    if logged_in?
+
+      if current_user.is_root?
+        primary.item :admin, 'Админство' do |admin|
+          admin.item :projects, 'Проекты', admin_projects_url, :highlights_on => %r(/admin/projects)
+          admin.item :users, 'Люди', admin_users_url, :highlights_on => %r(/admin/users)
+        end
+      end
+
       primary.item :times, 'Время', time_shifts_url
-      primary.item :projects, 'Проекты', projects_url, :highlights_on => %r(/projects)
-      primary.item :users, 'Люди', users_url, :highlights_on => %r(/users) if current_user.is_root
-      primary.item :user, current_user.to_s, user_url(current_user)
-      primary.item :signout, 'выйти', signout_url, :icon => 'icon-off', :method => :delete
+
+      primary.item :profile, current_user.to_s do |user|
+        #user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)
+        user.item :edit_user, 'Профиль', edit_user_url
+        user.item :signout, 'Выйти', signout_url, :method => :delete
+      end
     else
       primary.item :developer, 'developer', '/auth/developer' if Rails.env.development?
       primary.item :github, 'github', '/auth/github'

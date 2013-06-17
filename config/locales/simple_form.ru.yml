@@ -24,6 +24,12 @@ ru:
     labels:
       defaults:
         name: Название
+        description: Описание
+        date: Дата
+        project: Проект
+        user: Исполнитель
+        hours: Время
+        pivotal_person_id: pivotal_person_id
         title: Название
       user:
         name: Полное имя
@@ -37,4 +43,6 @@ ru:
         name: Иванов Василий
     hints:
       defaults:
+        hours: Часы
         price: руб.
+        pivotal_person_id: ID пользователя с пивотала

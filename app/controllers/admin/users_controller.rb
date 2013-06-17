@@ -1,4 +1,6 @@
-class UsersController < ApplicationController
+class Admin::UsersController < Admin::BaseController
+  authorize_actions_for User
+
   inherit_resources
 
   def edit

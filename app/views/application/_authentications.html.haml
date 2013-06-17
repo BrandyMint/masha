@@ -1,0 +1,8 @@
+%h2 Авторизации
+
+%table.table.table-condensed
+  %tbody
+    - user.authentications.each do |a|
+      %tr
+        %th= a.provider
+        %td= a.uid

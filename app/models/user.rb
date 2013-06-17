@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Authority::UserAbilities
+  include Authority::Abilities
 
   has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
 
@@ -14,7 +15,9 @@ class User < ActiveRecord::Base
   scope :ordered, -> { order(:name) }
 
   validates :name, :presence => true, :uniqueness => true
-  validates :email, :email => true, :uniqueness => true, :allow_blank => true
+  #validates :email, :email => true, :uniqueness => true, :allow_blank => true
+
+  validates :pivotal_person_id, :uniqueness => true, :allow_blank => true
 
   def to_s
     name
@@ -42,6 +45,10 @@ class User < ActiveRecord::Base
 
     member.role = role
     member.save!
+  end
+
+  def available_projects
+    is_root? ? Project.ordered : projects.ordered
   end
 
 end

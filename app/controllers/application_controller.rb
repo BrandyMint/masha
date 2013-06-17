@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
+  class NotLogged < StandardError
+
+  end
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception if Rails.env.production?
 
-  helper_method :current_user
-
+  helper_method :current_user, :logged_in?, :admin_namespace?
 
   def current_user
     @current_user ||= User.find session[:user_id] if session[:user_id]
@@ -14,6 +16,10 @@ class ApplicationController < ActionController::Base
 
   def logout
     current_uset=nil
+  end
+
+  def logged_in?
+    !!current_user
   end
 
   def auto_login user
@@ -29,4 +35,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  private 
+
+  def admin_namespace?
+    @namespace ||= :default
+    @namespace == :admin
+  end
+
+  def require_login
+    if !logged_in?
+      session[:return_to_url] = request.url && request.get?
+
+      raise NotLogged
+    end
+  end
 end
