@@ -1,7 +1,9 @@
 Masha::Application.routes.draw do
   root 'welcome#index'
 
-  post '/auth/:provider/callback', to: 'sessions#create'
+  get '/auth/:provider/callback', to: 'sessions#create'
+  # TODO Добавить routes для отработки
+  # http://masha.brandymint.ru/auth/failure?message=invalid_credentials&strategy=github
   delete "signout" => "sessions#destroy", :as => :signout
 
   resources :projects do
