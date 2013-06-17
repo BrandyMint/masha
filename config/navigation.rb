@@ -12,7 +12,7 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :user, current_user.to_s, user_url(current_user)
       primary.item :signout, 'выйти', signout_url, :icon => 'icon-off', :method => :delete
     else
-      primary.item :developer, 'developer', '/auth/developer'
+      primary.item :developer, 'developer', '/auth/developer' if Rails.env.development?
       primary.item :github, 'github', '/auth/github'
     end
 

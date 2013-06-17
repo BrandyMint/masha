@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
     if current_user.is_root?
       @projects = Project.ordered
     else
-      @projects = current_user.available_projects
+      @projects = current_user.projects.ordered
     end
   end
 end
