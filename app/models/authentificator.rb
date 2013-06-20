@@ -21,7 +21,9 @@ class Authentificator::Base
   end
 
   def find
-    @user = Authentication.where(:provider => provider, :uid => uid).first
+    auth = Authentication.where(:provider => provider, :uid => uid).first
+
+    @user = auth.try :user
   end
 
   def create

@@ -6,9 +6,15 @@ module ApplicationHelper
     :member => 'success'
   }
 
+  def human_hours value
+    str = Russian::pluralize( value, 'час', 'часа', 'часов' )
+    value = value.to_i if value.to_i == value
+    "#{value} #{str}"
+  end
+
   def title_of_group_results g
     dates = g[:min_date].present? ? ", с #{l g[:min_date]} по #{l g[:max_date]}" : ''
-    "#{g[:total]} часов #{dates}"
+    "#{human_hours(g[:total])}#{dates}"
   end
 
   def available_projects_collection
@@ -56,6 +62,7 @@ module ApplicationHelper
   end
 
   def change_role_link user, project, role
+    return # TODO
     active = user.has_role?(role, project)
     if active
       link_to remove_role_project_url(project, :user_id => user.id, :role => role), :method => :delete do

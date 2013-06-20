@@ -10,23 +10,20 @@ Masha::Application.routes.draw do
   # Личный контроллер пользователя
   resource :user, :controller => :user
 
-  resources :projects do
-    member do
-      post :set_role
-      delete :remove_role
-    end
-  end
+  resources :projects, :only => [:index, :show]
+  resources :time_shifts
 
   namespace :admin do
     root :controller => :users, :action => :index
-    resources :projects
+    resources :projects do
+      resources :memberships
+
+      member do
+        post :set_role
+        delete :remove_role
+      end
+    end
     resources :users
   end
-
-  namespace :private do
-
-  end
-
-  resources :time_shifts
 
 end

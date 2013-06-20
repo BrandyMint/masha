@@ -467,6 +467,8 @@ GEM
     ruby_gntp (0.3.4)
     ruby_parser (3.1.3)
       sexp_processor (~> 4.1)
+    russian (0.6.0)
+      i18n (>= 0.5.0)
     sass (3.2.9)
     sc-core-ext (1.2.1)
       activesupport (>= 2.3.5)
@@ -618,6 +620,7 @@ DEPENDENCIES
   ruby-graphviz
   ruby_gntp
   ruby_parser (>= 2.3.1)
+  russian
   sass-rails!
   sdoc
   semver2

@@ -1,20 +1,20 @@
 - if time_shifts.present?
-  %table.table.table-condensed
+  %table.table.table-condensed.table-striped.table-hover
     %tr
-      %th Создано
-      %th Изменено
+      %th Дата записи
       %th Дата учета
+      %th Время
       %th Проект
       %th Человек
-      %th Время
-    - time_shifts.each do |ts|
+      %th Описание
+    - time_shifts.decorate.each do |ts|
       %tr
-        %td= l ts.created_at
         %td= l ts.updated_at
         %td= l ts.date
+        %td= human_hours ts.hours
         %td= ts.project
         %td= ts.user
-        %td= ts.hours
+        %td= ts.description
 
 - else
   .alert Нет результатов

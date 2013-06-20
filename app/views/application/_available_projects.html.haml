@@ -10,7 +10,8 @@
     %tbody
       - user.projects.each do |project|
         %tr
-          %th= project
+          %th
+            = link_to project, project_url(project)
           %td
             %ul.horizontal-list
               - Membership::ROLES.each do |role|

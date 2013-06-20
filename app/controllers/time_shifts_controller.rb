@@ -13,6 +13,14 @@ class TimeShiftsController < ApplicationController
     @groups = query.perform
   end
 
+  def create
+    super do |success, error|
+      success.html {
+        redirect_to :back, :notice => "Добавили #{human_hours @time_shift.hours} в #{@time_shift.project}"
+      }
+    end
+  end
+
   def new
     super
     @time_shift.user_id = current_user.id
@@ -24,7 +32,9 @@ class TimeShiftsController < ApplicationController
     # TODO Проверить что проект разрешен для добавления времени
     params[:time_shift] ||= {}
     params[:time_shift][:user_id] = current_user.id unless current_user.is_root?
-    params.permit :time_shift => [:project_id, :hours, :date, :user_id]
+    params.require(:time_shift).permit!
+
+    params
   end
 
   def collection

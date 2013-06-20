@@ -1,36 +1,49 @@
-                 Prefix Verb   URI Pattern                                          Controller#Action
-                   root GET    /                                                    welcome#index
-                        POST   /auth/:provider/callback(.:format)                   sessions#create
-                signout DELETE /signout(.:format)                                   sessions#destroy
-    project_memberships GET    /projects/:project_id/memberships(.:format)          memberships#index
-                        POST   /projects/:project_id/memberships(.:format)          memberships#create
- new_project_membership GET    /projects/:project_id/memberships/new(.:format)      memberships#new
-edit_project_membership GET    /projects/:project_id/memberships/:id/edit(.:format) memberships#edit
-     project_membership GET    /projects/:project_id/memberships/:id(.:format)      memberships#show
-                        PATCH  /projects/:project_id/memberships/:id(.:format)      memberships#update
-                        PUT    /projects/:project_id/memberships/:id(.:format)      memberships#update
-                        DELETE /projects/:project_id/memberships/:id(.:format)      memberships#destroy
-               projects GET    /projects(.:format)                                  projects#index
-                        POST   /projects(.:format)                                  projects#create
-            new_project GET    /projects/new(.:format)                              projects#new
-           edit_project GET    /projects/:id/edit(.:format)                         projects#edit
-                project GET    /projects/:id(.:format)                              projects#show
-                        PATCH  /projects/:id(.:format)                              projects#update
-                        PUT    /projects/:id(.:format)                              projects#update
-                        DELETE /projects/:id(.:format)                              projects#destroy
-                  users GET    /users(.:format)                                     users#index
-                        POST   /users(.:format)                                     users#create
-               new_user GET    /users/new(.:format)                                 users#new
-              edit_user GET    /users/:id/edit(.:format)                            users#edit
-                   user GET    /users/:id(.:format)                                 users#show
-                        PATCH  /users/:id(.:format)                                 users#update
-                        PUT    /users/:id(.:format)                                 users#update
-                        DELETE /users/:id(.:format)                                 users#destroy
-            time_shifts GET    /time_shifts(.:format)                               time_shifts#index
-                        POST   /time_shifts(.:format)                               time_shifts#create
-         new_time_shift GET    /time_shifts/new(.:format)                           time_shifts#new
-        edit_time_shift GET    /time_shifts/:id/edit(.:format)                      time_shifts#edit
-             time_shift GET    /time_shifts/:id(.:format)                           time_shifts#show
-                        PATCH  /time_shifts/:id(.:format)                           time_shifts#update
-                        PUT    /time_shifts/:id(.:format)                           time_shifts#update
-                        DELETE /time_shifts/:id(.:format)                           time_shifts#destroy
+                       Prefix Verb   URI Pattern                                                Controller#Action
+                         root GET    /                                                          welcome#index
+                              GET    /auth/:provider/callback(.:format)                         sessions#create
+                              POST   /auth/:provider/callback(.:format)                         sessions#create
+                      signout DELETE /signout(.:format)                                         sessions#destroy
+                         user POST   /user(.:format)                                            user#create
+                     new_user GET    /user/new(.:format)                                        user#new
+                    edit_user GET    /user/edit(.:format)                                       user#edit
+                              GET    /user(.:format)                                            user#show
+                              PATCH  /user(.:format)                                            user#update
+                              PUT    /user(.:format)                                            user#update
+                              DELETE /user(.:format)                                            user#destroy
+                     projects GET    /projects(.:format)                                        projects#index
+                      project GET    /projects/:id(.:format)                                    projects#show
+                  time_shifts GET    /time_shifts(.:format)                                     time_shifts#index
+                              POST   /time_shifts(.:format)                                     time_shifts#create
+               new_time_shift GET    /time_shifts/new(.:format)                                 time_shifts#new
+              edit_time_shift GET    /time_shifts/:id/edit(.:format)                            time_shifts#edit
+                   time_shift GET    /time_shifts/:id(.:format)                                 time_shifts#show
+                              PATCH  /time_shifts/:id(.:format)                                 time_shifts#update
+                              PUT    /time_shifts/:id(.:format)                                 time_shifts#update
+                              DELETE /time_shifts/:id(.:format)                                 time_shifts#destroy
+                   admin_root GET    /admin(.:format)                                           admin/users#index
+    admin_project_memberships GET    /admin/projects/:project_id/memberships(.:format)          admin/memberships#index
+                              POST   /admin/projects/:project_id/memberships(.:format)          admin/memberships#create
+ new_admin_project_membership GET    /admin/projects/:project_id/memberships/new(.:format)      admin/memberships#new
+edit_admin_project_membership GET    /admin/projects/:project_id/memberships/:id/edit(.:format) admin/memberships#edit
+     admin_project_membership GET    /admin/projects/:project_id/memberships/:id(.:format)      admin/memberships#show
+                              PATCH  /admin/projects/:project_id/memberships/:id(.:format)      admin/memberships#update
+                              PUT    /admin/projects/:project_id/memberships/:id(.:format)      admin/memberships#update
+                              DELETE /admin/projects/:project_id/memberships/:id(.:format)      admin/memberships#destroy
+       set_role_admin_project POST   /admin/projects/:id/set_role(.:format)                     admin/projects#set_role
+    remove_role_admin_project DELETE /admin/projects/:id/remove_role(.:format)                  admin/projects#remove_role
+               admin_projects GET    /admin/projects(.:format)                                  admin/projects#index
+                              POST   /admin/projects(.:format)                                  admin/projects#create
+            new_admin_project GET    /admin/projects/new(.:format)                              admin/projects#new
+           edit_admin_project GET    /admin/projects/:id/edit(.:format)                         admin/projects#edit
+                admin_project GET    /admin/projects/:id(.:format)                              admin/projects#show
+                              PATCH  /admin/projects/:id(.:format)                              admin/projects#update
+                              PUT    /admin/projects/:id(.:format)                              admin/projects#update
+                              DELETE /admin/projects/:id(.:format)                              admin/projects#destroy
+                  admin_users GET    /admin/users(.:format)                                     admin/users#index
+                              POST   /admin/users(.:format)                                     admin/users#create
+               new_admin_user GET    /admin/users/new(.:format)                                 admin/users#new
+              edit_admin_user GET    /admin/users/:id/edit(.:format)                            admin/users#edit
+                   admin_user GET    /admin/users/:id(.:format)                                 admin/users#show
+                              PATCH  /admin/users/:id(.:format)                                 admin/users#update
+                              PUT    /admin/users/:id(.:format)                                 admin/users#update
+                              DELETE /admin/users/:id(.:format)                                 admin/users#destroy

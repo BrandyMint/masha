@@ -14,6 +14,8 @@ gem 'pg_array_parser'
 
 gem 'settingslogic'
 
+gem 'russian'
+
 gem 'breadcrumbs_on_rails'
 
 # Авторизация и аутентификация

@@ -38,11 +38,12 @@ ru:
       defaults:
         title: Название
         name: Название
+        hours: часов
         slug: Путь
       user:
         name: Иванов Василий
     hints:
       defaults:
-        hours: Часы
+        hours: Например 2.5 часа
         price: руб.
         pivotal_person_id: ID пользователя с пивотала
