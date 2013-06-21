@@ -23,5 +23,8 @@ $ ->
   # $('input.select2').select2()
   # $('select.select2').select2
   #  width: 'element'
+  $('.date-shortcut').click (e) ->
+    $('#time_shift_date').val $(@).data('value')
+    e.preventDefault()
 
   return

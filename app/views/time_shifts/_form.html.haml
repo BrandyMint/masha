@@ -4,7 +4,7 @@
     = f.input :date, :as => :date_picker, :input_html => { :value => @time_shift.date || Date.today }
     = f.association :project, :include_blank => false, :collection => available_projects_collection
     = f.association :user, :include_blank => false, :collection => available_users_collection
-    = f.input :hours
+    = f.input :hours, :input_html => { :autofocus => :autofocus }
     = f.input :description, :input_html => { :class => 'xlarge-input' }
   .form-actions
     = f.button :submit, :class => 'btn-primary'

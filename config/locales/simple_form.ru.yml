@@ -2,6 +2,9 @@ ru:
   simple_form:
     "yes": 'да'
     "no": 'нет'
+    shortcuts:
+      today: сегодня
+      yesterday: вчера
     required:
       text: 'обязательное поле'
       mark: '*'
@@ -44,6 +47,6 @@ ru:
         name: Иванов Василий
     hints:
       defaults:
-        hours: Например 2.5 часа
+        hours: 'Например: 2.5 часа'
         price: руб.
         pivotal_person_id: ID пользователя с пивотала
