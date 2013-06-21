@@ -22,8 +22,7 @@ class TimeShiftsController < ApplicationController
   end
 
   def new
-    super
-    @time_shift.user_id = current_user.id
+    @time_shift = TimeShift.new :user_id => current_user.id, :date => Date.today
   end
 
   protected

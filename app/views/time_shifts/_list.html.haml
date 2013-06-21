@@ -7,7 +7,8 @@
       %th Проект
       %th Человек
       %th Описание
-    - time_shifts.decorate.each do |ts|
+    - time_shifts.each do |ts|
+      - ts = TimeShiftDecorator.decorate ts
       %tr
         %td= l ts.updated_at
         %td= l ts.date

@@ -1,9 +1,3 @@
-.page-header
-  .pull-right
-    = link_to 'Добавить', new_time_shift_url, :class => 'btn btn-success'
-
-  %h1 Журнал расхода времени
-
 - if available_projects_collection.empty?
   .alert У вас нет доступных проектов для тайминга.
 - else

@@ -1,10 +1,10 @@
 = simple_form_for @time_shift, :html => { :class => 'form-horizontal' } do |f|
   = f.error_notification
   .form-inputs
-    = f.input :date, :as => :date_picker, :input_html => { :value => @time_shift.date || Date.today }
+    = f.input :date, :as => :date_picker
     = f.association :project, :include_blank => false, :collection => available_projects_collection
     = f.association :user, :include_blank => false, :collection => available_users_collection
     = f.input :hours, :input_html => { :autofocus => :autofocus }
-    = f.input :description, :input_html => { :class => 'xlarge-input' }
+    = f.input :description, :input_html => { :class => :span8 }
   .form-actions
     = f.button :submit, :class => 'btn-primary'

@@ -26,10 +26,15 @@ ru:
         waiting: Подождите...
     labels:
       defaults:
+        date_from: С
+        date_to: По
+        project: Проект
         name: Название
+        group_by: Группировать
         description: Описание
         date: Дата
-        project: Проект
+        project_id: Проект
+        user_id: Исполнитель
         user: Исполнитель
         hours: Время
         pivotal_person_id: pivotal_person_id
@@ -43,6 +48,7 @@ ru:
         name: Название
         hours: часов
         slug: Путь
+        description: Спас мир
       user:
         name: Иванов Василий
     hints:
@@ -50,3 +56,4 @@ ru:
         hours: 'Например: 2.5 часа'
         price: руб.
         pivotal_person_id: ID пользователя с пивотала
+        description: можно дать ссылку на задачу в трекере
