@@ -72,7 +72,7 @@ gem 'arbre'
 # gem 'authbuttons-rails'
 
 gem 'simple-navigation', :git => 'git://github.com/andi/simple-navigation.git'
-gem 'simple-navigation-bootstrap'
+gem 'simple-navigation-bootstrap', :git => 'git@github.com:pdf/simple-navigation-bootstrap.git'
 
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
 

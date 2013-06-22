@@ -85,6 +85,14 @@ GIT
       activesupport (>= 3.0)
       sprockets (~> 2.8)
 
+GIT
+  remote: git@github.com:pdf/simple-navigation-bootstrap.git
+  revision: 865cfc5ad961dbf86ae8376199fca2f53a2a2f26
+  specs:
+    simple-navigation-bootstrap (1.0.0)
+      railties (>= 3.1)
+      simple-navigation (>= 3.7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -478,8 +486,6 @@ GEM
     semver2 (3.1.2)
     settingslogic (2.0.9)
     sexp_processor (4.2.1)
-    simple-navigation-bootstrap (0.0.4)
-      simple-navigation (>= 3.7.0)
     simple_enum (1.6.4)
       activesupport (>= 3.0.0)
     simplecov (0.7.1)
@@ -626,7 +632,7 @@ DEPENDENCIES
   semver2
   settingslogic
   simple-navigation!
-  simple-navigation-bootstrap
+  simple-navigation-bootstrap!
   simple_enum
   simple_form!
   simplecov

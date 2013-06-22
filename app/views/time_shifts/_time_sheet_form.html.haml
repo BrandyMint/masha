@@ -15,5 +15,7 @@
       .span8
         = f.input :group_by, :collection => grouping_collection,  as: :radio_buttons, :item_wrapper_class => 'inline'
   .form-actions
-    = f.button :submit, :class => 'btn-success'
-
+    = button_tag type: 'submit', class: 'btn btn-success',
+      :data => { 'disable-with' => t(:sending, :scope => [:simple_form, :button, :disable_with])} do
+      = icon :tasks, :white
+      = t :create, :scope => [:helpers, :submit, :time_sheet_form]

@@ -7,4 +7,7 @@
     = f.input :hours, :input_html => { :autofocus => :autofocus }
     = f.input :description, :input_html => { :class => :span8 }
   .form-actions
-    = f.button :submit, :class => 'btn-primary'
+    = button_tag type: 'submit', class: 'btn btn-primary',
+      :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
+      = icon :ok, :white
+      = t :create, :scope => [:helpers, :submit, :time_shift]
