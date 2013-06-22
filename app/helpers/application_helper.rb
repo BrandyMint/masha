@@ -6,6 +6,10 @@ module ApplicationHelper
     :member => 'success'
   }
 
+  def grouping_collection
+    [['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
+  end
+
   def human_hours value
     str = Russian::pluralize( value, 'час', 'часа', 'часов' )
     value = value.to_i if value.to_i == value

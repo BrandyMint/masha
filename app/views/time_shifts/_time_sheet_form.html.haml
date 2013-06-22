@@ -13,7 +13,7 @@
         = f.input :user_id, :collection => User.ordered
     .row
       .span8
-        = f.input :group_by, :collection => TimeSheetForm::GROUP_BY#,  as: :radio_buttons, :item_wrapper_class => 'inline'
+        = f.input :group_by, :collection => grouping_collection,  as: :radio_buttons, :item_wrapper_class => 'inline'
   .form-actions
     = f.button :submit, :class => 'btn-success'
 
