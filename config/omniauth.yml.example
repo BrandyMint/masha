@@ -1,0 +1,9 @@
+development:
+  github:
+    client_id: eb10cc8a8c5e1a1072d5
+    client_secret: b54b71fdd11bb6a3aa40ff1b7989d4f92aab0e84
+
+production:
+  github:
+    client_id: 064fcd9bf0ac4c24d206
+    client_secret: ca666af5e5172406ac8655b0af781d7d233ae081

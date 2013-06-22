@@ -39,3 +39,11 @@ require "recipes0/db/pg"
 require "recipes0/init_d/unicorn"
 require "recipes0/nginx"
 
+
+after "deploy:db:symlink", "deploy:config_symlink"
+
+namespace :deploy do
+  task :config_symlink do
+    run "cp #{shared_path}/config/omniauth.yml #{release_path}/config/omniauth.yml"
+  end
+end

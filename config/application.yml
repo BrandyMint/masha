@@ -7,11 +7,6 @@ defaults: &defaults
       host: masha.brandymint.ru
       port: 80
 
-  omniauth:
-    github:
-      client_id: 064fcd9bf0ac4c24d206
-      client_secret: ca666af5e5172406ac8655b0af781d7d233ae081
-
   action_mailer: &action_mailer
     raise_delivery_errors: false
     default_url_options:
@@ -23,6 +18,9 @@ defaults: &defaults
 
 development:
   <<: *defaults
+  default_url_options: &default_url_options
+    host: 3003.vkontraste.ru
+    port: 80
   action_mailer:
     <<: *action_mailer
     delivery_method: :smtp
