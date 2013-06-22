@@ -1,6 +1,8 @@
 class Authentication < ActiveRecord::Base
   belongs_to :user
 
+  serialize :auth_hash
+
   scope :by_provider, lambda { |provider| where(:provider => provider) }
 
   validate :provider, :presence => true

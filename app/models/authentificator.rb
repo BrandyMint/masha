@@ -23,6 +23,8 @@ class Authentificator::Base
   def find
     auth = Authentication.where(:provider => provider, :uid => uid).first
 
+    auth.update_attribute :auth_hash, @auth_hash if auth.present?
+
     @user = auth.try :user
   end
 
@@ -35,6 +37,7 @@ class Authentificator::Base
       @user.authentications.create do |a|
         a.provider = provider
         a.uid = uid
+        a.auth_hash = @auth_hash
       end
     end
 
