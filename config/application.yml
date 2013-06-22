@@ -1,7 +1,6 @@
 defaults: &defaults
   app:
-    title: Маша учетчица
-
+    title: Masha
     asset_host: http://masha.brandymint.ru/
 
     default_url_options: &default_url_options
