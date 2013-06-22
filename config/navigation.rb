@@ -7,12 +7,12 @@ SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
     if logged_in?
 
-      if current_user.is_root?
-        primary.item :admin, 'Админство' do |admin|
-          admin.item :projects, 'Проекты', admin_projects_url, :highlights_on => %r(/admin/projects)
-          admin.item :users, 'Люди', admin_users_url, :highlights_on => %r(/admin/users)
-        end
-      end
+      #if current_user.is_root?
+        #primary.item :admin, 'Админство' do |admin|
+          #admin.item :projects, 'Проекты', admin_projects_url, :highlights_on => %r(/admin/projects)
+          #admin.item :users, 'Люди', admin_users_url, :highlights_on => %r(/admin/users)
+        #end
+      #end
 
       primary.item :new_time, 'Отметить', new_time_shift_url
       primary.item :times, 'Отчеты', time_shifts_url
