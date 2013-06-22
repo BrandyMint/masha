@@ -23,16 +23,18 @@ class Authentificator::Base
   def find
     auth = Authentication.where(:provider => provider, :uid => uid).first
 
-    auth.update_attribute :auth_hash, @auth_hash if auth.present?
+    return nil unless auth.present?
 
-    @user = auth.try :user
+    auth.update_attribute :auth_hash, @auth_hash
+
+    auth.update_attribute :user, create_user unless auth.user.present?
+
+    return auth.user
   end
 
   def create
     User.transaction do
-      @user = User.create do |u|
-        u.name = info.name
-      end
+      @user = create_user
 
       @user.authentications.create do |a|
         a.provider = provider
@@ -45,6 +47,12 @@ class Authentificator::Base
   end
 
   private 
+
+  def create_user
+    User.create do |u|
+      u.name = info.name
+    end
+  end
 
   def info
     @info ||= OpenStruct.new auth_hash['info']

@@ -2,9 +2,11 @@
   %thead
     %tr
       %th Провайдер
-      %th Аккаунт
+      %th ID
+      %th Имя
   %tbody
     - user.authentications.each do |a|
       %tr
         %th= a.provider
         %td= a.uid
+        %td= a.username

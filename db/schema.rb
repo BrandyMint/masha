@@ -11,16 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130622042431) do
+ActiveRecord::Schema.define(version: 20130622043456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "add_auth_hash_to_users", force: true do |t|
-    t.text     "auth_hash"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "authentications", force: true do |t|
     t.integer  "user_id",    null: false
@@ -28,6 +22,7 @@ ActiveRecord::Schema.define(version: 20130622042431) do
     t.string   "uid",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "auth_hash"
   end
 
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true, using: :btree
