@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   #validates :email, :email => true, :uniqueness => true, :allow_blank => true
 
-  validates :pivotal_person_id, :uniqueness => true, :allow_blank => true
+  validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true
 
   def to_s
     name

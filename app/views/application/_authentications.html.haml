@@ -1,6 +1,8 @@
-%h2 Авторизации
-
 %table.table.table-condensed
+  %thead
+    %tr
+      %th Провайдер
+      %th Аккаунт
   %tbody
     - user.authentications.each do |a|
       %tr
