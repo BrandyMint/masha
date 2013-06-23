@@ -7,6 +7,7 @@
   %thead
     %tr
       %th Имя
+      %th Email
       - Authentication.providers do |prov|
         %th= prov
       %th Проекты
@@ -18,6 +19,7 @@
         %td= link_to u, admin_user_url(u), :rel => :tooltip, :title => u.email
         - Authentication.providers do |prov|
           %td= u.by_provider(prov).uid
+        %td= ud.email
         %td= ud.available_projects
         %td
           = link_to 'изменить', edit_admin_user_url(u), :class => 'btn btn-small'

@@ -37,15 +37,16 @@ ru:
         user_id: Исполнитель
         user: Исполнитель
         hours: Время
-        pivotal_person_id: pivotal_person_id
+        pivotal_person_id: ID пользователя с пивотала
         title: Название
       user:
-        name: Полное имя
+        name: Ваше полное имя
         is_root: Супер-админ
     placeholders:
       defaults:
         title: Название
-        name: Название
+        name: Имя
+        email: john@gmail.com
         hours: часов
         slug: Путь
         description: Спас мир
@@ -55,5 +56,4 @@ ru:
       defaults:
         hours: 'Например: 2.5 часа'
         price: руб.
-        pivotal_person_id: ID пользователя с пивотала
         description: можно дать ссылку на задачу в трекере

@@ -2,6 +2,7 @@
   = f.error_notification
   .form-inputs
     = f.input :name
-    = f.input :pivotal_person_id
+    = f.input :email, :label => false
+    -#= f.input :pivotal_person_id
   .form-actions
     = f.button :submit, :class => 'btn btn-primary'

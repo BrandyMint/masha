@@ -47,8 +47,8 @@ gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
 # Почта
 gem 'recipient_interceptor'
 
-#gem 'mini_magick'
-#gem 'carrierwave'
+gem 'mini_magick'
+gem 'carrierwave'
 
 # Контроллеры
 #gem 'has_scope'

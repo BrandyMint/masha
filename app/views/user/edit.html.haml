@@ -1,12 +1,14 @@
 .page-header
   %h1 Личный профиль
 
+- ud = UserDecorator.decorate current_user
 .row
+  .span2
+    = ud.avatar
   .span4
     = render 'form'
   .span4
     = render 'authentications', :user => current_user
-
 %hr
 = render 'available_projects', :user => current_user
 %hr

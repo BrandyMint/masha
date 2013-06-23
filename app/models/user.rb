@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
   scope :ordered, -> { order(:name) }
 
   validates :name, :presence => true
-  #validates :email, :email => true, :uniqueness => true, :allow_blank => true
+  #validates :nickname, :uniqueness => true, :allow_blank => true
+  validates :email, :email => true, :uniqueness => true, :allow_blank => true
 
   validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true
 
