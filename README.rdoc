@@ -11,13 +11,3 @@ errbit :: http://errbit.brandymint.ru/apps/51b9cbd7687d9c6efa01e81b
 Логин: admin@example.com
 
 Пароль: password
-
-При создании нового ресурса добавляем в файл с самим ресурсом:
-
-Пример:
-
-	controller do
-		def permitted_params
-	    	params.permit(:admin_user => [:email, :password, :password_confirmation])
-	    end
-	end
