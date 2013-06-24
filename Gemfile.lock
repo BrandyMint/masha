@@ -222,6 +222,9 @@ GEM
       xpath (~> 2.0)
     capybara-screenshot (0.3.6)
       capybara (>= 1.0, < 3)
+    carrierwave (0.8.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.1.6)
@@ -383,6 +386,8 @@ GEM
       railties
     method_source (0.8.1)
     mime-types (1.23)
+    mini_magick (3.6.0)
+      subexec (~> 0.2.1)
     minitest (4.7.4)
     mono_logger (1.1.0)
     multi_json (1.7.4)
@@ -571,6 +576,7 @@ GEM
     sqlite3 (1.3.7)
     sqlite3-ruby (1.3.3)
       sqlite3 (>= 1.3.3)
+    subexec (0.2.3)
     thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -626,6 +632,7 @@ DEPENDENCIES
   capistrano-recipes0 (>= 1.1.0)!
   capybara
   capybara-screenshot
+  carrierwave
   coffee-rails!
   commands
   compass-rails!
@@ -661,6 +668,7 @@ DEPENDENCIES
   launchy (>= 2.1.2)
   mailcatcher
   meta_request
+  mini_magick
   omniauth
   omniauth-github!
   pg

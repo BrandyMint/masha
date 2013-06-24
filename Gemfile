@@ -47,10 +47,11 @@ gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
 # Почта
 gem 'recipient_interceptor'
 
-#gem 'mini_magick'
-#gem 'carrierwave'
+gem 'mini_magick'
+gem 'carrierwave'
 
 # Контроллеры
+#gem 'has_scope'
 gem 'responders', :git => 'git://github.com/plataformatec/responders.git'
 gem 'inherited_resources', :git => 'git://github.com/josevalim/inherited_resources.git'
 
