@@ -52,6 +52,7 @@ gem 'carrierwave'
 
 # Контроллеры
 #gem 'has_scope'
+gem 'responders', :git => 'git://github.com/plataformatec/responders.git'
 gem 'inherited_resources', :git => 'git://github.com/josevalim/inherited_resources.git'
 
 #"~> 1.4.0"
@@ -83,7 +84,7 @@ gem 'kaminari'
 gem 'kaminari-bootstrap'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '2.3.0'
 gem 'jquery-turbolinks'
 
 #gem 'nilify_blanks', :git => 'git://github.com/rubiety/nilify_blanks.git'
@@ -91,6 +92,13 @@ gem 'jquery-turbolinks'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 gem 'haml-rails'
+
+#active admin
+gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
+gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
+gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
+gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
+
 
 # Очередь
 #gem 'redis-namespace'
