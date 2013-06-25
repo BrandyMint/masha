@@ -93,12 +93,14 @@ gem 'jquery-turbolinks'
 gem 'turbolinks'
 gem 'haml-rails'
 
+gem 'bootstrap-sass' #, 'git://github.com/thomas-mcdonald/bootstrap-sass.git'
+gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git", ref: "1749c06f15dc4b058427e7969810457213647fb8"
+
 #active admin
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
 gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
 gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
 gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
-
 
 # Очередь
 #gem 'redis-namespace'
@@ -113,9 +115,6 @@ gem 'jbuilder', '~> 1.0.1'
 
 #gem 'airbrake_user_attributes'
 gem 'airbrake', :github => 'airbrake/airbrake'
-
-gem 'bootstrap-sass' #, 'git://github.com/thomas-mcdonald/bootstrap-sass.git'
-gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git", ref: "1749c06f15dc4b058427e7969810457213647fb8"
 
 group :assets do
   # Use edge version of sprockets-rails
