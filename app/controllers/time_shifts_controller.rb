@@ -1,4 +1,5 @@
 class TimeShiftsController < ApplicationController
+  before_filter :require_login
   inherit_resources
 
   def index
