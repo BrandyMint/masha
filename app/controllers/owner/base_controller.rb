@@ -1,4 +1,4 @@
-class Admin::BaseController < ApplicationController
+class Owner::BaseController < ApplicationController
   before_filter :require_login
 
   before_filter do

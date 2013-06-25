@@ -1,4 +1,4 @@
-class Admin::ProjectsController < Admin::BaseController
+class Owner::ProjectsController < Owner::BaseController
   inherit_resources
 
   custom_actions :set_role => :post, :remove_role => :delete

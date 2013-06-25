@@ -1,6 +1,8 @@
 Masha::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
+
   ActiveAdmin.routes(self)
+
   root 'welcome#index'
 
   get '/auth/:provider/callback', to: 'sessions#create'
@@ -15,17 +17,17 @@ Masha::Application.routes.draw do
   resources :projects, :only => [:index, :show]
   resources :time_shifts
 
-  #namespace :admin do
-    #root :controller => :users, :action => :index
-    #resources :projects do
-      #resources :memberships
+  namespace :owner do
+    root :controller => :users, :action => :index
+    resources :projects do
+      resources :memberships
 
-      #member do
-        #post :set_role
-        #delete :remove_role
-      #end
-    #end
-    #resources :users
-  #end
+      member do
+        post :set_role
+        delete :remove_role
+      end
+    end
+    resources :users
+  end
 
 end

@@ -1,4 +1,4 @@
-class Admin::UsersController < Admin::BaseController
+class Owner::UsersController < Owner::BaseController
   authorize_actions_for User
 
   inherit_resources
