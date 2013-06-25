@@ -1,8 +1,0 @@
-= simple_form_for [:admin, @user], :html => { :class => 'form-horizontal' }, :method => :post do |f|
-  = f.error_notification
-  .form-inputs
-    = f.input :name
-    = f.input :pivotal_person_id
-    = f.input :is_root
-  .form-actions
-    = f.button :submit, :html => { :class => 'btn-primary'}

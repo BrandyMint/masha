@@ -12,7 +12,7 @@ class UserDecorator < ApplicationDecorator
   end
 
   def avatar
-    helpers.image_tag avatar_url
+    helpers.image_tag avatar_url, :size => '80x80'
   end
 
   def available_projects
