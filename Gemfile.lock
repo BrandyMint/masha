@@ -123,12 +123,12 @@ GIT
 
 GIT
   remote: git://github.com/rails/sass-rails.git
-  revision: 33799418f104c961b1ce41452e77cf1e04930755
+  revision: 6b8e7c547220d361d6784f4c4decb82a101de7a5
   specs:
-    sass-rails (4.0.0.rc1)
+    sass-rails (4.0.0.rc2)
       railties (>= 4.0.0.beta, < 5.0)
       sass (>= 3.1.10)
-      sprockets-rails (~> 2.0.0.rc4)
+      sprockets-rails (~> 2.0.0)
 
 GIT
   remote: git://github.com/rails/sprockets-rails.git
