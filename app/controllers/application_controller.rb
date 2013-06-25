@@ -2,15 +2,21 @@ class ApplicationController < ActionController::Base
   class NotLogged < StandardError
 
   end
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
+  include ApplicationHelper
+
   protect_from_forgery with: :exception if Rails.env.production?
 
   helper_method :current_user, :logged_in?, :admin_namespace?
 
   helper :all
 
-  include ApplicationHelper
+  rescue_from NotLogged, :with => :handle_not_authorized_error
+
+  # TODO Тут нужно кидать на страницу где написано нет доступа
+  # Потому что если кидать на страницу логина, а пользователь залогинен
+  # то его кинет обратно и будет цикл
+  #rescue_from CanCan::AccessDenied, :with => :handle_no_access
+  #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   def current_user
     @current_user ||= User.find session[:user_id] if session[:user_id]
@@ -40,6 +46,30 @@ class ApplicationController < ActionController::Base
   end
 
   private 
+
+  def handle_not_authorized_error
+    show_login_form 401
+  end
+
+  # Forbidden
+  #
+  def handle_no_access
+    show_login_form 403
+  end
+
+  def show_login_form status
+    # чтобы не выводить дублирующую форму логина в заголовке
+    #@login_process = true
+    #@session = Session.new :backurl => request.url
+
+    respond_to do |format|
+      format.html { render 'sessions/new', :layout => 'application', :status => status }
+      # Иначе при не авторизованном запросе /posts/16370.pdf падает при поиске sessions/new.pdf
+      # https://dapi.airbrake.io/errors/31803485
+      #
+      #format.any { redirect_to no_access_url(:backurl=>current_url) }
+    end
+  end
 
   def admin_namespace?
     @namespace ||= :default
