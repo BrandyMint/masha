@@ -96,7 +96,8 @@ ActiveRecord::Schema.define(version: 20130624072430) do
   add_index "time_shifts", ["user_id"], name: "index_time_shifts_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name",              null: false
+    t.string   "name",                              null: false
+    t.boolean  "is_root",           default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "pivotal_person_id"

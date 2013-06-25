@@ -12,7 +12,9 @@ class User < ActiveRecord::Base
 
   has_many :projects, :through => :memberships
 
-  scope :ordered, -> { order(:name) }
+  scope :ordered, -> { order :name }
+
+  scope :reorder, lambda { |k| order :name }
 
   validates :name, :presence => true
   #validates :nickname, :uniqueness => true, :allow_blank => true

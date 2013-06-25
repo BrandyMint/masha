@@ -12,6 +12,18 @@ class Authentication < ActiveRecord::Base
     @providers ||= Authentication.group(:provider).order(:provider).pluck(:provider).map { |p| p.to_sym }
   end
 
+  def email
+    auth_hash['info']['email']
+  rescue
+    '-'
+  end
+
+  def nickname
+    auth_hash['info']['nickname']
+  rescue
+    '-'
+  end
+
   def username
     auth_hash['info']['name']
   rescue

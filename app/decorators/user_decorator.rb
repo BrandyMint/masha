@@ -8,7 +8,7 @@ class UserDecorator < ApplicationDecorator
       return image if image.present?
     end
 
-    return 'http://placehold.it/24x24'
+    return 'http://placehold.it/80x80'
   end
 
   def avatar

@@ -84,7 +84,7 @@ gem 'kaminari'
 gem 'kaminari-bootstrap'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '2.3.0'
+gem 'jquery-rails'
 gem 'jquery-turbolinks'
 
 #gem 'nilify_blanks', :git => 'git://github.com/rubiety/nilify_blanks.git'
@@ -99,8 +99,8 @@ gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git", ref: "17
 #active admin
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
 gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
-gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
-gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
+gem 'activeadmin', github: 'agrobbin/active_admin',    branch: 'rails4'
+#gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
 
 # Очередь
 #gem 'redis-namespace'
