@@ -25,9 +25,12 @@ class Authentificator::Base
 
     # TODO Предусмотреть факт неподтвержденности емайла
     @user = User.where(:email=>email).first
+
+    return nil unless @user.present?
+
     add_authentication @user
 
-    update_user_info @user, auth_hash if @user.present?
+    update_user_info @user if @user.present?
 
     return @user
   end
@@ -72,11 +75,11 @@ class Authentificator::Base
       unless user.read_attribute(key).present?
         begin
           user.update_attribute key, auth_hash['info'][key.to_s]
-        rescue ActiveRecord::RecordNotUnique
-          binding.pry
+        rescue ActiveRecord::RecordNotUnique => err
+          Airbrake.notify err
           user.reload!
         rescue StandardError => err
-          binding.pry
+          Airbrake.notify err
         end
       end
     end
@@ -84,7 +87,9 @@ class Authentificator::Base
 
   def create_user
     User.create do |u|
-      u.name = info.name
+      u.name = auth_hash['info']['name']
+      u.nickname = auth_hash['info']['nickname']
+      u.email = auth_hash['info']['email']
     end
   end
 

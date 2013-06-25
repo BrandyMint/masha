@@ -4,7 +4,9 @@ class SessionsController < ApplicationController
 
     redirect_to projects_url
 
-  rescue
+  rescue StandardError => err
+    Airbrake.notify err
+    Rails.logger.error err
     redirect_to '/', :notice => 'Проблемы с авторизацией'
   end
 
