@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :time_shifts
   has_many :timed_projects, :through => :time_shift, :class_name => 'Project'
 
-  has_many :authentications
+  has_many :authentications, :dependent => :destroy
   has_many :memberships
 
   has_many :projects, :through => :memberships

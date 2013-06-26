@@ -55,7 +55,7 @@ class Authentificator::Base
       add_authentication @user
     end
 
-    update_user_info @user, auth_hash if @user.present?
+    update_user_info @user if @user.present?
 
     return @user
   end
@@ -87,10 +87,20 @@ class Authentificator::Base
 
   def create_user
     User.create! do |u|
-      u.name = auth_hash['info']['name']
-      u.nickname = auth_hash['info']['nickname']
+      u.name = user_name
+      u.nickname = nickname
       u.email = email
     end
+  end
+
+  def nickname
+    auth_hash['info']['nickname']
+  end
+
+  def user_name
+    name = auth_hash['info']['name']
+
+    name.blank? ? nickname : name
   end
 
   def email
