@@ -86,10 +86,10 @@ class Authentificator::Base
   end
 
   def create_user
-    User.create do |u|
+    User.create! do |u|
       u.name = auth_hash['info']['name']
       u.nickname = auth_hash['info']['nickname']
-      u.email = auth_hash['info']['email']
+      u.email = email
     end
   end
 
