@@ -7,6 +7,6 @@ class TimeShift < ActiveRecord::Base
   validates :project, :presence => true
   validates :user, :presence => true
   validates :date, :presence => true
-  validates :hours, :presence => true, :numericality => { :greater_than => 0, :less_than_or_equal_to => 8 }
+  validates :hours, :presence => true, :numericality => { :greater_than => 0, :less_than_or_equal_to => 24 }
   validates :description, :presence => true
 end
