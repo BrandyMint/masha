@@ -1,21 +1,26 @@
 - if time_shifts.present?
   %table.table.table-condensed.table-striped.table-hover
     %tr
-      %th Дата записи
-      %th Дата учета
-      %th Время
-      %th Проект
-      %th Человек
-      %th Описание
+      %th{width: '10%'} Дата учета
+      %th{width: '10%'} Время
+      %th{width: '10%'} Проект
+      %th{width: '10%'} Человек
+      %th{width: '60%'} Описание
     - time_shifts.each do |ts|
       - ts = TimeShiftDecorator.decorate ts
       %tr
-        %td= l ts.updated_at
-        %td= l ts.date
-        %td= human_hours ts.hours
+        %td
+          = l ts.date
+          %br
+          %small.muted
+            %i= l ts.updated_at
+
+        %td
+          %b= human_hours ts.hours
         %td= ts.project
         %td= ts.user
-        %td= ts.description
+        %td
+          %small.muted= ts.description
 
 - else
   .alert Нет результатов
