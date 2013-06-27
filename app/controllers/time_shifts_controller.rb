@@ -8,8 +8,8 @@ class TimeShiftsController < ApplicationController
     query = TimeSheetQuery.new @time_sheet_form
 
     # TODO Устанвливать доступные проекты исходя их уровня доступа
-    query.available_projects = current_user.projects unless current_user.is_root?
-    query.available_users = [current_user] unless current_user.is_root?
+    query.available_projects = Project.all # TODO current_user.projects unless current_user.is_root?
+    query.available_users = User.all # [current_user] unless current_user.is_root?
 
     @groups = query.perform
   end
