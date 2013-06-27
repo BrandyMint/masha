@@ -36,7 +36,7 @@ ru:
         project_id: Проект
         user_id: Исполнитель
         user: Исполнитель
-        hours: Время
+        hours: Потрачено время
         pivotal_person_id: ID пользователя с пивотала
         title: Название
       user:

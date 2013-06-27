@@ -1,4 +1,6 @@
 class Membership < ActiveRecord::Base
+
+  scope :last_updates, -> { order('updated_at desc') }
   belongs_to :user
   belongs_to :project
 

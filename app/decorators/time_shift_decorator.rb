@@ -9,6 +9,10 @@ class TimeShiftDecorator < Draper::Decorator
     h.link_to source.project, h.url_for(:time_sheet_form=>time_sheet_form.merge(:project_id=>project_id))
   end
 
+  def description
+    h.auto_link source.description, :html => { :target => '_blank' }
+  end
+
   private
 
   def time_sheet_form

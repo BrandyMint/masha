@@ -1,3 +1,6 @@
+I18n.default_locale = :ru
+I18n.load_path += Dir[File.expand_path('../../locales/*.yml', __FILE__)]
+
 ActiveAdmin.setup do |config|
 
   # == Site Title

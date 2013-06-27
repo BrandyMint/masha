@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
     name
   end
 
+  def available_users
+  end
+
   def by_provider prov
     authentications.by_provider(prov).first
   end

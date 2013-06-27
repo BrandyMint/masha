@@ -49,20 +49,31 @@ module ApplicationHelper
     available_projects
   end
 
-  def available_users_collection
-    if current_user.is_root?
-      User.ordered
-    else
-      [current_user]
-    end
+  def available_users_to_set_collection
+    #cache [:users_to_set, users_cache_key] do
+      users = []
+
+      current_user.memberships.each do |m|
+        if m.owner?
+          users << m.project.users
+        else m.member
+          users << m.user
+        end
+      end
+
+      users.flatten.uniq
+    #end
   end
 
+  def available_users_to_view_collection
+    #cache [:users_to_view, users_cache_key] do
+      User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
+    #end
+  end
+
+  # TODO одни проекты ращрешены для ввода, другие для просмотра, не путать
   def available_projects
-    if current_user.is_root?
-      Project.ordered
-    else
-      current_user.projects.ordered
-    end
+    current_user.projects.ordered
   end
 
   def user_roles user
@@ -101,5 +112,13 @@ module ApplicationHelper
         role_label role, active
       end
     end
+  end
+
+  private
+
+  def users_cache_key
+    key = current_user.memberships.order('updated_at desc').last.try(:updated_at)
+
+    "#{current_user.id}-#{key}"
   end
 end
