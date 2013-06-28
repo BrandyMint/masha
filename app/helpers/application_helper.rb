@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def human_hours value
-    str = Russian::pluralize( value, 'час', 'часа', 'часов' )
+    str = Russian::pluralize value, 'час', 'часа', 'часов', 'часа'
     value = value.to_i if value.to_i == value
     "#{value} #{str}"
   end
@@ -56,7 +56,7 @@ module ApplicationHelper
       current_user.memberships.each do |m|
         if m.owner?
           users << m.project.users
-        else m.member
+        else
           users << m.user
         end
       end
