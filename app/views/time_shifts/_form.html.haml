@@ -11,3 +11,4 @@
       :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
       = icon :ok, :white
       = t :create, :scope => [:helpers, :submit, :time_shift]
+    = f.button :button, 'Сбросить', :type=>:reset, :class => 'pull-right'
