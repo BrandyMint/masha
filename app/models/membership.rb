@@ -5,6 +5,8 @@ class Membership < ActiveRecord::Base
   end
 
   scope :last_updates, -> { order('updated_at desc') }
+  scope :viewable, -> { order 'role_cd<2'}
+
   belongs_to :user
   belongs_to :project
 

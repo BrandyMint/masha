@@ -72,9 +72,8 @@ module ApplicationHelper
   end
 
   def available_users_to_view_collection
-    #cache [:users_to_view, users_cache_key] do
-      User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
-    #end
+    #User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
+    @auvc ||= current_user.available_users
   end
 
   # TODO одни проекты ращрешены для ввода, другие для просмотра, не путать

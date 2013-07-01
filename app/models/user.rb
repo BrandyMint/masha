@@ -26,9 +26,6 @@ class User < ActiveRecord::Base
     name
   end
 
-  def available_users
-  end
-
   def by_provider prov
     authentications.by_provider(prov).first
   end
@@ -54,7 +51,14 @@ class User < ActiveRecord::Base
   end
 
   def available_projects
-    is_root? ? Project.ordered : projects.ordered
+    projects.ordered
+  end
+
+  def available_users
+    user_ids = memberships.viewable.map { |m| m.project.user_ids }.flatten
+    user_ids << self.id
+
+    User.where :id => user_ids.uniq
   end
 
 end
