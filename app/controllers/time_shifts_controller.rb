@@ -23,10 +23,17 @@ class TimeShiftsController < ApplicationController
   end
 
   def new
-    @time_shift = TimeShift.new :user_id => current_user.id, :date => Date.today
+    @time_shift = TimeShift.new default_time_shift_form
   end
 
   protected
+
+  def default_time_shift_form
+    {
+      :project_id => current_user.time_shifts.order(:id).last.try(:project_id),
+      :date => Date.today
+    }
+  end
 
   def permitted_params
     # TODO Проверить что проект разрешен для добавления времени
