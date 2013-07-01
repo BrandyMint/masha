@@ -36,7 +36,7 @@ namespace :masha do
 
           attrs = { :user => user, :hours => hours, :description => description, :date => date }
 
-          project.time_shifts.create! attrs unless project.time_shift.where(attrs).first.present?
+          project.time_shifts.create! attrs unless project.time_shifts.where(attrs).first.present?
 
         rescue StandardError => err
           puts err.inspect
