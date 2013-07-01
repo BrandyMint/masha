@@ -19,7 +19,6 @@ ActiveAdmin.register User do
       end
     end
     column :authentications do |user|
-      return if user.authentications.empty?
       ul do
         user.authentications.each do |a|
           li do
