@@ -77,12 +77,10 @@ ActiveRecord::Schema.define(version: 20130701112036) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "slug",               null: false
-    t.integer  "pivotal_project_id"
+    t.string   "slug",        null: false
     t.text     "description"
   end
 
-  add_index "projects", ["pivotal_project_id"], name: "index_projects_on_pivotal_project_id", unique: true, using: :btree
   add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true, using: :btree
 
   create_table "time_shifts", force: true do |t|

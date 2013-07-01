@@ -50,23 +50,23 @@ module ApplicationHelper
   end
 
   def available_projects_collection
-    available_projects
+    list = [['любой',nil]]
+
+    #list + available_projects
   end
 
   def available_users_to_set_collection
-    #cache [:users_to_set, users_cache_key] do
-      users = []
+    users = [['любой',nil]]
 
-      current_user.memberships.each do |m|
-        if m.owner?
-          users << m.project.users
-        else
-          users << m.user
-        end
+    current_user.memberships.each do |m|
+      if m.owner?
+        users << m.project.users
+      else
+        users << m.user
       end
+    end
 
-      users.flatten.uniq
-    #end
+    users.flatten.uniq
   end
 
   def available_users_to_view_collection
