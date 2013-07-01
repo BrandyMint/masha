@@ -11,15 +11,8 @@ require 'csv'
 
 namespace :masha do
   namespace :import do
-    task :check_env => :environment do
-      if User.exists?
-        raise 'В продакшене не работаею' if Rails.env.production?
-        User.destroy_all
-      end
-    end
-
     desc 'Импортируем данные из пивотала (file_to_import=./pivotal.csv)'
-    task :pivotal => :check_env do
+    task :pivotal => :environment do
       file_to_import = ENV['file_to_import'] or raise "Не указан файл для импорта (file_to_import)"
 
       CSV.foreach file_to_import do |row|
@@ -41,8 +34,10 @@ namespace :masha do
           #
           raise "No such person #{person_id} #{user_name}" unless user.present?
 
-          project.time_shifts.create! :user => user, :hours => hours,
-            :description => description, :date => date
+          attrs = { :user => user, :hours => hours, :description => description, :date => date }
+
+          project.time_shifts.create! attrs unless project.time_shift.where(attrs).first.present?
+
         rescue StandardError => err
           puts err.inspect
         end
