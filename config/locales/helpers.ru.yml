@@ -9,4 +9,4 @@ ru:
       time_shift:
         create: Записать
       time_sheet_form:
-        create: Отправить
+        create: Получить отчет

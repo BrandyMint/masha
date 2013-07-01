@@ -1,6 +1,14 @@
 class TimeShiftDecorator < Draper::Decorator
   delegate_all
 
+  def tr_class
+    if source.updated_at != source.created_at
+      :warning
+    elsif source.updated_at > Time.now - 1.minutes
+      :success
+    end
+  end
+
   def user
     h.link_to source.user, h.url_for(:time_sheet_form=>time_sheet_form.merge(:user_id=>user_id))
   end

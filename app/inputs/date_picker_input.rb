@@ -41,7 +41,8 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
 
           #weeks
           [date.prev_week, date].each do |m|
-            week_name = "Неделя##{m.strftime '%U'}"
+            this = m.end_of_month >= Date.today ? '(текущая)' : ''
+            week_name = "Неделя##{m.strftime '%U'}#{this}"
             li helpers.link_to(
               week_name,
               '#',

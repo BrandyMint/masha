@@ -8,7 +8,7 @@
       %th{width: '55%'} Описание
     - time_shifts.each do |ts|
       - ts = TimeShiftDecorator.decorate ts
-      %tr
+      %tr{class: ts.tr_class}
         %td
           = l ts.date
           %br

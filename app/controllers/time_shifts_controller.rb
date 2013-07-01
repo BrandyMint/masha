@@ -17,7 +17,7 @@ class TimeShiftsController < ApplicationController
   def create
     super do |success, error|
       success.html {
-        redirect_to :back, :notice => "Добавили #{human_hours @time_shift.hours} в #{@time_shift.project}"
+        redirect_to :time_shifts, :notice => "Добавили #{human_hours @time_shift.hours} в #{@time_shift.project}"
       }
     end
   end
@@ -31,7 +31,7 @@ class TimeShiftsController < ApplicationController
   def permitted_params
     # TODO Проверить что проект разрешен для добавления времени
     params[:time_shift] ||= {}
-    params[:time_shift][:user_id] = current_user.id unless current_user.is_root?
+    params[:time_shift][:user_id] = current_user.id # unless current_user.is_root?
     params.require(:time_shift).permit!
 
     params
