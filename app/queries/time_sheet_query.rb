@@ -10,7 +10,7 @@ class TimeSheetQuery
   end
 
   def perform
-    scope = TimeShift.ordered
+    scope = TimeShift.ordered.includes(:project, :user)
 
     scope = scope.where :project_id => project_id if project_id.present?
     scope = scope.where :project_id => available_projects_ids if available_projects.present?

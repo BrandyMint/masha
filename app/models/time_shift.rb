@@ -2,7 +2,7 @@ class TimeShift < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
-  scope :ordered, -> { order(:date) }
+  scope :ordered, -> { order 'date desc' }
 
   validates :project, :presence => true
   validates :user, :presence => true
