@@ -16,9 +16,9 @@
 <th>Смотреть чужое время</th>
 <th>Возможность приглашать других участников и устанавливать роли</th>
 <th>Возможность добавлять, изменять и удалять чужое время</th></tr>
-<tr><td>Участник</td><td>X</td><td>&middot;</td><td>&middot;</td><td>&middot;</td></tr>
-<tr><td>Смотритель</td><td>X</td><td>X</td><td>&middot;</td><td>&middot;</td></tr>
-<tr><td>Владелец</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
+<tr><td>Участник</td><td>yes</td><td>&middot;</td><td>&middot;</td><td>&middot;</td></tr>
+<tr><td>Смотритель</td><td>yes</td><td>yes</td><td>&middot;</td><td>&middot;</td></tr>
+<tr><td>Владелец</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
 </table>
 
 ## Active admin in development
