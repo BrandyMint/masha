@@ -71,7 +71,6 @@ class Authentificator::Base
   end
 
   def update_user_info user
-    binding.pry
     [:nickname, :email].each do |key|
       unless user.read_attribute(key).present?
         begin
@@ -79,8 +78,6 @@ class Authentificator::Base
         rescue ActiveRecord::RecordNotUnique => err
           Airbrake.notify err
           user.reload!
-        rescue StandardError => err
-          Airbrake.notify err
         end
       end
     end

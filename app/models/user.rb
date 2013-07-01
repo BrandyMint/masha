@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
 
   def email
     # TODO change :develop to :email
-    authentications.where(:provider=>:developer).pluck(:uid).first
+    authentications.where(:provider=>:developer).pluck(:uid).first || read_attribute(:email)
   end
 
   def membership_of project
