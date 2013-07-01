@@ -19,6 +19,11 @@ class Project < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   validates :slug, :presence => true, :uniqueness => true
 
+  # active_admin в упор не видит friendly_id-шный slug
+  def to_param
+    id
+  end
+
   def to_s
     name
   end

@@ -10,7 +10,7 @@ ActiveAdmin.register Membership do
     f.inputs do
       f.input :project
       f.input :user
-      f.input :role_cd, :as => :select, :collection => Membership.roles_collection, :required => true
+      f.input :role, :as => :select, :collection => Membership.roles_collection, :required => true
     end
     f.actions
 

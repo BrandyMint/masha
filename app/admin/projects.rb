@@ -6,7 +6,7 @@ ActiveAdmin.register Project do
       ul :class => :horizontal do
         li link_to "#{p.memberships.count} members", admin_memberships_url(:q=>{:project_id_in=>p.id})
         li ' / '
-        li link_to 'add', new_admin_membership_url(:membership => { :project_id=>p.id, :role => 2})
+        li link_to 'add', new_admin_membership_url(:membership => { :project_id=>p.id, :role => :member})
       end
     end
     column :total_hours do |p|
