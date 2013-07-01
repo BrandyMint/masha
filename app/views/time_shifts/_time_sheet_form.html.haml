@@ -8,9 +8,9 @@
         = f.input :date_to, :as => :date_picker
     .row
       .span5
-        = f.input :project_id, :collection => available_projects_collection, :include_blank => false
+        = f.input :project_id, :collection => viewable_projects_collection, :include_blank => 'Любой'
       .span5
-        = f.input :user_id, :collection => available_users_to_view_collection, :include_blank => false
+        = f.input :user_id, :collection => available_users_to_view_collection, :include_blank => 'Любой'
     .row
       .span8
         = f.input :group_by, :collection => grouping_collection,  as: :radio_buttons, :item_wrapper_class => 'inline'

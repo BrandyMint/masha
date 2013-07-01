@@ -49,14 +49,16 @@ module ApplicationHelper
     "#{human_hours(g[:total])}#{dates}"
   end
 
-  def available_projects_collection
-    list = [['любой',nil]]
+  def setable_projects_collection
+    @spc ||= available_projects
+  end
 
-    #list + available_projects
+  def viewable_projects_collection
+    @vpc ||= available_projects
   end
 
   def available_users_to_set_collection
-    users = [['любой',nil]]
+    users = []
 
     current_user.memberships.each do |m|
       if m.owner?
