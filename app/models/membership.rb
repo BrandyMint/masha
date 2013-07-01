@@ -1,5 +1,9 @@
 class Membership < ActiveRecord::Base
 
+  def self.roles_collection
+    {'владелец'=>0, 'смотритель'=>1, 'участник'=>2}
+  end
+
   scope :last_updates, -> { order('updated_at desc') }
   belongs_to :user
   belongs_to :project

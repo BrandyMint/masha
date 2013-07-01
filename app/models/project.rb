@@ -1,10 +1,10 @@
 class Project < ActiveRecord::Base
   include Authority::Abilities
-  #extend FriendlyId
+  extend FriendlyId
 
   ROLES = [:owner, :viewer, :member]
 
-  #friendly_id :name, use: :slugged
+  friendly_id :name, use: :slugged
 
   belongs_to :owner, :class_name => 'User'
 
@@ -17,7 +17,7 @@ class Project < ActiveRecord::Base
   scope :ordered, -> { order(:name) }
 
   validates :name, :presence => true, :uniqueness => true
-  #validates :slug, :presence => true, :uniqueness => true
+  validates :slug, :presence => true, :uniqueness => true
 
   def to_s
     name

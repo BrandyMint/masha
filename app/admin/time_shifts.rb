@@ -1,4 +1,14 @@
 ActiveAdmin.register TimeShift do
+  index do
+    column :updated_at
+    column :date
+    column :project, :sortable => :project_id
+    column :user, :sortable => :user_id
+    column :hours
+    column :description
+    actions
+  end
+
 
   form do |f|
     f.inputs "Details" do

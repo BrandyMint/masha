@@ -1,0 +1,8 @@
+ru:
+  formtastic:
+    labels:
+      membership:
+        role_cd: Роль
+    hints:
+      membership:
+        role_cd: "owner - 0, viewer - 1, member - 2"

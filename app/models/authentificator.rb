@@ -44,7 +44,7 @@ class Authentificator::Base
 
     auth.update_attribute :user, create_user unless auth.user.present?
 
-    update_user_info auth.user
+    update_user_info auth.user if auth.user.present?
 
     return auth.user
   end
@@ -71,6 +71,7 @@ class Authentificator::Base
   end
 
   def update_user_info user
+    binding.pry
     [:nickname, :email].each do |key|
       unless user.read_attribute(key).present?
         begin
