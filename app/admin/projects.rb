@@ -12,12 +12,19 @@ ActiveAdmin.register Project do
     column :total_hours do |p|
       link_to human_hours(p.time_shifts.sum(:hours)), admin_time_shifts_url(:q=>{:project_id_in=>p.id})
     end
+    column :description do |p|
+      small do
+        i p.description
+      end
+    end
     actions
   end
 
   form do |f|
     f.inputs "Details" do
       f.input :name
+      f.input :description
+      f.input :slug if f.object.persisted?
     end
     f.actions
   end

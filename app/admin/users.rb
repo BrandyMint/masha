@@ -7,6 +7,7 @@ ActiveAdmin.register User do
     column :name
     column :nickname
     column :email
+    column :pivotal_person_id
     column :is_root
     column :memberships do |user|
       ul do
@@ -28,6 +29,16 @@ ActiveAdmin.register User do
       end
     end
     actions
+  end
+
+  form do |f|
+    f.inputs "Details" do
+      f.input :name
+      f.input :nickname
+      f.input :email
+      f.input :pivotal_person_id
+    end
+    f.actions
   end
 
 end

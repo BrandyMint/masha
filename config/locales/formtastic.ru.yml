@@ -3,6 +3,8 @@ ru:
     labels:
       membership:
         role_cd: Роль
+      user:
+        pivotal_person_id: pivotal_person_id
     hints:
       membership:
         role_cd: "owner - 0, viewer - 1, member - 2"
