@@ -12,6 +12,8 @@ gem 'rails', '4.0.0'
 gem 'pg'
 gem 'pg_array_parser'
 
+gem 'rake'
+
 gem 'settingslogic'
 
 gem 'rails_autolink'

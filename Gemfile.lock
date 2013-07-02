@@ -695,6 +695,7 @@ DEPENDENCIES
   rails (= 4.0.0)
   rails-erd
   rails_autolink
+  rake
   ransack!
   rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.9)

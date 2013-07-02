@@ -1,0 +1,14 @@
+development:
+  github:
+    client_id: id
+    client_secret: secret
+
+production:
+  github:
+    client_id: id
+    client_secret: secret
+
+test:
+  github:
+    client_id: id
+    client_secret: secret
