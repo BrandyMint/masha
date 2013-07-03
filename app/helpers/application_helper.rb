@@ -10,6 +10,10 @@ module ApplicationHelper
     ['владелец'=>0, 'смотритель'=>1, 'участник'=>2]
   end
 
+  def no_email
+    flash[:alert] = t('no_email', url: edit_user_path).html_safe if logged_in? && current_user.email.blank?
+  end
+
   def submit_sheet_button
     icon(:task)
   end

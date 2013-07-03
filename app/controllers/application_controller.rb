@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   end
   include ApplicationHelper
 
+  after_filter :no_email
+
   protect_from_forgery with: :exception if Rails.env.production?
 
   helper_method :current_user, :logged_in?, :admin_namespace?
@@ -25,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def logout
-    current_uset=nil
+    current_user = nil
   end
 
   def logged_in?
