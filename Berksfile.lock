@@ -1,0 +1,61 @@
+{
+  "sources": {
+    "mysql": {
+      "locked_version": "3.0.2"
+    },
+    "nginx": {
+      "locked_version": "1.7.0"
+    },
+    "postgresql": {
+      "locked_version": "3.0.2"
+    },
+    "unicorn": {
+      "locked_version": "1.3.0"
+    },
+    "git": {
+      "locked_version": "2.5.2"
+    },
+    "application_ruby": {
+      "locked_version": "1.1.4"
+    },
+    "imagemagick": {
+      "locked_version": "0.2.2"
+    },
+    "openssl": {
+      "locked_version": "1.0.2"
+    },
+    "build-essential": {
+      "locked_version": "1.4.0"
+    },
+    "yum": {
+      "locked_version": "2.3.0"
+    },
+    "apt": {
+      "locked_version": "2.0.0"
+    },
+    "runit": {
+      "locked_version": "1.1.6"
+    },
+    "ohai": {
+      "locked_version": "1.1.10"
+    },
+    "dmg": {
+      "locked_version": "1.1.0"
+    },
+    "windows": {
+      "locked_version": "1.10.0"
+    },
+    "chef_handler": {
+      "locked_version": "1.1.4"
+    },
+    "application": {
+      "locked_version": "2.0.4"
+    },
+    "apache2": {
+      "locked_version": "1.6.6"
+    },
+    "passenger_apache2": {
+      "locked_version": "2.0.2"
+    }
+  }
+}
