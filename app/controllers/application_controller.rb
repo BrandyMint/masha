@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   end
   include ApplicationHelper
 
-  after_filter :check_email_existences
+  after_filter :check_email_existence
 
   protect_from_forgery with: :exception if Rails.env.production?
 
