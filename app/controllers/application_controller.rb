@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   end
   include ApplicationHelper
 
+  after_filter :check_email_existences
+
   protect_from_forgery with: :exception if Rails.env.production?
 
   helper_method :current_user, :logged_in?, :admin_namespace?

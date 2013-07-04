@@ -11,6 +11,7 @@ gem 'rails', '4.0.0'
 # Use postgresql as the database for ActiveRecord
 gem 'pg'
 gem 'pg_array_parser'
+gem 'squash_migrations'
 
 gem 'rake'
 
