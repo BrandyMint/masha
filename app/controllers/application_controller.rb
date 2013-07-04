@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def logout
-    current_uset=nil
+    current_user = nil
   end
 
   def logged_in?
