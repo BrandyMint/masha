@@ -19,6 +19,12 @@ module ApplicationHelper
     content_tag :i, '', :class => "icon #{css}"
   end
 
+  def check_email_existence
+    if logged_in? && current_user.email.blank?
+      flash[:alert] = t('no_email', url: edit_user_path).html_safe
+    end
+  end
+
   def badge count, css_id ='', type = ''
     # Скрываем badge если в нем пусто. JS сам его покажет когда появится информация
     #
