@@ -1,3 +1,8 @@
 language: ruby
+env:
+ - DB=postgresql
 rvm:
   - 2.0.0
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - psql -c 'create database masha_test' -U postgres
