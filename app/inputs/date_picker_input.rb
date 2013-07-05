@@ -2,6 +2,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   enable :placeholder
 
   def input
+    input_html_options[:max] = Date.today
     super << shortcuts
   end
 
