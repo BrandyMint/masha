@@ -19,6 +19,6 @@ class Membership < ActiveRecord::Base
 
   as_enum :role, :owner => 0, :viewer => 1, :member => 2
 
-  validates :user_id, :uniquenes => { :scope => :project_id }
+  validates :user_id, :uniqueness => { :scope => :project_id }
 
 end
