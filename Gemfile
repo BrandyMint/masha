@@ -35,6 +35,7 @@ gem 'simple_enum'
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
 gem 'validates'
+gem 'validates_timeliness', '~> 3.0'
 gem 'hashie'
 
 gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
