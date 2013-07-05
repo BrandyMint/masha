@@ -1,5 +1,7 @@
 # Маша учетчица
 
+[![Build Status](https://travis-ci.org/BrandyMint/masha.png?branch=master)](https://travis-ci.org/BrandyMint/masha)
+
 ## Установка
 
 * создай ключи для oauth на `github`
