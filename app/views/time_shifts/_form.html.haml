@@ -1,7 +1,7 @@
 = simple_form_for @time_shift, :html => { :class => 'form-horizontal' } do |f|
   = f.error_notification
   .form-inputs
-    = f.input :date, :as => :date_picker, input_html: { max: Date.today.to_s }
+    = f.input :date, :as => :date_picker
     = f.association :project, :include_blank => false, :collection => setable_projects_collection
     -# = f.association :user, :include_blank => false, :collection => available_users_to_set_collection
     = f.input :hours, :input_html => { :autofocus => :autofocus, :min => 0.1, :max => 24 }
