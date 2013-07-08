@@ -26,6 +26,7 @@ set :rbenv_ruby_version, "2.0.0-p195"
 set :bundle_flags, "--deployment --quiet --binstubs"
 
 before 'deploy:restart', 'deploy:migrate'
+after 'deploy:update_code', 'deploy:bowerinstall'
 after 'deploy', "deploy:cleanup"
 
 #RVM, Bundler
@@ -46,4 +47,11 @@ namespace :deploy do
   task :config_symlink do
     run "cp #{shared_path}/config/omniauth.yml #{release_path}/config/omniauth.yml"
   end
+  
+  desc "Installing bower components"
+  task :bowerinstall do
+    run "cd #{latest_release} && bower install"
+  end
+
+
 end
