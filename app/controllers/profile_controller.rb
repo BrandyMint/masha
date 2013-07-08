@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class ProfileController < ApplicationController
   before_filter :require_login
 
   def edit
@@ -11,7 +11,7 @@ class UserController < ApplicationController
     @user.assign_attributes permited_params
 
     if @user.save
-      redirect_to edit_user_url, :notice => 'Сохранили ваши изменения'
+      redirect_to edit_profile_url, :notice => 'Сохранили ваши изменения'
     else
       render :action => :edit, :error => 'Ошибочки'
     end
