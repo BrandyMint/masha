@@ -27,6 +27,8 @@ module Masha
     # Enable the asset pipeline
     config.assets.enabled = true
 
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 

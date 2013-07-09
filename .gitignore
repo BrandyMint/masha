@@ -29,8 +29,9 @@ config/database.yml
 .idea
 .rvmrc
 *~
-config/application.local.yml
+config/*.local.yml
 solr/data
 solr/pids
 sunspot-solr.pid
 /cookbooks/
+vendor/assets/components
