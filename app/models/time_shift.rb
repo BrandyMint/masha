@@ -1,8 +1,9 @@
 class TimeShift < ActiveRecord::Base
+  scope :ordered, -> { order 'date desc' }
+  scope :this_day, -> { where ['created_at >= ?', Date.today - 24.hours] }
+
   belongs_to :project
   belongs_to :user
-
-  scope :ordered, -> { order 'date desc' }
 
   validates :project, :presence => true
   validates :user, :presence => true

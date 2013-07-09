@@ -6,6 +6,10 @@ module ApplicationHelper
     :member => 'success'
   }
 
+  def this_day_shifts
+    current_user.time_shifts.ordered.this_day
+  end
+
   def membership_roles_collection
     ['владелец'=>0, 'смотритель'=>1, 'участник'=>2]
   end
