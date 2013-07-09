@@ -28,6 +28,7 @@ gem 'breadcrumbs_on_rails'
 gem 'omniauth'
 gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'
 gem 'authority'
+gem 'sorcery'
 #gem 'rolify'
 gem 'simple_enum'
 
