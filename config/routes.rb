@@ -11,8 +11,14 @@ Masha::Application.routes.draw do
   # http://masha.brandymint.ru/auth/failure?message=invalid_credentials&strategy=github
   delete "signout" => "sessions#destroy", :as => :signout
 
+  get "logout" => "sessions#destroy", :as => "logout"
+  get "login" => "sessions#new", :as => "login"
+  get "signup" => "users#new", :as => "signup"
+  resources :users
+  resources :sessions
+
   # Личный контроллер пользователя
-  resource :user, :controller => :user
+  resource :profile, :controller => :profile
 
   resources :projects, :only => [:index, :show]
   resources :time_shifts

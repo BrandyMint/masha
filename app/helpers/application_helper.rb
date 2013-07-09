@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def check_email_existence
     if logged_in? && current_user.email.blank?
-      flash[:alert] = t('no_email', url: edit_user_path).html_safe
+      flash[:alert] = t('no_email', url: edit_profile_path).html_safe
     end
   end
 
