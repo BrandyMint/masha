@@ -21,7 +21,7 @@ SimpleNavigation::Configuration.run do |navigation|
         #user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)
         user.item :edit_profile, 'Профиль', edit_profile_url
         user.item :admin, 'Админ', admin_root_url, 'data-no-turbolink'=>true if current_user.is_root?
-        user.item :signout, 'Выйти', signout_url, :method => :delete
+        user.item :logout, 'Выйти', logout_url
       end
     else
       primary.item :login, 'Вход', '/login'

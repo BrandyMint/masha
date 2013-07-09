@@ -4,6 +4,7 @@ class SessionForm < Hashie::Trash
 
   property :email
   property :password
+  property :remember_me
 
   def to_key
     nil

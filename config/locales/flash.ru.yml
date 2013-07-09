@@ -1,2 +1,8 @@
 ru:
+  signed_up: Вы успешно зарегистрировались!
+  session_problems: Проблемы с авторизацией
+  session_failed: Неправильный email или пароль
+  session_logout: До свидания!
+  profile_errors: Ошибочки
+  profile_update: Сохранили ваши изменения
   no_email: <a href="%{url}">Введите Ваш email.</a>

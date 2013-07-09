@@ -11,9 +11,9 @@ class ProfileController < ApplicationController
     @user.assign_attributes permited_params
 
     if @user.save
-      redirect_to edit_profile_url, :notice => 'Сохранили ваши изменения'
+      redirect_to edit_profile_url, :notice => t(:profile_update)
     else
-      render :action => :edit, :error => 'Ошибочки'
+      render :action => :edit, :error => t(:profile_errors)
     end
   end
 
