@@ -1,0 +1,12 @@
+{
+  "name": "brandymint-masha",
+  "version": "0.1",
+  "dependencies": {
+    "jquery-autosize": "latest"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

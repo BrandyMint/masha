@@ -3,6 +3,7 @@
 #= require jquery.turbolinks
 #= require turbolinks
 #= require bootstrap
+#= require jquery-autosize/jquery.autosize-min.js
 #= require_tree .
 
 # require jquery.freetile
@@ -23,6 +24,8 @@ $ ->
   # $('input.select2').select2()
   # $('select.select2').select2
   #  width: 'element'
+
+  $('.j-autosize').autosize()
 
   $('.date-shortcut').click (e) ->
     $('#time_shift_date').val $(@).data('value')
