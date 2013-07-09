@@ -1,2 +1,11 @@
-.alert.alert-error
-  %h1 Доступа нет. Войдем?
+.page-header
+  %h1 Вход
+
+= simple_form_for @session, :url => sessions_path, :method => :create do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :email
+    = f.input :password
+    = f.input :remember_me, as: :boolean
+  .form-actions
+    = f.button :submit, 'Войти', :class => 'btn btn-primary'

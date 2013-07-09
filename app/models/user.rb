@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  authenticates_with_sorcery!
   include Authority::UserAbilities
   include Authority::Abilities
 
@@ -18,6 +19,8 @@ class User < ActiveRecord::Base
 
   validates :name, :presence => true
   #validates :nickname, :uniqueness => true, :allow_blank => true
+  # validates :password, :confirmation => true
+  # validates :password, :presence => true, :on => :create
   validates :email, :email => true, :uniqueness => true, :allow_blank => true
 
   validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true

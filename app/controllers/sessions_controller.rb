@@ -1,23 +1,24 @@
 class SessionsController < ApplicationController
+
   def create
-    self.current_user = Authentificator::Base.authentificate auth_hash
+    @session = SessionForm.new params[:session_form]
 
-    redirect_to projects_url
-
-  rescue StandardError => err
-    Airbrake.notify err
-    Rails.logger.error err
-    redirect_to '/', :notice => 'Проблемы с авторизацией'
+    user = login @session.email, @session.password, @session.remember_me
+    if user
+      redirect_to projects_url
+    else
+      flash.now.alert = t(:session_failed)
+      render :new
+    end
   end
 
   def destroy
-    self.current_user = nil
-    redirect_to root_url, :notice => "До свидания!"
+    logout
+    redirect_to root_url, :notice => t(:session_logout)
   end
 
-  protected
-
-  def auth_hash
-    request.env['omniauth.auth']
+  def new
+    @session = SessionForm.new params[:session_form]
   end
+  
 end
