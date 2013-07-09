@@ -13,6 +13,7 @@ class Membership < ActiveRecord::Base
   scope :owners,  -> { where :role_cd => 0 }
   scope :viewers, -> { where :role_cd => 1 }
   scope :members, -> { where :role_cd => 2 }
+  scope :supervisors, -> { where "role_cd=0 or role_cd=1" }
 
   belongs_to :user
   belongs_to :project

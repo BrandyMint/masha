@@ -1,0 +1,15 @@
+!!!
+%html{:lang => "ru"} 
+  %head
+    %meta{:charset => "UTF-8"}/ 
+    %title
+      = t('time_shift_addition', :hours => @hours, :project => @time_shift.project)
+  %body
+    = @time_shift.user.name
+    добавил 
+    = @hours
+    в 
+    = @time_shift.project
+    %br/ 
+    и сказал:
+    = @time_shift.description

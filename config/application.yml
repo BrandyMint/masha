@@ -11,6 +11,8 @@ defaults: &defaults
     raise_delivery_errors: false
     default_url_options:
       <<: *default_url_options
+    default_options:
+      from: 'masha@brandymint.ru'
 
   mailer_defaults:
     from: 'masha@brandymint.ru'
