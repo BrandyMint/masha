@@ -179,6 +179,7 @@ ru:
       create: Создать 
       submit: Сохранить
       update: Сохранить
+    you: ! ' (Вы)'
   number:
     currency:
       format:
