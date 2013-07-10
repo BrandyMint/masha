@@ -1,5 +1,5 @@
 class TimeShift < ActiveRecord::Base
-  scope :ordered, -> { order 'date desc' }
+  scope :ordered, -> { order 'date desc, created_at desc' }
   scope :this_day, -> { where ['created_at >= ?', Date.today - 24.hours] }
 
   belongs_to :project
