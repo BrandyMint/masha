@@ -17,7 +17,8 @@ class TimeShiftsController < ApplicationController
   def create
     super do |success, error|
       success.html {
-        redirect_to :time_shifts, :notice => "Добавили #{human_hours @time_shift.hours} в #{@time_shift.project}"
+        ViewerMailer.new_time_shift_email(@time_shift).deliver
+        redirect_to :time_shifts, :notice => t('time_shift_addition', :hours => human_hours(@time_shift.hours), :project => @time_shift.project)
       }
     end
   end
