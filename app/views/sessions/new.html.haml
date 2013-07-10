@@ -1,6 +1,8 @@
 .page-header
   %h1 Вход
 
+- @session ||= SessionForm.new
+
 = simple_form_for @session, :url => sessions_path, :method => :create do |f|
   = f.error_notification
   .form-inputs
