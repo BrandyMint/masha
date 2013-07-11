@@ -5,5 +5,5 @@ ru:
   session_logout: До свидания!
   profile_errors: Ошибочки
   profile_update: Сохранили ваши изменения
-  time_shift_addition: Добавили %{hours} в %{project}
+  time_shift_addition: Добавили %{hours} в %{project} за %{date}
   no_email: <a href="%{url}">Введите Ваш email.</a>
