@@ -62,6 +62,7 @@ gem 'carrierwave'
 #gem 'has_scope'
 gem 'responders', :git => 'git://github.com/plataformatec/responders.git'
 gem 'inherited_resources', :git => 'git://github.com/josevalim/inherited_resources.git'
+gem 'rails-observers'
 
 #"~> 1.4.0"
 
