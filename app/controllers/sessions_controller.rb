@@ -2,8 +2,8 @@ class SessionsController < ApplicationController
 
   def create
     @session = SessionForm.new params[:session_form]
-
     user = login @session.email, @session.password, @session.remember_me
+    
     if user
       redirect_to projects_url
     else

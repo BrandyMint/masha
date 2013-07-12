@@ -1,21 +1,17 @@
 class UsersController < ApplicationController
+
   def new
-    @user = User.new
+    @reg = RegisterForm.new
   end
 
   def create
-    @user = User.new(permit_params)
-    if @user.save
+    @reg = RegisterForm.new params[:register_form]
+
+    if @reg.save
       redirect_to root_url, :notice => t(:signed_up)
     else
       render :new
     end
-  end
-
-  protected
-
-  def permit_params
-    params.require(:user).permit(:name, :email, :password)
   end
 
 end
