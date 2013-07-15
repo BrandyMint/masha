@@ -2,12 +2,12 @@
   %h1 Регистрация
 .row
   .span12
-    = simple_form_for @user do |f|
+    = simple_form_for @reg, :url => users_path do |f|
       = f.error_notification
       .form-inputs
-        = f.input :name
-        = f.input :email
-        = f.input :password
+        = f.input :name, :require => true
+        = f.input :email, :require => true
+        = f.input :password, :require => true
       .form-actions
         = f.button :submit, :class => 'btn btn-primary'
 
