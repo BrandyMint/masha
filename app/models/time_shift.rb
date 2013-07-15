@@ -1,4 +1,8 @@
 class TimeShift < ActiveRecord::Base
+
+	include Authority::Abilities
+  self.authorizer_name = 'TimeShiftAuthorizer'
+
   scope :ordered, -> { order 'date desc, created_at desc' }
   scope :this_day, -> { where ['created_at >= ?', Date.today - 24.hours] }
 
