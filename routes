@@ -68,16 +68,23 @@ batch_action_admin_authentications POST       /admin/authentications/batch_actio
                                    POST       /admin/comments(.:format)                                  admin/comments#create
                      admin_comment GET        /admin/comments/:id(.:format)                              admin/comments#show
                               root GET        /                                                          welcome#index
-                                   GET        /auth/:provider/callback(.:format)                         sessions#create
-                                   POST       /auth/:provider/callback(.:format)                         sessions#create
-                           signout DELETE     /signout(.:format)                                         sessions#destroy
-                              user POST       /user(.:format)                                            user#create
-                          new_user GET        /user/new(.:format)                                        user#new
-                         edit_user GET        /user/edit(.:format)                                       user#edit
-                                   GET        /user(.:format)                                            user#show
-                                   PATCH      /user(.:format)                                            user#update
-                                   PUT        /user(.:format)                                            user#update
-                                   DELETE     /user(.:format)                                            user#destroy
+                                   GET        /auth/:provider/callback(.:format)                         omniauth_session#create
+                                   POST       /auth/:provider/callback(.:format)                         omniauth_session#create
+                            logout GET        /logout(.:format)                                          sessions#destroy
+                             login GET        /login(.:format)                                           sessions#new
+                            signup GET        /signup(.:format)                                          users#new
+                             users POST       /users(.:format)                                           users#create
+                          new_user GET        /users/new(.:format)                                       users#new
+                          sessions POST       /sessions(.:format)                                        sessions#create
+                       new_session GET        /sessions/new(.:format)                                    sessions#new
+                           session DELETE     /sessions/:id(.:format)                                    sessions#destroy
+                           profile POST       /profile(.:format)                                         profile#create
+                       new_profile GET        /profile/new(.:format)                                     profile#new
+                      edit_profile GET        /profile/edit(.:format)                                    profile#edit
+                                   GET        /profile(.:format)                                         profile#show
+                                   PATCH      /profile(.:format)                                         profile#update
+                                   PUT        /profile(.:format)                                         profile#update
+                                   DELETE     /profile(.:format)                                         profile#destroy
                           projects GET        /projects(.:format)                                        projects#index
                            project GET        /projects/:id(.:format)                                    projects#show
                        time_shifts GET        /time_shifts(.:format)                                     time_shifts#index
