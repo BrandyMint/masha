@@ -26,6 +26,24 @@ class TimeShiftsController < ApplicationController
     @time_shift = TimeShift.new default_time_shift_form
   end
 
+  def destroy
+    @time_shift = TimeShift.find params[:id]
+    authorize_action_for(@time_shift)
+    @time_shift.destroy
+
+    redirect_to time_shifts_url
+  end
+
+  def edit
+    @time_shift = TimeShift.find params[:id]
+    authorize_action_for(@time_shift)
+    render :new
+  end
+
+  def show
+    redirect_to time_shifts_url
+  end
+
   protected
 
   def default_time_shift_form

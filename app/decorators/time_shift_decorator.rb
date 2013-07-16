@@ -21,6 +21,22 @@ class TimeShiftDecorator < Draper::Decorator
     h.auto_link source.description, :html => { :target => '_blank' }
   end
 
+  def update_link
+    if h.current_user.can_update?(source)
+      h.link_to h.edit_time_shift_path(source) do
+        h.icon :edit
+      end
+    end
+  end
+
+  def remove_link
+    if h.current_user.can_delete?(source)
+      h.link_to h.time_shift_path(source), :data => { method: :delete, confirm: I18n.t('time_shifts.delete.confirm') } do
+        h.icon :remove
+      end
+    end
+  end
+
   private
 
   def time_sheet_form

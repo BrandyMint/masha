@@ -5,8 +5,9 @@
       %th{width: '10%'} Время
       %th{width: '10%'} Проект
       %th{width: '10%'} Человек
-      %th{width: '55%'} Описание
-    - time_shifts.each do |ts|
+      %th{width: '45%'} Описание
+      %th{width: '10%'} Действия
+    - time_shifts.each do |ts|      
       - ts = TimeShiftDecorator.decorate ts
       %tr{class: ts.tr_class}
         %td
@@ -21,6 +22,9 @@
         %td= ts.user
         %td
           %small.muted= ts.description
+        %td
+          = ts.update_link
+          = ts.remove_link
 
 - else
   .alert Нет результатов
