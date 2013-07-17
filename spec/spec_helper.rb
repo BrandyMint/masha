@@ -26,6 +26,16 @@ Spork.prefork do
   # ResqueSpec.disable_ext = true
 
   RSpec.configure do |config|
+
+    # Use color in STDOUT
+    config.color_enabled = true
+
+    # Use color not only in STDOUT but also in pagers and files
+    config.tty = true
+
+    # Use the specified formatter
+    config.formatter = :documentation # :progress, :html, :textmate
+
     # ## Mock Framework
     #
     # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -40,6 +50,9 @@ Spork.prefork do
     config.fail_fast = false
 
     config.include FactoryGirl::Syntax::Methods
+    config.include Sorcery::TestHelpers::Rails
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.add_mock(:default, FactoryGirl.attributes_for(:authentication))
 
 
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -65,7 +78,7 @@ Spork.prefork do
     end
     config.before(:each) do
       DatabaseCleaner.start
-      #Warden.test_reset! 
+      #Warden.test_reset!
     end
     config.after(:each) do
       DatabaseCleaner.clean

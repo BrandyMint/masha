@@ -109,6 +109,8 @@ gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git", ref: "17
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
 gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
 gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
+# gem 'activeadmin', github: 'empowerunited/active_admin',    branch: 'rails4'
+# gem 'activeadmin', github: 'agrobbin/active_admin'#,    branch: 'rails4' #кривой
 #gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
 
 # Очередь
@@ -222,7 +224,7 @@ group :development do
   # Молчаливые ассеты
   gem 'quiet_assets'
 
-  gem "rspec-rails", ">= 2.11.0"
+  gem "rspec-rails"#, ">= 2.11.0"
   gem "guard-livereload"
   gem 'rb-inotify', '~> 0.9', :require => false
   gem 'rb-fsevent', '~> 0.9.1', require: false
@@ -240,7 +242,7 @@ group :test do
   gem 'rb-inotify', '~> 0.9', :require => false
   # Start Pry in the context of a failed test
   #gem 'plymouth'
-  gem "rspec-rails", ">= 2.11.0"
+  gem "rspec-rails"#, ">= 2.11.0"
   gem "fakeredis", :require => "fakeredis/rspec"
   gem 'resque_spec'
   gem "email_spec", ">= 1.2.1"
