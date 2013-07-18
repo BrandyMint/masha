@@ -1,22 +1,21 @@
 GIT
   remote: git://github.com/BrandyMint/capistrano-recipes0.git
-  revision: 3049e63b43ef95461aa4669697c37b92635e7943
+  revision: 44e1892d7cac79013dd2ea7b0d0e8577a8d89b25
   specs:
-    capistrano-recipes0 (1.1.3)
+    capistrano-recipes0 (1.2.0)
       capistrano (>= 2.0.0)
 
 GIT
   remote: git://github.com/FriendlyId/friendly_id.git
-  revision: 5e6b292bb39ef5dbbe43ccbd983ff160a9408218
+  revision: a25368945623c14798920e3316117bc5bd359e10
   specs:
     friendly_id (5.0.0.alpha1)
 
 GIT
   remote: git://github.com/airbrake/airbrake.git
-  revision: 010f7e2abc1caf38b8fb0fbf939ede85a8e79e00
+  revision: 365f3af0ac8bd2a1838630e7ad2cc78501252009
   specs:
     airbrake (3.1.12)
-      activesupport
       builder
       json
 
@@ -47,19 +46,19 @@ GIT
 
 GIT
   remote: git://github.com/ernie/ransack.git
-  revision: 4078f4fd0ff8b48658e1b69fe8bce0c36933f19c
+  revision: 43fff052ca7a850103c2ac122c99541cd34cf48d
   branch: rails-4
   specs:
     ransack (0.7.3)
-      actionpack
-      activerecord
+      actionpack (~> 4.0.0)
+      activerecord (~> 4.0.0)
       polyamorous (~> 0.6.0)
 
 GIT
   remote: git://github.com/intridea/omniauth-github.git
-  revision: 77cfd542d24ae8d75e77810fb816eef7abb2dd27
+  revision: 4ed398140596e57ecadf64494987dc81f6437c12
   specs:
-    omniauth-github (1.1.0)
+    omniauth-github (1.1.1)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)
 
@@ -97,39 +96,39 @@ GIT
 
 GIT
   remote: git://github.com/plataformatec/responders.git
-  revision: 89a010bea60dfca98d8a0b039e10af2a76ff9bb2
+  revision: 6b57da9efb85c79157434a85c1bc34b2b4231aaa
   specs:
     responders (1.0.0.rc)
       railties (>= 3.2, < 5)
 
 GIT
   remote: git://github.com/plataformatec/simple_form.git
-  revision: a2286a6d6d9aa9c251a272fbe9dbcf77669ce51f
+  revision: 3ea3226e2f5eb83c6723639fc10480a721347f7e
   specs:
     simple_form (3.0.0.rc)
-      actionpack (>= 4.0.0.rc1, < 4.1)
-      activemodel (>= 4.0.0.rc1, < 4.1)
+      actionpack (>= 4.0.0, < 4.1)
+      activemodel (>= 4.0.0, < 4.1)
 
 GIT
   remote: git://github.com/rails/coffee-rails.git
-  revision: cbc4a6f571e87f68d272b9a377db3fb3307464ab
+  revision: c812f4da1f5adc226ef834b57c2498467761cb2c
   specs:
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
-      railties (>= 4.0.0.beta, < 5.0)
+      railties (>= 4.0.0, < 5.0)
 
 GIT
   remote: git://github.com/rails/sass-rails.git
-  revision: 6b8e7c547220d361d6784f4c4decb82a101de7a5
+  revision: 31f756f208ee71af935454ab4dfb34786d15e891
   specs:
-    sass-rails (4.0.0.rc2)
-      railties (>= 4.0.0.beta, < 5.0)
+    sass-rails (4.0.0)
+      railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
 
 GIT
   remote: git://github.com/rails/sprockets-rails.git
-  revision: b522561d2d83b83c99e9aa54c8079fd1241fdf49
+  revision: 3aebadc2d5063bd51385b4f599e01a144327b29a
   specs:
     sprockets-rails (2.0.0)
       actionpack (>= 3.0)
@@ -168,13 +167,13 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
-    addressable (2.3.4)
+    addressable (2.3.5)
     ansi (1.4.3)
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.0)
     atomic (1.1.10)
-    authority (2.6.0)
+    authority (2.7.0)
       activesupport (>= 3.0.0)
       rake (>= 0.8.7)
     awesome_print (1.1.0)
@@ -196,7 +195,7 @@ GEM
       actionpack (>= 3.2)
       thread_safe
     callsite (0.0.11)
-    capistrano (2.15.4)
+    capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -213,11 +212,12 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-screenshot (0.3.6)
+    capybara-screenshot (0.3.11)
       capybara (>= 1.0, < 3)
-    carrierwave (0.8.0)
+    carrierwave (0.9.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
+      json (>= 1.7)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.1.6)
@@ -226,18 +226,19 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.6.2)
+    coffee-script-source (1.6.3)
     commands (0.2.1)
       rails (>= 3.2.0)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
-    cucumber (1.3.2)
+    cucumber (1.3.4)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
       gherkin (~> 2.12.0)
-      multi_json (~> 1.3)
+      multi_json (~> 1.7.5)
+      multi_test (~> 0.0.1)
     cucumber-rails (1.3.0)
       capybara (>= 1.1.2)
       cucumber (>= 1.1.8)
@@ -251,7 +252,7 @@ GEM
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
     diff-lcs (1.2.4)
-    diffy (2.1.4)
+    diffy (3.0.1)
     dotenv (0.8.0)
     draper (1.2.1)
       actionpack (>= 3.0)
@@ -309,7 +310,7 @@ GEM
       em-websocket (>= 0.5.0)
       guard (>= 1.8.0)
       multi_json (~> 1.7)
-    guard-rails (0.4.4)
+    guard-rails (0.4.7)
       guard (>= 0.2.2)
     guard-rspec (3.0.2)
       guard (>= 1.8)
@@ -342,7 +343,7 @@ GEM
       activesupport (>= 3.0.0)
     jist (1.5.1)
       json
-    jquery-rails (3.0.1)
+    jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jquery-turbolinks (1.0.0)
@@ -364,7 +365,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
-    lumberjack (1.0.3)
+    lumberjack (1.0.4)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -386,16 +387,17 @@ GEM
     mime-types (1.23)
     mini_magick (3.6.0)
       subexec (~> 0.2.1)
-    mini_portile (0.5.0)
+    mini_portile (0.5.1)
     minitest (4.7.5)
     mono_logger (1.1.0)
     multi_json (1.7.7)
+    multi_test (0.0.1)
     multipart-post (1.2.0)
-    net-scp (1.1.1)
+    net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.7)
+    net-ssh (2.6.8)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     nokogiri (1.6.0)
@@ -519,31 +521,31 @@ GEM
     resque_spec (0.13.0)
       resque (>= 1.19.0)
       rspec (>= 2.5.0)
-    rspec (2.13.0)
-      rspec-core (~> 2.13.0)
-      rspec-expectations (~> 2.13.0)
-      rspec-mocks (~> 2.13.0)
-    rspec-console (0.2.3)
+    rspec (2.14.1)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
+    rspec-console (0.2.4)
       rails-env-switcher
-    rspec-core (2.13.1)
-    rspec-expectations (2.13.0)
+    rspec-core (2.14.3)
+    rspec-expectations (2.14.0)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.13.1)
+    rspec-mocks (2.14.1)
     rspec-prof (0.0.3)
       rspec
       ruby-prof
       sc-core-ext (>= 1.2.1)
-    rspec-rails (2.13.2)
+    rspec-rails (2.14.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec-core (~> 2.13.0)
-      rspec-expectations (~> 2.13.0)
-      rspec-mocks (~> 2.13.0)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
     ruby-graphviz (1.0.9)
     ruby-prof (0.13.0)
     ruby_gntp (0.3.4)
-    ruby_parser (3.1.3)
+    ruby_parser (3.2.2)
       sexp_processor (~> 4.1)
     russian (0.6.0)
       i18n (>= 0.5.0)
@@ -599,7 +601,7 @@ GEM
     treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
-    turbolinks (1.2.0)
+    turbolinks (1.3.0)
       coffee-rails
     turn (0.9.6)
       ansi
@@ -622,7 +624,7 @@ GEM
       rack (>= 1.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
-    yard (0.8.6.1)
+    yard (0.8.6.2)
 
 PLATFORMS
   ruby
@@ -713,7 +715,7 @@ DEPENDENCIES
   resque_spec
   rspec-console
   rspec-prof
-  rspec-rails (>= 2.11.0)
+  rspec-rails
   ruby-graphviz
   ruby_gntp
   ruby_parser (>= 2.3.1)
