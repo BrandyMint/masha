@@ -4,9 +4,9 @@ describe OmniauthSessionController do
 
 	let!(:auth_attrs) { attributes_for :authentication }
 
-	describe "GET create" do
+	describe "#create" do
 		context "with valid params" do
-			it "should log in and successfully redirect to projects" do
+			it "should log in and redirect to projects_url" do
 				controller.request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:default]
 				post :create, auth_attrs
 

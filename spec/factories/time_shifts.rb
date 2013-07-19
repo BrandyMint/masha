@@ -2,8 +2,10 @@
 
 FactoryGirl.define do
   factory :time_shift do
-    project nil
-    user nil
-    minutes 1
+    project
+    user
+    date Date.today
+    hours 1
+    sequence(:description) {|n| "desc#{n}" }
   end
 end
