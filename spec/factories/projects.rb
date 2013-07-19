@@ -2,7 +2,9 @@
 
 FactoryGirl.define do
   factory :project do
-    name "MyString"
-    owner nil
+  	sequence(:name) {|n| "name#{n}" }
+  	sequence(:slug) {|n| "slug#{n}" }
+    # name "MyString"
+    # owner nil
   end
 end
