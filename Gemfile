@@ -108,8 +108,8 @@ gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git", ref: "17
 #active admin
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
 gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
-gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
-# gem 'activeadmin', github: 'empowerunited/active_admin',    branch: 'rails4'
+# gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
+gem 'activeadmin', github: 'empowerunited/active_admin',    branch: 'rails4'
 # gem 'activeadmin', github: 'agrobbin/active_admin'#,    branch: 'rails4' #кривой
 #gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
 
@@ -145,7 +145,7 @@ group :assets do
 
 
   # Хорошая альтернатива jquery-ui-rails
-  #  gem 'jquery-ui-sass-rails'
+  gem 'jquery-ui-sass-rails'
   # gem 'jquery_datepicker'
 
   # gem 'select2-rails'
@@ -255,15 +255,15 @@ group :test do
   gem 'guard-bundler'
   gem 'guard-cucumber'
   gem 'guard-ctags-bundler'
-  
+
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
-  
+
   gem "database_cleaner"
   gem "capybara"
   gem 'capybara-screenshot'
   gem 'poltergeist'
-  
+
   gem "launchy", ">= 2.1.2"
   gem 'turn', :require => false
   #gem "test_active_admin", :git => "git://github.com/BrandyMint/test_active_admin.git"
