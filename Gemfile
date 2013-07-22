@@ -139,6 +139,7 @@ group :assets do
 
   # Use CoffeeScript for .js.coffee assets and views
   gem 'coffee-rails', github: 'rails/coffee-rails'
+  gem 'role-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', platforms: :ruby
