@@ -1,4 +1,5 @@
 #= require jquery
+#= require jquery.role
 #= require jquery_ujs
 #= require jquery.turbolinks
 #= require turbolinks
@@ -35,5 +36,16 @@ $ ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     e.preventDefault()
+
+  $("@j-password-toggle").on "click", ->
+    icon = $(this).find("[class*='icon']")
+    icon.toggleClass('icon-eye-open')
+    icon.toggleClass('icon-eye-close')
+    input = $(this).closest('form').find('.j-password-input')
+    type = input.attr("type")
+    if type is "text"
+      input.attr "type", "password"
+    else
+      input.attr "type", "text"
 
   return

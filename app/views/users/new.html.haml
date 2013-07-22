@@ -7,7 +7,7 @@
       .form-inputs
         = f.input :name, :require => true
         = f.input :email, :require => true
-        = f.input :password, :require => true
+        = f.input :password, :require => true, :as => :eye_password
       .form-actions
         = f.button :submit, :class => 'btn btn-primary'
 
