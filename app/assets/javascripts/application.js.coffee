@@ -36,4 +36,15 @@ $ ->
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     e.preventDefault()
 
+  $("[role=j-password-toggle]").on "click", ->
+    icon = $(this).find("[class*='icon']")
+    icon.toggleClass('icon-eye-open')
+    icon.toggleClass('icon-eye-close')
+    input = $(this).closest('form').find('.j-password-input')
+    type = input.attr("type")
+    if type is "text"
+      input.attr "type", "password"
+    else
+      input.attr "type", "text"
+
   return

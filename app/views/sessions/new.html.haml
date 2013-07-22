@@ -7,7 +7,7 @@
   = f.error_notification
   .form-inputs
     = f.input :email
-    = f.input :password
+    = f.input :password, as: :eye_password
     = f.input :remember_me, as: :boolean
   .form-actions
     = f.button :submit, 'Войти', :class => 'btn btn-primary'
