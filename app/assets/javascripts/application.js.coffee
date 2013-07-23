@@ -18,21 +18,21 @@
 # require jquery.ui.all
 
 $ ->
-  $('[rel*="tooltip"]').tooltip()
-  # $('#freetile').freetile()
-  # $('input.ui-date-picker').datepicker()
-  # $('input.ui-datetime-picker').datetimepicker()
-  # $('input.select2').select2()
-  # $('select.select2').select2
+  $('@tooltip').tooltip()
+  # $('@freetile').freetile()
+  # $('@ui-date-picker').datepicker()
+  # $('@ui-datetime-picker').datetimepicker()
+  # $('@select2').select2()
+  # $('@select2').select2
   #  width: 'element'
 
-  $('.j-autosize').autosize()
+  $('@j-autosize').autosize()
 
-  $('.date-shortcut').click (e) ->
+  $('@date-shortcut').click (e) ->
     $('#time_shift_date').val $(@).data('value')
     e.preventDefault()
 
-  $('.period-shortcut').click (e) ->
+  $('@period-shortcut').click (e) ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     e.preventDefault()
