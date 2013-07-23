@@ -21,8 +21,8 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
     when :date
       arbre :today => t(:today), :yesterday => t(:yesterday) do
         ul :class => 'date-shortcuts' do
-          li helpers.link_to( yesterday, '#', :class => 'date-shortcut', :data => {:value => Date.yesterday.to_s } )
-          li helpers.link_to( today, '#', :class => 'date-shortcut', :data => {:value => Date.today.to_s } )
+          li helpers.link_to( yesterday, '#', :role => 'date-shortcut', :data => {:value => Date.yesterday.to_s } )
+          li helpers.link_to( today, '#', :role => 'date-shortcut', :data => {:value => Date.today.to_s } )
         end
       end
     when :date_from
@@ -35,7 +35,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
             li helpers.link_to(
               month_name,
               '#',
-              :class => 'period-shortcut',
+              :role => 'period-shortcut',
               :data => { :date_from => m.beginning_of_month.to_s, :date_to => m.end_of_month.to_s }
             )
           end
@@ -47,7 +47,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
             li helpers.link_to(
               week_name,
               '#',
-              :class => 'period-shortcut',
+              :role => 'period-shortcut',
               :data => { :date_from => m.beginning_of_week.to_s, :date_to => m.end_of_week.to_s }
             )
           end
