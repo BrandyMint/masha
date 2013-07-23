@@ -3,10 +3,11 @@ require 'spec_helper'
 describe ProjectsController do
 
   let!(:project) { create :project }
+  let!(:project_attrs) { attributes_for :project }
 
   context "when not logged in" do
     it "all actions should return 401" do
-      actions = [:index, :show]
+      actions = [:index, :show, :new, :create]
 
       actions.each do |action|
         get action, :id => project.id
@@ -32,6 +33,29 @@ describe ProjectsController do
       it "should redirect to new_time_shift_url" do
         get :show, :id => project.id
         response.should redirect_to new_time_shift_url(:time_shift=>{:project_id=>project.id})
+      end
+    end
+
+    describe "#new" do
+      it "should return success" do
+        get :index
+        response.should be_success
+      end
+    end
+
+    describe "#create" do
+      context "with valid params" do
+        it "should create project" do
+          post :create, :project => project_attrs
+          Project.where(project_attrs).first.should be_an_instance_of(Project)
+        end
+      end
+
+      context "with invalid params" do
+        it "should render new" do
+          post :new, :project => {}
+          response.should render_template :new
+        end
       end
     end
   end
