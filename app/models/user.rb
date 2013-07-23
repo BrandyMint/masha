@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates :nickname, :uniqueness => true, :allow_blank => true
   validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true
   validates :email, :email => true, :uniqueness => true, :allow_blank => true
-  
+
   # validates :password, :confirmation => true
   # validates :password, :presence => true, :on => :create
 
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   end
 
   def membership_of project
-    memberships.where( :project_id=>project.id ).first
+    memberships.where( :project_id=>project.id ).first unless project.nil?
   end
 
   def has_role? role, project

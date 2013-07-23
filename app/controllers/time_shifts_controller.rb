@@ -47,16 +47,26 @@ class TimeShiftsController < ApplicationController
   protected
 
   def default_time_shift_form
+    selected_project = get_project_id_from_params
     {
-      :project_id => current_user.time_shifts.order(:id).last.try(:project_id),
+      :project_id => selected_project ? selected_project : current_user.time_shifts.order(:id).last.try(:project_id),
       :date => Date.today
     }
+  end
+
+  def get_project_id_from_params
+    permitted_params
+    if params[:time_shift][:project_id]
+      project = Project.where(:id => params[:time_shift][:project_id]).first
+      project.id if current_user.membership_of(project)
+    end
   end
 
   def permitted_params
     # TODO Проверить что проект разрешен для добавления времени
     params[:time_shift] ||= {}
     params[:time_shift][:user_id] = current_user.id # unless current_user.is_root?
+    params[:time_shift][:project_id] ||= nil
     params.require(:time_shift).permit!
 
     params
