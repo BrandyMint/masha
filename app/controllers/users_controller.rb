@@ -8,6 +8,7 @@ class UsersController < ApplicationController
     @reg = RegisterForm.new params[:register_form]
 
     if @reg.save
+      # activate invite
       redirect_to root_url, :notice => t(:signed_up)
     else
       render :new

@@ -138,7 +138,7 @@ module ApplicationHelper
   end
 
   def role_human role
-    role = Membership::ROLES.include?(role) ? role : Membership::ROLES[role]
+    role = Membership::ROLES[role] unless Membership::ROLES.include?(role)
     I18n.t "roles.#{role}"
   end
 
