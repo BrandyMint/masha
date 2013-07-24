@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   include Authority::Abilities
   extend FriendlyId
 
-  ROLES = [:owner, :viewer, :member]
+  ROLES = Membership::ROLES
 
   friendly_id :name, use: :slugged
 

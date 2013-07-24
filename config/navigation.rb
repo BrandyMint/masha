@@ -17,14 +17,10 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :new_time, 'Отметить', new_time_shift_url
       primary.item :times, 'Отчеты', time_shifts_url
 
-      primary.item :project, 'Проекты' do |project|
-        project.item :projects, 'Список', projects_url
-        project.item :new_project, 'Создать', new_project_url
-      end
-
       primary.item :profile, current_user.to_s do |user|
         #user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)
         user.item :edit_profile, 'Профиль', edit_profile_url
+        user.item :projects, 'Проекты', projects_url
         user.item :admin, 'Админ', admin_root_url, 'data-no-turbolink'=>true if current_user.is_root?
         user.item :logout, 'Выйти', logout_url
       end

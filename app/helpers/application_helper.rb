@@ -137,6 +137,11 @@ module ApplicationHelper
     end
   end
 
+  def role_human role
+    role = Membership::ROLES.include?(role) ? role : Membership::ROLES[role]
+    I18n.t "roles.#{role}"
+  end
+
   private
 
   def users_cache_key
