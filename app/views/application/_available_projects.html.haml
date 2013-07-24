@@ -8,11 +8,13 @@
 - else
   %table.table.table-condensed
     %tbody
-      - user.projects.each do |project|
+      - user.memberships.ordered_by_role.each do |m|
         %tr
           %th
-            = link_to project, project_url(project)
+            = link_to m.project, project_url(m.project_id)
           %td
             %ul.horizontal-list
-              - Membership::ROLES.each do |role|
-                %li= change_role_link user, project, role
+              = m.role_cd
+              %li= role_human(m.role_cd)
+              -# Membership::ROLES.each do |role|
+                -#change_role_link user, project, role
