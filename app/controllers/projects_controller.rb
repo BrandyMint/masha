@@ -2,8 +2,13 @@ class ProjectsController < ApplicationController
   before_filter :require_login
   inherit_resources
 
+  def index
+    @project = Project.new
+    super
+  end
+
   def new
-  	@project = Project.new
+    @project = Project.new
   end
 
   def create

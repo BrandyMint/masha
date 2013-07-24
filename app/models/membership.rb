@@ -1,15 +1,14 @@
 class Membership < ActiveRecord::Base
 
-  # TODO Можно ли этот список взять из enum?
-  ROLES = [:owner, :viewer, :member]
-
   def self.roles_collection
-    # TODO Перетащить человеческие названия в локаль, а список брать из ROLES
-    {'владелец'=>:owner, 'смотритель'=>:viewer, 'участник'=>:member}
+    roles = {}
+    ROLES.each { |v| roles[v] = I18n.t "roles.#{v}" }
+    roles
   end
 
   scope :last_updates, -> { order('updated_at desc') }
   scope :viewable, -> { order 'role_cd<2'}
+  scope :ordered_by_role, -> { order :role_cd }
   scope :owners,  -> { where :role_cd => 0 }
   scope :viewers, -> { where :role_cd => 1 }
   scope :members, -> { where :role_cd => 2 }
@@ -19,6 +18,7 @@ class Membership < ActiveRecord::Base
   belongs_to :project
 
   as_enum :role, :owner => 0, :viewer => 1, :member => 2
+  ROLES = self.roles.keys
 
   validates :user_id, :uniqueness => { :scope => :project_id }
 
