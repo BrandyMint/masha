@@ -1,9 +1,0 @@
-%h3
-  Участники:
-%table.table.table-condensed
-  - @project.memberships.each do |m|
-    %tr
-      %td
-        = m.user
-      %td
-        = role_human m.role

@@ -14,6 +14,6 @@
             = link_to m.project, project_memberships_url(m.project_id)
           %td
             %ul.horizontal-list
-              %li= role_human(m.role_cd)
-              -# Membership::ROLES.each do |role|
+              %li= role_human(m.role)
+              -# Membership.roles.each_key do |role|
                 -#change_role_link user, project, role

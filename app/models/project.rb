@@ -2,8 +2,6 @@ class Project < ActiveRecord::Base
   include Authority::Abilities
   extend FriendlyId
 
-  ROLES = Membership::ROLES
-
   friendly_id :name, use: :slugged
 
   belongs_to :owner, :class_name => 'User'
@@ -13,6 +11,7 @@ class Project < ActiveRecord::Base
 
   has_many :memberships
   has_many :users, :through => :memberships
+  has_many :invites
 
   scope :ordered, -> { order(:name) }
 

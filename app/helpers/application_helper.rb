@@ -117,7 +117,7 @@ module ApplicationHelper
 
   def user_roles_of_project user, project
     buffer = ''
-    Project::ROLES.each do |role|
+    Membership.roles.each_key do |role|
       buffer << role_label(role) if user.has_role? role, project
     end
     buffer.html_safe
@@ -138,8 +138,7 @@ module ApplicationHelper
   end
 
   def role_human role
-    role = Membership::ROLES[role] unless Membership::ROLES.include?(role)
-    I18n.t "roles.#{role}"
+    I18n.t "roles.#{role.to_sym}"
   end
 
   private

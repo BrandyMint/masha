@@ -7,4 +7,5 @@ ru:
   profile_update: Сохранили ваши изменения
   project_created: Создан проект %{project}
   time_shift_addition: Добавили %{hours} в %{project} за %{date}
+  invite_sent: Приглашение отправлено на %{email}
   no_email: <a href="%{url}">Введите Ваш email.</a>
