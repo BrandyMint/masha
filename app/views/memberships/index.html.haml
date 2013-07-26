@@ -1,0 +1,16 @@
+%h1
+  = @project.name
+- if current_user.can_create?(@project.memberships.build)
+  = render 'form'
+%h3
+  Участники:
+%table.table.table-condensed
+  - @project.memberships.each do |m|
+    - md = MembershipDecorator.decorate m
+    %tr
+      %td
+        = m.user
+      %td
+        = role_human m.role
+      %td
+        = md.remove_link

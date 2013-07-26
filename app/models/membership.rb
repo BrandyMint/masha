@@ -1,8 +1,11 @@
 class Membership < ActiveRecord::Base
 
+  include Authority::Abilities
+  self.authorizer_name = 'MembershipAuthorizer'
+
   def self.roles_collection
     roles = {}
-    ROLES.each { |v| roles[v] = I18n.t "roles.#{v}" }
+    self.roles.each_key { |v| roles[v] = I18n.t "roles.#{v}" }
     roles
   end
 
@@ -18,7 +21,7 @@ class Membership < ActiveRecord::Base
   belongs_to :project
 
   as_enum :role, :owner => 0, :viewer => 1, :member => 2
-  ROLES = self.roles.keys
+  DEFAULT_ROLE = :member
 
   validates :user_id, :uniqueness => { :scope => :project_id }
 

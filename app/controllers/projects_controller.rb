@@ -16,7 +16,8 @@ class ProjectsController < ApplicationController
 
     if @project.save
       current_user.set_role :owner, @project
-      redirect_to new_time_shift_url(:time_shift => { :project_id => @project.id }), :notice => t(:project_created, :project => @project.name)
+      redirect_to project_memberships_url(@project)
+      # new_time_shift_url(:time_shift => { :project_id => @project.id }), :notice => t(:project_created, :project => @project.name)
     else
       render :new
     end

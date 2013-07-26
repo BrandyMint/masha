@@ -11,10 +11,9 @@
       - user.memberships.ordered_by_role.each do |m|
         %tr
           %th
-            = link_to m.project, project_url(m.project_id)
+            = link_to m.project, project_memberships_url(m.project_id)
           %td
             %ul.horizontal-list
-              = m.role_cd
-              %li= role_human(m.role_cd)
-              -# Membership::ROLES.each do |role|
+              %li= role_human(m.role)
+              -# Membership.roles.each_key do |role|
                 -#change_role_link user, project, role
