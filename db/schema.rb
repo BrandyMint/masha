@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130708113425) do
+ActiveRecord::Schema.define(version: 20130725084533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,19 @@ ActiveRecord::Schema.define(version: 20130708113425) do
 
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true, using: :btree
   add_index "authentications", ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true, using: :btree
+
+  create_table "invites", force: true do |t|
+    t.integer  "user_id"
+    t.string   "email",      null: false
+    t.string   "role",       null: false
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invites", ["email"], name: "index_invites_on_email", unique: true, using: :btree
+  add_index "invites", ["project_id"], name: "index_invites_on_project_id", using: :btree
+  add_index "invites", ["user_id"], name: "index_invites_on_user_id", using: :btree
 
   create_table "memberships", force: true do |t|
     t.integer  "user_id"

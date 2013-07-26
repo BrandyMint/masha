@@ -20,6 +20,8 @@ Masha::Application.routes.draw do
   resource :profile, :controller => :profile
 
   resources :projects, :only => [:index, :show, :create, :new]
+    resources :memberships
+  end
   resources :time_shifts
 
   namespace :owner do
