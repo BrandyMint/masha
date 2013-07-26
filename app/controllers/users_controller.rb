@@ -1,14 +1,15 @@
 class UsersController < ApplicationController
 
   def new
-    @reg = RegisterForm.new
+    @reg = RegisterForm.new params[:register_form]
   end
 
   def create
     @reg = RegisterForm.new params[:register_form]
 
-    if @reg.save
-      # TODO activate invite
+    user = @reg.save
+    if user.present?
+      Invite.activate_for(user)
       redirect_to root_url, :notice => t(:signed_up)
     else
       render :new

@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
   has_many :time_shifts
   has_many :timed_projects, :through => :time_shift, :class_name => 'Project'
 
-  has_many :memberships
+  has_many :memberships, :dependent => :destroy
   has_many :users, :through => :memberships
   has_many :invites
 

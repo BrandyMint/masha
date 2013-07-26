@@ -6,11 +6,26 @@
   Участники:
 %table.table.table-condensed
   - @project.memberships.each do |m|
-    - md = MembershipDecorator.decorate m
+    - d = MembershipDecorator.decorate m
     %tr
       %td
         = m.user
       %td
         = role_human m.role
       %td
-        = md.remove_link
+        = d.remove_link
+
+- if @project.invites.present?
+  %br/
+  %h3
+    Приглашенные:
+  %table.table.table-condensed
+    - @project.invites.each do |i|
+      - d = InviteDecorator.decorate i
+      %tr
+        %td
+          = i.email
+        %td
+          = role_human i.role
+        %td
+          = d.remove_link
