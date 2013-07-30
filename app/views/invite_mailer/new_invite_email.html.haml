@@ -6,7 +6,7 @@
   %body
     = @invite.user.name
     приглашает Вас
-    = link_to 'принять участие', signup_url(email: @invite.user.email)
+    = link_to 'принять участие', signup_url(register_form: {email: @invite.email})
     в проекте
     = @invite.project.name
     в роли

@@ -15,7 +15,7 @@ class RegisterForm < FormObjectBase
   end
 
   def save
-    valid? && user.save
+    user if valid? && user.save
   end
 
   private

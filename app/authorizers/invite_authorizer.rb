@@ -1,0 +1,2 @@
+class InviteAuthorizer < MembershipAuthorizer
+end
