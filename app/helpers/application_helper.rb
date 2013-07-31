@@ -10,10 +10,6 @@ module ApplicationHelper
     current_user.time_shifts.ordered.this_day
   end
 
-  def membership_roles_collection
-    ['владелец'=>0, 'смотритель'=>1, 'участник'=>2]
-  end
-
   def submit_sheet_button
     icon(:task)
   end
