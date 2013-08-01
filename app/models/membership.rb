@@ -1,6 +1,7 @@
 class Membership < ActiveRecord::Base
 
   include Authority::Abilities
+  after_initialize :init
   self.authorizer_name = 'MembershipAuthorizer'
 
   def self.roles_collection
@@ -24,5 +25,9 @@ class Membership < ActiveRecord::Base
   DEFAULT_ROLE = :member
 
   validates :user_id, :uniqueness => { :scope => :project_id }
+
+  def init
+    self.role  ||= DEFAULT_ROLE          #will set the default value only if it's nil
+  end
 
 end
