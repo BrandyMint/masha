@@ -18,6 +18,8 @@ defaults: &defaults
     from: 'masha@brandymint.ru'
     host: masha.brandymint.ru
 
+  convead_widget_url: "http://widget.icrm.icfdev.ru/assets/v1.js"
+
 development:
   <<: *defaults
   default_url_options: &default_url_options
@@ -30,6 +32,7 @@ development:
       address: localhost
       port: 1025   # mailcatcher
     raise_delivery_errors: true
+  convead_widget_url: "http://3007.vkontraste.ru/assets/v1.js"
 
 test:
   <<: *defaults

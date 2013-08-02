@@ -2,12 +2,17 @@
   window.ICRM_Settings = {
 
   <% if current_user %>
-    email:      "<%= current_user.email           %>",
-    first_name: "<%= current_user.name            %>",
-    user_hash:  "<%= current_user.id              %>",
-    created_at: "<%= current_user.created_at.to_i %>",
+    email:      <%= raw current_user.email.to_json           %>,
+    first_name: <%= raw current_user.name.to_json            %>,
+    user_hash:  <%= raw current_user.id.to_json              %>,
+    created_at: <%= raw current_user.created_at.to_i.to_json %>,
+
+    // Custom properties
+    pivotal_person_id: <%= raw current_user.pivotal_person_id.to_json %>,
+    nickname:          <%= raw current_user.nickname.to_json %>,
   <% end %>
-    // Don't change this
+
+    widget:  true,
     app_key: "9447b948d3fb9850bb4d82fc62b019e8d7689d99bb429c5e"
   };
 
@@ -16,7 +21,7 @@
       var s=document.createElement('script');
         s.type='text/javascript';
         s.async=true;
-        s.src="http://widget.icrm.icfdev.ru/assets/v1.js";
+        s.src= <%= raw Settings.convead_widget_url.to_json %>;
 
       var x=document.getElementsByTagName('script')[0];
         x.parentNode.insertBefore(s,x);
