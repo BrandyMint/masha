@@ -33,3 +33,9 @@ ru:
       messages:
         invalid_range: Дата окончания периода должна быть больше даты начала
         intersection: Период пересекается с другим
+  active_admin:
+    project: Проекты
+    time_shift: Время
+    membership: Membersips
+    authentications: Аутентификации
+    users: Пользователи

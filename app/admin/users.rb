@@ -1,5 +1,7 @@
 ActiveAdmin.register User do
 
+  menu :priority => 6, :label => proc{ I18n.t("active_admin.users") }
+
   index do
     column :avatar do |user|
       UserDecorator.decorate(user).avatar
@@ -7,7 +9,6 @@ ActiveAdmin.register User do
     column :name
     column :nickname
     column :email
-    column :pivotal_person_id
     column :is_root
     column :memberships do |user|
       ul do
