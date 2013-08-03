@@ -1,4 +1,7 @@
 ActiveAdmin.register Membership do
+
+  menu :priority => 5, :label => proc{ I18n.t("active_admin.membership") }
+  
   index do
     column :project, :sortable => :project_id
     column :user, :sortable => :user_id
