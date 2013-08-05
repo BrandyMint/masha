@@ -58,4 +58,8 @@ class ApplicationController < ActionController::Base
       raise NotLogged
     end
   end
+
+  def authenticate_admin!
+    redirect_to root_path unless current_user && current_user.is_root?
+  end
 end
