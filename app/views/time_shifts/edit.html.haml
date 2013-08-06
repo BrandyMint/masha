@@ -1,0 +1,12 @@
+.page-header
+  %h1 Ой, я что-то напутал. Нужно отредактировать!
+
+- if setable_projects_collection.empty?
+  .alert У вас нет доступных проектов для тайминга.
+- else
+  = render 'form'
+
+- if this_day_shifts.exists?
+  %hr
+  %h3= t '.today_shifts'
+  = render 'list', :time_shifts => this_day_shifts
