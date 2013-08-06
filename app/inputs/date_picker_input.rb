@@ -2,7 +2,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   enable :placeholder
 
   def input
-    input_html_options[:max] = Date.today
+    input_html_options[:max] = Date.today.end_of_week
     super << shortcuts
   end
 
@@ -22,7 +22,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
       arbre :today => t(:today), :yesterday => t(:yesterday) do
         ul :class => 'date-shortcuts' do
           li helpers.link_to( yesterday, '#', :role => 'date-shortcut', :data => {:value => Date.yesterday.to_s } )
-          li helpers.link_to( today, '#', :role => 'date-shortcut', :data => {:value => Date.today.to_s } )
+          li helpers.link_to( today,     '#', :role => 'date-shortcut', :data => {:value => Date.today.to_s } )
         end
       end
     when :date_from
