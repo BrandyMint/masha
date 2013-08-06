@@ -65,7 +65,7 @@ describe TimeShiftsController do
 		describe "#edit" do
 			it "should render new" do
 				get :edit, :id => @time_shift.id
-				response.should render_template('new')
+				response.should render_template('edit')
 			end
 		end
 
