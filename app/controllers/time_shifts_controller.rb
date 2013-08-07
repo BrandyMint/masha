@@ -37,7 +37,6 @@ class TimeShiftsController < ApplicationController
   def edit
     @time_shift = TimeShift.find params[:id]
     authorize_action_for(@time_shift)
-    render :new
   end
 
   def show

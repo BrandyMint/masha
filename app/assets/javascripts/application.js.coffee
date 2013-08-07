@@ -49,3 +49,11 @@ $ ->
       input.attr "type", "text"
 
   return
+
+$ ->
+  $("#session_form_email").data "holder", $("#session_form_email").attr("placeholder")
+  $("#session_form_email").focusin ->
+    $(this).attr "placeholder", ""
+
+  $("#session_form_email").focusout ->
+    $(this).attr "placeholder", $(this).data("holder")
