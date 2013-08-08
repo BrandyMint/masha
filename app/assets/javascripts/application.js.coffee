@@ -1,8 +1,6 @@
 #= require jquery
 #= require jquery.role
 #= require jquery_ujs
-#= require jquery.turbolinks
-#= require turbolinks
 #= require bootstrap
 #= require jquery-autosize/jquery.autosize-min.js
 #= require_tree .
