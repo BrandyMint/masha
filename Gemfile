@@ -94,12 +94,12 @@ gem 'kaminari-bootstrap'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-turbolinks'
+#gem 'jquery-turbolinks'
 
 #gem 'nilify_blanks', :git => 'git://github.com/rubiety/nilify_blanks.git'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+#gem 'turbolinks'
 gem 'haml-rails'
 
 gem 'bootstrap-sass' #, 'git://github.com/thomas-mcdonald/bootstrap-sass.git'
