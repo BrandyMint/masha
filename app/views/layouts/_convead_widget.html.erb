@@ -15,7 +15,7 @@
     <% end %>
 
     visit: {
-      project_id: <%= raw @project.try(:id).to_json >,
+      project_id: <%= raw @project.try(:id).to_json %>,
       time_shift: <%= raw @time_shift.to_json %>
     },
 
