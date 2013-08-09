@@ -2,17 +2,24 @@
   window.ICRM_Settings = {
 
     <% if current_user %>
-      email:      <%= raw current_user.email.to_json           %>,
-      first_name: <%= raw current_user.name.to_json            %>,
-      user_hash:  <%= raw current_user.id.to_json              %>,
-      created_at: <%= raw current_user.created_at.to_i.to_json %>,
+        person: {
+          email:      <%= raw current_user.email.to_json           %>,
+          first_name: <%= raw current_user.name.to_json            %>,
+          user_hash:  <%= raw current_user.id.to_json              %>,
+          created_at: <%= raw current_user.created_at.to_i.to_json %>,
 
-      // Custom properties
-      pivotal_person_id: <%= raw current_user.pivotal_person_id.to_json %>,
-      nickname:          <%= raw current_user.nickname.to_json %>,
+          // Custom properties
+          pivotal_person_id: <%= raw current_user.pivotal_person_id.to_json %>,
+          nickname:          <%= raw current_user.nickname.to_json %>
+      },
     <% end %>
 
-    widget:  true,
+    visit: {
+      project_id: <%= raw @project.try(:id).to_json >,
+      time_shift: <%= raw @time_shift.to_json %>
+    },
+
+    color:  'red',
     app_key: "9447b948d3fb9850bb4d82fc62b019e8d7689d99bb429c5e"
   };
 
