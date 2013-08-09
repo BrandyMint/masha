@@ -1,0 +1,16 @@
+ru:
+  titles:
+    welcome:
+      index: Welcome
+    users:
+      new: registration
+    sessions:
+      new: login
+    projects:
+      index: Projects
+    time_shifts:
+      index: Time shifts
+      new: Report time shift
+    profile:
+      edit: Edit profile
+

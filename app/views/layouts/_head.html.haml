@@ -1,4 +1,4 @@
-%title= content_for?(:title) ? yield(:title) : Settings.app.title
+%title= @page_title
 %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
 %meta{:content => content_for?(:description) ? yield(:description) : Settings.app.title, :name => "description"}
 = favicon_link_tag '/assets/favicon.ico'

@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   helper :all
 
+  before_filter :define_page_title
+
   rescue_from NotLogged, :with => :handle_not_authorized_error
 
   # TODO Тут нужно кидать на страницу где написано нет доступа
@@ -21,6 +23,10 @@ class ApplicationController < ActionController::Base
   #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   private 
+
+  def define_page_title
+    @page_title = Settings.app.title + ' - ' + t( action_name, :scope => [:titles, controller_name] )
+  end
 
   def handle_not_authorized_error
     show_login_form 401
