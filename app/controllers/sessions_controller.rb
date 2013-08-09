@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     user = login @session.email, @session.password, @session.remember_me
     
     if user
-      redirect_to projects_url
+      redirect_to time_shifts_url
     else
       flash.now.alert = t(:session_failed)
       render :new
