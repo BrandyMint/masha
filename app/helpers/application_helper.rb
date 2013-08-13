@@ -119,6 +119,14 @@ module ApplicationHelper
     buffer.html_safe
   end
 
+  def roles_select membership
+    if current_user.can_update?(membership)
+      render partial: 'memberships/roles', locals: {m: membership}
+    else
+      role_human membership.role
+    end
+  end
+
   def change_role_link user, project, role
     return # TODO
     active = user.has_role?(role, project)
