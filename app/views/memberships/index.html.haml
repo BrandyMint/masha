@@ -1,5 +1,8 @@
 %h1
   = @project.name
+  - if current_user.can_update?(@project)
+    = link_to edit_project_path(@project) do
+      - icon :edit
 - if current_user.can_create?(@project.memberships)
   = render 'form'
 %h3

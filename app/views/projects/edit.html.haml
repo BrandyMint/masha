@@ -1,4 +1,4 @@
 .page-header
   %h1= @project
 
-= render 'form'
+= render partial: 'form', locals: {method: :patch}
