@@ -17,7 +17,7 @@ Masha::Application.routes.draw do
   # Личный контроллер пользователя
   resource :profile, :controller => :profile
 
-  resources :projects, :only => [:index, :show, :create, :new] do
+  resources :projects, :only => [:index, :show, :create, :new, :edit, :update] do
     resources :memberships
   end
   resources :time_shifts

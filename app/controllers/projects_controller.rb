@@ -27,6 +27,21 @@ class ProjectsController < ApplicationController
     redirect_to new_time_shift_url(:time_shift => { :project_id => params[:id] })
   end
 
+  def edit
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    super
+  end
+
+  def update
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    @project.name = permited_params[:name]
+    @project.save
+
+    redirect_to project_memberships_url(@project)
+  end
+
   protected
 
   def collection
