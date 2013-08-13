@@ -1,8 +1,6 @@
 %h1
   = @project.name
-  - if current_user.can_update?(@project)
-    = link_to edit_project_path(@project) do
-      - icon :edit
+  = edit_project_link(@project)
 - if current_user.can_create?(@project.memberships)
   = render 'form'
 %h3
@@ -14,7 +12,7 @@
       %td
         = m.user
       %td
-        = role_human m.role
+        = roles_select m
       %td
         = d.remove_link
 

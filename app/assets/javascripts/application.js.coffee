@@ -55,3 +55,6 @@ $ ->
 
   $("#session_form_email").focusout ->
     $(this).attr "placeholder", $(this).data("holder")
+
+  $("@submit_on_change").on 'change', ->
+    $(this).parents('form').submit()

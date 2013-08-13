@@ -38,7 +38,20 @@ class MembershipsController < ApplicationController
 		redirect_to project_memberships_url(parent)
 	end
 
+	def update
+		@membership = Membership.find params[:id]
+		authorize_action_for(@membership)
+		@membership.role = membership_params[:role]
+		@membership.save!
+
+		redirect_to project_memberships_url(parent)
+	end
+
 	protected
+
+	def membership_params
+		params.require(:membership).permit(:role)
+	end
 
 	def invite_params
 		params.require(:invite).permit(:email, :role)
