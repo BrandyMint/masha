@@ -154,6 +154,6 @@ module ApplicationHelper
   end
 
   def supervisors_emails_of_project project
-    project.memberships.includes(:user).supervisors.map { |m| m.user.email }.compact
+    project.memberships.supervisors.subscribers.map { |m| m.user.email }.compact
   end
 end
