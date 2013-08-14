@@ -13,7 +13,7 @@ ru:
       # html: '<abbr title="required">*</abbr>'
     include_blank:
       hotel:
-        hotel_kind_id: 'Любой' 
+        hotel_kind_id: 'Любой'
 
     error_notification:
       default_message: "Обнаружены ошибки, пожалуйста, взгляните на них"
@@ -41,6 +41,7 @@ ru:
         title: Название
       user:
         name: Ваше полное имя
+        subscribed: Получать уведомления на email
         is_root: Супер-админ
     placeholders:
       defaults:

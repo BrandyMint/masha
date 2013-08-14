@@ -20,6 +20,6 @@ class ProfileController < ApplicationController
   private
 
   def permited_params
-    params.require(:user).permit(:name, :pivotal_person_id, :email)
+    params.require(:user).permit(:name, :pivotal_person_id, :email, :subscribed)
   end
 end
