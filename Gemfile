@@ -105,7 +105,7 @@ gem 'jquery-rails' #, '2.3.0'
 #gem 'turbolinks'
 gem 'haml-rails'
 
-gem 'bootstrap-sass' #, 'git://github.com/thomas-mcdonald/bootstrap-sass.git'
+gem 'bootstrap-sass', '3.0.0.0', :github => 'thomas-mcdonald/bootstrap-sass'
 gem 'compass-rails', '~> 2.0.alpha.0'
 
 #active admin

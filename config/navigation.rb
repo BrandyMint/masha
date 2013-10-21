@@ -31,7 +31,7 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :github, "#{ficon('github-circled', size: 20, v_align: :top)} github", '/auth/github'
     end
 
-    primary.dom_class = 'nav pull-right'
+    primary.dom_class = 'nav navbar-nav pull-right'
 
     # you can turn off auto highlighting for a specific level
     primary.auto_highlight = true
