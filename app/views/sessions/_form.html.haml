@@ -1,0 +1,10 @@
+- @session ||= SessionForm.new
+
+= simple_form_for @session, :url => sessions_path, :method => :create do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :email, label: false
+    = f.input :password, as: :eye_password, label: false
+    = f.input :remember_me, as: :boolean
+    %hr.small
+    = f.button :submit, 'Войти', :class => 'btn btn-primary'

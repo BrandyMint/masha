@@ -1,5 +1,10 @@
 .container
-  %p.text-center
-    = link_to 'https://github.com/BrandyMint/masha' do
-      &copy;
-      BrandyMint
+  .pull-left
+    = link_to root_url, :class => :brand do
+      = image_tag image_path('masha_logo.svg'), class: 'brand-logo', width: 32, height: 32
+      %span.brand-caption= Settings.app.title
+  .pull-right
+    Сделано в 
+    = link_to 'http://brandymint.ru', target: :blank do
+      = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
+  .clearfix

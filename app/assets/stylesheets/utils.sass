@@ -1,0 +1,91 @@
+.hoverable-container
+  .hoverable
+    visibility: hidden
+  &:hover
+    .hoverable
+      visibility: inherit
+  &.hoverable-show
+    .hoverable
+      visibility: visible
+    &:hover
+      .hoverable
+        visibility: visible
+  &.hoverable-hide
+    .hoverable
+      visibility: hidden
+    &:hover
+      .hoverable
+        visibility: hidden
+
+.hoverable-button-show
+  visibility: visible
+
+.hoverable-button-hide
+  visibility: hidden
+
+.clickable-block
+  cursor: pointer
+
+.no-margins
+  margin: 0
+
+hr.small
+  margin: 1em 0
+
+hr.mini
+  margin: 0.5em 0
+
+hr.light
+  border-color: lighten($hrBorder,3%)
+
+hr.no-shadow
+  border-bottom: 0
+
+.center-block
+  +center-block
+
+.user-select-none
+  +user-select(none)
+
+@each $margin in top, bottom, right, left
+  .no-margin-#{$margin}
+    margin-#{$margin}: 0
+
+
+@each $color in (green $green), (red $red), (blue $blue), (orange $orange)
+  .color-#{nth($color,1)}
+    color: nth($color,2)
+
+
+.show-grid 
+  [class*="col-"], [class*="span"]
+    padding-top: 10px
+    padding-bottom: 10px
+    background-color: #eee
+    border: 1px solid #ddd
+    background-color: rgba(185, 74, 72, 0.15)
+    border: 1px solid rgba(185, 74, 72, 0.2)
+
+//.table-hover
+  tbody
+    tr:hover > td
+      background: $rowHoverBackground
+
+.gray-link
+  +link-colors($textColor, $linkColorHover)
+
+.block-link
+  display: block
+  width: 100%
+  text-align: center
+
+.page-title-thin
+  font-weight: normal
+
+.gray-light-link
+  +link-colors($grayLight, darken($grayLight,10%))
+
+.tooltip
+  font-weight: normal
+
+

@@ -1,0 +1,40 @@
+[class*="fontello-icon-"], [class*=" fontello-icon-"]
+  &, &:before
+    //line-height: inherit
+    background: none
+    vertical-align: baseline
+    width: auto !important
+    height: auto
+
+.nav > .active > a > [class^="icon-"], 
+.nav > .active > a > [class*=" icon-"], 
+.dropdown-menu > li > a:hover > [class^="icon-"], 
+.dropdown-menu > li > a:hover > [class*=" icon-"], 
+.dropdown-menu > .active > a > [class^="icon-"], 
+.dropdown-menu > .active > a > [class*=" icon-"]
+  .navbar &, 
+  .sidebar &,
+  &[class*="fontello-icon-"],
+  &[class*=" fontello-icon-"]
+    background: none
+
+a:hover
+  [class^="fontello-icon-"]::before, [class*=" fontello-icon-"]::before
+    opacity: 1
+
+@each $size in 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 40, 48, 64, 128, 256, 512
+  .icon-size-#{$size}
+    font-size: #{$size}px
+    //min-width: #{$size}px
+
+@each $align in top, baseline, middle, bottom
+  .v-align-#{$align}
+    vertical-align: #{$align}
+
+//@each $color in (white $white, gray-lightest $grayLightest, gray-light $grayLight, gray $gray, gray-lighter $grayLighter, gray-dark $grayDark, gray-darkest $grayDarkest, green $green, red $red, orange $orange, blue $blue)
+  .icon-color-#{nth($color,1)}
+    color: nth($color,2)
+    &:hover
+      color: darken(nth($color,2),10%)
+
+

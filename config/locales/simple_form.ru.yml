@@ -47,7 +47,8 @@ ru:
       defaults:
         title: Название
         name: Имя
-        email: john@gmail.com
+        email: Email
+        password: Пароль
         hours: часов
         slug: Путь
         description: Спас мир

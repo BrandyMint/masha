@@ -1,4 +1,6 @@
-= link_to Settings.app.title, root_url, :class => :brand
+= link_to root_url, :class => :brand do
+  = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
+  %span.brand-caption= Settings.app.title
 
 -#= render_navigation :expand_all => true, :renderer => :bootstrap, :context => :admin
 = render_navigation :expand_all => true, :renderer => :bootstrap

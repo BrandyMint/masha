@@ -1,13 +1,16 @@
-.page-header
-  %h1 Регистрация
 .row
-  .span12
+  .span6.offset3
+    .page-header
+      %h1 Регистрация
     = simple_form_for @reg, :url => users_path do |f|
       = f.error_notification
       .form-inputs
-        = f.input :name, :require => true
-        = f.input :email, :require => true
-        = f.input :password, :require => true, :as => :eye_password
-      .form-actions
-        = f.button :submit, :class => 'btn btn-primary'
+        = f.input :name, :require => true, label: false
+        = f.input :email, :require => true, label: false
+        = f.input :password, :require => true, :as => :eye_password, label: false
+      %hr.small
+        = f.button :submit, t('helpers.submit.signup'), :class => 'btn btn-primary'
+      %hr
+      Уже есть аккаунт?
+      = link_to 'Войти', login_url
 

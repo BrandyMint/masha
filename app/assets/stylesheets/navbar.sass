@@ -1,0 +1,39 @@
+.navbar
+  .brand
+    font-size: 1.2em
+  .brand-caption
+    line-height: 32px
+    vertical-align: bottom
+  .brand-logo
+    margin-right: 8px
+    width: 32px
+    height: 32px
+  .navbar-inner
+    background: $grayDark
+    border: none
+    box-shadow: none
+  color: #fff
+  .brand
+    +link-colors(#fff)
+    -webkit-font-smoothing: antialiased
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2)
+    font-weight: bold
+  .nav
+    & > li
+      & > a
+        padding: 16px 15px
+        +link-colors(#fff, rgba(255,255,255,0.7))
+        -webkit-font-smoothing: antialiased
+        text-shadow: 0 1px 0 rgba(0,0,0,0.2)
+      &.active, &.dropdown.active, &.dropdown.open, &.dropdown.open.active
+        & > a
+          &, &.active, &.dropdown-toggle
+            background: darken($grayDark, 20%)
+            +link-colors(#fff, rgba(255,255,255,0.7))
+          
+
+
+.welcome-navbar.navbar
+  .navbar-inner
+    background: none
+
