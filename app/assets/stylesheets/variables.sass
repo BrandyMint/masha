@@ -1,0 +1,61 @@
+@charset "UTF-8"
+$gray: rgb(100,100,100)
+$grayLight: lighten($gray,30%)
+$grayLighter: lighten($gray,40%)
+$grayLightest: lighten($gray,50%)
+$grayLightestBackground: lighten($grayLightest,5%)
+$grayDark: darken($gray,10%)
+$grayDarker: darken($gray,20%)
+$grayDarkest: rgb(20,20,20)
+
+$greenLight: rgba(143,200,0,1)
+$greenDark: rgba(115,160,0,1)
+$greenLightTransparent: rgba(143,200,0,0.75)
+
+$blue: #08c
+$blueBrandColor: #1A94C4
+$white: #fff
+$black: #000
+$red: #E65151
+$green: #44ff67
+$orange: #ffae00
+
+$purple: rgb(158, 0, 93)
+
+$blueMuted: adjust-hue(saturate(darken($white,50%),30%), 200%)
+
+$textColor: $grayDark
+$textColorDark: $grayDarker
+
+
+// bootstrap migrating from 2.3.2 to 3.0.0
+$linkColor: $link-color
+$linkColorHover: $link-hover-color
+
+$baseFontSize: $font-size-base
+
+$bodyBackground: #fff
+
+$headingsColor: $textColor
+$headingsFontWeight: bold
+
+
+$navbarBackgroundColor: darken($grayDark, 10%)
+
+$navbarBackgroundTop: $navbarBackgroundColor
+$navbarBackgroundBottom: darken($navbarBackgroundTop,10%)
+
+$navbarText: lighten($textColor,20%)
+$navbarTextShadowColor: rgba(0,0,0,0.3)
+$navbarLinkColor: #ddd
+$navbarLinkColorHover: lighten($blueBrandColor, 40%)
+$navbarLinkColorActive: #fff
+//$navbarLinkBackgroundHover: rgba(lighten($navbarBackgroundColor,10%),.5)
+$navbarLinkBackgroundHover: transparent
+$navbarLinkBackgroundActive: rgba(0,0,0,0.25)
+
+$btnPrimaryBackground: $blue
+$btnPrimaryBackgroundHighlight: adjust-hue($btnPrimaryBackground, 10%)
+
+$hrBorder: #dddddd
+$rowHoverBackground:  hsl(200,100%,95%)

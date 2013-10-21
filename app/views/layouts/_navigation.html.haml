@@ -1,6 +1,14 @@
-= link_to root_url, :class => :brand do
+= link_to root_url, :class => 'brand pull-left' do
   = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
   %span.brand-caption= Settings.app.title
 
+%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+  = ficon('menu-1', color: 'white', size: 24)
+
+.navbar-collapse.collapse
+  = render_navigation :expand_all => true, :renderer => :bootstrap
+  .clearfix
+
+
 -#= render_navigation :expand_all => true, :renderer => :bootstrap, :context => :admin
-= render_navigation :expand_all => true, :renderer => :bootstrap
+
