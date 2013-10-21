@@ -2,7 +2,7 @@
 #= require jquery.role
 #= require jquery_ujs
 #= require bootstrap
-#= require jquery-autosize/jquery.autosize-min.js
+#= require jquery.autosize-min.js
 #= require_tree .
 
 # require jquery.freetile
