@@ -24,6 +24,9 @@ gem 'russian'
 
 gem 'breadcrumbs_on_rails'
 
+# Управление версиями проекта
+gem 'semver2'
+
 # Авторизация и аутентификация
 gem 'omniauth'
 gem 'omniauth-github', :git => 'git://github.com/intridea/omniauth-github.git'
@@ -205,9 +208,6 @@ group :development do
 
   # rake и generator комманды в консоли
   gem 'commands'
-
-  # Управление версиями проекта
-  gem 'semver2'
 
   gem "hpricot", ">= 0.8.6"
   gem "ruby_parser", ">= 2.3.1"
