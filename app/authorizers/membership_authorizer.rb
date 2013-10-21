@@ -5,7 +5,7 @@ class MembershipAuthorizer < ApplicationAuthorizer
 	end
 
 	def updatable_by? user
-    return false if user.has_role?(:owner, resource.project)
+    return false if user.has_role?(:owner, resource.project) && user == resource.user
 		has_permission? user
 	end
 
