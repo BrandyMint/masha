@@ -103,7 +103,7 @@ gem 'jquery-rails'
 gem 'haml-rails'
 
 gem 'bootstrap-sass' #, 'git://github.com/thomas-mcdonald/bootstrap-sass.git'
-gem 'compass-rails', git: "git://github.com/milgner/compass-rails.git"
+gem 'compass-rails', '~> 2.0.alpha.0'
 
 #active admin
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
