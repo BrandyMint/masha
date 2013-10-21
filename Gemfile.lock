@@ -80,14 +80,6 @@ GIT
       actionpack (>= 3.0)
 
 GIT
-  remote: git://github.com/milgner/compass-rails.git
-  revision: 1749c06f15dc4b058427e7969810457213647fb8
-  ref: 1749c06f15dc4b058427e7969810457213647fb8
-  specs:
-    compass-rails (1.0.3)
-      compass (>= 0.12.2, < 0.14)
-
-GIT
   remote: git://github.com/pdf/simple-navigation-bootstrap.git
   revision: 865cfc5ad961dbf86ae8376199fca2f53a2a2f26
   specs:
@@ -222,7 +214,7 @@ GEM
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     choice (0.1.6)
-    chunky_png (1.2.8)
+    chunky_png (1.2.9)
     coderay (1.0.9)
     coffee-script (2.2.0)
       coffee-script-source
@@ -234,6 +226,8 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    compass-rails (2.0.alpha.0)
+      compass (>= 0.12.2, < 0.14)
     cucumber (1.3.4)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
@@ -655,7 +649,7 @@ DEPENDENCIES
   carrierwave
   coffee-rails!
   commands
-  compass-rails!
+  compass-rails (~> 2.0.alpha.0)
   cucumber-rails (>= 1.3.0)
   database_cleaner
   draper
