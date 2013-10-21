@@ -8,4 +8,8 @@ module ProjectsHelper
 		end
 	end
 
+  def projects_link
+    link_to '&larr; список проектов'.html_safe, projects_url
+  end
+
 end
