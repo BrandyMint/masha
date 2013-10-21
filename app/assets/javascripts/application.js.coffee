@@ -1,10 +1,10 @@
 #= require jquery
-#= require jquery.role
 #= require jquery_ujs
+#= require jquery.role
 #= require bootstrap
-#= require jquery.autosize-min.js
-#= require_tree .
+#= require jquery-autosize/jquery.autosize
 
+# require_tree .
 # require jquery.freetile
 # require jquery_ujs
 # require jquery-ui
@@ -16,7 +16,7 @@
 # require jquery.ui.all
 
 $ ->
-  $('@tooltip').tooltip()
+  $('[role=tooltip]').tooltip()
   # $('@freetile').freetile()
   # $('@ui-date-picker').datepicker()
   # $('@ui-datetime-picker').datetimepicker()
@@ -24,18 +24,18 @@ $ ->
   # $('@select2').select2
   #  width: 'element'
 
-  $('@j-autosize').autosize()
+  $('[role=autosize]').autosize()
 
-  $('@date-shortcut').click (e) ->
+  $('[role=date-shortcut]').click (e) ->
     $('#time_shift_date').val $(@).data('value')
     e.preventDefault()
 
-  $('@period-shortcut').click (e) ->
+  $('[role=period-shortcut]').click (e) ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     e.preventDefault()
 
-  $("@j-password-toggle").on "click", ->
+  $("[role=j-password-toggle]").on "click", ->
     icon = $(this).find("[class*='icon']")
     icon.toggleClass('icon-eye-open')
     icon.toggleClass('icon-eye-close')
@@ -46,9 +46,6 @@ $ ->
     else
       input.attr "type", "text"
 
-  return
-
-$ ->
   $("#session_form_email").data "holder", $("#session_form_email").attr("placeholder")
   $("#session_form_email").focusin ->
     $(this).attr "placeholder", ""
@@ -56,5 +53,7 @@ $ ->
   $("#session_form_email").focusout ->
     $(this).attr "placeholder", $(this).data("holder")
 
-  $("@submit_on_change").on 'change', ->
+  $("[role=submit_on_change]").on 'change', ->
     $(this).parents('form').submit()
+
+  return
