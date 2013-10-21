@@ -1,5 +1,5 @@
 
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 # Use unicorn as the app server
 gem 'unicorn'
 
