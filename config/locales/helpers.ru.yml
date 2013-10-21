@@ -5,6 +5,7 @@ ru:
     days: "%{count} дн."
     submit:
       create: Создать
+      signup: Зарегистрироваться
       update: Изменить
       time_shift:
         create: Записать

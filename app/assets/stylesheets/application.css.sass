@@ -1,19 +1,39 @@
 @charset "UTF-8"
 
+@import bootstrap
 @import compass/typography/links
 @import compass/typography/lists/horizontal-list
 @import compass/support
 @import compass/css3
+@import fontello/fontello
+@import fontello/fontello-codes
+@import fontello/fontello-ie7
+@import fontello/fontello-ie7-codes
+@import icons
+@import scaffolding
+@import utils
+
+@import navbar
 @import footer
+@import welcome
 
 // @import select2
 // @import mixins
-@import bootstrap
 // @import bootstrap-responsive
 // @import jquery.ui.core
 
 body
+  background: $grayDark
+
+.application-footer
+  background: $grayDark
+  color: #eee
+.application-footer
+  border: none
+
+.application-main-content
   padding-top: 60px
+  background: #fff
 
 .horizontal-list
   +horizontal-list

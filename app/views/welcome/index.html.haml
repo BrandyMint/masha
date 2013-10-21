@@ -1,4 +1,31 @@
-.row
-  .offset4.span4
-    %p.lead
-      Хороша Маша, да не Ваша.
+.welcome-content
+  .row
+    .offset3.span8
+      %h1.welcome-header
+        %strong Лёгкий учёт времени
+        %br
+        для команд и проектов
+      .welcome-start-button
+        = link_to 'Начать пользоваться', signup_url, class: 'btn btn-welcome btn-block'
+        %p.welcome-button-caption
+          Абсолютно бесплатно. Навсегда.
+  .welcome-description
+    .row
+      .span1
+        = image_tag 'clock-icon.svg', width: 55, height: 55
+      .span4
+        %strong
+          Простой тайм–менеджмент
+        %p
+          поможет вам с анализом выполненных
+          задач и оценкой новых
+      .span1.offset2
+        = image_tag 'gantt-icon.svg', width: 72, height: 55
+      .span4
+        %strong
+          Интеграция
+        %p
+          с современными системами проект-
+          %br
+          менеджмента — Pivotal Tracker и Github
+

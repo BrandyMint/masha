@@ -26,9 +26,9 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     else
       primary.item :login, 'Вход', '/login'
-      primary.item :signup, 'Регистрация', '/signup'
+      #primary.item :signup, 'Регистрация', '/signup'
       primary.item :developer, 'developer', '/auth/developer' if Rails.env.development?
-      primary.item :github, 'github', '/auth/github'
+      primary.item :github, "#{ficon('github-circled', size: 20, v_align: :top)} github", '/auth/github'
     end
 
     primary.dom_class = 'nav pull-right'

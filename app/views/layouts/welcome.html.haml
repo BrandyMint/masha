@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    = render 'layouts/head'
+  %body{:class => "#{controller_name} #{action_name}"}
+    .welcome-container
+
+      %header.navbar.navbar-static-top.welcome-navbar
+        %nav.navbar-inner
+          .container
+            = render 'layouts/navigation'
+      .container
+        = yield
+      %footer.application-footer.footer= render 'layouts/footer'
+    = render 'layouts/convead_widget'
