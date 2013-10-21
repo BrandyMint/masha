@@ -1,0 +1,23 @@
+= render 'time_sheet_form'
+
+%h3 Сводная таблица
+%table.table
+  %thead
+    %tr
+      %th &nbsp;
+      - @summary.projects.each do |p|
+        %th= p
+      %th Всего
+
+  %tbody
+    - @summary.days.each do |d|
+      %tr
+        %th= human_date d[:date]
+        - @summary.projects.each do |project|
+          %td
+            = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
+              = human_hours d[:projects][project.id]
+        %td
+          %b
+            = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
+              = human_hours @summary.total_by_date[d[:date]]

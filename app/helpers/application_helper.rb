@@ -40,11 +40,20 @@ module ApplicationHelper
     content_tag :span, count, options
   end
 
+  def human_date date
+    str = I18n.l(date)
+    wd = date.strftime '%a'
+    str << " <span class='muted'>(#{wd})</span>"
+
+    return str.html_safe
+  end
+
   def grouping_collection
     [['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
   end
 
   def human_hours value
+    return '-' if value.nil?
     str = Russian::pluralize value, 'час', 'часа', 'часов', 'часа'
     value = value.to_i if value.to_i == value
     "#{value} #{str}"

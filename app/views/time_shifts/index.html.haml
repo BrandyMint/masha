@@ -1,7 +1,4 @@
-- if viewable_projects_collection.empty?
-  .alert У вас нет доступных проектов для тайминга.
-- else
-  = render 'time_sheet_form'
+= render 'time_sheet_form'
 
 - @groups.each do |g|
   %h2
