@@ -120,7 +120,7 @@ module ApplicationHelper
   end
 
   def roles_select membership
-    if current_user.can_update?(membership)
+    if current_user.can_update? membership
       render partial: 'memberships/roles', locals: {m: membership}
     else
       role_human membership.role

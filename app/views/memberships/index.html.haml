@@ -1,10 +1,11 @@
 %h1
   = @project.name
   = edit_project_link(@project)
-- if current_user.can_create?(@project.memberships)
+- if current_user.can_create?(Membership.new(project: @project))
   = render 'form'
-%h3
-  Участники:
+
+%h3 Участники:
+
 %table.table.table-condensed
   - @project.memberships.each do |m|
     - d = MembershipDecorator.decorate m
@@ -18,8 +19,7 @@
 
 - if @project.invites.present?
   %br/
-  %h3
-    Приглашенные:
+  %h3 Приглашенные:
   %table.table.table-condensed
     - @project.invites.each do |i|
       - d = InviteDecorator.decorate i

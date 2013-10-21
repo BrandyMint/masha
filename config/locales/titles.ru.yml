@@ -13,4 +13,6 @@ ru:
       new: Report time shift
     profile:
       edit: Edit profile
+    memberships:
+      index: Участники проекта
 

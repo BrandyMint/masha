@@ -1,4 +1,16 @@
-class ProjectAuthorizer < MembershipAuthorizer
+class ProjectAuthorizer < ApplicationAuthorizer
+
+  def creatable_by? user
+    has_permission? user
+  end
+
+  def updatable_by? user
+    has_permission? user
+  end
+
+  def deletable_by? user
+    updatable_by?(user) && resource.time_shits.empty?
+  end
 
 	protected
 
