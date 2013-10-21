@@ -15,8 +15,11 @@
         %th= human_date d[:date]
         - @summary.projects.each do |project|
           %td
-            = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
-              = human_hours d[:projects][project.id]
+            - if d[:projects][project.id].blank?
+              .muted= '-'
+            - else
+              = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
+                = human_hours d[:projects][project.id]
         %td
           %b
             = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do

@@ -1,5 +1,6 @@
 class TimeShiftsController < ApplicationController
   before_filter :require_login
+  inherit_resources
 
   def index
     if viewable_projects_collection.empty?
