@@ -166,4 +166,12 @@ module ApplicationHelper
   def supervisors_emails_of_project project
     project.memberships.supervisors.subscribers.map { |m| m.user.email }.compact
   end
+
+  def login_with_github welcome = nil
+    btn_class = welcome.present? ? "btn-welcome-github" : "btn-github"
+    link_to "#{root_url}auth/github", class: "#{btn_class}" do
+      ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'войти с github')
+    end
+  end
+
 end

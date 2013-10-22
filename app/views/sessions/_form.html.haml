@@ -2,9 +2,15 @@
 
 = simple_form_for @session, :url => sessions_path, :method => :create do |f|
   = f.error_notification
-  .form-inputs
-    = f.input :email, label: false
-    = f.input :password, as: :eye_password, label: false
-    = f.input :remember_me, as: :boolean
+  .form-group
+    = f.input :email, label: false, input_html: {class: 'form-control'}
+  .form-group
+    = f.input :password, as: :eye_password, label: false, input_html: {class: 'form-control'}
+  .form-group
+    .pull-left
+      = f.input :remember_me, as: :boolean, label: false
+    .pull-left
+      = f.label :remember_me, class: 'checkbox inline'
+    .clearfix
     %hr.small
-    = f.button :submit, 'Войти', :class => 'btn btn-primary'
+    = f.button :submit, 'Войти', :class => 'btn btn-primary btn-lg btn-block'

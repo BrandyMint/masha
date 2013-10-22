@@ -39,6 +39,7 @@ ru:
         hours: Затраченное время
         pivotal_person_id: ID пользователя с Pivotal Tracker
         title: Название
+        remember_me: Запомнить меня
       user:
         name: Ваше полное имя
         subscribed: Получать уведомления на email
