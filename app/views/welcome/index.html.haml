@@ -12,9 +12,7 @@
             %p.welcome-button-caption
               Абсолютно бесплатно. Навсегда.
         .col-sm-6.col-md-3
-          = link_to "#{root_url}auth/github", class: 'btn-welcome-github' do
-            = ficon('github-circled', size: 20, v_align: :middle)
-            = content_tag(:span, 'войти с github')
+          = login_with_github :welcome
   .welcome-description
     .row
       .col-md-5.welcome-feature-block
