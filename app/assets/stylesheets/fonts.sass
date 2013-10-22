@@ -1,0 +1,94 @@
+@font-face
+  font-family: 'Liberation Sans'
+  src: url('LiberationSans-Bold-webfont.eot')
+  src: url('LiberationSans-Bold-webfont.eot?#iefix') format("embedded-opentype"), url('LiberationSans-Bold-webfont.woff') format("woff"), url('LiberationSans-Bold-webfont.ttf') format("truetype"), url('LiberationSans-Bold-webfont.svg#liberation_sansbold') format("svg")
+  font-weight: bold
+  font-style: normal
+@font-face
+  font-family: 'Liberation Sans'
+  src: url('LiberationSans-BoldItalic-webfont.eot')
+  src: url('LiberationSans-BoldItalic-webfont.eot?#iefix') format("embedded-opentype"), url('LiberationSans-BoldItalic-webfont.woff') format("woff"), url('LiberationSans-BoldItalic-webfont.ttf') format("truetype"), url('LiberationSans-BoldItalic-webfont.svg#liberation_sansbold_italic') format("svg")
+  font-weight: bold
+  font-style: italic
+@font-face
+  font-family: 'Liberation Sans'
+  src: url('LiberationSans-Italic-webfont.eot')
+  src: url('LiberationSans-Italic-webfont.eot?#iefix') format("embedded-opentype"), url('LiberationSans-Italic-webfont.woff') format("woff"), url('LiberationSans-Italic-webfont.ttf') format("truetype"), url('LiberationSans-Italic-webfont.svg#liberation_sansitalic') format("svg")
+  font-weight: normal
+  font-style: italic
+@font-face
+  font-family: 'Liberation Sans'
+  src: url('LiberationSans-Regular-webfont.eot')
+  src: url('LiberationSans-Regular-webfont.eot?#iefix') format("embedded-opentype"), url('LiberationSans-Regular-webfont.woff') format("woff"), url('LiberationSans-Regular-webfont.ttf') format("truetype"), url('LiberationSans-Regular-webfont.svg#liberation_sansregular') format("svg")
+  font-weight: normal
+  font-style: normal
+
+$sansFontFamily: 'Liberation Sans', 'HelveticaNeue', 'Helvetica', Arial, sans-serif
+$baseFontFamily: $sansFontFamily
+
+$headingsFontFamily: $sansFontFamily
+
+$baseFontSize: 14px
+$baseLineHeight: 19px
+
+$rem: $baseFontSize
+
+$articleFontSize: $baseFontSize
+$articleFontWeight: normal
+$articleLineHeight: $baseLineHeight
+$smallFontSize: 12px
+$smallHeaderSize: 13px
+
+body, p, h1, h2, h3, h4, h5, h6
+  line-height: 1.3em
+  font-family: $baseFontFamily
+  font-size: $baseFontSize
+
+body, p
+  font-weight: 300
+
+//body, p
+  font-size: $baseFontSize
+
+textarea
+  font-size: $rem
+
+h1, h2, h3, h4, h5, h6
+  text-shadow: 0 1px 0 $white
+  font-weight: 700
+
+h1
+  font-size: $font-size-base * 3
+h2
+  font-size: $font-size-base * 2.5
+h3
+  font-size: $font-size-base * 2
+h4
+  font-size: $font-size-base * 1.5
+h5
+  font-size: $font-size-base * 1.2
+h6
+  font-size: $font-size-base * 0.9
+
+h1 small
+  font-size: $font-size-base * 1.5
+h2 small
+  font-size: $font-size-base * 1.2
+h3 small
+  font-size: $font-size-base
+h4 small
+  font-size: $font-size-base
+
+.navbar
+  font-family: $sansFontFamily
+
+h1, h2, h3, h4, h5, h6
+  strong
+    font-weight: 900
+
+@each $weight in (light 100, normal 300, medium 500, bold 700, black 900)
+  .font-weight-#{nth($weight,1)}
+    font-weight: nth($weight,2)
+
+
+
