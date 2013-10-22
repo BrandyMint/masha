@@ -25,14 +25,44 @@
   font-size: 1.3em
   padding: 0.7em
 .welcome-start-button
-  width: 250px
+  width: 280px
 .welcome-button-caption
   @extend small
   text-align: center
   opacity: 0.8
   margin-top: 0.5em
 
+.btn-welcome-github
+  @extend .btn-block
+  @extend .btn-welcome
+  width: auto
+  font-size: 1.1em
+  font-weight: 300
+  padding: 1.1em
+  +link-colors(rgba(#fff,0.8), #fff)
+  +transition(color 0.2s ease)
+  &, &:hover, &:focus
+    background: none
+    border: 0
+
 .welcome-description
   margin-top: 14em
   img
     opacity: 0.7
+
+.welcome-feature-icon-clock,
+.welcome-feature-icon-gantt
+  width: 100%
+  height: auto
+@media screen and (min-width: $screen-md)
+  .welcome-feature-icon-clock
+    width: 55px
+    height: 55px
+  .welcome-feature-icon-gantt
+    width: 72px
+    height: 55px
+ 
+
+
+.welcome-feature-block
+  margin-bottom: 2em
