@@ -1,7 +1,9 @@
 = simple_form_for @project, :method => method ||= :post do |f|
   = f.error_notification
-  .form-inputs
-    = f.input :name, :label => false, :require => true
-  .form-actions
-    = f.button :submit, :class => 'btn btn-primary'
+  .row
+    .col-lg-6.col-xs-12
+      .row
+        .col-lg-8
+          = f.input :name, :label => false, :require => true, input_html: {class: 'form-control'}
+        = f.button :submit, :class => 'btn btn-primary col-lg-4'
 
