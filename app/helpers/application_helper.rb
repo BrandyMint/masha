@@ -49,7 +49,8 @@ module ApplicationHelper
   end
 
   def grouping_collection
-    [['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
+    #[['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
+    [[t("simple_form.labels.group.none"),'']] + TimeSheetForm::GROUP_BY.map { |g| [t("simple_form.labels.group.#{g}"),g] }
   end
 
   def human_hours value
