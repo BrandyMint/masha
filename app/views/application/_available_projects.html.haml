@@ -6,14 +6,11 @@
 - if user.projects.empty?
   .alert Нет доступных проектов.
 - else
-  %table.table.table-condensed
-    %tbody
-      - user.memberships.ordered_by_role.each do |m|
-        %tr
-          %th
-            = link_to m.project, project_memberships_url(m.project_id)
-          %td
-            %ul.horizontal-list
-              %li= role_human(m.role)
-              -# Membership.roles.each_key do |role|
-                -#change_role_link user, project, role
+  - user.memberships.ordered_by_role.each do |m|
+    = link_to project_memberships_url(m.project_id), class: 'projects-list-item' do
+      %span.projects-list-item-project
+        = m.project
+      %small.projects-list-item-role
+        = role_human(m.role)
+-# Membership.roles.each_key do |role|
+  -#change_role_link user, project, role
