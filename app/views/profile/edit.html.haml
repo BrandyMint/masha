@@ -5,9 +5,9 @@
 .row
   .col-lg-2
     = ud.avatar
-  .col-lg-4
+  .col-lg-3
     = render 'form'
-  .col-lg-4
+  .col-lg-4.col-lg-offset-1
     = render 'authentications', :user => @user
 %hr
 = render 'available_projects', :user => @user
