@@ -1,9 +1,10 @@
 = render 'time_sheet_form'
 
-- @groups.each do |g|
+- @result.result.each do |g|
   %h2
     = g[:title]
     %small
       = title_of_group_results g
+    = export_btn :xlsx, time_sheet_form: params[:time_sheet_form]
+    = export_btn :csv, time_sheet_form: params[:time_sheet_form]
   = render 'list', :time_shifts => g[:time_shifts]
-

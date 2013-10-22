@@ -1,0 +1,12 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: 'Summary report') do |sheet|
+  sheet.add_row ['Сводная таблица']
+  sheet.add_row [''] + @result.projects + ['Всего']
+  @result.days.each do |d|
+    row = [d[:date]]
+    @result.projects.each do |project|
+      row << (d[:projects][project.id].blank? ? '-' : d[:projects][project.id])
+    end
+    sheet.add_row row + [@result.total_by_date[d[:date]]]
+  end
+end

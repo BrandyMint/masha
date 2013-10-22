@@ -3,6 +3,9 @@ ru:
     people: "%{count} чел."
     years: "%{count} лет."
     days: "%{count} дн."
+    export:
+      xlsx: 'экспорт в xlsx'
+      csv: 'экспорт в csv'
     submit:
       create: Создать
       signup: Зарегистрироваться

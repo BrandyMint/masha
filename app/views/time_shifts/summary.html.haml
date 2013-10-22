@@ -1,19 +1,22 @@
 = render 'time_sheet_form'
 
-%h3 Сводная таблица
+%h3
+  Сводная таблица
+  = export_btn :xlsx
+  = export_btn :csv
 %table.table
   %thead
     %tr
       %th &nbsp;
-      - @summary.projects.each do |p|
+      - @result.projects.each do |p|
         %th= p
       %th Всего
 
   %tbody
-    - @summary.days.each do |d|
+    - @result.days.each do |d|
       %tr
         %th= human_date d[:date]
-        - @summary.projects.each do |project|
+        - @result.projects.each do |project|
           %td
             - if d[:projects][project.id].blank?
               .muted= '-'
@@ -23,4 +26,4 @@
         %td
           %b
             = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
-              = human_hours @summary.total_by_date[d[:date]]
+              = human_hours @result.total_by_date[d[:date]]
