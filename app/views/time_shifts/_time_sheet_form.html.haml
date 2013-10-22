@@ -1,22 +1,47 @@
 = simple_form_for @time_sheet_form, :url => time_shifts_url,
-  :method => :get, :html => { :class => 'form-horizontal' } do |f|
+  :method => :get, :html => { :class => 'time-sheet-form form-horizontal' } do |f|
   = f.error_notification
   .form-inputs
     .row
-      .span10
-        = f.input :date_from, :as => :date_picker
-        = f.input :date_to, :as => :date_picker
-    .row
-      .span5
-        = f.input :project_id, :collection => viewable_projects_collection, :include_blank => 'Любой'
-      .span5
-        = f.input :user_id, :collection => available_users_to_view_collection, :include_blank => 'Любой'
-    .row
-      .span8
-        = f.input :group_by, :collection => grouping_collection,  as: :radio_buttons, :item_wrapper_class => 'inline'
-  .form-actions
-    = button_tag type: 'submit', class: 'btn btn-success',
-      :data => { 'disable-with' => t(:sending, :scope => [:simple_form, :button, :disable_with])} do
-      = icon :tasks, :white
-      = t :create, :scope => [:helpers, :submit, :time_sheet_form]
-    = f.button :button, 'Сбросить', :type=>:reset, :class => 'pull-right'
+      .col-md-4.col-md-offset-2.col-sm-4
+        .form-group
+          = f.label :date_from, class: 'col-sm-2'
+          .col-sm-10
+            = f.input :date_from, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
+        .form-group
+          = f.label :date_to, class: 'col-sm-2'
+          .col-sm-10
+            = f.input :date_to, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
+      .col-md-2.col-md-offset-1.col-sm-4
+        .form-group
+          .col-xs-12
+            = f.input :project_id, :collection => viewable_projects_collection, 
+              :include_blank => t('simple_form.labels.project.any_project_id'), label: false, input_html: {class: 'form-control input-sm'}
+        .form-group
+          .col-xs-12
+            = f.input :user_id, :collection => available_users_to_view_collection, 
+              :include_blank => t('simple_form.labels.user.any_user_id'), label: false, input_html: {class: 'form-control input-sm'}
+
+      -#.col-md-4
+        .form-group
+          = f.label :project_id, class: 'col-md-4'
+          = f.input :project_id, :collection => viewable_projects_collection, :include_blank => 'Любой', label: false, input_html: {class: 'col-md-6'}
+        .form-group
+          = f.label :user_id, class: 'col-md-4'
+          = f.input :user_id, :collection => available_users_to_view_collection, :include_blank => 'Любой', label: false, input_html: {class: 'col-md-6'}
+      .col-md-2.col-md-offset-1.col-sm-4.time-sheet-group-by
+        = f.input :group_by, :collection => grouping_collection,  as: :radio_buttons, :item_wrapper_class => 'inline', label: false
+    .form-actions
+      .row
+        .col-md-4.col-md-offset-2.col-sm-4
+          .row
+            .col-sm-10.col-sm-offset-2
+              = button_tag type: 'submit', class: 'btn btn-success btn-lg btn-block',
+                :data => { 'disable-with' => t(:sending, :scope => [:simple_form, :button, :disable_with])} do
+                = icon :tasks, :white
+                = t :create, :scope => [:helpers, :submit, :time_sheet_form]
+        .col-md-6.col-sm-8
+          = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
+            %small.muted Сбросить фильтры
+          .clearfix
+%hr

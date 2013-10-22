@@ -1,14 +1,34 @@
 = simple_form_for @time_shift, :html => { :class => 'form-horizontal' } do |f|
   = f.error_notification
   .form-inputs
-    = f.input :date, :as => :date_picker
-    = f.association :project, :include_blank => false, :collection => setable_projects_collection
-    -# = f.association :user, :include_blank => false, :collection => available_users_to_set_collection
-    = f.input :hours, :input_html => { :autofocus => :autofocus, :min => 0.1, :max => 24 }
-    = f.input :description, :input_html => { :class => 'span8', :role => 'autosize' }
-  .form-actions
-    = button_tag type: 'submit', class: 'btn btn-primary',
-      :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
-      = icon :ok, :white
-      = t :create, :scope => [:helpers, :submit, :time_shift]
-    = f.button :button, 'Сбросить', :type=>:reset, :class => 'pull-right'
+    .row
+      .col-md-8.col-sm-offset-3.col-sm-6
+        .form-group
+          = f.label :date, class: 'time-shift-form-label'
+          .time-shift-form-input
+            = f.input :date, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
+        .form-group
+          = f.label :project, class: 'time-shift-form-label'
+          .time-shift-form-input
+            = f.association :project, :include_blank => false, :collection => setable_projects_collection, label: false, input_html: {class: 'form-control input-sm'}
+          -# = f.association :user, :include_blank => false, :collection => available_users_to_set_collection
+        .form-group
+          = f.label :hours, class: 'time-shift-form-label'
+          .time-shift-form-input
+            = f.input :hours, :input_html => { :autofocus => :autofocus, :min => 0.1, :max => 24, class: 'form-control input-sm' }, label: false
+      .col-md-8.col-sm-offset-3.col-sm-6
+        .form-group
+          = f.label :description, class: 'time-shift-form-label'
+          .col-sm-8
+            = f.input :description, :input_html => { :role => 'autosize', class: 'form-control input-sm' }, label: false
+        .time-shift-form-button-submit
+          .form-group
+            = button_tag type: 'submit', class: 'btn btn-primary btn-lg btn-block',
+              :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
+              = icon :ok, :white
+              = t :create, :scope => [:helpers, :submit, :time_shift]
+        .time-shift-form-input.col-xs-12
+          .form-group
+            = f.button :button, :type=>:reset, :class => 'btn btn-link btn-lg pull-right' do
+              %small Сбросить
+            .clearfix
