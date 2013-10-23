@@ -177,6 +177,13 @@ GEM
       activesupport (>= 3.0.0)
       rake (>= 0.8.7)
     awesome_print (1.1.0)
+    axlsx (2.0.1)
+      htmlentities (~> 4.3.1)
+      nokogiri (>= 1.4.1)
+      rubyzip (~> 1.0.0)
+    axlsx_rails (0.1.5)
+      axlsx
+      rails (>= 3.1)
     bcrypt-ruby (3.0.1)
     better_errors (0.9.0)
       coderay (>= 1.0.0)
@@ -335,6 +342,7 @@ GEM
       json (>= 1.7.7)
       rainbow (>= 1.1.4)
     hpricot (0.8.6)
+    htmlentities (4.3.1)
     http_parser.rb (0.5.3)
     httpauth (0.2.0)
     i18n (0.6.5)
@@ -552,6 +560,7 @@ GEM
     ruby_gntp (0.3.4)
     ruby_parser (3.2.2)
       sexp_processor (~> 4.1)
+    rubyzip (1.0.0)
     russian (0.6.0)
       i18n (>= 0.5.0)
     sass (3.2.9)
@@ -640,6 +649,7 @@ DEPENDENCIES
   arbre
   authority
   awesome_print
+  axlsx_rails
   better_errors
   binding_of_caller
   bond

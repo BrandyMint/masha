@@ -39,6 +39,19 @@ class SummaryQuery
 
   end
 
+  def to_csv
+    CSV.generate(col_sep: ';') do |csv|
+      csv << ['date'] + @projects + ['total']
+      @days.each do |day|
+        row = [day[:date]]
+        @projects.each do |project|
+          row << (day[:projects][project.id].blank? ? '-' : day[:projects][project.id])
+        end
+        csv << row.push(@total_by_date[day[:date]])
+      end
+    end
+  end
+
   private
 
   def available_projects_ids

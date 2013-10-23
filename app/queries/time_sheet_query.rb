@@ -1,5 +1,5 @@
 class TimeSheetQuery
-  attr_accessor :tsf
+  attr_accessor :tsf, :result
 
   attr_accessor :available_projects, :available_users
 
@@ -42,13 +42,24 @@ class TimeSheetQuery
         hr[:max_date] = ts.date if hr[:max_date].blank? || hr[:max_date]>ts.date
       end
 
-      hash.values
+      @result = hash.values
     else
-      return [{ :title => 'Общее время',
+      @result = [{ :title => 'Общее время',
                 :time_shifts => scope,
                 :total => scope.sum(:hours),
                 :min_date => scope.minimum(:date),
                 :max_date => scope.maximum(:date) }]
+    end
+  end
+
+  def to_csv
+    CSV.generate(col_sep: ';') do |csv|
+      csv << ['date', 'hours', 'project', 'user', 'description']
+      @result.each do |group|
+        group[:time_shifts].each do |p|
+          csv << [p.date, p.hours, p.project, p.user, p.description]
+        end
+      end
     end
   end
 

@@ -65,6 +65,10 @@ module ApplicationHelper
     "#{human_hours(g[:total])}#{dates}"
   end
 
+  def export_btn format, options={}
+    link_to t(format, scope: [:helpers, :export]), url_for({ format: format }.merge(options)), class: 'btn btn-mini'
+  end
+
   def setable_projects_collection
     @spc ||= available_projects
   end

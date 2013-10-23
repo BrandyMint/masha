@@ -79,6 +79,7 @@ gem 'active_link_to'
 
 gem 'draper'
 gem 'arbre'
+gem 'axlsx_rails'
 #gem 'cells'
 #gem 'breadcrumbs_on_rails'
 #gem 'tabulous'
