@@ -60,10 +60,12 @@ class User < ActiveRecord::Base
   end
 
   def available_users
-    user_ids = memberships.viewable.map { |m| m.project.user_ids }.flatten
-    user_ids << self.id
+    @available_users ||= begin
+                           user_ids = memberships.viewable.map { |m| m.project.user_ids }.flatten
+                           user_ids << self.id
 
-    User.where :id => user_ids.uniq
+                           User.where :id => user_ids.uniq
+                         end
   end
 
 end

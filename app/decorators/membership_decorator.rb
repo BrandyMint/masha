@@ -1,9 +1,8 @@
 class MembershipDecorator < Draper::Decorator
   delegate_all
+  decorates_association :user
 
-  def name
-    "#{user.name} <span class='muted'>(#{user.email})</span>".html_safe
-  end
+  delegate :name, to: :user
 
   def remove_link
     if h.current_user.can_delete?(source)

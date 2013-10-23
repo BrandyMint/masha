@@ -1,6 +1,10 @@
 class UserDecorator < ApplicationDecorator
   delegate_all
 
+  def name
+    "#{source.name} <span class='text-muted'>(#{source.email})</span>".html_safe
+  end
+
   def avatar_url
     authentications.each do |a|
       image = a.auth_hash['info']['image']
