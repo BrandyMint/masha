@@ -38,7 +38,7 @@
             .col-sm-10.col-sm-offset-2
               = button_tag type: 'submit', class: 'btn btn-success btn-lg btn-block',
                 :data => { 'disable-with' => t(:sending, :scope => [:simple_form, :button, :disable_with])} do
-                = icon :tasks, :white
+                = ficon :tasks, :white
                 = t :create, :scope => [:helpers, :submit, :time_sheet_form]
         .col-md-6.col-sm-8
           = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do

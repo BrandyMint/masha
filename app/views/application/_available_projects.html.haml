@@ -4,7 +4,7 @@
 %h2 Доступные проекты
 
 - if user.projects.empty?
-  .alert Нет доступных проектов.
+  .alert.alert-warning Нет доступных проектов.
 - else
   %table.table
     - user.memberships.ordered_by_role.each do |m|

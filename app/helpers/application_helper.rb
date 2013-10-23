@@ -11,7 +11,7 @@ module ApplicationHelper
   end
 
   def submit_sheet_button
-    icon(:task)
+    ficon(:tasks)
   end
 
   def icon *classes

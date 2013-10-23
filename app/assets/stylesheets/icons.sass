@@ -31,7 +31,7 @@ a:hover
   .v-align-#{$align}
     vertical-align: #{$align}
 
-//@each $color in (white $white, gray-lightest $grayLightest, gray-light $grayLight, gray $gray, gray-lighter $grayLighter, gray-dark $grayDark, gray-darkest $grayDarkest, green $green, red $red, orange $orange, blue $blue)
+@each $color in (white $white, gray-lightest $grayLightest, gray-light $grayLight, gray $gray, gray-lighter $grayLighter, gray-dark $grayDark, gray-darkest $grayDarkest, green $green, red $red, orange $orange, blue $blue)
   .icon-color-#{nth($color,1)}
     color: nth($color,2)
     &:hover
