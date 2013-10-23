@@ -3,15 +3,14 @@
   %head
     = render 'layouts/head'
   %body{:class => "#{controller_name} #{action_name}"}
-    %header.navbar.navbar-fixed-top
-      %nav.navbar-inner
-        .container
-          = render 'layouts/navigation'
+    .navbar.application-navbar.navbar-fixed-top
+      .container
+        = render 'layouts/navigation'
     #main.application-main-content{:role => "main"}
       .container
         .content
           .row
-            .span12
+            .col-lg-12
               = render 'layouts/messages'
               = render_breadcrumbs :separator => ' / '
               = yield

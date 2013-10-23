@@ -3,11 +3,11 @@
 
 - ud = UserDecorator.decorate @user
 .row
-  .span2
+  .col-md-2.col-xs-3
     = ud.avatar
-  .span4
+  .col-md-4.col-xs-9
     = render 'form'
-  .span4
+  .col-md-5.col-md-offset-1
     = render 'authentications', :user => @user
 %hr
 = render 'available_projects', :user => @user

@@ -49,7 +49,8 @@ module ApplicationHelper
   end
 
   def grouping_collection
-    [['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
+    #[['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
+    [[t("simple_form.labels.group.none"),'']] + TimeSheetForm::GROUP_BY.map { |g| [t("simple_form.labels.group.#{g}"),g] }
   end
 
   def human_hours value
@@ -165,4 +166,12 @@ module ApplicationHelper
   def supervisors_emails_of_project project
     project.memberships.supervisors.subscribers.map { |m| m.user.email }.compact
   end
+
+  def login_with_github welcome = nil
+    btn_class = welcome.present? ? "btn-welcome-github" : "btn-github"
+    link_to "#{root_url}auth/github", class: "#{btn_class}" do
+      ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'войти с github')
+    end
+  end
+
 end

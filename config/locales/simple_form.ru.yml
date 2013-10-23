@@ -36,13 +36,22 @@ ru:
         project_id: Проект
         user_id: Исполнитель
         user: Исполнитель
-        hours: Потрачено время
-        pivotal_person_id: ID пользователя с пивотала
+        hours: Затраченное время
+        pivotal_person_id: ID пользователя с Pivotal Tracker
         title: Название
+        remember_me: Запомнить меня
       user:
         name: Ваше полное имя
         subscribed: Получать уведомления на email
         is_root: Супер-админ
+        any_user_id: Любой исполнитель
+      project:
+        any_project_id: Любой проект
+      group:
+        none: Не группировать
+        project: По проектам
+        person: По исполнителям
+
     placeholders:
       defaults:
         title: Название

@@ -128,6 +128,13 @@ GIT
       activesupport (>= 3.0)
       sprockets (~> 2.8)
 
+GIT
+  remote: git://github.com/thomas-mcdonald/bootstrap-sass.git
+  revision: 6cc04bda62ed7ccf71d445fa82e706cb696b4fdb
+  specs:
+    bootstrap-sass (3.0.0.0)
+      sass (~> 3.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -177,8 +184,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bond (0.4.3)
-    bootstrap-sass (2.3.2.0)
-      sass (~> 3.2)
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
@@ -638,7 +643,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bond
-  bootstrap-sass
+  bootstrap-sass (= 3.0.0.0)!
   breadcrumbs_on_rails
   cache_digests
   capistrano

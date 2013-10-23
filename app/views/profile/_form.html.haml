@@ -1,9 +1,15 @@
 = simple_form_for @user, :url => profile_path do |f|
   = f.error_notification
-  .form-inputs
-    = f.input :name
-    = f.input :email, :label => false
-    = f.input :subscribed
-    -#= f.input :pivotal_person_id
-  .form-actions
-    = f.button :submit, :class => 'btn btn-primary'
+  .form-group
+    = f.input :name, label: false, input_html: {class: 'form-control'}
+  .form-group
+    = f.input :email, label: false, input_html: {class: 'form-control'}
+  .form-group
+    .pull-left
+      = f.input :subscribed, label: false
+    .pull-left
+      = f.label :subscribed, class: 'checkbox'
+    .clearfix
+  -#= f.input :pivotal_person_id
+  .form-group
+    = f.button :submit, class: 'btn btn-primary btn-block'

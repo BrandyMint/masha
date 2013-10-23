@@ -1,39 +1,106 @@
 .navbar
+  color: $grayLightest
+  -webkit-font-smoothing: antialiased
+  a
+    +link-colors(#fff, rgba(#fff,0.7))
   .brand
     font-size: 1.2em
+    line-height: 2.7em
   .brand-caption
-    line-height: 32px
+    line-height: 2.3em
     vertical-align: bottom
   .brand-logo
     margin-right: 8px
     width: 32px
     height: 32px
-  .navbar-inner
-    background: $grayDark
-    border: none
-    box-shadow: none
-  color: #fff
-  .brand
-    +link-colors(#fff)
-    -webkit-font-smoothing: antialiased
-    text-shadow: 0 1px 0 rgba(0,0,0,0.2)
-    font-weight: bold
-  .nav
-    & > li
-      & > a
-        padding: 16px 15px
-        +link-colors(#fff, rgba(255,255,255,0.7))
-        -webkit-font-smoothing: antialiased
-        text-shadow: 0 1px 0 rgba(0,0,0,0.2)
-      &.active, &.dropdown.active, &.dropdown.open, &.dropdown.open.active
-        & > a
-          &, &.active, &.dropdown-toggle
-            background: darken($grayDark, 20%)
-            +link-colors(#fff, rgba(255,255,255,0.7))
-          
 
+.navbar-toggle
+  +link-colors(#fff, rgba(255,255,255,0.7))
+  -webkit-font-smoothing: antialiased
+  margin:
+    top: 3px
+    bottom: 3px
 
 .welcome-navbar.navbar
-  .navbar-inner
-    background: none
+  background: none
+  .nav.navbar-nav
+    & > li
+      & > a
+        color: #fff
+        font-weight: 700
+        -webkit-font-smoothing: antialiased
+        +transition(color 0.2s ease, background 0.2s ease)
+        background: none
+        &:hover
+          color: rgba(255,255,255,0.7)
+          background: none
+    @media screen and (max-width: $screen-sm)
+      margin: 0
+      width: 100%
+      background: rgba(#fff,0.2)
+      & > li
+        & > a
+          margin: 10px auto
+          padding: 10px
+          display: block
+          text-align: center
+  .navbar-collapse
+    @media screen and (max-width: $screen-sm)
+      padding: 0
+ 
+.navbar.application-navbar
+  @extend .navbar-inverse
+  background: $navbarBackgroundColor
+  border-bottom: 0
+  +transition(opacity 0.2s ease, height 0.2s ease)
+  opacity: 1
+  height: auto
+  overflow: visible
+  &.transparent
+    opacity: 0
+    height: 0
+    overflow: hidden
+
+  .navbar-toggle
+    border: 0
+
+  .nav.navbar-nav
+    & > li
+      & > a
+        color: $grayLightest
+        font-weight: 700
+        -webkit-font-smoothing: antialiased
+        +transition(color 0.2s ease, background 0.2s ease)
+        background: none
+        &:hover
+          color: rgba(255,255,255,0.7)
+          background: rgba(0,0,0,0.3)
+    @media screen and (max-width: $screen-sm)
+      margin: 0
+      width: 100%
+      & > li
+        & > a
+          margin: 10px auto
+          padding: 10px
+          display: block
+          text-align: center
+      .open
+        .dropdown-menu
+          background: darken($navbarBackgroundColor, 10%)
+          padding: 0
+          & > li
+            & > a
+              padding: 10px 0
+              text-align: center
+              text-transform: uppercase
+              letter-spacing: 1px
+              font-size: 0.85em
+  .navbar-collapse
+    padding: 0
+
+.navbar-brand-logo
+  max-width: 120px
+  margin-top: 12px
+
+
 
