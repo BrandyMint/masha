@@ -4,8 +4,8 @@ ru:
     years: "%{count} лет."
     days: "%{count} дн."
     export:
-      xlsx: 'экспорт в xlsx'
-      csv: 'экспорт в csv'
+      xlsx: 'xlsx'
+      csv: 'csv'
     submit:
       create: Создать
       signup: Зарегистрироваться

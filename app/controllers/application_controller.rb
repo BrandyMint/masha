@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
       # Иначе при не авторизованном запросе /posts/16370.pdf падает при поиске sessions/new.pdf
       # https://dapi.airbrake.io/errors/31803485
       #
-      #format.any { redirect_to no_access_url(:backurl=>current_url) }
+      format.any { redirect_to root_url }
     end
   end
 

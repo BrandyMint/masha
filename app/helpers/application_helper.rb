@@ -66,7 +66,7 @@ module ApplicationHelper
   end
 
   def export_btn format, options={}
-    link_to t(format, scope: [:helpers, :export]), url_for({ format: format }.merge(options)), class: 'btn btn-mini'
+    link_to t(format, scope: [:helpers, :export]), url_for({ format: format }.merge(options))
   end
 
   def setable_projects_collection
