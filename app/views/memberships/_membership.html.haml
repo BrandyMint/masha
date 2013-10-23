@@ -1,0 +1,9 @@
+- m = membership.decorate
+%tr
+  %td.col-xs-5
+    = m.name
+  %td.col-xs-5
+    = roles_select m
+  %td.col-xs-2
+    = m.remove_link
+

@@ -56,4 +56,7 @@ $ ->
   $("[role=submit_on_change]").on 'change', ->
     $(this).parents('form').submit()
 
+  $('@available-user').on 'ajax:success', (e, data, status, xhr) ->
+    $(e.target).parent('li').remove()
+
   return

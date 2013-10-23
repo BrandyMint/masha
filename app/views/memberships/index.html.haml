@@ -7,16 +7,8 @@
 
 %h3 Участники
 
-%table.table
-  - @project.memberships.each do |m|
-    - d = MembershipDecorator.decorate m
-    %tr
-      %td.col-xs-5
-        = d.name
-      %td.col-xs-5
-        = roles_select m
-      %td.col-xs-2
-        = d.remove_link
+%table.table{role: 'membership-table'}
+  = render partial: 'membership', collection: @project.memberships
 
 - if @project.invites.present?
   %h3 Приглашенные
@@ -30,3 +22,9 @@
           = role_human i.role
         %td.col-xs-2
           = d.remove_link
+
+%h3 Добавить участников
+%ul
+- current_user.users_available_for_project(@project).each do |u|
+  %li{role: 'available-user'}
+    = link_to u.name, project_memberships_url(@project, invite: {email: u.email, role: Membership::DEFAULT_ROLE}), method: :post, remote: true

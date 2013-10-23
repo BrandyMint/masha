@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 
   has_many :authentications, :dependent => :destroy
   has_many :memberships, :dependent => :destroy
+  has_many :available_users, through: :memberships, uniq: :true
 
   has_many :projects, :through => :memberships
   has_many :invites
@@ -64,13 +65,7 @@ class User < ActiveRecord::Base
     projects.ordered
   end
 
-  def available_users
-    @available_users ||= begin
-                           user_ids = memberships.viewable.map { |m| m.project.user_ids }.flatten
-                           user_ids << self.id
-
-                           User.where :id => user_ids.uniq
-                         end
+  def users_available_for_project project
+    available_users.to_a - project.users
   end
-
 end
