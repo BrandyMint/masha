@@ -6,7 +6,8 @@
       %th Имя
   %tbody
     - user.authentications.each do |a|
+      - a = AuthenticationDecorator.new(a)
       %tr
         %th= a.provider
-        %td= a.uid
+        %td= a.nickname
         %td= a.username
