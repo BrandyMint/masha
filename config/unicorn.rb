@@ -1,27 +1,21 @@
 rails_env = ENV['RACK_ENV'] || 'production'
-puts "Unicorn env: #{rails_env}"
+
+APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
+
+worker_processes 3
+working_directory APP_ROOT
+listen APP_ROOT + "/tmp/sockets/unicorn.sock"
+pid  APP_ROOT + "/tmp/pids/unicorn.pid"
+stderr_path APP_ROOT + "/log/unicorn.stderr.log"
+stdout_path APP_ROOT + "/log/unicorn.stdout.log"
 
 if rails_env=='production'
-  worker_processes 3
-  APP_PATH = ENV['APP_PATH'] || '/home/wwwmasha/masha.brandymint.ru/'
-  working_directory APP_PATH + "current"
-
-  listen APP_PATH + "shared/pids/unicorn.sock"
-  pid APP_PATH + "shared/pids/unicorn.pid"
-  stderr_path APP_PATH + "shared/log/unicorn.stderr.log"
-  stdout_path APP_PATH + "shared/log/unicorn.stdout.log"
-else
-  APP_PATH = ENV['APP_PATH'] || '/home/wwwmasha/masha.icfdev.ru/'
-  stderr_path "log/unicorn.stderr.log"
-  stdout_path "log/unicorn.stdout.log"
-  pid "tmp/unicorn.pid"
-
-  listen 4000, :tcp_nopush => true
+    worker_processes 10
 end
 
 # Helps ensure the correct unicorn binary is used when upgrading with USR2
 # # See http://unicorn.bogomips.org/Sandbox.html
-Unicorn::HttpServer::START_CTX[0] = "#{APP_PATH}current/bin/unicorn"
+Unicorn::HttpServer::START_CTX[0] = APP_ROOT + "/bin/unicorn"
 
 timeout 60
 preload_app true
@@ -41,20 +35,6 @@ end
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
-
-  # Incremental kill-off
-  #old_pid = "#{server.config[:pid]}.oldbin"
-  #if old_pid != server.pid
-  #  begin
-  #    sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
-  #    puts "Sending #{sig} signal to old unicorn master..."
-  #    Process.kill(sig, File.read(old_pid).to_i)
-  #  rescue Errno::ENOENT, Errno::ESRCH
-  #  end
-  #end
-
-  # Throttle the master from forking too quickly (for incremental kill-off only)
-  #sleep 1
 end
 
 after_fork do |server, worker|
@@ -64,4 +44,3 @@ after_fork do |server, worker|
   child_pid = server.config[:pid].sub('.pid', ".#{worker.nr}.pid")
   system("echo #{Process.pid} > #{child_pid}")
 end
-
