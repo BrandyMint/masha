@@ -165,8 +165,6 @@ group :development do
   gem 'rails-erd'
   #gem 'ruby-prof'
   #gem 'rspec-prof'
-  # HolePicker is a Ruby gem for quickly checking all your Gemfile.lock files for gem versions with known vulnerabilities.
-  gem 'holepicker', :require => false
 
   # Альтернативный https://github.com/dsci/vendorer-rails
   #gem 'vendorer'
@@ -211,10 +209,6 @@ group :development do
 
   gem "hpricot", ">= 0.8.6"
   gem "ruby_parser", ">= 2.3.1"
-
-  gem 'capistrano'
-  gem 'capistrano-rbenv'
-  gem 'capistrano-recipes0', '>= 1.1.0', :git => 'git://github.com/BrandyMint/capistrano-recipes0.git'
 
   gem "better_errors"
   gem "binding_of_caller"
@@ -268,4 +262,12 @@ group :test do
   gem "launchy", ">= 2.1.2"
   gem 'turn', :require => false
   #gem "test_active_admin", :git => "git://github.com/BrandyMint/test_active_admin.git"
+end
+
+group :deploy do
+  gem 'capistrano',  "~> 2.15", :require => false
+  gem 'capistrano-rbenv', :require => false
+  gem 'capistrano-recipes0', '>= 1.1.0', :git => 'git://github.com/BrandyMint/capistrano-recipes0.git', :require => false
+  gem 'holepicker', :require => false
+  gem 'airbrake', :github => 'airbrake/airbrake', :require => false
 end

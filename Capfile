@@ -1,6 +1,5 @@
-require "bundler/setup"
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:deploy)
 load 'deploy'
-# Uncomment if you are using Rails' asset pipeline
-#load 'deploy/assets'
 load 'config/capdeploy' # remove this line to skip loading any of the default tasks
-

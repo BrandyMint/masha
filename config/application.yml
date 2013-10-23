@@ -1,10 +1,10 @@
 defaults: &defaults
   app:
     title: Маша
-    asset_host: http://masha.brandymint.ru/
+    asset_host: http://mashtime.ru/
 
     default_url_options: &default_url_options
-      host: masha.brandymint.ru
+      host: mashtime.ru
       port: 80
 
   action_mailer: &action_mailer
@@ -12,11 +12,11 @@ defaults: &defaults
     default_url_options:
       <<: *default_url_options
     default_options:
-      from: 'masha@brandymint.ru'
+      from: 'masha@mashtime.ru'
 
   mailer_defaults:
-    from: 'masha@brandymint.ru'
-    host: masha.brandymint.ru
+    from: 'masha@mashtime.ru'
+    host: mashtime.ru
 
   convead_widget_url: "http://widget.icrm.icfdev.ru/assets/v1.js"
 
@@ -46,5 +46,5 @@ test:
 production:
   <<: *defaults
 
-stage:
+staging:
   <<: *defaults
