@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   # validates :password, :confirmation => true
   # validates :password, :presence => true, :on => :create
 
+  # Пользователь репортер больше чем овнер?
+  def reporter?
+    # TODO настраивать в профиле
+    memberships.members.count > memberships.count/2
+  end
 
   def to_s
     name

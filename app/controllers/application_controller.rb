@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception if Rails.env.production?
 
-  helper_method :current_user, :logged_in?, :admin_namespace?
+  helper_method :current_user, :logged_in?, :admin_namespace?, :home_url
 
   helper :all
 
@@ -23,6 +23,18 @@ class ApplicationController < ActionController::Base
   #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   private 
+
+  def home_url
+    if current_user.present?
+      if current_user.reporter?
+        new_time_shift_url
+      else
+        time_shifts_url
+      end
+    else
+      root_url
+    end
+  end
 
   def define_page_title
     @page_title = Settings.app.title + ' - ' + t( action_name, :scope => [:titles, controller_name] )

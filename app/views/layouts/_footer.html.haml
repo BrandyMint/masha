@@ -1,8 +1,9 @@
 .container
   .pull-left
-    = link_to root_url, :class => :brand do
+    = link_to home_url, :class => :brand do
       = image_tag image_path('masha_logo.svg'), class: 'brand-logo', width: 32, height: 32
-      %span.brand-caption= Settings.app.title
+      %span.brand-caption
+        = Settings.app.title
   .pull-right
     Сделано в 
     = link_to 'http://brandymint.ru', target: :blank do
@@ -10,5 +11,11 @@
   .pull-right
     = link_to 'Обратная связь', feedback_url
   .clearfix
+
+%br
+
+.container
+  .pull-left
+    %small.text-muted= Masha.version
 
 = render 'analytics'
