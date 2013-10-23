@@ -2,7 +2,7 @@
   %h1 Ой, я что-то напутал. Нужно отредактировать!
 
 - if setable_projects_collection.empty?
-  .alert У вас нет доступных проектов для тайминга.
+  .alert.alert-warning У вас нет доступных проектов для тайминга.
 - else
   = render 'form'
 
