@@ -8,4 +8,13 @@ class TimeSheetForm < FormObjectBase
   property :user_id
   property :group_by
 
+  def initialize args
+    super args
+
+    # Swap dates
+    if self.date_to.present? && self.date_from.present? && Date.parse(self.date_to)<Date.parse(self.date_from)
+      self.date_to, self.date_from = self.date_from, self.date_to
+    end
+  end
+
 end
