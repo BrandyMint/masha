@@ -1,18 +1,20 @@
 ru:
   titles:
     welcome:
-      index: Welcome
+      index: Привет!
     users:
-      new: registration
+      new: регистрация
     sessions:
-      new: login
+      new: вход
     projects:
-      index: Projects
+      index: Проекты
     time_shifts:
-      index: Time shifts
-      new: Report time shift
+      index: Временные отметки
+      new: Отчет
     profile:
-      edit: Edit profile
+      edit: Профиль
     memberships:
       index: Участники проекта
+    pages:
+      feedback: Обратная связь
 
