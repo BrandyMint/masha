@@ -16,4 +16,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    @user = User.find params[:id]
+    authorize_action_for @user
+  end
+
 end

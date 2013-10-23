@@ -5,6 +5,10 @@ class UserDecorator < ApplicationDecorator
     "#{source.name} <span class='text-muted'>(#{source.email})</span>".html_safe
   end
 
+  def link
+    h.link_to source.name, h.user_url(source)
+  end
+
   def avatar_url
     authentications.each do |a|
       image = a.auth_hash['info']['image']

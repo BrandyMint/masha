@@ -38,4 +38,6 @@ Masha::Application.routes.draw do
     resources :users
   end
 
+  resources :users
+
 end
