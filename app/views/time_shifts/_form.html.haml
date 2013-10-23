@@ -32,3 +32,6 @@
             = f.button :button, :type=>:reset, :class => 'btn btn-link btn-lg pull-right' do
               %small Сбросить
             .clearfix
+
+- if @time_shift.present?
+  = TimeShiftDecorator.new(@time_shift).remove_link
