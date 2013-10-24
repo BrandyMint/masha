@@ -1,6 +1,4 @@
-- @session ||= SessionForm.new
-
-= simple_form_for @session, :url => sessions_path, :method => :create do |f|
+= simple_form_for @session || SessionForm.new, :url => sessions_path, :method => :create do |f|
   = f.error_notification
   .form-group
     = f.input :email, label: false, input_html: {class: 'form-control'}

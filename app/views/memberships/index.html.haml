@@ -45,4 +45,4 @@
         %td.col-xs-5.form-inline-controls
           = select_tag :role, options_for_select(Membership.roles_collection.invert, :include_blank => false, :selected => Membership::DEFAULT_ROLE), data: { target_id: "##{target_id}" }, role: 'membership_role_selector'
         %td.col-xs-2
-          = link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-mini'
+          = link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-default btn-mini'
