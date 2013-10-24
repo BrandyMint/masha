@@ -1,12 +1,3 @@
-#= require jquery
-#= require jquery_ujs
-#= require jquery.role
-#= require bootstrap
-#= require jquery-autosize/jquery.autosize
-#= require purl
-#= require wiselinks
-
-# require_tree .
 # require jquery.freetile
 # require jquery_ujs
 # require jquery-ui
@@ -16,6 +7,15 @@
 #
 # sass-ный jquery
 # require jquery.ui.all
+
+#= require jquery
+#= require jquery_ujs
+#= require jquery.role
+#= require bootstrap
+#= require jquery-autosize/jquery.autosize
+#= require bootstrap-datetimepicker
+#= require purl/purl
+#= require wiselinks
 
 $ ->
   window.wiselinks = new Wiselinks()
@@ -43,6 +43,9 @@ $ ->
   # $('@select2').select2()
   # $('@select2').select2
   #  width: 'element'
+  $('@datetime-picker').datetimepicker()
+  $('@time-picker').datetimepicker({pickDate: false})
+  $('@date-picker').datetimepicker({pickTime: false})
 
   $(document).on 'click', '@date-shortcut', (e) ->
     $('#time_shift_date').val $(@).data('value')
