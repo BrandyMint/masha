@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   scope :ordered, -> { order :name }
   scope :reorder, lambda { |k| order :name }
-  scope :without, -> (user) { where('users.id <> ?', user.id) }
+  scope :without, -> (user) { where arel_table[:id].not_eq(user.id) }
 
   has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
 
