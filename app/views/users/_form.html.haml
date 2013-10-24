@@ -1,0 +1,12 @@
+= simple_form_for @reg, :url => users_path do |f|
+  = f.error_notification
+  .form-group
+    = f.input :name, :require => true, label: false, input_html: {class: 'form-control'}
+  .form-group
+    = f.input :email, :require => true, label: false, input_html: {class: 'form-control'}
+  .form-group
+    = f.input :password, :require => true, :as => :eye_password, label: false, input_html: {class: 'form-control'}
+  %hr.small
+    = f.button :submit, t('helpers.submit.signup'), :class => 'btn btn-primary'
+
+
