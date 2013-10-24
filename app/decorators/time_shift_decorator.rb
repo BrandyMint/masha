@@ -33,7 +33,7 @@ class TimeShiftDecorator < Draper::Decorator
     if h.current_user.can_delete?(source)
       h.link_to 'Удалить',
         h.time_shift_path(source),
-        :class => "btn btn-danger btn-small", :data => { method: :delete, confirm: I18n.t('time_shifts.delete.confirm') }
+        :class => "btn btn-link btn-small icon-color-red", :data => { method: :delete, confirm: I18n.t('time_shifts.delete.confirm') }
     end
   end
 

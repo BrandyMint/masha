@@ -29,9 +29,11 @@
               = t :create, :scope => [:helpers, :submit, :time_shift]
         .time-shift-form-input.col-xs-12
           .form-group
-            = f.button :button, :type=>:reset, :class => 'btn btn-link btn-lg pull-right' do
-              %small Сбросить
+            .pull-right
+              - if @time_shift.present?
+                = TimeShiftDecorator.new(@time_shift).remove_link
+            = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
+              Сбросить изменения
             .clearfix
 
-- if @time_shift.present?
-  = TimeShiftDecorator.new(@time_shift).remove_link
+

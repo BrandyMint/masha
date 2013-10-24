@@ -3,4 +3,4 @@ ru:
     new:
       today_shifts: 'Сегодня уже отметили:'
     delete:
-      confirm: 'Точно удалить?'
+      confirm: 'Удалить отмеченное время?'
