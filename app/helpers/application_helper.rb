@@ -117,7 +117,7 @@ module ApplicationHelper
     if @auvc.exists? current_user
       user = OpenStruct.new(current_user.attributes.clone)
       user.name = user.name.clone.concat t('helpers.you')
-      @auvc = @auvc.where("id <> ?", current_user.id).unshift user
+      @auvc = @auvc.where("users.id <> ?", current_user.id).unshift user
     end
 
     @auvc
@@ -196,5 +196,4 @@ module ApplicationHelper
       ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'войти с github')
     end
   end
-
 end

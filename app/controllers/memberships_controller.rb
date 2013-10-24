@@ -17,7 +17,7 @@ class MembershipsController < ApplicationController
 		user = User.where(email: invite_params[:email]).first
 
 		if user.present?
-			@project.memberships.create user: user, role: invite_params[:role]
+			@new_membership = @project.memberships.create user: user, role: invite_params[:role]
 		else
 			@invite = @project.invites.build invite_params.merge(user: current_user)
 			if @invite.save
@@ -27,7 +27,10 @@ class MembershipsController < ApplicationController
 			end
 		end
 
-		redirect_to project_memberships_url(@project)
+    respond_to do |format|
+      format.html { redirect_to project_memberships_url(@project) }
+      format.js
+    end
 	end
 
 	def destroy

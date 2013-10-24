@@ -11,7 +11,6 @@ class Membership < ActiveRecord::Base
   end
 
   scope :last_updates,    -> { order('updated_at desc') }
-  scope :viewable,        -> { order 'role_cd < 2'}
   scope :ordered_by_role, -> { order :role_cd }
   scope :owners,          -> { where role_cd: 0 }
   scope :viewers,         -> { where role_cd: 1 }
@@ -21,6 +20,7 @@ class Membership < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :project
+  has_many :available_users, through: :project, source: :users
 
   as_enum :role, :owner => 0, :viewer => 1, :member => 2
   DEFAULT_ROLE = :member
