@@ -1,4 +1,7 @@
 Masha::Application.routes.draw do
+  get "password_resets/create"
+  get "password_resets/edit"
+  get "password_resets/update"
   ActiveAdmin.routes(self)
 
   root 'welcome#index'
@@ -18,6 +21,8 @@ Masha::Application.routes.draw do
 
   # Личный контроллер пользователя
   resource :profile, :controller => :profile
+
+  resources :password_resets
 
   resources :projects, :only => [:index, :show, :create, :new, :edit, :update] do
     resources :memberships

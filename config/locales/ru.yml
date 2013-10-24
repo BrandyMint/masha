@@ -39,3 +39,7 @@ ru:
     membership: Membersips
     authentications: Аутентификации
     users: Пользователи
+
+  password_resets:
+    edit:
+      title: Задайте новый пароль
