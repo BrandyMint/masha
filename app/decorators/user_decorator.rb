@@ -2,7 +2,8 @@ class UserDecorator < ApplicationDecorator
   delegate_all
 
   def name
-    "#{source.name} <span class='text-muted'>(#{source.email})</span>".html_safe
+    email = source.email.present? ? source.email : "no email"
+    "#{source.name} <span class='text-muted'>(#{email})</span>".html_safe
   end
 
   def link
