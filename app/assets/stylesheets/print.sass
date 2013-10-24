@@ -1,0 +1,35 @@
+.footer-made-logo.print
+  display: none
+ 
+
+@media print
+  a:after
+    display: none
+  .application-main-content,
+  body
+    padding: 0mm
+    margin: 0mm
+  .page-header
+    margin-top: 0
+
+  .navbar,
+  .alert,
+  form,
+  .footer-feedback-link,
+  .footer-made-logo,
+  .btn,
+  button,
+  .print-hide
+    display: none
+
+  .footer
+    border-top: 2px solid $grayLight
+    margin-top: 0
+    background: #fff
+    color: $grayDark
+    a
+      +link-colors(#000, rgba(#000,0.8))
+  .footer-made-logo.print
+    display: inline
+ 
+  
