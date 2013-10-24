@@ -4,17 +4,18 @@
       %th{width: '25%'} Дата учета
       %th{width: '10%'} Время
       %th{width: '10%'} Проект
-      %th{width: '10%'} Человек
+      %th{width: '10%'} Исполнитель
       %th{width: '35%'} Описание
-      %th.print-hide{width: '10%'} Действия
+      %th.print-hide{width: '10%'}
     - time_shifts.each do |ts|      
       - ts = TimeShiftDecorator.decorate ts
       %tr{class: ts.tr_class}
         %td
           = l ts.date
           %br
-          %small.muted
-            %i= l ts.updated_at
+          %small.text-color-gray-light
+            = ficon 'pencil-1'
+            = l ts.updated_at
 
         %td
           %b= human_hours ts.hours
@@ -23,7 +24,9 @@
         %td
           %small.muted= ts.description
         %td.print-hide
-          = ts.update_link
+          .pull-right
+            = ts.update_link
+          .clearfix
 
 - else
   .alert.alert-warning Нет результатов
