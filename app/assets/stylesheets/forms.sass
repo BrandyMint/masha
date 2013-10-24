@@ -17,6 +17,10 @@ textarea
 
 .control-group
   @extend .form-group
+  &.error
+    .help-inline
+      @extend small
+      color: $red
 
 .form-group
   .control-group
@@ -28,3 +32,4 @@ form
   label.required
     abbr
       display: none
+
