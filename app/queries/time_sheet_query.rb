@@ -7,6 +7,7 @@ class TimeSheetQuery
 
   def initialize  time_sheet_form
     @tsf = time_sheet_form
+    @present = false
   end
 
   def perform
@@ -40,6 +41,7 @@ class TimeSheetQuery
         hr[:total] += ts.hours
         hr[:min_date] = ts.date if hr[:min_date].blank? || hr[:min_date]<ts.date
         hr[:max_date] = ts.date if hr[:max_date].blank? || hr[:max_date]>ts.date
+        @present = true
       end
 
       @result = hash.values
@@ -49,6 +51,7 @@ class TimeSheetQuery
                 :total => scope.sum(:hours),
                 :min_date => scope.minimum(:date),
                 :max_date => scope.maximum(:date) }]
+      @present = @result.first[:total]>0
     end
   end
 
@@ -61,6 +64,10 @@ class TimeSheetQuery
         end
       end
     end
+  end
+
+  def present?
+    @present
   end
 
   private

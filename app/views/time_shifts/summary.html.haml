@@ -1,9 +1,7 @@
 = render 'time_sheet_form'
 
-%h3.pull-left Сводная таблица
-.pull-right
-  = render 'export_links'
-.clearfix
+%h3 Сводная таблица
+
 %table.table
   %thead
     %tr
@@ -28,4 +26,5 @@
             = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
               = human_hours @result.total_by_date[d[:date]]
 
-
+- if @result.projects.present?
+  = render 'export_links'
