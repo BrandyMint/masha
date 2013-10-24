@@ -72,7 +72,9 @@ module ApplicationHelper
   end
 
   def export_btn format, options={}
-    link_to t(format, scope: [:helpers, :export]), url_for({ format: format }.merge(options))
+    link_to url_for({ format: format }.merge(options)), class: 'export-btn' do
+      ficon('export-1') + t(format, scope: [:helpers, :export])
+    end
   end
 
   def setable_projects_collection
