@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def define_page_title
-    @page_title = Settings.app.title + ' - ' + t( action_name, :scope => [:titles, controller_name] )
+    @page_title = Settings.app.title + ' - ' + t( action_name, :scope => [:titles, controller_name], :default => 'Учет в кармане' )
   end
 
   def handle_not_authorized_error

@@ -1,0 +1,31 @@
+- if @result.projects.present?
+
+  %table.table
+    %thead
+      %tr
+        %th &nbsp;
+        - @result.projects.each do |p|
+          %th= p
+        %th Всего
+
+    %tbody
+      - @result.days.each do |d|
+        %tr
+          %th{class: week_day_class(d[:date])}= human_date d[:date]
+          - @result.projects.each do |project|
+            %td{class: week_day_class(d[:date])}
+              - if d[:projects][project.id].blank?
+                .muted= '-'
+              - else
+                = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
+                  = human_hours d[:projects][project.id]
+          %td{class: week_day_class(d[:date])}
+            %b
+              = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
+                = human_hours @result.total_by_date[d[:date]]
+
+  = render 'export_links'
+
+- else
+  .alert-info Сводных данных за ближайший период нет.
+

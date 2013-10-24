@@ -1,30 +1,11 @@
 = render 'time_sheet_form'
 
-%h3 Сводная таблица
+%h3
+  Сводная таблица
 
-%table.table
-  %thead
-    %tr
-      %th &nbsp;
-      - @result.projects.each do |p|
-        %th= p
-      %th Всего
+  %small
+    %ul.nav.nav-tabs
+      = active_link_to 'за неделю', summary_time_shifts_url(period: :week), active: @result.period=='week', :wrap_tag => :li
+      = active_link_to 'за месяц', summary_time_shifts_url(period: :month), active: @result.period=='month', :wrap_tag => :li
 
-  %tbody
-    - @result.days.each do |d|
-      %tr
-        %th= human_date d[:date]
-        - @result.projects.each do |project|
-          %td
-            - if d[:projects][project.id].blank?
-              .muted= '-'
-            - else
-              = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
-                = human_hours d[:projects][project.id]
-        %td
-          %b
-            = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
-              = human_hours @result.total_by_date[d[:date]]
-
-- if @result.projects.present?
-  = render 'export_links'
+= render 'summary'

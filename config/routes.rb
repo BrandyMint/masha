@@ -22,7 +22,11 @@ Masha::Application.routes.draw do
   resources :projects, :only => [:index, :show, :create, :new, :edit, :update] do
     resources :memberships
   end
-  resources :time_shifts
+  resources :time_shifts do
+    collection do
+      get :summary
+    end
+  end
   resources :invites, :only => [:create, :destroy]
 
   namespace :owner do

@@ -10,6 +10,7 @@ ru:
       index: Проекты
     time_shifts:
       index: Временные отметки
+      summary: Сводная таблица
       new: Отчет
     profile:
       edit: Профиль

@@ -1,11 +1,14 @@
 class SummaryQuery
   attr_accessor :days, :projects, :total_by_date
 
+  attr_reader :period
+
   attr_accessor :available_projects, :available_users
 
-  def initialize
-    @available_users = User.all
-    @available_projects = Project.all
+  def initialize period=nil
+    @available_users = nil
+    @available_projects = nil
+    @period = period=='month' ? 'month' : 'week'
   end
 
   def perform
@@ -13,8 +16,6 @@ class SummaryQuery
 
     scope = scope.where :project_id => available_projects_ids
     scope = scope.where :user_id => available_users_ids
-
-    dates = scope.group(:date).order('date desc').limit(5).pluck(:date)
 
     projects_ids = []
 
@@ -53,6 +54,21 @@ class SummaryQuery
   end
 
   private
+
+  def dates
+   @dates ||= begin
+                today = Date.today
+                if @period == 'month'
+                  start_date = today.at_beginning_of_month
+                  start_date = start_date.prev_month if today-start_date<10
+                else
+                  start_date = today.at_beginning_of_week
+                  start_date = start_date.prev_week if today-start_date<3
+                end
+
+                (start_date..Date.today).to_a.reverse
+              end
+  end
 
   def available_projects_ids
     @available_projects.map &:id

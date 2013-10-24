@@ -1,4 +1,15 @@
 module ApplicationHelper
+
+  def week_day_class date
+    # TODO Расчитывать выходной согласно локали
+    c = ''
+    c = 'danger' if date.cwday > 5
+
+    c = 'active' if c.blank? && date.today?
+
+    return c
+  end
+
   def app_version
     content_tag :small, :class => 'text-muted', :data => { :version => Masha.version.to_s } do
       'v' + Masha.version.format( "%M.%m.%p" )

@@ -2,6 +2,25 @@ class TimeShiftsController < ApplicationController
   before_filter :require_login
   inherit_resources
 
+  def summary
+    @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
+
+    query = SummaryQuery.new params[:period]
+    template = 'summary'
+
+    query.available_projects = current_user.available_projects
+    query.available_users = current_user.available_users
+    query.perform
+
+    @result = query
+
+    respond_to do |format|
+      format.xlsx { render xlsx: template }
+      format.csv  { send_data @result.to_csv }
+      format.html { render action: template }
+    end
+  end
+
   def index
     if viewable_projects_collection.empty?
       render 'no_projects'
