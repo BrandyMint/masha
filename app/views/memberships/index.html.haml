@@ -30,3 +30,16 @@
           = role_human i.role
         %td.col-xs-2
           = d.remove_link
+
+
+%h3 Доступные пользователи
+
+%table.table
+  - users_available_for_project(@project).each do |u|
+    - u = UserDecorator.new u
+    %tr
+      %td.col-xs-5
+        = u.name
+      %td.col-xs-5 "Селектор выбора роли"
+      %td.col-xs-2
+        = link_to 'Добавить', project_memberships_url( @project, invite: {email: u.email} ), method: :post

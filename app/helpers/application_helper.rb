@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def users_available_for_project project
+    current_user.available_users.to_a - project.users
+  end
+
   def week_day_class date
     # TODO Расчитывать выходной согласно локали
     c = ''
