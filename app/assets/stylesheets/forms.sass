@@ -1,3 +1,23 @@
+// temporary fixes, waiting for simple_form bootstrap3 pull request
+// https://github.com/rafaelfranca/simple_form-bootstrap/pull/28
+
+
+@mixin formControlElement()
+  @extend .form-control
+  .form-inline-controls &
+    width: auto
+    display: inline
+
+select,
+textarea
+  +formControlElement
+@each $type in text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, color
+  input[type="#{$type}"]
+    +formControlElement
+
+.control-group
+  @extend .form-group
+
 form
   .help-block
     @extend small
