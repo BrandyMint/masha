@@ -1,11 +1,14 @@
 = render 'time_sheet_form'
 
-%h3
+%h3.pull-left
   Сводная таблица
+.pull-right
+  = render 'export_links'
+.clearfix
 
-  %small
-    %ul.nav.nav-tabs
-      = active_link_to 'за неделю', summary_time_shifts_url(period: :week), active: @result.period=='week', :wrap_tag => :li
-      = active_link_to 'за месяц', summary_time_shifts_url(period: :month), active: @result.period=='month', :wrap_tag => :li
+%small
+  %ul.nav.nav-tabs
+    = active_link_to 'за неделю', summary_time_shifts_url(period: :week), active: @result.period=='week', :wrap_tag => :li
+    = active_link_to 'за месяц', summary_time_shifts_url(period: :month), active: @result.period=='month', :wrap_tag => :li
 
 = render 'summary'

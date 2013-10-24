@@ -24,7 +24,6 @@
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
                 = human_hours @result.total_by_date[d[:date]]
 
-  = render 'export_links'
 
 - else
   .alert-info Сводных данных за ближайший период нет.
