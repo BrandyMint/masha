@@ -1,10 +1,13 @@
 = render 'time_sheet_form'
 
 - @result.result.each do |g|
-  %h2
+  %h2.pull-left
     = g[:title]
     %small
       = title_of_group_results g
+  .pull-right
+    = render 'export_links'
+  .clearfix
   = render 'list', :time_shifts => g[:time_shifts]
 
-= render 'export_links'
+

@@ -5,29 +5,28 @@
 - if current_user.can_create?(Membership.new(project: @project))
   = render 'form'
 
-%h3 Участники:
+%h3 Участники
 
-%table.table.table-condensed
+%table.table
   - @project.memberships.each do |m|
     - d = MembershipDecorator.decorate m
     %tr
-      %td
+      %td.col-xs-5
         = d.name
-      %td
+      %td.col-xs-5
         = roles_select m
-      %td
+      %td.col-xs-2
         = d.remove_link
 
 - if @project.invites.present?
-  %br/
-  %h3 Приглашенные:
-  %table.table.table-condensed
+  %h3 Приглашенные
+  %table.table
     - @project.invites.each do |i|
       - d = InviteDecorator.decorate i
       %tr
-        %td
+        %td.col-xs-5
           = i.email
-        %td
+        %td.col-xs-5
           = role_human i.role
-        %td
+        %td.col-xs-2
           = d.remove_link

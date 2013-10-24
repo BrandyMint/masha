@@ -1,9 +1,8 @@
-%h3
+%h4
   Пригласить пользователя
-= simple_form_for @invite, :url => project_memberships_url(@project), :method => :post do |f|
+= simple_form_for @invite, :url => project_memberships_url(@project), :method => :post, html: {class: 'form-inline-controls form-inline'} do |f|
   = f.error_notification
   .form-inputs
-    = f.input :email, :require => true
-    = f.input :role, :collection => Membership.roles_collection.invert, :include_blank => false, :selected => Membership::DEFAULT_ROLE
-  .form-actions
+    = f.input :email, :require => true, label: false
+    = f.input :role, :collection => Membership.roles_collection.invert, :include_blank => false, :selected => Membership::DEFAULT_ROLE, label: false
     = f.button :submit, :class => 'btn btn-primary'

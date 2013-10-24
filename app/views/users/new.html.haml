@@ -1,18 +1,15 @@
 .row
-  .col-sm-6.col-sm-3.col-md-4.col-md-offset-4
+  .col-sm-9.col-sm-offset-3
     .page-header
       %h1 Регистрация
-    = simple_form_for @reg, :url => users_path do |f|
-      = f.error_notification
-      .form-group
-        = f.input :name, :require => true, label: false, input_html: {class: 'form-control'}
-      .form-group
-        = f.input :email, :require => true, label: false, input_html: {class: 'form-control'}
-      .form-group
-        = f.input :password, :require => true, :as => :eye_password, label: false, input_html: {class: 'form-control'}
-      %hr.small
-        = f.button :submit, t('helpers.submit.signup'), :class => 'btn btn-primary'
-      %hr
-      Уже есть аккаунт?
-      = link_to 'Войти', login_url
+  .col-sm-4.col-sm-offset-3
+    = render 'form'
+  .col-sm-4.col-sm-offset-1
+    = login_with_github
+    %hr
+    Уже есть аккаунт?
+    = link_to 'Войти', login_url
+
+
+
 

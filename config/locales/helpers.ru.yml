@@ -14,3 +14,5 @@ ru:
         create: Записать
       time_sheet_form:
         create: Получить отчет
+      invite:
+        create: Пригласить
