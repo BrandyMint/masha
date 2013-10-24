@@ -2,6 +2,7 @@
   "name": "brandymint-masha",
   "version": "0.1",
   "dependencies": {
+    "purl": "latest",
     "jquery-autosize": "latest"
   },
   "ignore": [

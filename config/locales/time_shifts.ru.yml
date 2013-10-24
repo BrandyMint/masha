@@ -4,3 +4,6 @@ ru:
       today_shifts: 'Сегодня уже отметили:'
     delete:
       confirm: 'Удалить отмеченное время?'
+  memberships:
+    delete:
+      confirm: 'Удалить пользователя из проекта?'

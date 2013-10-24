@@ -13,7 +13,7 @@
     %tr
       %td.col-xs-5
         = d.name
-      %td.col-xs-5
+      %td.col-xs-5.form-inline-controls
         = roles_select m
       %td.col-xs-2
         = d.remove_link
@@ -32,14 +32,17 @@
           = d.remove_link
 
 
-%h3 Доступные пользователи
+- if @users_available_for_project.present?
+  %h3 Возможно вы захотите их пригласить:
 
-%table.table
-  - users_available_for_project(@project).each do |u|
-    - u = UserDecorator.new u
-    %tr
-      %td.col-xs-5
-        = u.name
-      %td.col-xs-5 "Селектор выбора роли"
-      %td.col-xs-2
-        = link_to 'Добавить', project_memberships_url( @project, invite: {email: u.email} ), method: :post
+  %table.table
+    - @users_available_for_project.each do |u|
+      - u = UserDecorator.new u
+      - target_id = "invite_user-#{u.id}"
+      %tr
+        %td.col-xs-5
+          = u.name
+        %td.col-xs-5.form-inline-controls
+          = select_tag :role, options_for_select(Membership.roles_collection.invert, :include_blank => false, :selected => Membership::DEFAULT_ROLE), data: { target_id: "##{target_id}" }, role: 'membership_role_selector'
+        %td.col-xs-2
+          = link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-mini'

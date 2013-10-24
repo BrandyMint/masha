@@ -3,6 +3,7 @@
 #= require jquery.role
 #= require bootstrap
 #= require jquery-autosize/jquery.autosize
+#= require purl
 
 # require_tree .
 # require jquery.freetile
@@ -55,5 +56,16 @@ $ ->
 
   $("[role=submit_on_change]").on 'change', ->
     $(this).parents('form').submit()
+
+  $("[role=membership_role_selector]").on 'change', (e)->
+    membership_role = $(e.target).val()
+    link = $ $(e.target).data('target-id')
+
+    url = link.url()
+
+    param = url.param()
+    param.invite.role = membership_role
+
+    link.attr 'href', url.attr('path')+'?'+$.param(param)
 
   return
