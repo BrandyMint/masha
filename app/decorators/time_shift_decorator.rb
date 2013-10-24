@@ -24,7 +24,7 @@ class TimeShiftDecorator < Draper::Decorator
   def update_link
     if h.current_user.can_update?(source)
       h.link_to h.edit_time_shift_path(source) do
-        h.ficon 'edit', color: :gray, size: 18
+        h.ficon 'edit', color: 'gray-light', size: 16
       end
     end
   end
