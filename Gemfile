@@ -98,6 +98,7 @@ gem 'kaminari-bootstrap'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails' #, '2.3.0'
+gem 'wiselinks'
 #gem 'jquery-turbolinks'
 
 #gem 'nilify_blanks', :git => 'git://github.com/rubiety/nilify_blanks.git'

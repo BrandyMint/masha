@@ -22,7 +22,11 @@ class ApplicationController < ActionController::Base
   #rescue_from CanCan::AccessDenied, :with => :handle_no_access
   #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
-  private 
+  def wiselinks_layout
+    _layout.virtual_path
+  end
+
+  private
 
   def home_url
     if current_user.present?

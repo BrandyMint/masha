@@ -1,19 +1,8 @@
-!!!
-%html
-  %head
-    = render 'layouts/head'
-  %body{:class => "#{controller_name} #{action_name}"}
-    .navbar.application-navbar.navbar-fixed-top
-      .container
-        = render 'layouts/navigation'
-    #main.application-main-content{:role => "main"}
-      .container
-        .content
-          .row
-            .col-lg-12
-              = render 'layouts/messages'
-              = render_breadcrumbs :separator => ' / '
-              = yield
-      %footer.footer
-        = render 'layouts/footer'
-    -#= render 'layouts/convead_widget'
+- if request.wiselinks?
+  = render 'layouts/application_body'
+- else
+  !!!
+  %html
+    %head
+      = render 'layouts/head'
+    = render 'layouts/application_body'
