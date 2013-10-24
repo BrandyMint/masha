@@ -30,7 +30,7 @@
         .time-shift-form-input.col-xs-12
           .form-group
             .pull-right
-              - if @time_shift.present?
+              - if @time_shift.present? && @time_shift.hours
                 = TimeShiftDecorator.new(@time_shift).remove_link
             = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
               Сбросить изменения
