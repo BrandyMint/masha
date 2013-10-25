@@ -7,6 +7,7 @@ ru:
       human: '%e %B %Y'
       input: '%e/%m/%Y'
       default: '%e %B %Y'
+      default_with_week_day: "%e %B %Y <span class='text-muted'>(%a)</span>"
   time:
     formats:
       time: "%H:%M"

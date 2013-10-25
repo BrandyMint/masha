@@ -3,7 +3,9 @@
   %table.table
     %thead
       %tr
-        %th &nbsp;
+        %th
+          Сводка за
+          = summary_period_link @result
         - @result.projects.each do |p|
           %th= p
         %th Всего
@@ -24,7 +26,9 @@
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
                 = human_hours @result.total_by_date[d[:date]]
 
+  - if @result.projects.present?
+    = render 'print_ready'
 
 - else
-  .alert-info Сводных данных за ближайший период нет.
+  .alert-info Нет сводных данных за ближайший период.
 

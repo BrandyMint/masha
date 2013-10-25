@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def summary_period_link result
+    if result.period=='week'
+      link_to 'неделю', summary_time_shifts_url(period: :month), title: 'Переключить на сводку за месяц', role: 'tooltip'
+    elsif result.period=='month'
+      link_to 'месяц', summary_time_shifts_url(period: :week), title: 'Переключить на сводку за неделю', role: 'tooltip'
+    end
+  end
+
   def week_day_class date
     # TODO Расчитывать выходной согласно локали
     c = ''
@@ -58,11 +66,7 @@ module ApplicationHelper
   end
 
   def human_date date
-    str = I18n.l(date)
-    wd = date.strftime '%a'
-    str << " <span class='muted'>(#{wd})</span>"
-
-    return str.html_safe
+    I18n.l( date, format: :default_with_week_day ).html_safe
   end
 
   def grouping_collection

@@ -5,14 +5,8 @@ class TimeShiftsController < ApplicationController
   def summary
     @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
 
-    query = SummaryQuery.new params[:period]
     template = 'summary'
-
-    query.available_projects = current_user.available_projects
-    query.available_users = current_user.available_users
-    query.perform
-
-    @result = query
+    @result = build_summary
 
     respond_to do |format|
       format.xlsx { render xlsx: template }
@@ -31,6 +25,7 @@ class TimeShiftsController < ApplicationController
         if params[:time_sheet_form].present?
           return render 'empty'
         else
+          @result = build_summary
           return render 'blank'
         end
         #else
@@ -86,6 +81,16 @@ class TimeShiftsController < ApplicationController
   end
 
   protected
+
+  def build_summary
+    query = SummaryQuery.new params[:period]
+
+    query.available_projects = current_user.available_projects
+    query.available_users = current_user.available_users
+    query.perform
+
+    query
+  end
 
   def default_time_shift_form
     selected_project = get_project_id_from_params
