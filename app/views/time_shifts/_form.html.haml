@@ -38,4 +38,7 @@
 
 :coffee
   $form = $('@time_shift_form')
+  $stepper_input = $form.find('@stepper input')
   App.reset_btn_hide $form, $form.find('button[type="reset"]')
+  default_stepper_value = $stepper_input.val()
+  $form.on 'reset', -> $stepper_input.attr 'value', default_stepper_value

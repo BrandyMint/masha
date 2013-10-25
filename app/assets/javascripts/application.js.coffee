@@ -28,12 +28,17 @@ $ ->
       false
 
   (jsHandlers = ->
+    window.App.bstepper $('@stepper')
     $('@tooltip').tooltip()
     $('@autosize').autosize()
 
     $("#session_form_email").data "holder", $("#session_form_email").attr("placeholder")
     $("#session_form_email").focusin -> $(@).attr "placeholder", ""
     $("#session_form_email").focusout -> $(@).attr "placeholder", $(@).data("holder")
+
+    $('@datetime-picker').datetimepicker()
+    $('@time-picker').datetimepicker({pickDate: false})
+    $('@date-picker').datetimepicker({pickTime: false})
   )()
 
   $(document).off('page:done').on 'page:done', jsHandlers
@@ -44,19 +49,16 @@ $ ->
   # $('@select2').select2()
   # $('@select2').select2
   #  width: 'element'
-  $('@datetime-picker').datetimepicker()
-  $('@time-picker').datetimepicker({pickDate: false})
-  $('@date-picker').datetimepicker({pickTime: false})
 
   $(document).on 'click', '@date-shortcut', (e) ->
     $('#time_shift_date').val $(@).data('value')
-    $('#time_shift_date').parents('form').trigger('change')
+    $(@).trigger 'change'
     e.preventDefault()
 
   $(document).on 'click', '@period-shortcut', (e) ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
-    $('#time_sheet_form_date_from').parents('form').trigger('change')
+    $(@).trigger 'change'
     e.preventDefault()
 
   $(document).on 'click', "@j-password-toggle", ->
@@ -91,9 +93,9 @@ $ ->
     $btn.hide()
     $form.data 'serialize', $form.serialize()
     $form.on 'reset', -> $btn.hide()
-    $form.on 'change input', ->
+    $form.on 'change input changeDate', ->
       if $form.data('serialize') != $form.serialize()
         $btn.show()
       else
         $btn.hide()
-)(window.App = {})
+)(window.App ||= {})
