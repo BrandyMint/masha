@@ -1,124 +1,144 @@
-                            Prefix Verb       URI Pattern                                                Controller#Action
-            new_admin_user_session GET        /admin/login(.:format)                                     active_admin/devise/sessions#new
-                admin_user_session POST       /admin/login(.:format)                                     active_admin/devise/sessions#create
-        destroy_admin_user_session DELETE|GET /admin/logout(.:format)                                    active_admin/devise/sessions#destroy
-               admin_user_password POST       /admin/password(.:format)                                  active_admin/devise/passwords#create
-           new_admin_user_password GET        /admin/password/new(.:format)                              active_admin/devise/passwords#new
-          edit_admin_user_password GET        /admin/password/edit(.:format)                             active_admin/devise/passwords#edit
-                                   PATCH      /admin/password(.:format)                                  active_admin/devise/passwords#update
-                                   PUT        /admin/password(.:format)                                  active_admin/devise/passwords#update
-                        admin_root GET        /admin(.:format)                                           admin/dashboard#index
-    batch_action_admin_time_shifts POST       /admin/time_shifts/batch_action(.:format)                  admin/time_shifts#batch_action
-                 admin_time_shifts GET        /admin/time_shifts(.:format)                               admin/time_shifts#index
-                                   POST       /admin/time_shifts(.:format)                               admin/time_shifts#create
-              new_admin_time_shift GET        /admin/time_shifts/new(.:format)                           admin/time_shifts#new
-             edit_admin_time_shift GET        /admin/time_shifts/:id/edit(.:format)                      admin/time_shifts#edit
-                  admin_time_shift GET        /admin/time_shifts/:id(.:format)                           admin/time_shifts#show
-                                   PATCH      /admin/time_shifts/:id(.:format)                           admin/time_shifts#update
-                                   PUT        /admin/time_shifts/:id(.:format)                           admin/time_shifts#update
-                                   DELETE     /admin/time_shifts/:id(.:format)                           admin/time_shifts#destroy
-batch_action_admin_authentications POST       /admin/authentications/batch_action(.:format)              admin/authentications#batch_action
-             admin_authentications GET        /admin/authentications(.:format)                           admin/authentications#index
-                                   POST       /admin/authentications(.:format)                           admin/authentications#create
-          new_admin_authentication GET        /admin/authentications/new(.:format)                       admin/authentications#new
-         edit_admin_authentication GET        /admin/authentications/:id/edit(.:format)                  admin/authentications#edit
-              admin_authentication GET        /admin/authentications/:id(.:format)                       admin/authentications#show
-                                   PATCH      /admin/authentications/:id(.:format)                       admin/authentications#update
-                                   PUT        /admin/authentications/:id(.:format)                       admin/authentications#update
-                                   DELETE     /admin/authentications/:id(.:format)                       admin/authentications#destroy
-       batch_action_admin_projects POST       /admin/projects/batch_action(.:format)                     admin/projects#batch_action
-                    admin_projects GET        /admin/projects(.:format)                                  admin/projects#index
-                                   POST       /admin/projects(.:format)                                  admin/projects#create
-                 new_admin_project GET        /admin/projects/new(.:format)                              admin/projects#new
-                edit_admin_project GET        /admin/projects/:id/edit(.:format)                         admin/projects#edit
-                     admin_project GET        /admin/projects/:id(.:format)                              admin/projects#show
-                                   PATCH      /admin/projects/:id(.:format)                              admin/projects#update
-                                   PUT        /admin/projects/:id(.:format)                              admin/projects#update
-                                   DELETE     /admin/projects/:id(.:format)                              admin/projects#destroy
-          batch_action_admin_users POST       /admin/users/batch_action(.:format)                        admin/users#batch_action
-                       admin_users GET        /admin/users(.:format)                                     admin/users#index
-                                   POST       /admin/users(.:format)                                     admin/users#create
-                    new_admin_user GET        /admin/users/new(.:format)                                 admin/users#new
-                   edit_admin_user GET        /admin/users/:id/edit(.:format)                            admin/users#edit
-                        admin_user GET        /admin/users/:id(.:format)                                 admin/users#show
-                                   PATCH      /admin/users/:id(.:format)                                 admin/users#update
-                                   PUT        /admin/users/:id(.:format)                                 admin/users#update
-                                   DELETE     /admin/users/:id(.:format)                                 admin/users#destroy
-    batch_action_admin_admin_users POST       /admin/admin_users/batch_action(.:format)                  admin/admin_users#batch_action
-                 admin_admin_users GET        /admin/admin_users(.:format)                               admin/admin_users#index
-                                   POST       /admin/admin_users(.:format)                               admin/admin_users#create
-              new_admin_admin_user GET        /admin/admin_users/new(.:format)                           admin/admin_users#new
-             edit_admin_admin_user GET        /admin/admin_users/:id/edit(.:format)                      admin/admin_users#edit
-                  admin_admin_user GET        /admin/admin_users/:id(.:format)                           admin/admin_users#show
-                                   PATCH      /admin/admin_users/:id(.:format)                           admin/admin_users#update
-                                   PUT        /admin/admin_users/:id(.:format)                           admin/admin_users#update
-                                   DELETE     /admin/admin_users/:id(.:format)                           admin/admin_users#destroy
-                   admin_dashboard GET        /admin/dashboard(.:format)                                 admin/dashboard#index
-    batch_action_admin_memberships POST       /admin/memberships/batch_action(.:format)                  admin/memberships#batch_action
-                 admin_memberships GET        /admin/memberships(.:format)                               admin/memberships#index
-                                   POST       /admin/memberships(.:format)                               admin/memberships#create
-              new_admin_membership GET        /admin/memberships/new(.:format)                           admin/memberships#new
-             edit_admin_membership GET        /admin/memberships/:id/edit(.:format)                      admin/memberships#edit
-                  admin_membership GET        /admin/memberships/:id(.:format)                           admin/memberships#show
-                                   PATCH      /admin/memberships/:id(.:format)                           admin/memberships#update
-                                   PUT        /admin/memberships/:id(.:format)                           admin/memberships#update
-                                   DELETE     /admin/memberships/:id(.:format)                           admin/memberships#destroy
-       batch_action_admin_comments POST       /admin/comments/batch_action(.:format)                     admin/comments#batch_action
-                    admin_comments GET        /admin/comments(.:format)                                  admin/comments#index
-                                   POST       /admin/comments(.:format)                                  admin/comments#create
-                     admin_comment GET        /admin/comments/:id(.:format)                              admin/comments#show
-                              root GET        /                                                          welcome#index
-                                   GET        /auth/:provider/callback(.:format)                         omniauth_session#create
-                                   POST       /auth/:provider/callback(.:format)                         omniauth_session#create
-                            logout GET        /logout(.:format)                                          sessions#destroy
-                             login GET        /login(.:format)                                           sessions#new
-                            signup GET        /signup(.:format)                                          users#new
-                             users POST       /users(.:format)                                           users#create
-                          new_user GET        /users/new(.:format)                                       users#new
-                          sessions POST       /sessions(.:format)                                        sessions#create
-                       new_session GET        /sessions/new(.:format)                                    sessions#new
-                           session DELETE     /sessions/:id(.:format)                                    sessions#destroy
-                           profile POST       /profile(.:format)                                         profile#create
-                       new_profile GET        /profile/new(.:format)                                     profile#new
-                      edit_profile GET        /profile/edit(.:format)                                    profile#edit
-                                   GET        /profile(.:format)                                         profile#show
-                                   PATCH      /profile(.:format)                                         profile#update
-                                   PUT        /profile(.:format)                                         profile#update
-                                   DELETE     /profile(.:format)                                         profile#destroy
-                          projects GET        /projects(.:format)                                        projects#index
-                           project GET        /projects/:id(.:format)                                    projects#show
-                       time_shifts GET        /time_shifts(.:format)                                     time_shifts#index
-                                   POST       /time_shifts(.:format)                                     time_shifts#create
-                    new_time_shift GET        /time_shifts/new(.:format)                                 time_shifts#new
-                   edit_time_shift GET        /time_shifts/:id/edit(.:format)                            time_shifts#edit
-                        time_shift GET        /time_shifts/:id(.:format)                                 time_shifts#show
-                                   PATCH      /time_shifts/:id(.:format)                                 time_shifts#update
-                                   PUT        /time_shifts/:id(.:format)                                 time_shifts#update
-                                   DELETE     /time_shifts/:id(.:format)                                 time_shifts#destroy
-                        owner_root GET        /owner(.:format)                                           owner/users#index
-         owner_project_memberships GET        /owner/projects/:project_id/memberships(.:format)          owner/memberships#index
-                                   POST       /owner/projects/:project_id/memberships(.:format)          owner/memberships#create
-      new_owner_project_membership GET        /owner/projects/:project_id/memberships/new(.:format)      owner/memberships#new
-     edit_owner_project_membership GET        /owner/projects/:project_id/memberships/:id/edit(.:format) owner/memberships#edit
-          owner_project_membership GET        /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#show
-                                   PATCH      /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#update
-                                   PUT        /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#update
-                                   DELETE     /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#destroy
-            set_role_owner_project POST       /owner/projects/:id/set_role(.:format)                     owner/projects#set_role
-         remove_role_owner_project DELETE     /owner/projects/:id/remove_role(.:format)                  owner/projects#remove_role
-                    owner_projects GET        /owner/projects(.:format)                                  owner/projects#index
-                                   POST       /owner/projects(.:format)                                  owner/projects#create
-                 new_owner_project GET        /owner/projects/new(.:format)                              owner/projects#new
-                edit_owner_project GET        /owner/projects/:id/edit(.:format)                         owner/projects#edit
-                     owner_project GET        /owner/projects/:id(.:format)                              owner/projects#show
-                                   PATCH      /owner/projects/:id(.:format)                              owner/projects#update
-                                   PUT        /owner/projects/:id(.:format)                              owner/projects#update
-                                   DELETE     /owner/projects/:id(.:format)                              owner/projects#destroy
-                       owner_users GET        /owner/users(.:format)                                     owner/users#index
-                                   POST       /owner/users(.:format)                                     owner/users#create
-                    new_owner_user GET        /owner/users/new(.:format)                                 owner/users#new
-                   edit_owner_user GET        /owner/users/:id/edit(.:format)                            owner/users#edit
-                        owner_user GET        /owner/users/:id(.:format)                                 owner/users#show
-                                   PATCH      /owner/users/:id(.:format)                                 owner/users#update
-                                   PUT        /owner/users/:id(.:format)                                 owner/users#update
-                                   DELETE     /owner/users/:id(.:format)                                 owner/users#destroy
+                            Prefix Verb   URI Pattern                                                Controller#Action
+            password_resets_create GET    /password_resets/create(.:format)                          password_resets#create
+              password_resets_edit GET    /password_resets/edit(.:format)                            password_resets#edit
+            password_resets_update GET    /password_resets/update(.:format)                          password_resets#update
+                        admin_root GET    /admin(.:format)                                           admin/dashboard#index
+    batch_action_admin_time_shifts POST   /admin/time_shifts/batch_action(.:format)                  admin/time_shifts#batch_action
+                 admin_time_shifts GET    /admin/time_shifts(.:format)                               admin/time_shifts#index
+                                   POST   /admin/time_shifts(.:format)                               admin/time_shifts#create
+              new_admin_time_shift GET    /admin/time_shifts/new(.:format)                           admin/time_shifts#new
+             edit_admin_time_shift GET    /admin/time_shifts/:id/edit(.:format)                      admin/time_shifts#edit
+                  admin_time_shift GET    /admin/time_shifts/:id(.:format)                           admin/time_shifts#show
+                                   PATCH  /admin/time_shifts/:id(.:format)                           admin/time_shifts#update
+                                   PUT    /admin/time_shifts/:id(.:format)                           admin/time_shifts#update
+                                   DELETE /admin/time_shifts/:id(.:format)                           admin/time_shifts#destroy
+batch_action_admin_authentications POST   /admin/authentications/batch_action(.:format)              admin/authentications#batch_action
+             admin_authentications GET    /admin/authentications(.:format)                           admin/authentications#index
+                                   POST   /admin/authentications(.:format)                           admin/authentications#create
+          new_admin_authentication GET    /admin/authentications/new(.:format)                       admin/authentications#new
+         edit_admin_authentication GET    /admin/authentications/:id/edit(.:format)                  admin/authentications#edit
+              admin_authentication GET    /admin/authentications/:id(.:format)                       admin/authentications#show
+                                   PATCH  /admin/authentications/:id(.:format)                       admin/authentications#update
+                                   PUT    /admin/authentications/:id(.:format)                       admin/authentications#update
+                                   DELETE /admin/authentications/:id(.:format)                       admin/authentications#destroy
+       batch_action_admin_projects POST   /admin/projects/batch_action(.:format)                     admin/projects#batch_action
+                    admin_projects GET    /admin/projects(.:format)                                  admin/projects#index
+                                   POST   /admin/projects(.:format)                                  admin/projects#create
+                 new_admin_project GET    /admin/projects/new(.:format)                              admin/projects#new
+                edit_admin_project GET    /admin/projects/:id/edit(.:format)                         admin/projects#edit
+                     admin_project GET    /admin/projects/:id(.:format)                              admin/projects#show
+                                   PATCH  /admin/projects/:id(.:format)                              admin/projects#update
+                                   PUT    /admin/projects/:id(.:format)                              admin/projects#update
+                                   DELETE /admin/projects/:id(.:format)                              admin/projects#destroy
+          batch_action_admin_users POST   /admin/users/batch_action(.:format)                        admin/users#batch_action
+                       admin_users GET    /admin/users(.:format)                                     admin/users#index
+                                   POST   /admin/users(.:format)                                     admin/users#create
+                    new_admin_user GET    /admin/users/new(.:format)                                 admin/users#new
+                   edit_admin_user GET    /admin/users/:id/edit(.:format)                            admin/users#edit
+                        admin_user GET    /admin/users/:id(.:format)                                 admin/users#show
+                                   PATCH  /admin/users/:id(.:format)                                 admin/users#update
+                                   PUT    /admin/users/:id(.:format)                                 admin/users#update
+                                   DELETE /admin/users/:id(.:format)                                 admin/users#destroy
+                   admin_dashboard GET    /admin/dashboard(.:format)                                 admin/dashboard#index
+    batch_action_admin_memberships POST   /admin/memberships/batch_action(.:format)                  admin/memberships#batch_action
+                 admin_memberships GET    /admin/memberships(.:format)                               admin/memberships#index
+                                   POST   /admin/memberships(.:format)                               admin/memberships#create
+              new_admin_membership GET    /admin/memberships/new(.:format)                           admin/memberships#new
+             edit_admin_membership GET    /admin/memberships/:id/edit(.:format)                      admin/memberships#edit
+                  admin_membership GET    /admin/memberships/:id(.:format)                           admin/memberships#show
+                                   PATCH  /admin/memberships/:id(.:format)                           admin/memberships#update
+                                   PUT    /admin/memberships/:id(.:format)                           admin/memberships#update
+                                   DELETE /admin/memberships/:id(.:format)                           admin/memberships#destroy
+       batch_action_admin_comments POST   /admin/comments/batch_action(.:format)                     admin/comments#batch_action
+                    admin_comments GET    /admin/comments(.:format)                                  admin/comments#index
+                                   POST   /admin/comments(.:format)                                  admin/comments#create
+                     admin_comment GET    /admin/comments/:id(.:format)                              admin/comments#show
+                              root GET    /                                                          welcome#index
+                                   GET    /auth/:provider/callback(.:format)                         omniauth_session#create
+                                   POST   /auth/:provider/callback(.:format)                         omniauth_session#create
+                            logout GET    /logout(.:format)                                          sessions#destroy
+                             login GET    /login(.:format)                                           sessions#new
+                            signup GET    /signup(.:format)                                          users#new
+                          feedback GET    /feedback(.:format)                                        pages#feedback
+                             users POST   /users(.:format)                                           users#create
+                          new_user GET    /users/new(.:format)                                       users#new
+                          sessions POST   /sessions(.:format)                                        sessions#create
+                       new_session GET    /sessions/new(.:format)                                    sessions#new
+                           session DELETE /sessions/:id(.:format)                                    sessions#destroy
+           change_password_profile POST   /profile/change_password(.:format)                         profile#change_password
+                           profile POST   /profile(.:format)                                         profile#create
+                       new_profile GET    /profile/new(.:format)                                     profile#new
+                      edit_profile GET    /profile/edit(.:format)                                    profile#edit
+                                   GET    /profile(.:format)                                         profile#show
+                                   PATCH  /profile(.:format)                                         profile#update
+                                   PUT    /profile(.:format)                                         profile#update
+                                   DELETE /profile(.:format)                                         profile#destroy
+                   password_resets GET    /password_resets(.:format)                                 password_resets#index
+                                   POST   /password_resets(.:format)                                 password_resets#create
+                new_password_reset GET    /password_resets/new(.:format)                             password_resets#new
+               edit_password_reset GET    /password_resets/:id/edit(.:format)                        password_resets#edit
+                    password_reset GET    /password_resets/:id(.:format)                             password_resets#show
+                                   PATCH  /password_resets/:id(.:format)                             password_resets#update
+                                   PUT    /password_resets/:id(.:format)                             password_resets#update
+                                   DELETE /password_resets/:id(.:format)                             password_resets#destroy
+               project_memberships GET    /projects/:project_id/memberships(.:format)                memberships#index
+                                   POST   /projects/:project_id/memberships(.:format)                memberships#create
+            new_project_membership GET    /projects/:project_id/memberships/new(.:format)            memberships#new
+           edit_project_membership GET    /projects/:project_id/memberships/:id/edit(.:format)       memberships#edit
+                project_membership GET    /projects/:project_id/memberships/:id(.:format)            memberships#show
+                                   PATCH  /projects/:project_id/memberships/:id(.:format)            memberships#update
+                                   PUT    /projects/:project_id/memberships/:id(.:format)            memberships#update
+                                   DELETE /projects/:project_id/memberships/:id(.:format)            memberships#destroy
+                          projects GET    /projects(.:format)                                        projects#index
+                                   POST   /projects(.:format)                                        projects#create
+                       new_project GET    /projects/new(.:format)                                    projects#new
+                      edit_project GET    /projects/:id/edit(.:format)                               projects#edit
+                           project GET    /projects/:id(.:format)                                    projects#show
+                                   PATCH  /projects/:id(.:format)                                    projects#update
+                                   PUT    /projects/:id(.:format)                                    projects#update
+               summary_time_shifts GET    /time_shifts/summary(.:format)                             time_shifts#summary
+                       time_shifts GET    /time_shifts(.:format)                                     time_shifts#index
+                                   POST   /time_shifts(.:format)                                     time_shifts#create
+                    new_time_shift GET    /time_shifts/new(.:format)                                 time_shifts#new
+                   edit_time_shift GET    /time_shifts/:id/edit(.:format)                            time_shifts#edit
+                        time_shift GET    /time_shifts/:id(.:format)                                 time_shifts#show
+                                   PATCH  /time_shifts/:id(.:format)                                 time_shifts#update
+                                   PUT    /time_shifts/:id(.:format)                                 time_shifts#update
+                                   DELETE /time_shifts/:id(.:format)                                 time_shifts#destroy
+                           invites POST   /invites(.:format)                                         invites#create
+                            invite DELETE /invites/:id(.:format)                                     invites#destroy
+                        owner_root GET    /owner(.:format)                                           owner/users#index
+         owner_project_memberships GET    /owner/projects/:project_id/memberships(.:format)          owner/memberships#index
+                                   POST   /owner/projects/:project_id/memberships(.:format)          owner/memberships#create
+      new_owner_project_membership GET    /owner/projects/:project_id/memberships/new(.:format)      owner/memberships#new
+     edit_owner_project_membership GET    /owner/projects/:project_id/memberships/:id/edit(.:format) owner/memberships#edit
+          owner_project_membership GET    /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#show
+                                   PATCH  /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#update
+                                   PUT    /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#update
+                                   DELETE /owner/projects/:project_id/memberships/:id(.:format)      owner/memberships#destroy
+            set_role_owner_project POST   /owner/projects/:id/set_role(.:format)                     owner/projects#set_role
+         remove_role_owner_project DELETE /owner/projects/:id/remove_role(.:format)                  owner/projects#remove_role
+                    owner_projects GET    /owner/projects(.:format)                                  owner/projects#index
+                                   POST   /owner/projects(.:format)                                  owner/projects#create
+                 new_owner_project GET    /owner/projects/new(.:format)                              owner/projects#new
+                edit_owner_project GET    /owner/projects/:id/edit(.:format)                         owner/projects#edit
+                     owner_project GET    /owner/projects/:id(.:format)                              owner/projects#show
+                                   PATCH  /owner/projects/:id(.:format)                              owner/projects#update
+                                   PUT    /owner/projects/:id(.:format)                              owner/projects#update
+                                   DELETE /owner/projects/:id(.:format)                              owner/projects#destroy
+                       owner_users GET    /owner/users(.:format)                                     owner/users#index
+                                   POST   /owner/users(.:format)                                     owner/users#create
+                    new_owner_user GET    /owner/users/new(.:format)                                 owner/users#new
+                   edit_owner_user GET    /owner/users/:id/edit(.:format)                            owner/users#edit
+                        owner_user GET    /owner/users/:id(.:format)                                 owner/users#show
+                                   PATCH  /owner/users/:id(.:format)                                 owner/users#update
+                                   PUT    /owner/users/:id(.:format)                                 owner/users#update
+                                   DELETE /owner/users/:id(.:format)                                 owner/users#destroy
+                                   GET    /users(.:format)                                           users#index
+                                   POST   /users(.:format)                                           users#create
+                                   GET    /users/new(.:format)                                       users#new
+                         edit_user GET    /users/:id/edit(.:format)                                  users#edit
+                              user GET    /users/:id(.:format)                                       users#show
+                                   PATCH  /users/:id(.:format)                                       users#update
+                                   PUT    /users/:id(.:format)                                       users#update
+                                   DELETE /users/:id(.:format)                                       users#destroy

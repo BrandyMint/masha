@@ -12,4 +12,5 @@
   = render 'list', :time_shifts => g[:time_shifts]
 
 
-
+- if @result.result.present?
+  = render 'print_ready'

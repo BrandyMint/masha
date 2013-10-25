@@ -6,7 +6,9 @@
       = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
       = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
   .pull-right
-    = link_to 'Обратная связь', feedback_url, class: 'footer-feedback-link'
+    %ul.horizontal
+      %li= link_to 'Обратная связь', feedback_url, class: 'footer-feedback-link'
+      %li= link_to 'Блог', 'http://blog.mashtime.ru', class: 'footer-feedback-link'
   .clearfix
 
 = render 'analytics'

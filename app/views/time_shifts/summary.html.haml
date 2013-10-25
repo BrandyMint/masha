@@ -1,4 +1,5 @@
-= render 'time_sheet_form'
+.print-hide
+  = link_to '&larr; назад в отчеты'.html_safe, time_shifts_url
 
 .summary-table
   %h3.no-margin-top.pull-left
@@ -12,4 +13,7 @@
   .pull-right
     = render 'export_links'
   .clearfix
-  = render 'summary'
+    = render 'summary'
+
+- if @result.projects.present?
+  = render 'print_ready'

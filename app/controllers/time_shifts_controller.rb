@@ -31,9 +31,12 @@ class TimeShiftsController < ApplicationController
         if params[:time_sheet_form].present?
           return render 'empty'
         else
-          template = 'summary'
-          query = SummaryQuery.new
+          return render 'blank'
         end
+        #else
+        #  template = 'summary'
+        #  query = SummaryQuery.new
+        #end
       else
         template = 'index'
         query = TimeSheetQuery.new @time_sheet_form
