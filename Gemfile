@@ -133,6 +133,7 @@ gem 'jbuilder', '~> 1.0.1'
 gem 'airbrake', :github => 'airbrake/airbrake'
 
 gem "github_api"
+gem 'bootstrap-datetimepicker-rails'
 
 group :assets do
   # Use edge version of sprockets-rails
@@ -155,7 +156,6 @@ group :assets do
   # Хорошая альтернатива jquery-ui-rails
   gem 'jquery-ui-sass-rails'
   # gem 'jquery_datepicker'
-  gem 'bootstrap-datetimepicker-rails'
 
   # gem 'select2-rails'
 end
