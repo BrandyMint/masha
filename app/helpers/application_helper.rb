@@ -20,7 +20,7 @@ module ApplicationHelper
 
   def app_version
     content_tag :small, :class => 'text-muted', :data => { :version => Masha.version.to_s } do
-      'v' + Masha.version.format( "%M.%m.%p" )
+      link_to 'v' + Masha.version.format( "%M.%m.%p" ), 'http://github.com/brandymint/masha'
     end
   end
 
