@@ -112,13 +112,11 @@ module ApplicationHelper
 
   def available_users_to_view_collection
     #User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
-    @auvc = current_user.available_users.ordered
+    @auvc = current_user.available_users.without(current_user).ordered
 
-    if @auvc.exists? current_user
-      user = OpenStruct.new(current_user.attributes.clone)
-      user.name = user.name.clone.concat t('helpers.you')
-      @auvc = @auvc.where("id <> ?", current_user.id).unshift user
-    end
+    user = OpenStruct.new(current_user.attributes.clone)
+    user.name = user.name.clone.concat t('helpers.you')
+    @auvc = @auvc.unshift user
 
     @auvc
   end

@@ -22,6 +22,8 @@ class Membership < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
 
+  has_many :available_users, through: :project, source: :users
+
   as_enum :role, :owner => 0, :viewer => 1, :member => 2
   DEFAULT_ROLE = :member
 
