@@ -135,30 +135,28 @@ gem 'airbrake', :github => 'airbrake/airbrake'
 gem "github_api"
 gem 'bootstrap-datetimepicker-rails'
 
-group :assets do
-  # Use edge version of sprockets-rails
-  gem 'sprockets-rails', github: 'rails/sprockets-rails'
+# Use edge version of sprockets-rails
+gem 'sprockets-rails', github: 'rails/sprockets-rails'
 
-  # Use SCSS for stylesheets
-  gem 'sass-rails',   github: 'rails/sass-rails'
+# Use SCSS for stylesheets
+gem 'sass-rails',   github: 'rails/sass-rails'
 
-  # Use Uglifier as compressor for JavaScript assets
-  gem 'uglifier', '~> 1.3'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '~> 1.3'
 
-  # Use CoffeeScript for .js.coffee assets and views
-  gem 'coffee-rails', github: 'rails/coffee-rails'
-  gem 'role-rails'
+# Use CoffeeScript for .js.coffee assets and views
+gem 'coffee-rails', github: 'rails/coffee-rails'
+gem 'role-rails'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', platforms: :ruby
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', platforms: :ruby
 
 
-  # Хорошая альтернатива jquery-ui-rails
-  gem 'jquery-ui-sass-rails'
-  # gem 'jquery_datepicker'
+# Хорошая альтернатива jquery-ui-rails
+gem 'jquery-ui-sass-rails'
+# gem 'jquery_datepicker'
 
-  # gem 'select2-rails'
-end
+# gem 'select2-rails'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
