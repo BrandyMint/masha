@@ -23,7 +23,7 @@ $ ->
     anchor = e.currentTarget
     if document.location.host == anchor.host
       e.preventDefault()
-      wiselinks.load(anchor.pathname)
+      wiselinks.load(anchor.href)
       false
 
   (jsHandlers = ->
