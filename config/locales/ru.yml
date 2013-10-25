@@ -43,3 +43,9 @@ ru:
   password_resets:
     edit:
       title: Задайте новый пароль
+    new:
+      title: Укажите E-mail для сброса пароля
+  sessions:
+    new:
+      password_reset_label: Забыли пароль?
+      password_reset_link: Сбросить пароль

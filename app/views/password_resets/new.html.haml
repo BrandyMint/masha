@@ -1,2 +1,7 @@
-%h1=t()
-= render :partial => :forgot_password_form
+%h1=t('.title')
+.row
+  .col-md-5.col-xs-3
+    = simple_form_for @password_form, :url => password_resets_path,  :method => :post do |f|
+      .form-group
+        = f.input :email, label: false, input_html: {class: 'form-control'}
+      = f.button :submit, t('devise.passwords.reset_password'), :class => 'btn btn-primary btn-lg btn-block'
