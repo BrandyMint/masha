@@ -7,6 +7,8 @@
   .form-inline-controls &
     width: auto
     display: inline
+  .input-group &:first-child
+    +border-left-radius($border-radius-base)
 
 select,
 textarea
@@ -32,4 +34,18 @@ form
   label.required
     abbr
       display: none
+
+.datepicker-group
+  .input-group-addon
+    cursor: pointer
+    +link-colors($textColor, lighten($textColor,20%))
+
+.numeric-stepper
+  width: 150px
+  .plus, .minus
+    cursor: pointer
+    +link-colors($textColor, lighten($textColor,20%))
+    @extend .user-select-none
+  input
+    text-align: center
 
