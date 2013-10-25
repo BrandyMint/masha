@@ -45,3 +45,7 @@
             %small.muted Сбросить фильтры
           .clearfix
 %hr
+
+:coffee
+  $form = $('.time-sheet-form')
+  App.reset_btn_hide $form, $form.find('button[type="reset"]')

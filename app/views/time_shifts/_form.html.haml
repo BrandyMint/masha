@@ -1,4 +1,4 @@
-= simple_form_for @time_shift, :html => { :class => 'form-horizontal' } do |f|
+= simple_form_for @time_shift, :html => { :class => 'form-horizontal', role: 'time_shift_form' } do |f|
   = f.error_notification
   .form-inputs
     .row
@@ -35,3 +35,7 @@
             = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
               Сбросить изменения
             .clearfix
+
+:coffee
+  $form = $('@time_shift_form')
+  App.reset_btn_hide $form, $form.find('button[type="reset"]')
