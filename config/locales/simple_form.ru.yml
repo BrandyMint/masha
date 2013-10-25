@@ -50,6 +50,9 @@ ru:
       password_reset_form:
         password: Пароль
         password_confirmation: Подтверждение Пароля
+      password_change_form:
+        password: Пароль
+        password_confirmation: Подтверждение Пароля
       project:
         any_project_id: Любой проект
       group:

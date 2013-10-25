@@ -20,7 +20,11 @@ Masha::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
 
   # Личный контроллер пользователя
-  resource :profile, :controller => :profile
+  resource :profile, :controller => :profile do
+    collection do
+      post :change_password
+    end
+  end
 
   resources :password_resets
 
