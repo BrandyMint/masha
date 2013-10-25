@@ -83,7 +83,7 @@ module ApplicationHelper
   end
 
   def export_btn format, options={}
-    link_to url_for({ format: format }.merge(options)), class: 'export-btn' do
+    link_to url_for({ format: format }.merge(options)), class: 'export-btn', role: 'no-wiselinks' do
       ficon('export-1') + t(format, scope: [:helpers, :export])
     end
   end
