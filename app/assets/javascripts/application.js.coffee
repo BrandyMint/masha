@@ -46,11 +46,13 @@ $ ->
 
   $(document).on 'click', '@date-shortcut', (e) ->
     $('#time_shift_date').val $(@).data('value')
+    $('#time_shift_date').parents('form').trigger('change')
     e.preventDefault()
 
   $(document).on 'click', '@period-shortcut', (e) ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
+    $('#time_sheet_form_date_from').parents('form').trigger('change')
     e.preventDefault()
 
   $(document).on 'click', "@j-password-toggle", ->
@@ -79,3 +81,15 @@ $ ->
     link.attr 'href', url.attr('path')+'?'+$.param(param)
 
   return
+
+((app) ->
+  app.reset_btn_hide = ($form, $btn) ->
+    $btn.hide()
+    $form.data 'serialize', $form.serialize()
+    $form.on 'reset', -> $btn.hide()
+    $form.on 'change input', ->
+      if $form.data('serialize') != $form.serialize()
+        $btn.show()
+      else
+        $btn.hide()
+)(window.App = {})
