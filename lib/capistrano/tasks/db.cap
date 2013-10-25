@@ -1,0 +1,110 @@
+namespace :db do
+
+    PG_DUMP_RB = <<'EOPGDUMPRB'
+#!/usr/bin/env ruby
+
+require "yaml";
+
+DB_YML_2_PG_ENV = {
+    'database' => 'PGDATABASE',
+    'hostname' => 'PGHOST',
+    'password' => 'PGPASSWD',
+    'port'     => 'PGPORT',
+    'username' => 'PGUSER'
+}
+
+database_yml = ENV["DATABASE_YML"] || File.expand_path('../../config/database.yml', __FILE__)
+rails_env = ENV["DATABASE_RAILS_ENV"] || ENV["RAILS_ENV"] || ENV["RACK_ENV"] || "production"
+
+config = YAML.load_file(database_yml)[rails_env] or raise ArgumentError, "no configuration for #{rails_env}"
+
+env = {}
+config.each do |k, v|
+    env[DB_YML_2_PG_ENV[k]] = v if DB_YML_2_PG_ENV.key?(k)
+end
+
+exec(env.merge(ENV), File.basename($0).chomp(".rb"), *ARGV)
+EOPGDUMPRB
+
+    task :pg_dump_rb_wrapper do
+        on roles :db do
+            upload! StringIO.new(PG_DUMP_RB), "#{fetch(:tmp_dir)}/pg_dump.rb"
+            execute :chmod, "+x", "#{fetch(:tmp_dir)}/pg_dump.rb"
+        end
+    end
+
+    def remote_dump_db()
+        exclude_tables = fetch(:db_dump_exclude_tables) || []
+        remote_rails_env = fetch(:db_dump_rails_env) || fetch(:rails_env) || "production"
+        remote_database_yml = shared_path.join("config", "database.yml")
+        remote_tmp_dir = fetch(:tmp_dir)
+        pg_dump_args = "-Fp --no-privileges --no-owner"
+        pg_dump_schema_args = pg_dump_args + " --clean"
+        if (exclude_tables.empty?)
+            exclude_tables_args = ""
+        else
+            exclude_tables_args = "--exclude-tables " << exclude_tables.join("|")
+        end
+
+        dump_cmd = <<-EOCOMMAND
+            set -e
+            export DATABASE_RAILS_ENV="#{remote_rails_env.to_s}"
+            export DATABASE_YML="#{remote_database_yml.to_s}"
+            DUMP_DIR=`mktemp -d --tmpdir="#{remote_tmp_dir}" pgdumpXXXX`
+            trap "rm -rf $DUMP_DIR" EXIT
+            #{remote_tmp_dir}/pg_dump.rb #{pg_dump_schema_args} --schema-only -f $DUMP_DIR/schema.dump >&2
+            #{remote_tmp_dir}/pg_dump.rb #{pg_dump_args} #{exclude_tables_args} --data-only -f $DUMP_DIR/data.dump >&2
+            DUMP_FILE=`mktemp --tmpdir="#{remote_tmp_dir}" pgdumpXXXX.tar.gz`
+            trap "rm $DUMP_FILE" ERR
+            tar -czf $DUMP_FILE -C $DUMP_DIR schema.dump data.dump >&2
+            echo $DUMP_FILE
+        EOCOMMAND
+
+        remote_file = capture(dump_cmd)
+        remote_file
+    end
+
+    desc 'Download database'
+    task download:  :'db:pg_dump_rb_wrapper' do
+       on roles :db do
+           remote_file = remote_dump_db()
+           download!(remote_file, "db_dump.tar.gz")
+           execute :rm, "-f", remote_file
+       end
+    end
+
+    desc 'pull database from remote to local server'
+    task pull:  :'db:pg_dump_rb_wrapper' do
+        local_database_yml = ENV['DATABASE_YML'] || 'config/database.yml'
+        local_database_rails_env = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'development'
+
+        on roles :db do
+            require 'tmpdir'
+            Dir.mktmpdir do |root_dir|
+                db_dump_file = File.join(root_dir, "db.dump.tar.gz")
+                psql_rb = File.join(root_dir, "psql.rb")
+
+                #psql.rb
+                File.open(psql_rb, "w", 0755) { |f| f.write(PG_DUMP_RB) }
+
+                #database dump
+                remote_file = remote_dump_db()
+                download!(remote_file, db_dump_file)
+                execute :rm, "-f", remote_file
+
+                #restore db
+                dump_cmd = <<-EOCOMMAND
+                    set -e
+                    export RAILS_ENV="#{local_database_rails_env}"
+                    export DATABASE_RAILS_ENV="#{local_database_rails_env}"
+                    export DATABASE_YML="#{local_database_yml}"
+                    bundle exec rake db:drop db:create
+                    tar -xOzf #{db_dump_file} | #{psql_rb}
+                    bundle exec rake db:migrate
+                EOCOMMAND
+
+                run_locally { execute dump_cmd }
+            end
+        end
+    end
+end
