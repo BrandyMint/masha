@@ -4,7 +4,33 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   def input
     # Если мы будем ограничивать, то пропадает возможность смотреть "весь месяц"
     #input_html_options[:max] = Date.today.end_of_week
-    super << shortcuts
+    
+    value = object.send(attribute_name) if object.respond_to? attribute_name
+    display_pattern = I18n.t('datepicker.dformat', :default => '%d-%m-%Y')
+    input_html_options[:value] ||= I18n.localize((value.is_a?(String) ? Date.parse(value) : value), :format => display_pattern) if value.present?
+    input_html_options[:placeholder] ||= 'dd-mm-yyyy'
+
+    input_html_options[:type] = 'text'
+    picker_pettern = I18n.t('datepicker.pformat', :default => 'dd-MM-yyyy') 
+    
+    input_html_options[:data] ||= {}
+    input_html_options[:data].merge!({ format: picker_pettern, language: I18n.locale.to_s,
+                                       date_weekstart: I18n.t('datepicker.weekstart', :default => 0, start_date: Date.today) })
+    
+    arbre attribute_name: attribute_name, input_html_options: input_html_options, builder: @builder, shortcuts: shortcuts do
+      div class: 'input-group datepicker-group', role: "date-picker" do
+        span do
+          builder.text_field attribute_name, input_html_options
+        end
+        span class: 'input-group-addon add-on' do
+          i class: 'fontello-icon-calendar'
+        end
+      end
+      div do
+        "#{shortcuts}".html_safe
+      end
+    end
+
   end
 
   def input_type
