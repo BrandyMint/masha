@@ -6,5 +6,4 @@ class SessionForm < FormObjectBase
 
   validates :email, presence: true, email: true
   validates :password, presence: true
-
 end

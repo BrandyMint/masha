@@ -14,6 +14,7 @@ ru:
       new: Отчет
     profile:
       edit: Профиль
+      change_password: Изменить пароль
     memberships:
       index: Участники проекта
     pages:
