@@ -25,7 +25,7 @@ set :rbenv_ruby_version, "2.0.0-p247"
 set :bundle_flags, "--deployment --quiet --binstubs"
 
 before 'deploy:restart', 'deploy:migrate'
-after 'deploy:update_code', 'deploy:bowerinstall'
+after 'deploy:update_code', 'deploy:bower install'
 after 'deploy', "deploy:cleanup"
 
 #RVM, Bundler
