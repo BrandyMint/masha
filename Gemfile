@@ -269,9 +269,8 @@ group :test do
 end
 
 group :deploy do
-  gem 'capistrano',  "~> 2.15", :require => false
-  gem 'capistrano-rbenv', :require => false
-  gem 'capistrano-recipes0', '>= 1.1.0', :git => 'git://github.com/BrandyMint/capistrano-recipes0.git', :require => false
-  gem 'holepicker', :require => false
-  gem 'airbrake', :github => 'airbrake/airbrake', :require => false
+  gem 'capistrano', '~> 3.0', :require => false
+  gem 'capistrano-rbenv', github: 'capistrano/rbenv', :require => false
+  gem 'capistrano-rails', github: 'capistrano/rails', :require => false
+  gem 'capistrano-bundler', github: 'capistrano/bundler', :require => false
 end
