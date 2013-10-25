@@ -20,5 +20,4 @@ class SessionsController < ApplicationController
   def new
     @session = SessionForm.new params[:session_form]
   end
-  
 end

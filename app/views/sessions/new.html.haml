@@ -10,8 +10,5 @@
     Нет аккаунта?
     = link_to "Зарегистрироваться", signup_url
     %hr
-    Забыли пароль?
-    = render :partial=> 'password_resets/forgot_password_form'
-
-
-
+    = t('.password_reset_label')
+    = link_to t('.password_reset_link'), new_password_reset_path
