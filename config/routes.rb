@@ -27,6 +27,10 @@ Masha::Application.routes.draw do
 
   resources :projects, :only => [:index, :show, :create, :new, :edit, :update] do
     resources :memberships
+    member do
+      put :activate
+      put :archivate
+    end
   end
   resources :time_shifts do
     collection do

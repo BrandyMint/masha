@@ -2,7 +2,8 @@
 %h1
   = @project.name
   = edit_project_link(@project)
-- if current_user.can_create?(Membership.new(project: @project))
+  = change_project_status_link(@project)
+- if @project.active and current_user.can_create?(Membership.new(project: @project))
   = render 'form'
 
 %h3 Участники
@@ -32,7 +33,7 @@
           = d.remove_link
 
 
-- if @users_available_for_project.present?
+- if @project.active and @users_available_for_project.present?
   %h3 Возможно вы захотите их тоже пригласить
 
   %table.table

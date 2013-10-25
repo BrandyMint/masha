@@ -123,7 +123,7 @@ module ApplicationHelper
 
   # TODO одни проекты ращрешены для ввода, другие для просмотра, не путать
   def available_projects
-    current_user.projects.ordered
+    current_user.projects.active.ordered
   end
 
   def user_roles user
@@ -151,7 +151,7 @@ module ApplicationHelper
   end
 
   def roles_select membership
-    if current_user.can_update? membership
+    if membership.project.active and current_user.can_update? membership
       render partial: 'memberships/roles', locals: {m: membership}
     else
       role_human membership.role

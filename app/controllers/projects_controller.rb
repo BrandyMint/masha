@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :require_login
   inherit_resources
+  authority_actions :activate => 'update', :archivate => 'update'
 
   def index
     @project = Project.new
@@ -39,6 +40,20 @@ class ProjectsController < ApplicationController
     @project.name = permited_params[:name]
     @project.save
 
+    redirect_to project_memberships_url(@project)
+  end
+
+  def activate
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    @project.activate
+    redirect_to project_memberships_url(@project)
+  end
+
+  def archivate
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    @project.archivate
     redirect_to project_memberships_url(@project)
   end
 
