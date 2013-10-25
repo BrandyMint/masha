@@ -46,3 +46,13 @@
           = select_tag :role, options_for_select(Membership.roles_collection.invert, :include_blank => false, :selected => Membership::DEFAULT_ROLE), data: { target_id: "##{target_id}" }, role: 'membership_role_selector'
         %td.col-xs-2
           = link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-default btn-mini'
+
+
+
+%hr
+%p.text-muted
+  Роли участников проекта:
+  %ul.text-muted
+    %li <em>Владалец</em> - имеет право добавлять/удалять и изменять роли участников проекта. Получает отчеты по всем участникам, может изменить любую информацию.
+    %li <em>Смотритель</em> - имеет право только получать любые отчеты по всем участникам проекта.
+    %li <em>Участник</em> - имеет право отмечать и изменять свое время. Не видит отчеты по другим участникам.
