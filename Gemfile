@@ -132,6 +132,8 @@ gem 'jbuilder', '~> 1.0.1'
 #gem 'airbrake_user_attributes'
 gem 'airbrake', :github => 'airbrake/airbrake'
 
+gem "github_api"
+
 group :assets do
   # Use edge version of sprockets-rails
   gem 'sprockets-rails', github: 'rails/sprockets-rails'
