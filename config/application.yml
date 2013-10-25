@@ -48,3 +48,5 @@ production:
 
 staging:
   <<: *defaults
+  default_url_options:
+    host: staging.mashtime.ru
