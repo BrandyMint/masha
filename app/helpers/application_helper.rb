@@ -190,7 +190,7 @@ module ApplicationHelper
 
   def login_with_github welcome = nil, signup = nil
     btn_class = welcome.present? ? "btn-welcome-github" : "btn-github"
-    link_to "#{root_url}auth/github", class: "#{btn_class}" do
+    link_to "#{root_url}auth/github", class: "#{btn_class}", role: 'no-wiselinks' do
       ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'войти с github')
     end
   end
