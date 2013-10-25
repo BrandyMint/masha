@@ -14,6 +14,8 @@ class Project < ActiveRecord::Base
   has_many :invites
 
   scope :ordered, -> { order(:name) }
+  scope :active, -> { where(active: true) }
+  scope :archive, -> { where(active: false) }
 
   validates :name, :presence => true, :uniqueness => true
   validates :slug, :presence => true, :uniqueness => true
@@ -29,5 +31,13 @@ class Project < ActiveRecord::Base
 
   def roles_of_user user
     applied_roles.select { |r| r.user==user }
+  end
+
+  def activate
+    self.update_attribute(:active, true)
+  end
+
+  def archivate
+    self.update_attribute(:active, false)
   end
 end

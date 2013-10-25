@@ -1,14 +1,16 @@
 -# Вход
 -# @user
 
-%h2 Доступные проекты
-
 - if user.projects.empty?
   .alert.alert-warning Нет доступных проектов.
 - else
-  %table.table
-    - user.memberships.ordered_by_role.each do |m|
-      %tr
-        %th= link_to m.project, project_memberships_url(m.project_id)
-        %td= role_human(m.role)
-        %td.text-muted= UserDecorator.decorate_collection(m.project.users).map(&:link).join(', ').html_safe
+  - {:active_projects=>true, :archive_projects => false}.each do |projects_type, active_status|
+    - if user.memberships.with_project_status(active_status).any?
+      %h2=t(".#{projects_type}")
+
+      %table.table
+        - user.memberships.with_project_status(active_status).ordered_by_role.each do |m|
+          %tr
+            %th= link_to m.project, project_memberships_url(m.project_id)
+            %td= role_human(m.role)
+            %td.text-muted= UserDecorator.decorate_collection(m.project.users).map(&:link).join(', ').html_safe

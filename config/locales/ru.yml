@@ -49,3 +49,12 @@ ru:
     new:
       password_reset_label: Забыли пароль?
       password_reset_link: Сбросить пароль
+
+  project:
+    archivate: Архивировать
+    activate: Активировать
+
+  application:
+    available_projects:
+      active_projects: Активные проекты
+      archive_projects: Архивные проекты
