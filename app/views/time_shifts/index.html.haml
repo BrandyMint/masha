@@ -1,16 +1,3 @@
 = render 'time_sheet_form'
 
-- @result.result.each do |g|
-  %h3.no-margin-top.pull-left
-    = g[:title]
-    %small
-      = title_of_group_results g
-  .pull-right
-    - if @result.present?
-      = render 'export_links'
-  .clearfix
-  = render 'list', :time_shifts => g[:time_shifts]
-
-
-- if @result.result.present?
-  = render 'print_ready'
+= render 'report'

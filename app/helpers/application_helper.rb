@@ -1,5 +1,22 @@
 module ApplicationHelper
 
+  def summary_button in_summary=false
+    title = 'Сводка'
+
+    if in_summary
+      link = time_shifts_url
+      klass = 'btn-primary'
+    else
+      link = summary_time_shifts_url
+      klass = 'btn-default'
+    end
+    content_tag :div, class: :container do
+      content_tag :div, class: 'pull-right' do
+        link_to title, link, class: "btn btn-default #{klass}"
+      end
+    end
+  end
+
   def week_day_class date
     # TODO Расчитывать выходной согласно локали
     c = ''
