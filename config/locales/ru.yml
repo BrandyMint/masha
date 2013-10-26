@@ -59,3 +59,11 @@ ru:
     available_projects:
       active_projects: Активные проекты
       archive_projects: Архивные проекты
+
+  activemodel:
+    errors:
+      models:
+        email_form:
+          attributes:
+            email:
+              no_user: 'Пользователя с указанным email не существует'
