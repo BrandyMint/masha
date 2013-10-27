@@ -15,6 +15,7 @@ ru:
     profile:
       edit: Профиль
       change_password: Изменить пароль
+      set_password: Установить пароль
     memberships:
       index: Участники проекта
     pages:

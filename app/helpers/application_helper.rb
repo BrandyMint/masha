@@ -199,4 +199,11 @@ module ApplicationHelper
     end
   end
 
+  def set_change_password_title
+    if current_user.crypted_password.present?
+      t('titles.profile.change_password')
+    else
+      t('titles.profile.set_password')
+    end
+  end
 end
