@@ -40,6 +40,10 @@ $ ->
       $("#j_password_form").show()
       $(this).hide()
 
+    $("#j_archived_projects_link").click ->
+      $("#j_archived_projects_table").show()
+      $(this).hide()
+
     $('@datetime-picker').datetimepicker()
     $('@time-picker').datetimepicker({pickDate: false})
     $('@date-picker').datetimepicker({pickTime: false})
