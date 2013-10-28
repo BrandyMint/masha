@@ -1,3 +1,14 @@
 %h2 Создание нового проекта
 = render 'form'
-= render 'available_projects', :user => current_user
+- if @active_projects.empty? and @archive_projects.empty?
+  .alert.alert-warning Нет доступных проектов.
+- else
+  - if @active_projects.any?
+    %h3=t(".active_projects")
+    = render 'projects', :projects => @active_projects, :user => current_user
+
+  - if @archive_projects.any?
+    = link_to 'javascript:void(0)', {:data => {:toggle => 'collapse', :target=>'#j_archive_projects_table'}} do
+      %h3=t(".archive_projects")
+    #j_archive_projects_table.collapse.out
+      = render 'projects', :projects => @archive_projects, :user => current_user

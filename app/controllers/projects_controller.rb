@@ -5,6 +5,8 @@ class ProjectsController < ApplicationController
 
   def index
     @project = Project.new
+    @active_projects = current_user.available_projects.active
+    @archive_projects = current_user.available_projects.archive
     super
   end
 

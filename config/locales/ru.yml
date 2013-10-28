@@ -55,8 +55,8 @@ ru:
     archivate: Архивировать
     activate: Активировать
 
-  application:
-    available_projects:
+  projects:
+    index:
       active_projects: Активные проекты
       archive_projects: Архивные проекты
 
