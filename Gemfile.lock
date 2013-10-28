@@ -205,7 +205,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bond (0.4.3)
-    bootstrap-datetimepicker-rails (0.0.11)
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
@@ -667,7 +666,6 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bond
-  bootstrap-datetimepicker-rails
   bootstrap-sass (= 3.0.0.0)!
   breadcrumbs_on_rails
   cache_digests
