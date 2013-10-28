@@ -12,6 +12,7 @@ Masha::Application.routes.draw do
   get "login" => "sessions#new", :as => "login"
   get "signup" => "users#new", :as => "signup"
   get "feedback" => "pages#feedback", :as => "feedback"
+  get "error" => "errors#index", :as => "error"
 
   resources :users, :only => [:new, :create]
   resources :sessions, :only => [:new, :create, :destroy]
