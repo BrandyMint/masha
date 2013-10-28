@@ -1,5 +1,5 @@
 - if @result.projects.present?
-
+  -#%div{ class: @result.projects.count < 8 ? 'container' : '' }
   %table.table
     %thead
       %tr
@@ -30,6 +30,7 @@
     = render 'print_ready'
 
 - else
-  .alert-info Нет сводных данных за ближайший период.
+  .container
+    .alert-info Нет сводных данных за ближайший период.
 
 

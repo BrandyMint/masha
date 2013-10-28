@@ -1,6 +1,6 @@
-.container= render 'time_sheet_form'
+.container
+  = render 'time_sheet_form'
 
-.time-shifts-container
   - @result.result.each do |g|
     %h3.no-margin-top
       = g[:title]
