@@ -1,13 +1,19 @@
 class PasswordResetsController < ApplicationController
   skip_before_filter :require_login
   def new
-    @password_form = PasswordResetForm.new
+    @email_form = EmailForm.new
   end
 
   def create
-    @user = User.find_by_email(params[:password_reset_form][:email])
-    @user.deliver_reset_password_instructions! if @user
-    redirect_to(new_session_path, :notice => t('devise.passwords.send_paranoid_instructions'))
+    @email_form = EmailForm.new params.require(:email_form).permit(:email)
+
+    if @email_form.valid?
+      user = User.find_by_email(params[:email_form][:email])
+      user.deliver_reset_password_instructions!
+      redirect_to(new_session_path, :notice => t('devise.passwords.send_paranoid_instructions'))
+    else
+      render :new
+    end
   end
 
   def edit
@@ -18,9 +24,7 @@ class PasswordResetsController < ApplicationController
       not_authenticated
       return
     end
-
-    @password_form = PasswordResetForm.new
-    @password_form.email = @user.email
+    @password_form = PasswordChangeForm.new
   end
 
   def update
@@ -32,7 +36,7 @@ class PasswordResetsController < ApplicationController
       return
     end
 
-    @password_form = PasswordResetForm.new(permitted_params)
+    @password_form = PasswordChangeForm.new(permitted_params)
 
     if @password_form.valid?
       @user.change_password!(@password_form.password)
@@ -46,6 +50,6 @@ class PasswordResetsController < ApplicationController
   private
 
   def permitted_params
-    params.require(:password_reset_form).permit(:email, :password, :password_confirmation)
+    params.require(:password_change_form).permit(:password, :password_confirmation)
   end
 end
