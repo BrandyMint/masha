@@ -36,10 +36,6 @@ $ ->
     $("#session_form_email").focusin -> $(@).attr "placeholder", ""
     $("#session_form_email").focusout -> $(@).attr "placeholder", $(@).data("holder")
 
-    $("#j_password_link").click ->
-      $("#j_password_form").show()
-      $(this).hide()
-
     $('@datetime-picker').datetimepicker()
     $('@time-picker').datetimepicker({pickDate: false})
     $('@date-picker').datetimepicker({pickTime: false})
