@@ -35,9 +35,6 @@ $ ->
     $("#session_form_email").focusin -> $(@).attr "placeholder", ""
     $("#session_form_email").focusout -> $(@).attr "placeholder", $(@).data("holder")
 
-    $('@datetime-picker').datetimepicker()
-    $('@time-picker').datetimepicker({pickDate: false})
-    $('@date-picker').datetimepicker({pickTime: false})
   )()
 
   $(document).off('page:done').on 'page:done', jsHandlers
