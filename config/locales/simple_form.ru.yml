@@ -24,7 +24,7 @@ ru:
         sending: Отправляем...
         saving: Сохраняем...
         waiting: Подождите...
-    labels:
+    labels: &labels
       defaults:
         date_from: С
         date_to: По
@@ -61,6 +61,7 @@ ru:
         person: По исполнителям
 
     placeholders:
+      <<: *labels
       defaults:
         title: Название
         name: Имя
