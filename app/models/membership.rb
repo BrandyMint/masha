@@ -13,7 +13,6 @@ class Membership < ActiveRecord::Base
   scope :last_updates,    -> { order('updated_at desc') }
   scope :viewable,        -> { order 'role_cd < 2'}
   scope :ordered_by_role, -> { order :role_cd }
-  scope :with_project_status, -> (project_status) {includes(:project).joins(:project).where(Project.arel_table[:active].eq(project_status)) }
   scope :owners,          -> { where role_cd: 0 }
   scope :viewers,         -> { where role_cd: 1 }
   scope :members,         -> { where role_cd: 2 }
