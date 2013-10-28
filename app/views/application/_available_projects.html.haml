@@ -7,8 +7,9 @@
   - {:active_projects=>true, :archive_projects => false}.each do |projects_type, active_status|
     - if user.memberships.with_project_status(active_status).any?
       %h2=t(".#{projects_type}")
-
-      %table.table
+      - if active_status == false
+        = link_to t(".show_archived_projects"), 'javascript:void(0)', {:id=>'j_archived_projects_link'}
+      %table.table{:id=>(active_status ? nil : 'j_archived_projects_table' )}
         - user.memberships.with_project_status(active_status).ordered_by_role.each do |m|
           %tr
             %th= link_to m.project, project_memberships_url(m.project_id)
