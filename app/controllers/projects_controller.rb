@@ -5,6 +5,8 @@ class ProjectsController < ApplicationController
 
   def index
     @project = Project.new
+    @archive_memberships = current_user.memberships.with_project_status(false)
+    @active_memberships = current_user.memberships.with_project_status(true)
     super
   end
 
