@@ -1,3 +1,14 @@
 %h2 Создание нового проекта
 = render 'form'
-= render 'available_projects', :user => current_user
+- if current_user.projects.empty?
+  .alert.alert-warning Нет доступных проектов.
+- else
+  - if (active_memberships = current_user.memberships.with_project_status(true)).any?
+    %h3=t(".active_projects")
+    = render 'memberships', :memberships => active_memberships
+
+  - if (archive_memberships = current_user.memberships.with_project_status(false)).any?
+    = link_to 'javascript:void(0)', {:id=>'j_archive_projects_link', 'data-toggle'=>"collapse", 'data-target'=>"#j_archive_projects_table"} do
+      %h3=t(".archive_projects")
+    #j_archive_projects_table.collapse.out
+      = render 'memberships', :memberships => archive_memberships

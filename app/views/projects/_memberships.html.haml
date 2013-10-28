@@ -1,0 +1,6 @@
+%table.table
+  - memberships.each do |m|
+    %tr
+      %th= link_to m.project, project_memberships_url(m.project_id)
+      %td= role_human(m.role)
+      %td.text-muted= UserDecorator.decorate_collection(m.project.users).map(&:link).join(', ').html_safe
