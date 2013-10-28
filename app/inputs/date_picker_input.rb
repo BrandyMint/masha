@@ -6,12 +6,15 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
     #input_html_options[:max] = Date.today.end_of_week
     
     value = object.send(attribute_name) if object.respond_to? attribute_name
-    display_pattern = I18n.t('datepicker.dformat', :default => '%d-%m-%Y')
+    #display_pattern = I18n.t('datepicker.dformat', :default => '%d-%m-%Y')
+    display_pattern = I18n.t('datepicker.dformat', :default => '%Y-%m-%d')
     input_html_options[:value] ||= I18n.localize((value.is_a?(String) ? Date.parse(value) : value), :format => display_pattern) if value.present?
-    input_html_options[:placeholder] ||= 'dd-mm-yyyy'
+    #input_html_options[:placeholder] ||= 'dd-mm-yyyy'
+    input_html_options[:placeholder] ||= 'yyyy-mm-dd'
 
     input_html_options[:type] = 'text'
-    picker_pettern = I18n.t('datepicker.pformat', :default => 'dd-MM-yyyy') 
+    #picker_pettern = I18n.t('datepicker.pformat', :default => 'dd-MM-yyyy') 
+    picker_pettern = I18n.t('datepicker.pformat', :default => 'yyyy-MM-dd') 
     
     input_html_options[:data] ||= {}
     input_html_options[:data].merge!({ format: picker_pettern, language: I18n.locale.to_s,
