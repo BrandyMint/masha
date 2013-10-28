@@ -13,7 +13,6 @@
 #= require jquery.role
 #= require bootstrap
 #= require jquery-autosize/jquery.autosize
-#= require bootstrap-datetimepicker
 #= require stepper
 #= require purl/purl
 #= require wiselinks

@@ -133,7 +133,6 @@ gem 'jbuilder', '~> 1.0.1'
 gem 'airbrake', :github => 'airbrake/airbrake'
 
 gem "github_api"
-gem 'bootstrap-datetimepicker-rails'
 
 # Use edge version of sprockets-rails
 gem 'sprockets-rails', github: 'rails/sprockets-rails'
