@@ -20,10 +20,17 @@
     font-size: 1.2em
 
 .btn-welcome
-  @extend .btn-success
-  font-weight: bold
-  font-size: 1.3em
-  padding: 0.7em
+  width: auto
+  font-size: 1.1em
+  font-weight: 300
+  padding: 0.3em
+  +link-colors(rgba(#fff,0.8), #fff)
+  +transition(color 0.2s ease)
+  &, &:hover, &:focus
+    background: none
+    border: 0
+
+
 .welcome-start-button
   width: 280px
 .welcome-button-caption
@@ -33,17 +40,13 @@
   margin-top: 0.5em
 
 .btn-welcome-github
+  @extend .btn
   @extend .btn-block
-  @extend .btn-welcome
-  width: auto
-  font-size: 1.1em
-  font-weight: 300
-  padding: 1.1em
-  +link-colors(rgba(#fff,0.8), #fff)
-  +transition(color 0.2s ease)
-  &, &:hover, &:focus
-    background: none
-    border: 0
+  @extend .btn-success
+  font-weight: bold
+  font-size: 1.3em
+  padding: 0.7em
+  +transition(background 0.2s ease, border 0.2s ease)
 
 .btn-github
   @extend .btn

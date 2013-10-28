@@ -8,11 +8,15 @@
       .row
         .col-sm-6.col-md-6
           .welcome-start-button
-            = link_to 'Начать пользоваться', signup_url, class: 'btn btn-welcome btn-block'
+            = login_with_github :welcome
             %p.welcome-button-caption
-              Абсолютно бесплатно. Навсегда.
-        .col-sm-6.col-md-4
-          = login_with_github :welcome
+              %strong Бесплатные аккаунты для всех,
+              %br успейте до конца года!
+        .col-sm-6.col-md-2
+          = link_to signup_url, class: 'btn btn-welcome btn-block' do
+            %small Нет аккаунта на github?
+            %br
+            %strong Войдите с email
   .welcome-description
     .row
       .col-md-5.welcome-feature-block

@@ -1,16 +1,19 @@
-= render 'time_sheet_form'
+.container
+  = render 'time_sheet_form'
 
-- @result.result.each do |g|
-  %h3.no-margin-top.pull-left
-    = g[:title]
-    %small
-      = title_of_group_results g
-  .pull-right
-    - if @result.present?
-      = render 'export_links'
-  .clearfix
-  = render 'list', :time_shifts => g[:time_shifts]
+  - @result.result.each do |g|
+    %h3.no-margin-top
+      = g[:title]
+      %small
+        = title_of_group_results g
+    = render 'list', :time_shifts => g[:time_shifts]
 
 
-- if @result.result.present?
-  = render 'print_ready'
+  - if @result.result.present?
+    .pull-left
+      = render 'print_ready'
+    .pull-right
+      - if @result.present?
+        = render 'export_links'
+    .clearfix
+
