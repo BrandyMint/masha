@@ -46,6 +46,26 @@ describe ProfileController do
         end
       end
     end
+
+    describe "#change_password" do
+      context "with valid params" do
+        it "should change password" do
+          user = controller.current_user
+          old_password = user.crypted_password
+          post :change_password, :password_change_form => {:password => '1234', :password_confirmation => '1234'}
+          user.reload
+          user.crypted_password.should_not == old_password
+        end
+      end
+
+      context "with invalid params" do
+        it "render view" do
+          post :change_password, :password_change_form => {:password => '1234', :password_confirmation => '123'}
+          response.should render_template('edit')
+        end
+      end
+    end
+
   end
 
 end
