@@ -2,10 +2,14 @@
   = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
   %span.brand-caption= Settings.app.title
 
-%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+-#%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
   = ficon('menu-1', color: 'white', size: 24)
 
-.navbar-collapse.collapse
+-#.navbar-collapse.collapse
+.navbar-navigation.hidden-xs.hidden-sm
+  = render_navigation :expand_all => true, :renderer => :bootstrap
+  .clearfix
+.navbar-navigation-mobile.visible-xs.visible-sm
   = render_navigation :expand_all => true, :renderer => :bootstrap
   .clearfix
 

@@ -25,6 +25,7 @@
   background: none
   .nav.navbar-nav
     & > li
+      float: left
       & > a
         color: #fff
         font-weight: 700
@@ -34,7 +35,7 @@
         &:hover
           color: rgba(255,255,255,0.7)
           background: none
-    @media screen and (max-width: $screen-sm)
+    //@media screen and (max-width: $screen-sm)
       margin: 0
       width: 100%
       background: rgba(#fff,0.2)
@@ -66,6 +67,7 @@
 
   .nav.navbar-nav
     & > li
+      float: left
       & > a
         color: $grayLightest
         font-weight: 700
@@ -78,25 +80,35 @@
         &.active
           background: rgba(#000,0.5)
     @media screen and (max-width: $screen-sm)
-      margin: 0
-      width: 100%
-      & > li
+      //margin: 0
+        width: 100%
+        & > li
+          & > a
+            margin: 10px auto
+            padding: 10px
+            display: block
+            text-align: center
+      li.open
         & > a
-          margin: 10px auto
-          padding: 10px
-          display: block
-          text-align: center
-      .open
+          &, &.active
+            &, &:hover
+              background: lighten($navbarBackgroundColor, 10%)
         .dropdown-menu
-          background: darken($navbarBackgroundColor, 10%)
+          position: fixed
+          top: inherit
+          left: 0
+          right: 0
+          background: lighten($navbarBackgroundColor, 10%)
           padding: 0
           & > li
             & > a
+              +link-colors(#fff, rgba(#fff,0.7))
               padding: 10px 0
               text-align: center
               text-transform: uppercase
               letter-spacing: 1px
               font-size: 0.85em
+          
   .navbar-collapse
     padding: 0
 
@@ -104,5 +116,17 @@
   max-width: 120px
   margin-top: 12px
 
+.navbar-menu-icon
+  font-size: 20px
+  @extend .v-align-middle
+  opacity: 0.8
+  .active &, .open &
+    opacity: 1
+  @media screen and (min-width: $screen-sm)
+    opacity: 0.5
+    margin-right: 5px
 
+.navbar-menu-label
+  @media screen and (max-width: $screen-md)
+    display: none
 

@@ -14,10 +14,10 @@ SimpleNavigation::Configuration.run do |navigation|
         #end
       #end
 
-      primary.item :new_time, 'Отметить время', new_time_shift_url
-      primary.item :times, 'Получить отчет', time_shifts_url
+      primary.item :new_time, menu_new_time, new_time_shift_url
+      primary.item :times, menu_times, time_shifts_url
 
-      primary.item :profile, current_user.to_s do |user|
+      primary.item :profile, menu_current_user do |user|
         #user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)
         user.item :edit_profile, 'Профиль', edit_profile_url
         user.item :projects, 'Проекты', projects_url
