@@ -6,7 +6,9 @@
     = render 'form'
   .col-sm-4.col-sm-offset-1
     = login_with_github
-    %hr
+    %hr.visible-sm
+    %br.hidden-sm
+    %br.hidden-sm
     Уже есть аккаунт?
     = link_to 'Войти', login_url
 

@@ -6,7 +6,8 @@
     = f.input :email, :require => true, label: false, input_html: {class: 'form-control'}
   .form-group
     = f.input :password, :require => true, :as => :eye_password, label: false, input_html: {class: 'form-control'}
-  %hr.small
-    = f.button :submit, t('helpers.submit.signup'), :class => 'btn btn-primary'
+  .form-group
+    = f.button :submit, t('helpers.submit.signup'), :class => 'btn btn-primary btn-block btn-lg'
+    %br
 
 

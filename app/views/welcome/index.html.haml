@@ -12,11 +12,12 @@
             %p.welcome-button-caption
               %strong Бесплатные аккаунты для всех,
               %br успейте до конца года!
-        .col-sm-6.col-md-2
-          = link_to signup_url, class: 'btn btn-welcome btn-block' do
-            %small Нет аккаунта на github?
-            %br
-            %strong Войдите с email
+        .col-sm-5.col-md-2.col-lg-3.col-sm-offset-1.col-lg-offset-0
+          .btn-welcome-block
+            = link_to signup_url, class: 'btn btn-welcome btn-block' do
+              %small Нет аккаунта на github?
+              %br
+              %strong Войдите с email
   .welcome-description
     .row
       .col-md-5.welcome-feature-block
