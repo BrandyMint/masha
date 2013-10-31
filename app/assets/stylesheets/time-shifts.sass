@@ -1,6 +1,14 @@
 .time-sheet-form
   margin-top: 20px
 
+.time-shift-form
+  &, &.form-horizontal
+    @media screen and (max-width: $screen-sm)
+      .control-label
+        padding:
+          top: 0
+          bottom: 7px
+
 .time-sheet-group-by
   label.radio
     @extend small
@@ -14,19 +22,20 @@
 .time-shift-form-label
   @extend .col-sm-4
   @extend .col-md-2
-  @extend .col-xs-4
+  @extend .col-xs-12
 
 .time-shift-form-input
   @extend .col-sm-8
   @extend .col-md-4
-  @extend .col-xs-8
+  @extend .col-xs-12
+  .form-group
+    margin: 0
 
 .time-shift-form-button-submit
   @extend .time-shift-form-input
-  @extend .col-sm-offset-4
-  @extend .col-md-offset-2
-  @extend .col-xs-12
-  padding-left: 0
+  //@extend .col-sm-offset-4
+  //@extend .col-md-offset-2
+  //@extend .col-xs-12
 
 
 .time-shifts-container

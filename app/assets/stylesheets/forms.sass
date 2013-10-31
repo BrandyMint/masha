@@ -17,6 +17,21 @@ textarea
   input[type="#{$type}"]
     +formControlElement
 
+.form-group
+  @media screen and (max-width: $screen-xs)
+    margin:
+      bottom: 10px
+    .control-group
+      margin:
+        left: 0
+        right: 0
+    input[type="date"],
+    input[type="time"],
+    input[type="datetime"]
+      min-width: 95%
+      max-width: 100%
+      +box-sizing(border-box)
+
 .control-group
   @extend .form-group
   &.error

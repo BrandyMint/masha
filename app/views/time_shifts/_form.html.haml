@@ -1,4 +1,4 @@
-= simple_form_for @time_shift, :html => { :class => 'form-horizontal', role: 'time_shift_form' } do |f|
+= simple_form_for @time_shift, :html => { :class => 'time-shift-form form-horizontal', role: 'time_shift_form' } do |f|
   = f.error_notification
   .form-inputs
     .row
@@ -18,22 +18,24 @@
             = f.input :hours, as: :stepper, :input_html => { :autofocus => :autofocus, :min => 0.1, :max => 24, class: 'form-control input-sm' }, label: false
       .col-md-8.col-sm-offset-3.col-sm-6
         .form-group
-          = f.label :description, class: 'time-shift-form-label'
-          .col-sm-8
+          .time-shift-form-label
+          .time-shift-form-input
             = f.input :description, :input_html => { :role => 'autosize', class: 'form-control input-sm' }, label: false
-        .time-shift-form-button-submit
-          .form-group
+        .form-group
+          .time-shift-form-label
+          .time-shift-form-button-submit
             = button_tag type: 'submit', class: 'btn btn-primary btn-lg btn-block',
               :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
               = icon :ok, :white
               = t :create, :scope => [:helpers, :submit, :time_shift]
-        .time-shift-form-input.col-xs-12
+        .time-shift-form-label
+        .time-shift-form-input
           .form-group
+            = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
+              Сбросить изменения
             .pull-right
               - if @time_shift.present? && @time_shift.hours
                 = TimeShiftDecorator.new(@time_shift).remove_link
-            = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
-              Сбросить изменения
             .clearfix
 
 :coffee
