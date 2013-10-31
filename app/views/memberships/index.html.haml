@@ -3,6 +3,8 @@
   = @project.name
   = edit_project_link @project
   = change_project_status_link @project
+  = link_to 'Отметить', new_time_shift_url(time_shift: { project_id: @project.id}), class: 'btn btn-success'
+  = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn btn-success'
 - if @project.active and current_user.can_create?(Membership.new(project: @project))
   = render 'form'
 
