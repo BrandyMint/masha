@@ -87,6 +87,7 @@ class TimeShiftsController < ApplicationController
 
     query.available_projects = current_user.available_projects
     query.available_users = current_user.available_users
+    query.group_by = params[:group_by]
     query.perform
 
     query

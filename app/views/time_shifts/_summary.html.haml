@@ -1,4 +1,4 @@
-- if @result.projects.present?
+- if @result.columns.present?
   -#%div{ class: @result.projects.count < 8 ? 'container' : '' }
   %table.table
     %thead
@@ -6,7 +6,9 @@
         %th
           Сводка за
           = summary_period_link @result
-        - @result.projects.each do |p|
+          %br
+          = summary_group_link @result
+        - @result.columns.each do |p|
           %th= p
         %th Всего
 
@@ -14,19 +16,18 @@
       - @result.days.each do |d|
         %tr
           %th{class: week_day_class(d[:date])}= human_date d[:date]
-          - @result.projects.each do |project|
+          - @result.columns.each do |column|
             %td{class: week_day_class(d[:date])}
-              - if d[:projects][project.id].blank?
+              - if d[:columns][column.id].blank?
                 .muted= '-'
               - else
-                = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], project_id: project.id, group_by: :person}) do
-                  = human_hours d[:projects][project.id]
+                = summary_hours @result, d, column
           %td{class: week_day_class(d[:date])}
             %b
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
                 = human_hours @result.total_by_date[d[:date]]
 
-  - if @result.projects.present?
+  - if @result.columns.present?
     = render 'print_ready'
 
 - else

@@ -1,5 +1,31 @@
 module ApplicationHelper
 
+  def summary_hours summary, d, column
+
+    hsf = {
+      date_from: d[:date],
+      date_to: d[:date],
+      group_by: :person
+    }
+    if summary.group_by.to_s=='project'
+      hsf[:project_id] = column.id
+    else
+      hsf[:user_id] = column.id
+    end
+
+    link_to time_shifts_url time_sheet_form: hsf do
+      human_hours d[:columns][column.id]
+    end
+  end
+
+  def summary_group_link result
+    if result.group_by==:project
+      link_to 'по проекту', summary_time_shifts_url(period: result.period, group_by: :user), title: 'Переключить на сводку по исполнителям', role: :tooltip
+    else
+      link_to 'по исполнителю', summary_time_shifts_url(period: result.period, group_by: :project), title: 'Переключить на сводку по проектам', role: :tooltip
+    end
+  end
+
   def summary_period_link result
     if result.period=='week'
       link_to 'неделю', summary_time_shifts_url(period: :month), title: 'Переключить на сводку за месяц', role: 'tooltip'
