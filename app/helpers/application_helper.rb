@@ -126,23 +126,24 @@ module ApplicationHelper
     @vpc ||= available_projects
   end
 
-  def available_users_to_set_collection
-    users = []
+  #def available_users_to_set_collection
+    #users = []
 
-    current_user.memberships.each do |m|
-      if m.owner?
-        users << m.project.users
-      else
-        users << m.user
-      end
-    end
+    #current_user.memberships.each do |m|
+      #if m.owner?
+        #users << m.project.users
+      #else
+        #users << m.user
+      #end
+    #end
 
-    users.flatten.uniq
-  end
+    #users.flatten.uniq
+  #end
 
   def available_users_to_view_collection
     #User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
-    @auvc = current_user.available_users.without(current_user).ordered
+    #
+    @auvc = current_user.active_available_users.without(current_user).ordered
 
     user = OpenStruct.new(current_user.attributes.clone)
     user.name = user.name.clone.concat t('helpers.you')
