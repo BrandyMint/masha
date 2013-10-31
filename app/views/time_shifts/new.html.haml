@@ -1,12 +1,10 @@
-.page-header.print-hide
-  %h1 Ух, я поработал. Надо отметить!
-
 - if setable_projects_collection.empty?
-  .alert.alert-warning У вас нет доступных проектов для тайминга.
+  .print-hide.alert.alert-warning У вас нет доступных проектов для тайминга.
 - else
+  %br
   = render 'form'
 
 - if this_day_shifts.exists?
-  %hr
+  %br
   %h3= t '.today_shifts'
   = render 'list', :time_shifts => this_day_shifts

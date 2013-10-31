@@ -3,7 +3,7 @@ module ProjectsHelper
 	def edit_project_link project
 		if current_user.can_update? project
 			link_to edit_project_path(project) do
-				icon :edit
+				'edit' #icon :edit
 			end
 		end
 	end
@@ -14,7 +14,11 @@ module ProjectsHelper
 
   def change_project_status_link project
     if project.active
-      link_to t('project.archivate'), archivate_project_path(@project), :method=>:put, :class => 'btn btn-default btn-mini'
+      if project.time_shifts.any?
+        link_to t('project.archivate'), archivate_project_path(@project), :method=>:put, :class => 'btn btn-default btn-mini'
+      else
+        link_to t('project.remove'), project_path(@project), :method=>:delete, :class => 'btn btn-danger btn-mini'
+      end
     else
       link_to t('project.activate'), activate_project_path(@project), :method=>:put, :class => 'btn btn-default btn-mini'
     end

@@ -26,7 +26,7 @@ Masha::Application.routes.draw do
 
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
-  resources :projects, :only => [:index, :show, :create, :new, :edit, :update] do
+  resources :projects do
     resources :memberships
     member do
       put :activate

@@ -1,8 +1,8 @@
 = projects_link
 %h1
   = @project.name
-  = edit_project_link(@project)
-  = change_project_status_link(@project)
+  = edit_project_link @project
+  = change_project_status_link @project
 - if @project.active and current_user.can_create?(Membership.new(project: @project))
   = render 'form'
 

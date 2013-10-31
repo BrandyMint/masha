@@ -4,11 +4,13 @@
   .alert.alert-warning Нет доступных проектов.
 - else
   - if @active_projects.any?
-    %h3=t(".active_projects")
+    %h3= t ".active_projects", count: @active_projects.count
     = render 'projects', :projects => @active_projects, :user => current_user
+  - else
+    .alert.alert-warning Нет активных проектов.
 
   - if @archive_projects.any?
     = link_to 'javascript:void(0)', {:data => {:toggle => 'collapse', :target=>'#j_archive_projects_table'}} do
-      %h3=t(".archive_projects")
+      %h4= t ".archive_projects", count: @archive_projects.count
     #j_archive_projects_table.collapse.out
       = render 'projects', :projects => @archive_projects, :user => current_user

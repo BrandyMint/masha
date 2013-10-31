@@ -9,7 +9,7 @@ class ProjectAuthorizer < ApplicationAuthorizer
   end
 
   def deletable_by? user
-    updatable_by?(user) && resource.time_shits.empty?
+    updatable_by?(user) && resource.time_shifts.empty?
   end
 
 	protected

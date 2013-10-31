@@ -1,7 +1,4 @@
                             Prefix Verb   URI Pattern                                                Controller#Action
-            password_resets_create GET    /password_resets/create(.:format)                          password_resets#create
-              password_resets_edit GET    /password_resets/edit(.:format)                            password_resets#edit
-            password_resets_update GET    /password_resets/update(.:format)                          password_resets#update
                         admin_root GET    /admin(.:format)                                           admin/dashboard#index
     batch_action_admin_time_shifts POST   /admin/time_shifts/batch_action(.:format)                  admin/time_shifts#batch_action
                  admin_time_shifts GET    /admin/time_shifts(.:format)                               admin/time_shifts#index
@@ -73,14 +70,11 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                                    PATCH  /profile(.:format)                                         profile#update
                                    PUT    /profile(.:format)                                         profile#update
                                    DELETE /profile(.:format)                                         profile#destroy
-                   password_resets GET    /password_resets(.:format)                                 password_resets#index
-                                   POST   /password_resets(.:format)                                 password_resets#create
+                   password_resets POST   /password_resets(.:format)                                 password_resets#create
                 new_password_reset GET    /password_resets/new(.:format)                             password_resets#new
                edit_password_reset GET    /password_resets/:id/edit(.:format)                        password_resets#edit
-                    password_reset GET    /password_resets/:id(.:format)                             password_resets#show
-                                   PATCH  /password_resets/:id(.:format)                             password_resets#update
+                    password_reset PATCH  /password_resets/:id(.:format)                             password_resets#update
                                    PUT    /password_resets/:id(.:format)                             password_resets#update
-                                   DELETE /password_resets/:id(.:format)                             password_resets#destroy
                project_memberships GET    /projects/:project_id/memberships(.:format)                memberships#index
                                    POST   /projects/:project_id/memberships(.:format)                memberships#create
             new_project_membership GET    /projects/:project_id/memberships/new(.:format)            memberships#new
@@ -89,6 +83,8 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                                    PATCH  /projects/:project_id/memberships/:id(.:format)            memberships#update
                                    PUT    /projects/:project_id/memberships/:id(.:format)            memberships#update
                                    DELETE /projects/:project_id/memberships/:id(.:format)            memberships#destroy
+                  activate_project PUT    /projects/:id/activate(.:format)                           projects#activate
+                 archivate_project PUT    /projects/:id/archivate(.:format)                          projects#archivate
                           projects GET    /projects(.:format)                                        projects#index
                                    POST   /projects(.:format)                                        projects#create
                        new_project GET    /projects/new(.:format)                                    projects#new
@@ -96,6 +92,7 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                            project GET    /projects/:id(.:format)                                    projects#show
                                    PATCH  /projects/:id(.:format)                                    projects#update
                                    PUT    /projects/:id(.:format)                                    projects#update
+                                   DELETE /projects/:id(.:format)                                    projects#destroy
                summary_time_shifts GET    /time_shifts/summary(.:format)                             time_shifts#summary
                        time_shifts GET    /time_shifts(.:format)                                     time_shifts#index
                                    POST   /time_shifts(.:format)                                     time_shifts#create

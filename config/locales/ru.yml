@@ -54,11 +54,12 @@ ru:
   project:
     archivate: Архивировать
     activate: Активировать
+    remove: Удалить
 
   projects:
     index:
-      active_projects: Активные проекты
-      archive_projects: Архивные проекты
+      active_projects: Активные проекты (%{count})
+      archive_projects: Архивные проекты (%{count})
 
   activemodel:
     errors:

@@ -59,6 +59,14 @@ class ProjectsController < ApplicationController
     redirect_to project_memberships_url(@project)
   end
 
+  def destroy
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    @project.destroy
+
+    redirect_to projects_url
+  end
+
   protected
 
   def collection
