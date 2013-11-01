@@ -10,7 +10,7 @@ class Invite < ActiveRecord::Base
 	scope :sent_to, -> (user) { where email: user.email }
 
 	validates :user, presence: true
-	validates :email, presence: true, :uniqueness => { :scope => [:project] }
+	validates :email, presence: true, :uniqueness => { :scope => [:project_id] }
 	validates :role, presence: true, :inclusion => { :in => Membership.roles.keys.map{|k| k.to_s} }
 	validates :project, presence: true
 

@@ -27,12 +27,13 @@ class MembershipsController < ApplicationController
       if user.present?
         @project.memberships.create user: user, role: invite_params[:role]
       else
-        @invite = @project.invites.build invite_params.merge(user: current_user)
-        if @invite.save
-          flash[:notice] = t('invite_sent', email: @invite.email)
-        else
-          render :index and return
-        end
+        is = InviteService.new @project, invite_params
+        is.make_invite(
+          success: -> { flash[:notice] = t 'invite_sent', email: is.invite.email  },
+          failure: -> { flash[:error]  = t 'invite_error', email: is.invite.email; render :index and return }
+        )
+
+        @invite = is.invite
       end
       redirect_to project_memberships_url(@project)
     end
@@ -67,6 +68,6 @@ class MembershipsController < ApplicationController
 	end
 
 	def invite_params
-		params.require(:invite).permit(:email, :role, :user_id)
+		params.require(:invite).permit(:email, :role, :user_id).merge(user: current_user)
 	end
 end

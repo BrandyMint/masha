@@ -8,4 +8,5 @@ ru:
   project_created: Создан проект %{project}
   time_shift_addition: Добавили %{hours} в %{project} за %{date}
   invite_sent: Приглашение отправлено на %{email}
+  invite_error: Не могу пригласить %{email}
   no_email: <a href="%{url}">Введите Ваш email.</a>
