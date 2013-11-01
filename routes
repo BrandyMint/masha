@@ -57,6 +57,9 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                              login GET    /login(.:format)                                           sessions#new
                             signup GET    /signup(.:format)                                          users#new
                           feedback GET    /feedback(.:format)                                        pages#feedback
+                          noaccess GET    /noaccess(.:format)                                        pages#noaccess
+                           support GET    /support(.:format)                                         redirect(301, /feedback)
+                             error GET    /error(.:format)                                           errors#index
                              users POST   /users(.:format)                                           users#create
                           new_user GET    /users/new(.:format)                                       users#new
                           sessions POST   /sessions(.:format)                                        sessions#create

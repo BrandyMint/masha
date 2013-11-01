@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   def wiselinks_layout
-    _layout.virtual_path
+    _layout.noaccess_path
   end
 
   private
