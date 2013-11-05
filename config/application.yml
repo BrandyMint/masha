@@ -8,7 +8,7 @@ defaults: &defaults
       port: 80
 
   action_mailer: &action_mailer
-    raise_delivery_errors: false
+    raise_delivery_errors: true
     default_url_options:
       <<: *default_url_options
     default_options:
@@ -47,11 +47,7 @@ production:
   <<: *defaults
   action_mailer:
     <<: *action_mailer
-    delivery_method: :smtp
-    raise_delivery_errors: false
-    smtp_settings:
-      host: localhost
-      port: 25
+    delivery_method: :sendmail
 
 staging:
   <<: *defaults
