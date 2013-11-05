@@ -45,6 +45,13 @@ test:
 
 production:
   <<: *defaults
+  action_mailer:
+    <<: *action_mailer
+    delivery_method: :smtp
+    raise_delivery_errors: false
+    smtp_settings:
+      host: localhost
+      port: 25
 
 staging:
   <<: *defaults

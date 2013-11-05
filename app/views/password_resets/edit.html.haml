@@ -4,7 +4,7 @@
     = simple_form_for @password_form, :url => password_reset_path(@user), :html => {:method => :put} do |f|
       = f.error_notification
       .form-group
-        = f.label :email
+        = f.label :email, :autofocus => true
         %br/
         = @user.email
       .form-group
