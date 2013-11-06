@@ -9,6 +9,10 @@ class MembershipsController < ApplicationController
 		super
 	end
 
+  def show
+    redirect_to project_memberships_url(@project)
+  end
+
 	def create
 		@project = parent
 
