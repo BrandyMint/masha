@@ -1,14 +1,15 @@
 .container
-  .pull-left.print-hide= app_version
-  .pull-right
-    Сделано в 
-    = link_to 'http://brandymint.ru', target: :blank do
-      = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
-      = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
-  .pull-right
-    %ul.horizontal
-      %li= link_to 'Обратная связь', feedback_url, class: 'footer-feedback-link'
-      %li= link_to 'Блог', 'http://blog.mashtime.ru', class: 'footer-feedback-link'
-  .clearfix
+  .row
+    .col-sm-4.print-hide.footer-version
+      = app_version
+    .col-sm-4.footer-links
+      %ul.horizontal
+        %li= link_to 'Обратная связь', feedback_url, class: 'footer-feedback-link'
+        %li= link_to 'Блог', 'http://blog.mashtime.ru', class: 'footer-feedback-link'
+    .col-sm-4.footer-made-logo-block
+      Сделано в 
+      = link_to 'http://brandymint.ru', target: :blank do
+        = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
+        = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
 
 = render 'analytics'
