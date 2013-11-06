@@ -12,4 +12,4 @@
         = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
         = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
 
-= render 'analytics'
+= render 'analytics' if Rails.env.production?
