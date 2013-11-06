@@ -11,8 +11,6 @@ class InviteService
   def make_invite success: nil, failure: nil
     @invite = @project.invites.where(email: @invite_params[:email]).first
 
-    binding.pry
-
     if @invite.present?
 
       # Отправляем повторно email, раз просят
