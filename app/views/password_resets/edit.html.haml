@@ -1,16 +1,17 @@
-%h1=t('.title')
 .row
-  .col-md-5.col-xs-3
-    = simple_form_for @password_form, :url => password_reset_path(@user), :html => {:method => :put} do |f|
-      = f.error_notification
-      .form-group
-        = f.label :email, :autofocus => true
-        %br/
-        = @user.email
-      .form-group
-        = f.input :password
-      .form-group
-        = f.input :password_confirmation
-        = hidden_field_tag :token, @token
-      .actions
-        = f.button :submit, t('helpers.submit.update'), class: 'btn btn-primary btn-block'
+  .col-sm-4.col-sm-offset-4
+    .page-header
+      %h1=t('.title')
+      = simple_form_for @password_form, :url => password_reset_path(@user), :html => {:method => :put} do |f|
+        = f.error_notification
+        .form-group
+          = f.label :email, :autofocus => true
+          %br/
+          = @user.email
+        .form-group
+          = f.input :password
+        .form-group
+          = f.input :password_confirmation
+          = hidden_field_tag :token, @token
+        .actions
+          = f.button :submit, t('helpers.submit.update'), class: 'btn btn-primary btn-block'
