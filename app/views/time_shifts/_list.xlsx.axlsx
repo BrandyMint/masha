@@ -1,4 +1,4 @@
-sheet.add_row ['Дата учета', 'Время', 'Проект', 'Человек', 'Описание']
+sheet.add_row ['Дата учета', 'Время', 'Проект', 'Исполнитель', 'Описание']
 time_shifts.each do |t|
   sheet.add_row [l(t.date), human_hours(t.hours), t.project, t.user, t.description]
 end
