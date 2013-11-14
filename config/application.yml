@@ -1,6 +1,6 @@
 defaults: &defaults
   app:
-    title: Маша
+    title: Mashtime
     asset_host: http://mashtime.ru/
 
     default_url_options: &default_url_options
