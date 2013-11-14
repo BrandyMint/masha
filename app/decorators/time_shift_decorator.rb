@@ -9,6 +9,10 @@ class TimeShiftDecorator < Draper::Decorator
     end
   end
 
+  def date
+    h.human_date source.date
+  end
+
   def user
     h.link_to source.user, h.url_for(:time_sheet_form=>time_sheet_form.merge(:user_id=>user_id))
   end
