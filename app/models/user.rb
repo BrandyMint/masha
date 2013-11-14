@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true
   validates :email, :email => true, :uniqueness => true, :allow_blank => true
 
+  after_save do
+    Invite.activate_for self
+  end
+
   # validates :password, :confirmation => true
   # validates :password, :presence => true, :on => :create
 

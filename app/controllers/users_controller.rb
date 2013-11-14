@@ -9,7 +9,6 @@ class UsersController < ApplicationController
 
     user = @reg.save
     if user.present?
-      Invite.activate_for(user)
       login user.email, @reg.password
       redirect_to time_shifts_url, :notice => t(:signed_up)
     else
