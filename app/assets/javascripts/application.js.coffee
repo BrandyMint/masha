@@ -35,6 +35,7 @@ $ ->
     $("#session_form_email").focusin -> $(@).attr "placeholder", ""
     $("#session_form_email").focusout -> $(@).attr "placeholder", $(@).data("holder")
 
+    window.App.mobileBehaviour()
   )()
 
   $(document).off('page:done').on 'page:done', jsHandlers
@@ -94,4 +95,18 @@ $ ->
         $btn.show()
       else
         $btn.hide()
+)(window.App ||= {})
+
+
+((app) ->
+  isMobile = ->
+    return (document.width < 640)
+
+  focusInput = $('input[autofocus]')
+
+  app.mobileBehaviour = ->
+    if isMobile()
+      focusInput.blur()
+      window.scrollTo(0)
+
 )(window.App ||= {})

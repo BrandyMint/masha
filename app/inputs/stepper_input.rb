@@ -8,6 +8,8 @@ class StepperInput < SimpleForm::Inputs::StringInput
     value = object.send(attribute_name) if object.respond_to? attribute_name
 
     input_html_options[:type] = 'numeric'
+    input_html_options[:autocomplete] = 'off'
+
     
     #input_html_options[:data] ||= {}
     #input_html_options[:data].merge!({role })
