@@ -1,6 +1,6 @@
 - if @result.columns.present?
   -#%div{ class: @result.projects.count < 8 ? 'container' : '' }
-  %table.table
+  %table.table.summary-table
     %thead
       %tr
         %th
@@ -15,7 +15,7 @@
     %tbody
       - @result.days.each do |d|
         %tr
-          %th{class: week_day_class(d[:date])}= human_date d[:date]
+          %th{class: "#{week_day_class(d[:date])} summary-table-date"}= human_date d[:date]
           - @result.columns.each do |column|
             %td{class: week_day_class(d[:date])}
               - if d[:columns][column.id].blank?
