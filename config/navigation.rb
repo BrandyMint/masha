@@ -16,6 +16,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
       primary.item :new_time, menu_new_time, new_time_shift_url
       primary.item :times, menu_times, time_shifts_url
+      primary.item :projects, menu_projects, projects_url
 
       primary.item :profile, menu_current_user do |user|
         #user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)

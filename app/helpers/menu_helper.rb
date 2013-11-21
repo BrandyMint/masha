@@ -1,8 +1,13 @@
 module MenuHelper
 
+  def menu_projects
+    content_tag(:span, ficon('briefcase'), class: 'navbar-menu-icon') +
+     content_tag(:span, 'Проекты', class: 'navbar-menu-label')
+  end
+
   def menu_current_user
-    content_tag(:span, ficon('user-1'), class: 'navbar-menu-icon') +
-      content_tag(:span, 'Профиль', class: 'navbar-menu-label')
+    content_tag(:span, ficon('user-1'), class: 'navbar-menu-icon')
+      # content_tag(:span, 'Профиль', class: 'navbar-menu-label')
   end
 
   def menu_times
