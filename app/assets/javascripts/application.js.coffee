@@ -27,7 +27,7 @@ $ ->
       false
 
   (jsHandlers = ->
-    window.App.bstepper $('@stepper')
+    window.App.bstepper()
     $('@tooltip').tooltip()
     $('@autosize').autosize()
 
