@@ -34,14 +34,13 @@
         @_currentvalue
 
       updateCurrentValue: (e) ->
-        @_currentvalue = parseInt e.target.value
+        @_currentvalue = parseFloat e.target.value
         @setValue @_currentvalue
 
       setValue: (val) ->
-        bsInput.value = val
+        bsInput[0].value = val
         bsInput.attr 'value', val
         @_currentvalue = val
-        console.log val
 
     bsPlus.on 'click', ->
       controller.makePlus()
@@ -51,16 +50,5 @@
 
     bsInput.on 'change', (e) ->
       controller.updateCurrentValue e
-
-    # bsPlus.click ->
-    #   val = parseFloat(bsInput.attr('value')) || 0
-    #   unless (val + bsStep) > bsMax
-    #     bsInput.attr('value', val + bsStep)
-    #   bStepper.trigger 'change'
-    # bsMinus.click ->
-    #   val = parseFloat(bsInput.attr('value')) || 0
-    #   unless (val - bsStep) < bsMin
-    #     bsInput.attr('value', val - bsStep)
-    #   bStepper.trigger 'change'
 
 )(window.App ||= {})
