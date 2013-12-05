@@ -34,8 +34,12 @@
         @_currentvalue
 
       updateCurrentValue: (e) ->
-        @_currentvalue = parseFloat e.target.value
-        @setValue @_currentvalue
+        val = parseFloat e.target.value
+        unless val < bsMin
+          @_currentvalue = val
+          @setValue @_currentvalue
+        else
+          @setValue @_currentvalue
 
       setValue: (val) ->
         bsInput[0].value = val
