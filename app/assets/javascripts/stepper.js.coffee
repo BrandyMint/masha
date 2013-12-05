@@ -7,12 +7,12 @@
       min:  0
       max:  24
 
-    $.extend options, defaults
+    settings = $.extend defaults, options
 
-    bStepper  =  options.el
-    bsStep    =  options.step
-    bsMin     =  options.min
-    bsMax     =  options.max
+    bStepper  =  settings.el
+    bsStep    =  settings.step
+    bsMin     =  settings.min
+    bsMax     =  settings.max
     bsPlus    =  bStepper.find '.plus'
     bsMinus   =  bStepper.find '.minus'
     bsInput   =  bStepper.find 'input'
