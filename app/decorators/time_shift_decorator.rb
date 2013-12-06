@@ -25,9 +25,10 @@ class TimeShiftDecorator < Draper::Decorator
     h.auto_link source.description, :html => { :target => '_blank' }
   end
 
-  def update_link
+  def update_link args={}
+    args[:css_class] ||= ''
     if h.current_user.can_update?(source)
-      h.link_to h.edit_time_shift_path(source) do
+      h.link_to h.edit_time_shift_path(source), class: args[:css_class] do
         h.ficon 'edit', color: 'gray-light', size: 16
       end
     end

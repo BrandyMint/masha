@@ -1,0 +1,43 @@
+=tableResponsive
+  @media only screen and (max-width: $screen-sm) 
+    &,
+    thead,
+    tbody, 
+    th, 
+    td, 
+    tr  
+      display: block 
+    thead
+      tr
+        display: none
+      //tr
+        position: absolute
+        top: -9999px
+        left: -9999px
+    &,
+    &.table
+      tr,
+      tbody > &
+        border-bottom: 1px solid $grayLight
+        margin-bottom: 1em
+        & > td
+          border: none
+          border-bottom: 1px solid $grayLightest
+          position: relative
+          padding-left: 50%
+          white-space: normal
+          text-align:left
+          &:before  
+            /* Now like a table header */
+            position: absolute
+            /* Top/left values mimic padding */
+            top: 6px
+            left: 6px
+            width: 45% 
+            padding-right: 10px 
+            white-space: nowrap
+            text-align:left
+            font-weight: bold
+          &:before
+            content: attr(data-cell-title)
+

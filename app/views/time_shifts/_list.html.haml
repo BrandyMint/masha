@@ -1,33 +1,33 @@
 - if time_shifts.present?
   %table.table.table-condensed.table-striped.table-hover.time-shifts-table
-    %tr
+    %thead
       %th.col-lg-2
-        Дата учета
-      %th.col-lg-1 Время
-      %th.col-lg-1 Проект
-      %th.col-lg-2 Исполнитель
-      %th.col-lg-5 Описание
+        = t 'time_shifts.date'
+      %th.col-lg-1= t 'time_shifts.time'
+      %th.col-lg-1= t 'time_shifts.project'
+      %th.col-lg-2= t 'time_shifts.collaborator'
+      %th.col-lg-5= t 'time_shifts.description'
       %th.print-hide.col-lg-1
     - time_shifts.each do |ts|      
       - ts = TimeShiftDecorator.decorate ts
       %tr{class: ts.tr_class}
-        %td
+        %td{ data: {'cell-title' => "#{t 'time_shifts.date'}" } }
           = ts.date
           -#%br
           -#%small.text-color-gray-light
             -#= ficon 'pencil-1'
             -#= l ts.updated_at
 
-        %td
+        %td{ data: {'cell-title' => "#{t 'time_shifts.date'}" } }
           %b= human_hours ts.hours
-        %td= ts.project
-        %td= ts.user
-        %td
+        %td{ data: {'cell-title' => "#{t 'time_shifts.project'}" } }
+          = ts.project
+        %td{ data: {'cell-title' => "#{t 'time_shifts.collaborator'}" } }
+          = ts.user
+        %td{ data: {'cell-title' => "#{t 'time_shifts.description'}" } }
           %small.muted= ts.description
         %td.print-hide
-          .pull-right
-            = ts.update_link
-          .clearfix
+          = ts.update_link :css_class =>'btn btn-block', :label => t('.edit')
 
 - else
   .alert.alert-warning Нет результатов
