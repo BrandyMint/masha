@@ -1,9 +1,25 @@
 ru:
   time_shifts:
+    defaults: &time_shifts
+      date: 'Дата учета'
+      time: 'Время'
+      project: 'Проект'
+      collaborator: 'Исполнитель'
+      description: 'Описание'
+      total: 'Всего'
+    <<: *time_shifts
     new:
       today_shifts: 'Сегодня уже отметили:'
     delete:
       confirm: 'Удалить отмеченное время?'
+    defaults:
+      date: 'Дата учета'
+      time: 'Время'
+      project: 'Проект'
+      collaborator: 'Исполнитель'
+      description: 'Описание'
+
   memberships:
     delete:
       confirm: 'Удалить пользователя из проекта?'
+
