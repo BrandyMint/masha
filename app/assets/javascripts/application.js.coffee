@@ -19,7 +19,7 @@
 
 $ ->
   window.wiselinks = new Wiselinks()
-  $(document).on 'click', 'a:not([role]):not([data-target])', (e) ->
+  $(document).on 'click', 'a:not([role]):not([data-target]):not([data-method])', (e) ->
     anchor = e.currentTarget
     if document.location.host == anchor.host
       e.preventDefault()
@@ -39,6 +39,16 @@ $ ->
   )()
 
   $(document).off('page:done').on 'page:done', jsHandlers
+
+  $(document).on 'ajax:error', false, (e) ->
+    location.reload()
+
+  $(document).off('page:redirected').on(
+      'page:redirected'
+      (event, $target, render, url) ->
+          console.log("Redirected to: #{url}")
+          # code to start loading animation
+  )
 
   # $('@freetile').freetile()
   # $('@ui-date-picker').datepicker()
