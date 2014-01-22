@@ -18,7 +18,7 @@ defaults: &defaults
     from: 'masha@mashtime.ru'
     host: mashtime.ru
 
-  convead_widget_url: "http://widget.icrm.icfdev.ru/assets/v1.js"
+  convead_widget_url: "http://widget.icrm.icfdev.ru/assets/v3.js"
 
 development:
   <<: *defaults
