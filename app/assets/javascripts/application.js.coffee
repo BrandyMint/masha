@@ -15,16 +15,16 @@
 #= require jquery-autosize/jquery.autosize
 #= require stepper
 #= require purl/purl
-#= require wiselinks
+# require wiselinks
 
 $ ->
-  window.wiselinks = new Wiselinks()
-  $(document).on 'click', 'a:not([role]):not([data-target])', (e) ->
-    anchor = e.currentTarget
-    if document.location.host == anchor.host
-      e.preventDefault()
-      wiselinks.load(anchor.href)
-      false
+#  window.wiselinks = new Wiselinks()
+#  $(document).on 'click', 'a:not([role]):not([data-target])', (e) ->
+#    anchor = e.currentTarget
+#    if document.location.host == anchor.host
+#      e.preventDefault()
+#      wiselinks.load(anchor.href)
+#      false
 
   (jsHandlers = ->
     window.App.bstepper()
