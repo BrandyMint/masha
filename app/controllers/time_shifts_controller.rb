@@ -60,6 +60,7 @@ class TimeShiftsController < ApplicationController
   end
 
   def new
+    @page_header_type = :static
     @time_shift = TimeShift.new default_time_shift_form
   end
 
