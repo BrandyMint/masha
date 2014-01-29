@@ -5,5 +5,4 @@
   %html
     %head
       = render 'layouts/head'
-    - @page_header_type ||= :fixed
-    = render 'layouts/application_body', header: @page_header_type
+    = render 'layouts/application_body', header: @header_type

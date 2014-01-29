@@ -15,7 +15,8 @@
         .form-group
           = f.label :hours, class: 'time-shift-form-label'
           .time-shift-form-input
-            = f.input :hours, as: :stepper, :input_html => { :autofocus => :autofocus, :min => 0.1, :max => 24, class: 'form-control input-sm' }, label: false
+            -# removed autofocus, because it hurts mobile experience
+            = f.input :hours, as: :stepper, :input_html => {:min => 0.1, :max => 24, class: 'form-control input-sm' }, label: false
       .col-md-8.col-sm-offset-3.col-sm-6
         .form-group
           .time-shift-form-label
