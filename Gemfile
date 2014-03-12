@@ -42,7 +42,7 @@ gem 'validates'
 gem 'validates_timeliness', '~> 3.0'
 gem 'hashie'
 
-gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
+gem 'friendly_id', '~> 5.0.0'
 # берется последняя версия для совместимости с rails 4
 # gem 'state_machine', :git => 'git://github.com/pluginaweek/state_machine.git'
 # gem 'simple_enum'

@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
 
   # active_admin в упор не видит friendly_id-шный slug
   def to_param
-    id
+    id.to_s
   end
 
   def to_s

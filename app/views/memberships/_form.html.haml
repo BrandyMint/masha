@@ -1,6 +1,6 @@
 %h4
   Пригласить пользователя
-= simple_form_for @invite, :url => project_memberships_url(@project.id), :method => :post, html: {class: 'form-inline-controls form-inline'} do |f|
+= simple_form_for @invite, :url => project_memberships_url(@project), :method => :post, html: {class: 'form-inline-controls form-inline'} do |f|
   = f.error_notification
   .form-inputs
     = f.input :email, :require => true, label: false
