@@ -1,0 +1,15 @@
+= simple_form_for @money_incoming, :html => { :class => 'form-horizontal' } do |f|
+  = f.error_notification
+  .form-inputs
+    .form-group
+      = f.input :date, as: :date_picker
+      = f.input :amount
+      = f.input :project, collection: available_projects
+      = f.input :source
+      = f.input :description
+
+    .form-group
+      = button_tag type: 'submit', class: 'btn btn-primary btn-lg btn-block',
+        :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
+        = icon :ok, :white
+        = t :create, :scope => [:helpers, :submit, :time_shift]

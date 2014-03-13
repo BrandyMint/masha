@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def money amount
+    amount
+  end
+
   def summary_hours summary, d, column
 
     hsf = {

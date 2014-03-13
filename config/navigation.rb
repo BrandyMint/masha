@@ -14,6 +14,10 @@ SimpleNavigation::Configuration.run do |navigation|
         #end
       #end
 
+      if current_user.has_finance?
+        primary.item :money, 'Финансы', finance_url
+      end
+
       primary.item :new_time, menu_new_time, new_time_shift_url
       primary.item :times, menu_times, time_shifts_url
 

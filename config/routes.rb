@@ -19,12 +19,17 @@ Masha::Application.routes.draw do
   resources :users, :only => [:new, :create]
   resources :sessions, :only => [:new, :create, :destroy]
 
+  resources :money_incomings
+  resources :money_outgoings
+
   # Личный контроллер пользователя
   resource :profile, :controller => :profile do
     collection do
       post :change_password
     end
   end
+
+  get 'finance', controller: :finance, action: :index
 
   resources :password_resets, :only => [:new, :create, :edit, :update]
 

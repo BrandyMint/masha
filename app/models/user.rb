@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   scope :reorder, lambda { |k| order :name }
   scope :without, -> (user) { where arel_table[:id].not_eq(user.id) }
 
+  has_many :companies
+
   has_many :owned_projects, :class_name => 'Project', :foreign_key => :owner_id
 
   has_many :time_shifts
@@ -34,6 +36,11 @@ class User < ActiveRecord::Base
 
   # validates :password, :confirmation => true
   # validates :password, :presence => true, :on => :create
+  #
+
+  def has_finance?
+    is_root?
+  end
 
   # Пользователь репортер больше чем овнер?
   def reporter?

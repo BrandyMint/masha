@@ -13,6 +13,9 @@ class Project < ActiveRecord::Base
   has_many :users, :through => :memberships
   has_many :invites
 
+  has_many :money_incoming
+  has_many :money_outgoing
+
   scope :ordered, -> { order(:name) }
   scope :active, -> { where(active: true) }
   scope :archive, -> { where(active: false) }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131025092807) do
+ActiveRecord::Schema.define(version: 20140123120831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,16 @@ ActiveRecord::Schema.define(version: 20131025092807) do
   add_index "authentications", ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true, using: :btree
   add_index "authentications", ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true, using: :btree
 
+  create_table "companies", force: true do |t|
+    t.integer  "owner_id",                 null: false
+    t.string   "name",                     null: false
+    t.decimal  "balance",    default: 0.0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "companies", ["owner_id", "name"], name: "index_companies_on_owner_id_and_name", unique: true, using: :btree
+
   create_table "invites", force: true do |t|
     t.integer  "user_id"
     t.string   "email",      null: false
@@ -85,6 +95,39 @@ ActiveRecord::Schema.define(version: 20131025092807) do
   add_index "memberships", ["project_id"], name: "index_memberships_on_project_id", using: :btree
   add_index "memberships", ["user_id", "project_id"], name: "index_memberships_on_user_id_and_project_id", unique: true, using: :btree
   add_index "memberships", ["user_id"], name: "index_memberships_on_user_id", using: :btree
+
+  create_table "money_incomings", force: true do |t|
+    t.integer  "company_id",  null: false
+    t.integer  "user_id",     null: false
+    t.decimal  "amount",      null: false
+    t.string   "source",      null: false
+    t.integer  "project_id",  null: false
+    t.date     "date",        null: false
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "money_incomings", ["company_id", "date"], name: "index_money_incomings_on_company_id_and_date", using: :btree
+  add_index "money_incomings", ["project_id", "date"], name: "index_money_incomings_on_project_id_and_date", using: :btree
+  add_index "money_incomings", ["user_id"], name: "index_money_incomings_on_user_id", using: :btree
+
+  create_table "money_outgoings", force: true do |t|
+    t.integer  "company_id",     null: false
+    t.integer  "user_id",        null: false
+    t.decimal  "amount",         null: false
+    t.integer  "implementer_id", null: false
+    t.integer  "project_id"
+    t.date     "date",           null: false
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "money_outgoings", ["date"], name: "index_money_outgoings_on_date", using: :btree
+  add_index "money_outgoings", ["implementer_id"], name: "index_money_outgoings_on_implementer_id", using: :btree
+  add_index "money_outgoings", ["project_id", "date"], name: "index_money_outgoings_on_project_id_and_date", using: :btree
+  add_index "money_outgoings", ["user_id"], name: "index_money_outgoings_on_user_id", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name"

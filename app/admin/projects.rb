@@ -4,6 +4,7 @@ ActiveAdmin.register Project do
   
   index do
     column :name
+    column :company
     column :memberships do |p|
       ul :class => :horizontal do
         li link_to "#{p.memberships.count} members", admin_memberships_url(:q=>{:project_id_in=>p.id})
@@ -23,6 +24,10 @@ ActiveAdmin.register Project do
   end
 
   form do |f|
+    f.inputs "Owners" do
+      f.input :company
+      f.input :owner
+    end
     f.inputs "Details" do
       f.input :name
       f.input :description

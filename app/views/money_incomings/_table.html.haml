@@ -1,0 +1,8 @@
+%table.table.table-condensed
+  - @money_incomings.each do |m|
+    %tr
+      %td= m.date
+      %td= money m.amount
+      %td= m.project
+      %td= m.description
+      %td actions
