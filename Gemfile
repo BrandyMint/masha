@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 # Use unicorn as the app server
 gem 'unicorn'
 
-gem 'rails', '4.0.0'
+gem 'rails', '4.0.3'
 #gem 'rails',     github: 'rails/rails'
 #gem 'arel',      github: 'rails/arel'
 # gem 'activerecord-deprecated_finders', github: 'rails/activerecord-deprecated_finders'
@@ -42,7 +42,7 @@ gem 'validates'
 gem 'validates_timeliness', '~> 3.0'
 gem 'hashie'
 
-gem 'friendly_id', :git => 'git://github.com/FriendlyId/friendly_id.git'
+gem 'friendly_id', '~> 5.0.0'
 # берется последняя версия для совместимости с rails 4
 # gem 'state_machine', :git => 'git://github.com/pluginaweek/state_machine.git'
 # gem 'simple_enum'
@@ -107,16 +107,11 @@ gem 'wiselinks'
 #gem 'turbolinks'
 gem 'haml-rails'
 
-gem 'bootstrap-sass', '3.0.0.0', :github => 'thomas-mcdonald/bootstrap-sass'
-gem 'compass-rails', github: 'Compass/compass-rails', branch: '2-0-stable' #~> 2.0.alpha.0'
+gem 'bootstrap-sass'
+gem 'compass-rails'
 
 #active admin
-gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
-gem 'ransack',     github: 'ernie/ransack',            branch: 'rails-4'
-# gem 'activeadmin', github: 'akashkamboj/active_admin', branch: 'rails4'
-gem 'activeadmin', github: 'empowerunited/active_admin',    branch: 'rails4'
-# gem 'activeadmin', github: 'agrobbin/active_admin'#,    branch: 'rails4' #кривой
-#gem 'devise',      github: 'plataformatec/devise',     branch: 'rails4'
+gem 'activeadmin', github: 'gregbell/active_admin'
 
 # Очередь
 #gem 'redis-namespace'
