@@ -58,6 +58,11 @@ $ ->
     $(@).trigger 'change'
     e.preventDefault()
 
+  setTimeout (->
+    $("#flash").hide("slow")
+    return
+  ), 10000
+
   $(document).on 'click', "@j-password-toggle", ->
     icon = $(@).find("[class*='icon']")
     icon.toggleClass('icon-eye-open')
