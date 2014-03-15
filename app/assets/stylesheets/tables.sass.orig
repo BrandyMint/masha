@@ -10,6 +10,9 @@
 .summary-table-date
   white-space: nowrap
 
+<<<<<<< HEAD
+=======
 .time-shifts-table,
 .summary-table
   +tableResponsive
+>>>>>>> master

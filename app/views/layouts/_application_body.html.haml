@@ -1,5 +1,5 @@
-%body{:class => "#{controller_name} #{action_name}"}
-  .navbar.application-navbar.navbar-fixed-top
+%body{:class => "#{controller_name} #{action_name} page-header-#{header}"}
+  %div{class: "navbar application-navbar navbar-#{header}-top" }
     .container
       = render 'layouts/navigation'
   #main.application-main-content{:role => "main"}
@@ -12,4 +12,4 @@
             = yield
     %footer.footer
       = render 'layouts/footer'
-  -#= render 'layouts/convead_widget'
+  = render 'layouts/convead_widget'

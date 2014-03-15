@@ -2,9 +2,8 @@ ActiveAdmin.register User do
 
   menu :priority => 6, :label => proc{ I18n.t("active_admin.users") }
 
-  #config.sort_order = "created_at_desc"
-
   index do
+    column :id
     column :avatar do |user|
       UserDecorator.decorate(user).avatar
     end

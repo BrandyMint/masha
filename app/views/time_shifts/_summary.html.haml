@@ -10,19 +10,19 @@
           = summary_group_link @result
         - @result.columns.each do |p|
           %th= p
-        %th Всего
+        %th= t('time_shifts.total')
 
     %tbody
       - @result.days.each do |d|
         %tr
           %th{class: "#{week_day_class(d[:date])} summary-table-date"}= human_date d[:date]
           - @result.columns.each do |column|
-            %td{class: week_day_class(d[:date])}
+            %td{class: week_day_class(d[:date]), data: {'cell-title' => column} }
               - if d[:columns][column.id].blank?
                 .muted= '-'
               - else
                 = summary_hours @result, d, column
-          %td{class: week_day_class(d[:date])}
+          %td{class: week_day_class(d[:date]), data: {'cell-title' => t('time_shifts.total')}}
             %b
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
                 = human_hours @result.total_by_date[d[:date]]

@@ -1,6 +1,10 @@
 - if time_shifts.present?
   %table.table.table-condensed.table-striped.table-hover.time-shifts-table
-    %thead{:id => 'sticky-table-header'}
+<<<<<<< HEAD
+    %tr{:id => 'sticky-table-header'}
+=======
+    %thead
+>>>>>>> master
       %th.col-lg-2
         = t 'time_shifts.date'
       %th.col-lg-1= t 'time_shifts.time'

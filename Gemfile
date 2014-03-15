@@ -108,7 +108,7 @@ gem 'wiselinks'
 gem 'haml-rails'
 
 gem 'bootstrap-sass', '3.0.0.0', :github => 'thomas-mcdonald/bootstrap-sass'
-gem 'compass-rails', '~> 2.0.alpha.0'
+gem 'compass-rails', github: 'Compass/compass-rails', branch: '2-0-stable' #~> 2.0.alpha.0'
 
 #active admin
 gem 'formtastic',  github: 'justinfrench/formtastic',  branch: 'rails4beta'
