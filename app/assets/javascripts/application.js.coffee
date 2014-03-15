@@ -47,7 +47,7 @@ $ ->
   # $('@select2').select2
   #  width: 'element'
 
-  $("#sticky-table-header").affix offset:
+  $("#j-sticky-table-header").affix offset:
     top: 288
 
   $(document).on 'click', '@date-shortcut', (e) ->
