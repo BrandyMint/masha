@@ -151,6 +151,7 @@ gem 'jquery-ui-sass-rails'
 # gem 'jquery_datepicker'
 
 # gem 'select2-rails'
+gem "gritter", "1.1.0"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

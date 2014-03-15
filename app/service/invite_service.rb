@@ -14,7 +14,7 @@ class InviteService
     if @invite.present?
 
       # Отправляем повторно email, раз просят
-      InviteMailer.new_invite_email(@invite).deliver
+      #InviteMailer.new_invite_email(@invite).deliver
 
       success.call
     else

@@ -15,6 +15,7 @@
 #= require jquery-autosize/jquery.autosize
 #= require stepper
 #= require purl/purl
+#= require gritter
 # require wiselinks
 
 $ ->
@@ -57,11 +58,6 @@ $ ->
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     $(@).trigger 'change'
     e.preventDefault()
-
-  setTimeout (->
-    $("#flash").hide("slow")
-    return
-  ), 10000
 
   $(document).on 'click', "@j-password-toggle", ->
     icon = $(@).find("[class*='icon']")

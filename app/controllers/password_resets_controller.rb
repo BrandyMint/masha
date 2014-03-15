@@ -10,7 +10,7 @@ class PasswordResetsController < ApplicationController
     if @email_form.valid?
       user = User.find_by_email(params[:email_form][:email])
       user.deliver_reset_password_instructions!
-      redirect_to(new_session_path, :notice => t('devise.passwords.send_instructions'))
+      redirect_to(new_session_path, gflash: { notice: t("devise.passwords.send_instructions") })
     else
       render :new
     end
@@ -41,7 +41,7 @@ class PasswordResetsController < ApplicationController
     if @password_form.valid?
       @user.change_password!(@password_form.password)
       login @user.email, @password_form.password
-      redirect_to time_shifts_path, :notice => t('devise.passwords.updated')
+      redirect_to time_shifts_path, gflash: { notice: t("devise.passwords.updated") }))
     else
       render :action => "edit"
     end
