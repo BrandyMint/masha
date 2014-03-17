@@ -48,6 +48,9 @@ $ ->
   # $('@select2').select2
   #  width: 'element'
 
+  $("#j-sticky-table-header").affix offset:
+    top: 288
+
   $(document).on 'click', '@date-shortcut', (e) ->
     $('#time_shift_date').val $(@).data('value')
     $(@).trigger 'change'
