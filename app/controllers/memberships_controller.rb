@@ -33,8 +33,8 @@ class MembershipsController < ApplicationController
       else
         is = InviteService.new @project, invite_params
         is.make_invite(
-          success: -> { flash[:notice] = t 'invite_sent', email: is.invite.email  },
-          failure: -> { flash[:error]  = t 'invite_error', email: is.invite.email; render :index and return }
+          success: -> { gflash success: (t 'gflash.invite_sent', email: is.invite.email) },
+          failure: -> { gflash error: (t 'gflash.invite_error', email: is.invite.email; render :index and return)}
         )
 
         @invite = is.invite

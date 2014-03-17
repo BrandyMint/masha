@@ -15,6 +15,7 @@
 #= require jquery-autosize/jquery.autosize
 #= require stepper
 #= require purl/purl
+#= require gritter
 # require wiselinks
 
 $ ->

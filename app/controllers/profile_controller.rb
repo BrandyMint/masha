@@ -10,10 +10,10 @@ class ProfileController < ApplicationController
     @user = current_user
     @user.assign_attributes user_permited_params
 
-    if @user.save
-      redirect_to edit_profile_url, :notice => t(:profile_update)
+    unless @user.save
+      redirect_to edit_profile_url, gflash: { notice: t("gflash.profile_update") }
     else
-      render :action => :edit, :error => t(:profile_errors)
+      render action: :edit, gflash: { error: t("gflash.profile_errors") }
     end
   end
   
@@ -23,9 +23,9 @@ class ProfileController < ApplicationController
 
     if @password_form.valid?
       @user.change_password!(@password_form.password)
-      redirect_to edit_profile_url, :notice => t('devise.passwords.updated_succcess')
+      redirect_to edit_profile_url, gflash: { notice: t("devise.passwords.updated_succcess") }
     else
-      render :action => :edit, :error => t(:profile_errors)
+      render action: :edit, gflash: { error: t("gflash.profile_errors") }
     end
   end
 

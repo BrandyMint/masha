@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if user
       redirect_to time_shifts_url
     else
-      flash.now.alert = t(:session_failed)
+      gflash :now, error: t("gflash.session_failed")
       render :new
     end
   end

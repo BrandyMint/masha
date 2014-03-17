@@ -8,7 +8,7 @@ class OmniauthSessionController < ApplicationController
   rescue StandardError => err
     Airbrake.notify err
     Rails.logger.error err
-    redirect_to root_url, :notice => t(:session_problems)
+    redirect_to root_url, gflash: { notice: t("gflash.session_problems") }
   end
 
   protected

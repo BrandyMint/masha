@@ -54,7 +54,7 @@ class TimeShiftsController < ApplicationController
   def create
     super do |success, error|
       success.html {
-        redirect_to new_time_shift_url, :notice => t('time_shift_addition', :hours => human_hours(@time_shift.hours), :project => @time_shift.project, :date => l(@time_shift.date))
+        redirect_to new_time_shift_url, gflash: { notice: t('gflash.time_shift_addition', :hours => human_hours(@time_shift.hours), :project => @time_shift.project, :date => l(@time_shift.date)) }
       }
     end
   end
