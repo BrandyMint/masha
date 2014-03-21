@@ -15,5 +15,12 @@ module MenuHelper
       content_tag(:span, content_tag(:span, 'Отметить время'), class: 'navbar-menu-label')
   end
 
+  def menu_time_shifts_url
+    if current_user.reporter?
+      time_shifts_url(time_sheet_form: {user_id: current_user.id})
+    else
+      time_shifts_url
+    end
+  end
 
 end

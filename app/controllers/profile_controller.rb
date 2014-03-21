@@ -8,6 +8,7 @@ class ProfileController < ApplicationController
 
   def update
     @user = current_user
+    @password_form = PasswordChangeForm.new
     @user.assign_attributes user_permited_params
 
     unless @user.save
@@ -16,7 +17,7 @@ class ProfileController < ApplicationController
       render action: :edit, gflash: { error: t("gflash.profile_errors") }
     end
   end
-  
+
   def change_password
     @user = current_user
     @password_form = PasswordChangeForm.new(password_permited_params)
