@@ -41,7 +41,7 @@ class PasswordResetsController < ApplicationController
     if @password_form.valid?
       @user.change_password!(@password_form.password)
       login @user.email, @password_form.password
-      redirect_to time_shifts_path, gflash: { notice: t("devise.passwords.updated") }))
+      redirect_to(time_shifts_path, gflash: { notice: t("devise.passwords.updated") })
     else
       render :action => "edit"
     end
