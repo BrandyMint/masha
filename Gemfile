@@ -263,8 +263,8 @@ group :test do
 end
 
 group :deploy do
-  gem 'capistrano', '~> 3.0', :require => false
-  gem 'capistrano-rbenv', github: 'capistrano/rbenv', :require => false
-  gem 'capistrano-rails', github: 'capistrano/rails', :require => false
-  gem 'capistrano-bundler', github: 'capistrano/bundler', :require => false
+    gem 'capistrano', '~> 3.2', :require => false
+    gem 'capistrano-rbenv', :require => false
+    gem 'capistrano-rails', '~> 1.1', :require => false
+    gem 'capistrano-bundler', :github => 'capistrano/bundler', :require => false
 end

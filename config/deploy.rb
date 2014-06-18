@@ -1,3 +1,4 @@
+lock '3.2.1'
 set :application, 'mashtime.ru'
 set :repo_url, 'https://github.com/BrandyMint/masha.git'
 
@@ -17,6 +18,7 @@ set :rbenv_type, :user
 set :rbenv_ruby, '2.1.2'
 
 set :bundle_without, %w{development test deploy}.join(' ')
+set :bundle_jobs, 10
 
 namespace :deploy do
 
@@ -39,6 +41,7 @@ namespace :deploy do
   end
 
   before :compile_assets, 'bower:install'
+  after :publishing, :restart
   after :finishing, 'deploy:cleanup'
 
 end
