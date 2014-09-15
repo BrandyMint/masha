@@ -1,6 +1,6 @@
 lock '3.2.1'
 set :application, 'mashtime.ru'
-set :repo_url, 'https://github.com/BrandyMint/masha.git'
+set :repo_url, 'https://github.com/BrandyMint/mashtime.ru.git'
 
 set :deploy_to, proc { "/home/wwwmasha/#{fetch(:application)}" }
 set :scm, :git
