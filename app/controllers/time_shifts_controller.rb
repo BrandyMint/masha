@@ -113,7 +113,7 @@ class TimeShiftsController < ApplicationController
   def permitted_params
     # TODO Проверить что проект разрешен для добавления времени
     params[:time_shift] ||= {}
-    params[:time_shift][:user_id] = current_user.id # unless current_user.is_root?
+    params[:time_shift][:user_id] = current_user.id unless action_name == 'update' # unless current_user.is_root?
     params[:time_shift][:project_id] ||= nil
     params.require(:time_shift).permit!
 
