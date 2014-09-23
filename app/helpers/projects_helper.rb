@@ -13,15 +13,16 @@ module ProjectsHelper
   end
 
   def change_project_status_link project
-    if project.active
-      if project.time_shifts.any?
-        link_to t('project.archivate'), archivate_project_path(@project), :method=>:put, :class => 'btn btn-default btn-mini'
+    if current_user.can_create?(Membership.new(project: project))
+      if project.active
+        if project.time_shifts.any?
+          link_to t('project.archivate'), archivate_project_path(@project), method: :put, class: 'btn btn-default btn-mini'
+        else
+          link_to t('project.remove'), project_path(@project), method: :delete, class: 'btn btn-danger btn-mini'
+        end
       else
-        link_to t('project.remove'), project_path(@project), :method=>:delete, :class => 'btn btn-danger btn-mini'
+        link_to t('project.activate'), activate_project_path(@project), method: :put, class: 'btn btn-default btn-mini'
       end
-    else
-      link_to t('project.activate'), activate_project_path(@project), :method=>:put, :class => 'btn btn-default btn-mini'
     end
   end
-
 end
