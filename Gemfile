@@ -158,6 +158,12 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem "rspec-rails"#, ">= 2.11.0"
+  gem 'rb-inotify', '~> 0.9', :require => false
+end
+
 group :development do
   gem 'ruby-graphviz'
   gem 'rails-erd'
@@ -187,7 +193,6 @@ group :development do
 
   gem 'pry-remote'
 
-  gem 'factory_girl_rails'
   gem 'rspec-console'
 
   # Start a pry session whenever something goes wrong.
@@ -217,9 +222,7 @@ group :development do
   # Молчаливые ассеты
   gem 'quiet_assets'
 
-  gem "rspec-rails"#, ">= 2.11.0"
   gem "guard-livereload"
-  gem 'rb-inotify', '~> 0.9', :require => false
   gem 'rb-fsevent', '~> 0.9.1', require: false
   gem 'ruby_gntp'
 
@@ -230,12 +233,9 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl_rails'
   gem 'rspec-prof'
-  gem 'rb-inotify', '~> 0.9', :require => false
   # Start Pry in the context of a failed test
   #gem 'plymouth'
-  gem "rspec-rails"#, ">= 2.11.0"
   gem "fakeredis", :require => "fakeredis/rspec"
   gem 'resque_spec'
   gem "email_spec", ">= 1.2.1"
