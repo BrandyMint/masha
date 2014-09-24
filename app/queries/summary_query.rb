@@ -9,7 +9,7 @@ class SummaryQuery
     @available_users = nil
     @available_projects = nil
     @period = period=='month' ? 'month' : 'week'
-    group_by = :project
+    @group_by = :project
   end
 
   def group_by= value
@@ -40,7 +40,7 @@ class SummaryQuery
       }
     end
 
-    @columns = ids.uniq.sort.map { |id| item_find id }
+    @columns = ids.uniq.sort.map { |id| item_find id }.compact
 
   end
 
@@ -71,7 +71,7 @@ class SummaryQuery
   end
 
   def group_column
-    @group_by.to_s == 'project' ? :project_id : :user_id
+    @group_by == :project ? :project_id : :user_id
   end
 
   def dates
@@ -90,8 +90,10 @@ class SummaryQuery
   end
 
   def item_find id
-    klass = @group_by.to_s == 'project' ? Project : User
+    klass = @group_by == :project ? Project : User
     klass.find id
+  rescue => e
+    Airbrake.notify e, context: { group_by: @group_by }
   end
 
   def available_projects_ids
