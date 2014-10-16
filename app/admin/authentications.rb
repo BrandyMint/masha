@@ -1,6 +1,6 @@
 ActiveAdmin.register Authentication do
 
-	menu :priority => 4, :label => proc{ I18n.t("active_admin.authentications") }
+	menu :label => proc{ I18n.t("active_admin.authentications") }, parent: 'Люди'
 
   index do
     column :user

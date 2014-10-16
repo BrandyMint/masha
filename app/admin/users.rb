@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  menu :priority => 6, :label => proc{ I18n.t("active_admin.users") }
+  menu :label => proc{ I18n.t("active_admin.users") }, parent: 'Люди'
 
   index do
     column :id
