@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/airbrake/airbrake.git
-  revision: b4a46323fb6c0bba1528f56fb9001a19556b737e
-  specs:
-    airbrake (3.1.16)
-      builder
-      multi_json
-
-GIT
   remote: git://github.com/andi/simple-navigation.git
   revision: 27e6205770646b83d56a602aabf8dd6460df1dae
   specs:
@@ -38,6 +30,13 @@ GIT
       rails (>= 3.2, < 4.1)
       ransack (~> 1.0)
       sass-rails
+
+GIT
+  remote: git://github.com/honeybadger-io/honeybadger-ruby.git
+  revision: d2a7d684ae7f4e3a6e15b1c1ce2c607dcf543ba8
+  specs:
+    honeybadger (1.16.5)
+      json
 
 GIT
   remote: git://github.com/intridea/omniauth-github.git
@@ -649,7 +648,6 @@ DEPENDENCIES
   active_attr
   active_link_to
   activeadmin!
-  airbrake!
   arbre
   authority
   awesome_print
@@ -690,6 +688,7 @@ DEPENDENCIES
   guard-spork
   haml-rails
   hashie
+  honeybadger!
   hpricot (>= 0.8.6)
   inherited_resources!
   jbuilder (~> 1.0.1)
