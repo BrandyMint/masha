@@ -124,8 +124,7 @@ gem 'activeadmin', github: 'gregbell/active_admin'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.0.1'
 
-#gem 'airbrake_user_attributes'
-gem 'airbrake', :github => 'airbrake/airbrake'
+gem 'honeybadger', github: 'honeybadger-io/honeybadger-ruby' #, :require => 'honeybadger/rails'
 
 gem "github_api"
 

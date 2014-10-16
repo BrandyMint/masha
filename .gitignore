@@ -1,5 +1,6 @@
 .DS_Store
 .vagrant
+*.swp
 mini_magic*
 .buildpath
 .project
