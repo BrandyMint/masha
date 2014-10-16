@@ -30,10 +30,4 @@
 
 ## Task tracking
 
-[trello](https://trello.com/board/masha/51af1575c24870a46b0090c8)
-
-## Ссылочки
-
-* [masha.brandymint.ru](http://masha.brandymint.ru/)
-* [trello](https://trello.com/board/masha/51af1575c24870a46b0090c8)
-* [errbit](http://errbit.brandymint.ru/apps/51b9cbd7687d9c6efa01e81b)
+* [honeybadger](https://www.honeybadger.io/projects/39754/faults/8778121#notice-summary_
