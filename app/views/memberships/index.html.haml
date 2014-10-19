@@ -12,6 +12,8 @@
   - @project.memberships.each do |m|
     - d = MembershipDecorator.decorate m
     %tr
+      %td.col-xs-1
+        = d.avatar
       %td.col-xs-5
         = d.name
       %td.col-xs-5.form-inline-controls
