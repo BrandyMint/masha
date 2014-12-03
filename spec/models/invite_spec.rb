@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe Invite do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  let(:invite) { create :invite}
+
+  it 'Если мы созадем инвайт с уже существуюим емайлом в другом проекте, мы не получаем ошибок' do
+    expect{ create :invite, email: invite.email + "wer" }.to_not raise_error
+  end
+
 end
