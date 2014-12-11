@@ -22,7 +22,7 @@ class TimeShiftDecorator < Draper::Decorator
   end
 
   def description
-    h.auto_link source.description, :html => { :target => '_blank' }
+    h.auto_link CGI.h(source.description), :html => { :target => '_blank' }
   end
 
   def update_link args={}
