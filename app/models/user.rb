@@ -28,6 +28,12 @@ class User < ActiveRecord::Base
   validates :pivotal_person_id, :uniqueness => true, :allow_blank => true, :numericality => true
   validates :email, :email => true, :uniqueness => true, :allow_blank => true
 
+  before_save do
+    # Если будет пустая строка будет UniqueViolation
+    # https://www.honeybadger.io/projects/39754/faults/8870949/notices/10
+    self.email=nil if email.blank?
+  end
+
   after_save do
     Invite.activate_for self
   end
