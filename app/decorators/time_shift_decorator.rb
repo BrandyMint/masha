@@ -35,6 +35,7 @@ class TimeShiftDecorator < Draper::Decorator
   end
 
   def remove_link
+    return unless source.persisted?
     if h.current_user.can_delete?(source)
       h.link_to 'Удалить',
         h.time_shift_path(source),
