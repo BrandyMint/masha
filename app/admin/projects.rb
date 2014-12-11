@@ -1,6 +1,8 @@
 ActiveAdmin.register Project do
 
   menu :priority => 2, :label => proc{ I18n.t("active_admin.project") }
+
+  config.filters = false
   
   index do
     column :name
