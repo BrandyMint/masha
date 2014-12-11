@@ -1,3 +1,4 @@
+require 'capistrano-db-tasks'
 lock '3.2.1'
 set :application, 'mashtime.ru'
 set :repo_url, 'https://github.com/BrandyMint/mashtime.ru.git'
@@ -13,6 +14,11 @@ set :linked_files, %w{config/database.yml config/omniauth.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# if you want to remove the local dump file after loading
+set :db_local_clean, true
+# if you want to remove the dump file from the server after downloading
+set :db_remote_clean, false
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.1.2'

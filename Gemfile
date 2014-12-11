@@ -266,4 +266,5 @@ group :deploy do
     gem 'capistrano-rbenv', :require => false
     gem 'capistrano-rails', '~> 1.1', :require => false
     gem 'capistrano-bundler', :github => 'capistrano/bundler', :require => false
+    gem "capistrano-db-tasks", :require => false
 end
