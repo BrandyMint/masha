@@ -26,6 +26,12 @@
             %b
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
                 = human_hours @result.total_by_date[d[:date]]
+      %tr{class:"summary-row"}
+        %th
+          За весь период:
+        - @result.columns.each do |column|
+          %td= human_hours @result.total_by_column[column.to_s]
+        %td= human_hours @result.total
 
   - if @result.columns.present?
     = render 'print_ready'

@@ -1,5 +1,5 @@
 class SummaryQuery
-  attr_accessor :days, :columns, :total_by_date
+  attr_accessor :days, :columns, :total_by_date, :total_by_column, :total
 
   attr_reader :period, :group_by
 
@@ -21,10 +21,10 @@ class SummaryQuery
   end
 
   def perform
+
     ids = []
-
     @total_by_date = {}
-
+    @total_by_column = {}
     @days = dates.map do |date|
       res = grouped_scope date
       ids += res.keys
@@ -33,7 +33,6 @@ class SummaryQuery
         @total_by_date[date]||=0
         @total_by_date[date]+=hours
       end
-
       {
         date: date,
         columns: res
@@ -42,6 +41,17 @@ class SummaryQuery
 
     @columns = ids.uniq.sort.map { |id| item_find id }.compact
 
+    @total = scope.sum(:hours)
+
+    @columns.each do |column|
+      str_column = column.to_s
+      @total_by_column[str_column] = summary_by_column column
+    end
+
+  end
+
+  def summary_by_column column
+    scope.where(group_column => column).sum(:hours)
   end
 
   def to_csv
@@ -61,7 +71,6 @@ class SummaryQuery
 
   def scope
     s = TimeShift.includes(:project, :user)
-
     s = s.where :project_id => available_projects_ids
     s.where :user_id => available_users_ids
   end
@@ -69,6 +78,11 @@ class SummaryQuery
   def grouped_scope date
     scope.group(group_column).where(date: date).sum(:hours)
   end
+
+  def grouped_by_column_scope
+    scope.group(group_column)
+  end
+
 
   def group_column
     @group_by == :project ? :project_id : :user_id
