@@ -1,15 +1,14 @@
 # require jquery.freetile
 # require jquery_ujs
-# require jquery-ui
-# require jquery.ui.datepicker-ru
 # require select2
 # require jquery_nested_form
 #
 # sass-ный jquery
-# require jquery.ui.all
 
 #= require jquery
 #= require jquery_ujs
+#  require jquery.ui.all
+#  require jquery.ui.datepicker-ru
 #= require jquery.role
 #= require bootstrap
 #= require jquery-autosize/jquery.autosize
@@ -40,6 +39,9 @@ $ ->
   )()
 
   $(document).off('page:done').on 'page:done', jsHandlers
+
+  #if $('[type="date"]').prop('type') != 'date'
+    #$('[type="date"]').datepicker()
 
   # $('@freetile').freetile()
   # $('@ui-date-picker').datepicker()
