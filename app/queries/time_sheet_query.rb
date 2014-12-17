@@ -19,8 +19,8 @@ class TimeSheetQuery
     scope = scope.where :user_id => user_id if user_id.present?
     scope = scope.where :user_id => available_users_ids if available_users.present?
 
-    scope = scope.where "date>=?", date_from if date_from.present?
-    scope = scope.where "date<=?", date_to if date_to.present?
+    scope = scope.where "date>=?", date_from.to_date if date_from.present?
+    scope = scope.where "date<=?", date_to.to_date if date_to.present?
 
     if group_by.present?
       hash = {}
