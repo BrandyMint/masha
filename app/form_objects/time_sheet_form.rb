@@ -48,13 +48,13 @@ class TimeSheetForm < FormObjectBase
 
     def validate_date_from
       if self.date_from.present?
-        errors.add(:date_from, "Неверный формат даты") if ((self.date_from =~ NORMAL_DATE_FORMAT) != 0)
+        errors.add(:date_from, I18n.t('simple_form.error_notification.date_invalid')) if ((self.date_from =~ NORMAL_DATE_FORMAT) != 0)
       end
     end
 
     def validate_date_to
       if self.date_to.present?
-        errors.add(:date_to, "Неверный формат даты") if ((self.date_to =~ NORMAL_DATE_FORMAT) != 0)
+        errors.add(:date_to, I18n.t('simple_form.error_notification.date_invalid')) if ((self.date_to =~ NORMAL_DATE_FORMAT) != 0)
       end
     end
 
