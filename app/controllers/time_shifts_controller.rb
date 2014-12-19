@@ -16,25 +16,34 @@ class TimeShiftsController < ApplicationController
   end
 
   def index
+
+    #binding.pry
+
     if viewable_projects_collection.empty?
       render 'no_projects'
     else
       @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
-      if @time_sheet_form.empty?
-        # Отправили пустую форму
-        if params[:time_sheet_form].present?
-          return render 'empty'
+      #binding.pry
+      if params[:time_sheet_form].present?
+
+        # Отправили валидную форму
+        if @time_sheet_form.valid?
+
+          @time_sheet_form.test_for_dates_swap
+
+          template = 'index'
+          query = TimeSheetQuery.new @time_sheet_form
+
         else
-          @result = build_summary
-          return render 'blank'
+
+          #@time_sheet_form.errors.clear
+          return render 'empty'
+
         end
-        #else
-        #  template = 'summary'
-        #  query = SummaryQuery.new
-        #end
+
       else
-        template = 'index'
-        query = TimeSheetQuery.new @time_sheet_form
+        @result = build_summary
+        return render 'blank'
       end
 
       query.available_projects = current_user.available_projects
@@ -62,6 +71,7 @@ class TimeShiftsController < ApplicationController
   def new
     @page_header_type = :static
     @time_shift = TimeShift.new default_time_shift_form
+
   end
 
   def destroy
