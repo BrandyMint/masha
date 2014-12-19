@@ -1,17 +1,18 @@
 = simple_form_for @time_sheet_form, :url => time_shifts_url,
-  :method => :get, :html => { :class => 'time-sheet-form form-horizontal' } do |f|
+  :method => :get, :html => { :class => 'time-sheet-form form-horizontal' },:validate => true do |f|
   = f.error_notification
+  = f.hidden_field :locale, :value => ""
   .form-inputs
     .row
       .col-md-4.col-md-offset-2.col-sm-4
         .form-group
           = f.label :date_from, class: 'col-sm-2'
           .col-sm-10
-            = f.input :date_from, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
+            = f.input :date_from,:as => :date_picker, :validate => true, label: false, input_html: {class: 'form-control input-sm'}
         .form-group
           = f.label :date_to, class: 'col-sm-2'
           .col-sm-10
-            = f.input :date_to, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
+            = f.input :date_to,:as => :date_picker, :validate => true, label: false, input_html: {class: 'form-control input-sm'}
       .col-md-2.col-md-offset-1.col-sm-4
         .form-group
           .col-xs-12
