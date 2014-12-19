@@ -14,8 +14,9 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   protected
 
   def shortcuts
+
     date = object.send( attribute_name )
-    date = Date.today if date.blank?
+    date = Date.today if ( date.blank? || object.invalid? )
     date = Date.parse date if date.is_a? String
 
     case attribute_name
