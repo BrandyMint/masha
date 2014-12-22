@@ -60,6 +60,17 @@ body
   display: inline-block
   padding-top: 1em
 
+  a:active
+    outline: none
+
+  .selected
+    padding: 0 2px
+    background-color: $linkColor
+    color: #fff
+    border-radius: 3px
+    outline: none
+    transition: color 0.2s ease 0.0s
+
 .user-select-none
   +user-select(none)
 
