@@ -112,6 +112,6 @@ $ ->
 
 )(window.App ||= {})
 
-$(document).on 'ready', (e)->
+$ ->
   localeField = document.getElementById 'time_sheet_form_locale'
   localeField.value = navigator.userLanguage || navigator.language
