@@ -26,7 +26,7 @@ class MembershipsController < ApplicationController
       render :index and return
     else
 
-      user = User.where(email: invite_params[:email]).first
+      user = find_user invite_params[:email]
 
       if user.present?
         @project.memberships.create user: user, role: invite_params[:role]
@@ -62,6 +62,14 @@ class MembershipsController < ApplicationController
 	end
 
 	protected
+
+  def find_user email
+    if /@/=~ email
+      User.where(email: email).first
+    else 
+      User.where(nickname: email).first || User.where(name: email).first
+    end
+  end
 
   def users_available
     @users_available_for_project = current_user.available_users.to_a - parent.users
