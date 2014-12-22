@@ -3,7 +3,8 @@ class TimeShiftsController < ApplicationController
   inherit_resources
 
   def summary
-    @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
+
+    @time_sheet_form = TimeSheetForm.build_from_params params[:time_sheet_form]
 
     template = 'summary'
     @result = build_summary
@@ -17,19 +18,17 @@ class TimeShiftsController < ApplicationController
 
   def index
 
-    #binding.pry
 
     if viewable_projects_collection.empty?
       render 'no_projects'
     else
-      @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
-      #binding.pry
+
+      @time_sheet_form = TimeSheetForm.build_from_params params[:time_sheet_form]
+
       if params[:time_sheet_form].present?
 
         # Отправили валидную форму
         if @time_sheet_form.valid?
-
-          @time_sheet_form.test_for_dates_swap
 
           template = 'index'
           query = TimeSheetQuery.new @time_sheet_form

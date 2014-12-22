@@ -7,7 +7,6 @@ class TimeSheetForm < FormObjectBase
   property :project_id
   property :user_id
   property :group_by
-  property :locale
 
 
   validates :date_from, :date_to, presence: true, if: lambda{ |form| form.project_id.blank? && form.user_id.blank? }
@@ -21,28 +20,17 @@ class TimeSheetForm < FormObjectBase
 
   def initialize(args)
     super args
-
-    self.date_from = normalize_date(self.date_from, self.locale)
-    self.date_to = normalize_date(self.date_to, self.locale)
-  end
-
-  def test_for_dates_swap
-    if self.date_to.present? && self.date_from.present? && Date.parse(self.date_to)<Date.parse(self.date_from)
-      self.date_to, self.date_from = self.date_from, self.date_to
+    if valid?
+      if self.date_to.present? && self.date_from.present? && Date.parse(self.date_to)<Date.parse(self.date_from)
+        self.date_to, self.date_from = self.date_from, self.date_to
+      end
     end
   end
 
-  def normalize_date date, locale
-    if date.present? && ((date =~ INVERT_DATE_FORMAT) == 0)
-      y, m, d = date.split(/\.|\/|\:|\-|\*/)
-      y, m, d = [y, m, d].reverse if y.length == 2
-      m, d = d, m if (m.to_i > 12 || STRANGE_LOCALES.include?(locale))
-
-      (y==nil ? "" : y) + (m==nil ? "" : "-" + m) + (d==nil ? "" : "-" + d)
-    else
-      date
-    end
+  def self.build_from_params params
+    self.new TimeSheetFormNormalizer.new(params).perform
   end
+
 
   private
 
