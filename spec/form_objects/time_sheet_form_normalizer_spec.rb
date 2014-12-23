@@ -11,7 +11,7 @@ describe TimeSheetFormNormalizer do
       let(:date) { "12-11-2014" }
       let(:normalized_date) { "2014-11-12" }
 
-      let(:result) { described_class.new( {date_from:date} ).perform[:date_from] }
+      let(:result) { described_class.new({}).normalize_date( date ) }
 
       it "must return reversed date" do
         expect(result).to eq(normalized_date)
@@ -25,8 +25,8 @@ describe TimeSheetFormNormalizer do
       let(:date_two) { "12/11/2014" }
       let(:normalized_date) { "2014-11-12" }
 
-      let(:result_one) { described_class.new( {date_from:date_one} ).perform[:date_from] }
-      let(:result_two) { described_class.new( {date_from:date_two} ).perform[:date_from] }
+      let(:result_one) { described_class.new({}).normalize_date( date_one ) }
+      let(:result_two) { described_class.new({}).normalize_date( date_two ) }
 
       it "must return a string with the separator dash" do
         (expect(result_one).to eq(normalized_date)) && (expect(result_two).to eq(normalized_date))
@@ -39,7 +39,7 @@ describe TimeSheetFormNormalizer do
       let(:locale) { ["en-US","en_BZ","fil-PH","ar_SA","iu-Cans-CA"].shuffle.first }
       let(:normalized_date) { "2014-12-17" }
 
-      let(:result) { described_class.new( {date_from:date, locale:locale} ).perform[:date_from] }
+      let(:result) { described_class.new({}).normalize_date( date, locale ) }
 
       it "change the day and month of places" do
         expect(result).to eq(normalized_date)

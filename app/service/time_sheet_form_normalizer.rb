@@ -9,19 +9,29 @@ class TimeSheetFormNormalizer
 
   def perform
     if @params.present?
-      {
+
+      obj = {
           date_from:  normalize_date(@params[:date_from], @params[:locale]),
           date_to:    normalize_date(@params[:date_to], @params[:locale]),
           project_id: @params[:project_id],
           user_id:    @params[:user_id],
           group_by:   @params[:group_by]
       }
+
+      begin
+        if Date.parse(obj[:date_to]) < Date.parse(obj[:date_from])
+          obj[:date_from], obj[:date_to] = obj[:date_to], obj[:date_from]
+        end
+      rescue
+
+      end
+
+      obj
+
     end
   end
 
-  private
-
-  def normalize_date date, locale
+  def normalize_date date, locale = ''
     if date.present? && ((date =~ INVERT_DATE_FORMAT) == 0)
       y, m, d = date.split(/\.|\/|\:|\-|\*|\~|\#/)
       y, m, d = [y, m, d].reverse if y.length == 2
