@@ -57,9 +57,12 @@ $ ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     $(@).trigger 'change'
-    target = $(e.target)
-    target.addClass("selected")
-    target.parents('.date-shortcuts').find('[role=period-shortcut]').not(this).removeClass("selected")
+    $(e.target)
+    .addClass("selected")
+    .parents('.date-shortcuts')
+    .find('@period-shortcut')
+    .not(this)
+    .removeClass("selected")
 
     e.preventDefault()
 
