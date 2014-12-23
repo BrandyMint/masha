@@ -18,6 +18,7 @@ ru:
     error_notification:
       default_message: "Обнаружены ошибки, пожалуйста, взгляните на них"
       blank: "Не может быть пустым"
+      date_invalid: "неверный формат"
     confirm: Вы уверены?
     button:
       disable_with:
