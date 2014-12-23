@@ -59,6 +59,13 @@ $ ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     $(@).trigger 'change'
+    $(e.target)
+    .addClass("selected")
+    .parents('.date-shortcuts')
+    .find('@period-shortcut')
+    .not(this)
+    .removeClass("selected")
+
     e.preventDefault()
 
   $(document).on 'click', "@j-password-toggle", ->
