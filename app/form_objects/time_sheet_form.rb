@@ -1,11 +1,5 @@
 class TimeSheetForm < FormObjectBase
 
-  #STRANGE_LOCALES = ["en-US","en_BZ","fil-PH","ar_SA","iu-Cans-CA"]
-
-  #INVERT_DATE_FORMAT = /\A\d{2}(\.|\/|\:|\-|\*)\d{2}(\.|\/|\:|\-|\*)\d{4}\Z/
-
-  NORMAL_DATE_FORMAT = /\A\d{4}(\.|\/|\:|\-|\*)(?:0?[1-9]|1[0-2])(\.|\/|\:|\-|\*)(?:0?[1-9]|1[0-9]|2[0-9]|3[0-1])\Z/
-
   GROUP_BY = [:project, :person]
 
   property :date_from
@@ -22,15 +16,8 @@ class TimeSheetForm < FormObjectBase
   validate :validate_date_from, :validate_date_to
 
 
-
-
   def initialize args
     super args
-    if valid?
-      if self.date_to.present? && self.date_from.present? && Date.parse(self.date_to)<Date.parse(self.date_from)
-        self.date_to, self.date_from = self.date_from, self.date_to
-      end
-    end
   end
 
   def self.build_from_params params
@@ -42,13 +29,22 @@ class TimeSheetForm < FormObjectBase
 
     def validate_date_from
       if self.date_from.present?
-        errors.add(:date_from, I18n.t('simple_form.error_notification.date_invalid')) if ((self.date_from =~ NORMAL_DATE_FORMAT) != 0)
+        begin
+          Date.parse self.date_from
+        rescue
+          errors.add(:date_from, I18n.t('simple_form.error_notification.date_invalid'))
+        end
+
       end
     end
 
     def validate_date_to
       if self.date_to.present?
-        errors.add(:date_to, I18n.t('simple_form.error_notification.date_invalid')) if ((self.date_to =~ NORMAL_DATE_FORMAT) != 0)
+        begin
+          Date.parse self.date_to
+        rescue
+          errors.add(:date_to, I18n.t('simple_form.error_notification.date_invalid'))
+        end
       end
     end
 
