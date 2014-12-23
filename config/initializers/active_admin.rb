@@ -2,18 +2,17 @@ I18n.default_locale = :ru
 I18n.load_path += Dir[File.expand_path('../../locales/*.yml', __FILE__)]
 
 ActiveAdmin.setup do |config|
-
   # == Site Title
   #
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Masha"
+  config.site_title = 'Masha'
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
   #
-  config.site_title_link = "/"
+  config.site_title_link = '/'
 
   # Set an optional image to be displayed for the header
   # instead of a string (overrides :site_title)
@@ -60,7 +59,6 @@ ActiveAdmin.setup do |config|
   # within the controller.
   config.authentication_method = :authenticate_admin!
 
-
   # == Current User
   #
   # Active Admin will associate actions with the current
@@ -76,7 +74,7 @@ ActiveAdmin.setup do |config|
       admin.add_logout_button_to_menu menu # can also pass priority & html_options for link_to to use
     end
   end
-  
+
   # == Logging Out
   #
   # Active Admin displays a logout link on each screen. These
@@ -119,13 +117,11 @@ ActiveAdmin.setup do |config|
   #     without_comments.allow_comments = false
   #   end
 
-
   # == Batch Actions
   #
   # Enable and disable Batch Actions
   #
   config.batch_actions = true
-
 
   # == Controller Filters
   #
@@ -133,7 +129,6 @@ ActiveAdmin.setup do |config|
   # Active Admin resources and pages from here.
   #
   # config.before_filter :do_something_awesome
-
 
   # == Register Stylesheets & Javascripts
   #
@@ -150,7 +145,6 @@ ActiveAdmin.setup do |config|
   # To load a javascript file:
   #   config.register_javascript 'my_javascript.js'
 
-
   # == CSV options
   #
   # Set the CSV builder separator (default is ",")
@@ -158,7 +152,6 @@ ActiveAdmin.setup do |config|
   #
   # Set the CSV builder options (default is {})
   # config.csv_options = {}
-
 
   # == Menu System
   #
@@ -198,14 +191,12 @@ ActiveAdmin.setup do |config|
   #
   #   end
 
-
   # == Pagination
   #
   # Pagination is enabled by default for all resources.
   # You can control the default per page count for all resources here.
   #
   # config.default_per_page = 30
-
 
   # == Filters
   #
@@ -214,8 +205,6 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
-
-
 end
 
 ActiveAdmin::ResourceController.class_eval do

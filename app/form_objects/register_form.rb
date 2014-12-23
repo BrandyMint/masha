@@ -1,5 +1,4 @@
 class RegisterForm < FormObjectBase
-
   property :name
   property :email
   property :password
@@ -21,8 +20,7 @@ class RegisterForm < FormObjectBase
   private
 
   def email_unique?
-    errors.add(:email, I18n.t('errors.messages.taken')) if User.exists?(email: self.email)
+    errors.add(:email, I18n.t('errors.messages.taken')) if User.exists?(email: email)
     errors.blank?
   end
-
 end

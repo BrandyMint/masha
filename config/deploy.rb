@@ -6,12 +6,12 @@ set :repo_url, 'https://github.com/BrandyMint/mashtime.ru.git'
 set :deploy_to, proc { "/home/wwwmasha/#{fetch(:application)}" }
 set :scm, :git
 
-#set :format, :pretty
+# set :format, :pretty
 set :log_level, :info
 # set :pty, true
 
-set :linked_files, %w{config/database.yml config/omniauth.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
+set :linked_files, %w(config/database.yml config/omniauth.yml)
+set :linked_dirs, %w(bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads)
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
@@ -23,11 +23,10 @@ set :db_remote_clean, false
 set :rbenv_type, :user
 set :rbenv_ruby, '2.1.2'
 
-set :bundle_without, %w{development test deploy}.join(' ')
+set :bundle_without, %w(development test deploy).join(' ')
 set :bundle_jobs, 10
 
 namespace :deploy do
-
   desc 'Restart application'
   task :restart do
     on roles(:web), in: :sequence, wait: 5 do
@@ -49,5 +48,4 @@ namespace :deploy do
   before :compile_assets, 'bower:install'
   after :publishing, :restart
   after :finishing, 'deploy:cleanup'
-
 end

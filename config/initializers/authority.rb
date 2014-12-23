@@ -1,5 +1,4 @@
-Authority.configure do |config|
-
+Authority.configure do |_config|
   # USER_METHOD
   # ===========
   # Authority needs the name of a method, available in any controller, which
@@ -9,7 +8,7 @@ Authority.configure do |config|
   # Default is:
   #
   # config.user_method = :current_user
-  
+
   # CONTROLLER_ACTION_MAP
   # =====================
   # For a given controller method, what verb must a user be able to do?
@@ -33,7 +32,7 @@ Authority.configure do |config|
   # ABILITIES
   # =========
   # Teach Authority how to understand the verbs and adjectives in your system. Perhaps you
-  # need {:microwave => 'microwavable'}. I'm not saying you do, of course. Stop looking at 
+  # need {:microwave => 'microwavable'}. I'm not saying you do, of course. Stop looking at
   # me like that.
   #
   # Defaults are as follows:
@@ -48,7 +47,7 @@ Authority.configure do |config|
   # LOGGER
   # ======
   # If a user tries to perform an unauthorized action, where should we log that fact?
-  # Provide a logger object which responds to `.warn(message)`, unless your 
+  # Provide a logger object which responds to `.warn(message)`, unless your
   # security_violation_handler calls a different method.
   #
   # Default is:
@@ -59,5 +58,4 @@ Authority.configure do |config|
   # config.logger = Rails.logger                     # Log with all your app's other messages
   # config.logger = Logger.new('log/authority.log')  # Use this file
   # config.logger = Logger.new('/dev/null')          # Don't log at all (on a Unix system)
-
 end

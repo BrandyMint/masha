@@ -7,11 +7,11 @@ end
 class Authentificator::Base
   attr_accessor :auth_hash, :user
 
-  def self.authentificate auth_hash
+  def self.authentificate(auth_hash)
     new(auth_hash).authentificate
   end
 
-  def initialize _auth_hash
+  def initialize(_auth_hash)
     @auth_hash = _auth_hash
     @user = nil
   end
@@ -24,7 +24,7 @@ class Authentificator::Base
     return nil unless email.present?
 
     # TODO Предусмотреть факт неподтвержденности емайла
-    @user = User.where(:email=>email).first
+    @user = User.where(email: email).first
 
     return nil unless @user.present?
 
@@ -32,11 +32,11 @@ class Authentificator::Base
 
     update_user_info @user if @user.present?
 
-    return @user
+    @user
   end
 
-  def find _prov, _uid
-    auth = Authentication.where(:provider => _prov, :uid => _uid).first
+  def find(_prov, _uid)
+    auth = Authentication.where(provider: _prov, uid: _uid).first
 
     return nil unless auth.present?
 
@@ -46,7 +46,7 @@ class Authentificator::Base
 
     update_user_info auth.user if auth.user.present?
 
-    return auth.user
+    auth.user
   end
 
   def create
@@ -57,12 +57,12 @@ class Authentificator::Base
 
     update_user_info @user if @user.present?
 
-    return @user
+    @user
   end
 
-  private 
+  private
 
-  def add_authentication user
+  def add_authentication(user)
     user.authentications.create do |a|
       a.provider = provider
       a.uid = uid
@@ -70,7 +70,7 @@ class Authentificator::Base
     end
   end
 
-  def update_user_info user
+  def update_user_info(user)
     [:nickname, :email].each do |key|
       unless user.read_attribute(key).present?
         begin

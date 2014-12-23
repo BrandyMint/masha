@@ -1,5 +1,4 @@
 module MenuHelper
-
   def menu_current_user
     content_tag(:span, ficon('user-1'), class: 'navbar-menu-icon') +
       content_tag(:span, 'Профиль', class: 'navbar-menu-label')
@@ -17,10 +16,9 @@ module MenuHelper
 
   def menu_time_shifts_url
     if current_user.reporter?
-      time_shifts_url(time_sheet_form: {user_id: current_user.id})
+      time_shifts_url(time_sheet_form: { user_id: current_user.id })
     else
       time_shifts_url
     end
   end
-
 end

@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   class NotLogged < StandardError
-
   end
   include ApplicationHelper
 
@@ -14,13 +13,13 @@ class ApplicationController < ActionController::Base
 
   before_filter :define_page_title
 
-  rescue_from NotLogged, :with => :handle_not_authorized_error
+  rescue_from NotLogged, with: :handle_not_authorized_error
 
   # TODO Тут нужно кидать на страницу где написано нет доступа
   # Потому что если кидать на страницу логина, а пользователь залогинен
   # то его кинет обратно и будет цикл
-  #rescue_from CanCan::AccessDenied, :with => :handle_no_access
-  #rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
+  # rescue_from CanCan::AccessDenied, :with => :handle_no_access
+  # rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   def wiselinks_layout
     _layout.is_a?(ActionView::Template) ? _layout.virtual_path : _layout
@@ -41,7 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def define_page_title
-    @page_title = Settings.app.title + ' - ' + t( action_name, :scope => [:titles, controller_name], :default => 'Учет в кармане' )
+    @page_title = Settings.app.title + ' - ' + t(action_name, scope: [:titles, controller_name], default: 'Учет в кармане')
   end
 
   def handle_not_authorized_error
@@ -54,14 +53,14 @@ class ApplicationController < ActionController::Base
     show_login_form 403
   end
 
-  def show_login_form status
+  def show_login_form(status)
     # чтобы не выводить дублирующую форму логина в заголовке
-    #@login_process = true
-    #@session = Session.new :backurl => request.url
+    # @login_process = true
+    # @session = Session.new :backurl => request.url
 
-    gflash :now, error: "Нет доступа к запрашиваемому ресурсу."
+    gflash :now, error: 'Нет доступа к запрашиваемому ресурсу.'
     respond_to do |format|
-      format.html { render 'sessions/new', :layout => 'application', :status => status }
+      format.html { render 'sessions/new', layout: 'application', status: status }
       # Иначе при не авторизованном запросе /posts/16370.pdf падает при поиске sessions/new.pdf
       # https://dapi.airbrake.io/errors/31803485
       #
@@ -75,10 +74,10 @@ class ApplicationController < ActionController::Base
   end
 
   def require_login
-    if !logged_in?
+    unless logged_in?
       session[:return_to_url] = request.url && request.get?
 
-      raise NotLogged
+      fail NotLogged
     end
   end
 

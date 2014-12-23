@@ -8,25 +8,25 @@ Masha::Application.routes.draw do
   # TODO Добавить routes для отработки
   # http://masha.brandymint.ru/auth/failure?message=invalid_credentials&strategy=github
 
-  get "logout" => "sessions#destroy", :as => "logout"
-  get "login" => "sessions#new", :as => "login"
-  get "signup" => "users#new", :as => "signup"
-  get "feedback" => "pages#feedback", :as => "feedback"
+  get 'logout' => 'sessions#destroy', :as => 'logout'
+  get 'login' => 'sessions#new', :as => 'login'
+  get 'signup' => 'users#new', :as => 'signup'
+  get 'feedback' => 'pages#feedback', :as => 'feedback'
   get 'noaccess' => 'pages#noaccess', :as => 'noaccess'
-  get "support" => redirect('/feedback')
-  get "error" => "errors#index", :as => "error"
+  get 'support' => redirect('/feedback')
+  get 'error' => 'errors#index', :as => 'error'
 
-  resources :users, :only => [:new, :create]
-  resources :sessions, :only => [:new, :create, :destroy]
+  resources :users, only: [:new, :create]
+  resources :sessions, only: [:new, :create, :destroy]
 
   # Личный контроллер пользователя
-  resource :profile, :controller => :profile do
+  resource :profile, controller: :profile do
     collection do
       post :change_password
     end
   end
 
-  resources :password_resets, :only => [:new, :create, :edit, :update]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 
   resources :projects do
     resources :memberships
@@ -40,10 +40,10 @@ Masha::Application.routes.draw do
       get :summary
     end
   end
-  resources :invites, :only => [:create, :destroy]
+  resources :invites, only: [:create, :destroy]
 
   namespace :owner do
-    root :controller => :users, :action => :index
+    root controller: :users, action: :index
     resources :projects do
       resources :memberships
 
@@ -56,5 +56,4 @@ Masha::Application.routes.draw do
   end
 
   resources :users
-
 end

@@ -28,10 +28,10 @@ class TimeShiftsController < ApplicationController
           @result = build_summary
           return render 'blank'
         end
-        #else
+        # else
         #  template = 'summary'
         #  query = SummaryQuery.new
-        #end
+        # end
       else
         template = 'index'
         query = TimeSheetQuery.new @time_sheet_form
@@ -52,10 +52,10 @@ class TimeShiftsController < ApplicationController
   end
 
   def create
-    super do |success, error|
-      success.html {
-        redirect_to new_time_shift_url, gflash: { notice: t('gflash.time_shift_addition', :hours => human_hours(@time_shift.hours), :project => @time_shift.project, :date => l(@time_shift.date)) }
-      }
+    super do |success, _error|
+      success.html do
+        redirect_to new_time_shift_url, gflash: { notice: t('gflash.time_shift_addition', hours: human_hours(@time_shift.hours), project: @time_shift.project, date: l(@time_shift.date)) }
+      end
     end
   end
 
@@ -97,15 +97,15 @@ class TimeShiftsController < ApplicationController
   def default_time_shift_form
     selected_project = get_project_id_from_params
     {
-      :project_id => selected_project ? selected_project : current_user.time_shifts.order(:id).last.try(:project_id),
-      :date => Date.today
+      project_id: selected_project ? selected_project : current_user.time_shifts.order(:id).last.try(:project_id),
+      date: Date.today
     }
   end
 
   def get_project_id_from_params
     permitted_params
     if params[:time_shift][:project_id]
-      project = Project.where(:id => params[:time_shift][:project_id]).first
+      project = Project.where(id: params[:time_shift][:project_id]).first
       project.id if current_user.membership_of(project)
     end
   end

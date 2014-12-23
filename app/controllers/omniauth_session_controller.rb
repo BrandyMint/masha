@@ -1,5 +1,4 @@
 class OmniauthSessionController < ApplicationController
-
   def create
     auto_login Authentificator::Base.authentificate auth_hash
 
@@ -8,7 +7,7 @@ class OmniauthSessionController < ApplicationController
   rescue StandardError => err
     Airbrake.notify err
     Rails.logger.error err
-    redirect_to root_url, gflash: { notice: t("gflash.session_problems") }
+    redirect_to root_url, gflash: { notice: t('gflash.session_problems') }
   end
 
   protected
@@ -24,5 +23,4 @@ class OmniauthSessionController < ApplicationController
   def auth_hash
     request.env['omniauth.auth']
   end
-
 end

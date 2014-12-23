@@ -7,7 +7,7 @@ require 'csv'
 # you've limited to :test, :development, or :production.
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(assets: %w(development test)))
   # If you want your assets lazily compiled in production, use this line
 end
 
@@ -31,7 +31,7 @@ module Masha
     config.assets.enabled = true
 
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
-    #config.assets.paths << Rails.root.join('vendor', 'assets')
+    # config.assets.paths << Rails.root.join('vendor', 'assets')
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

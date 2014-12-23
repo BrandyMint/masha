@@ -1,7 +1,7 @@
 class Owner::ProjectsController < Owner::BaseController
   inherit_resources
 
-  custom_actions :set_role => :post, :remove_role => :delete
+  custom_actions set_role: :post, remove_role: :delete
 
   def set_role
     User.find(params[:user_id]).set_role params[:role], resource
@@ -16,7 +16,7 @@ class Owner::ProjectsController < Owner::BaseController
   protected
 
   def permitted_params
-    params.permit :project => [:name, :slug]
+    params.permit project: [:name, :slug]
   end
 
   def collection

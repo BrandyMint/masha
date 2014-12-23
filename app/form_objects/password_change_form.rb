@@ -1,5 +1,4 @@
 class PasswordChangeForm < FormObjectBase
-
   property :password
   property :password_confirmation
 

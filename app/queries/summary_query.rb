@@ -5,14 +5,14 @@ class SummaryQuery
 
   attr_accessor :available_projects, :available_users
 
-  def initialize period=nil
+  def initialize(period = nil)
     @available_users = nil
     @available_projects = nil
-    @period = period=='month' ? 'month' : 'week'
+    @period = period == 'month' ? 'month' : 'week'
     @group_by = :project
   end
 
-  def group_by= value
+  def group_by=(value)
     if value.to_s == 'project'
       @group_by = :project
     else
@@ -21,7 +21,6 @@ class SummaryQuery
   end
 
   def perform
-
     ids = []
     @total_by_date = {}
     @total_by_column = {}
@@ -29,9 +28,9 @@ class SummaryQuery
       res = grouped_scope date
       ids += res.keys
 
-      res.each_pair do |id, hours|
-        @total_by_date[date]||=0
-        @total_by_date[date]+=hours
+      res.each_pair do |_id, hours|
+        @total_by_date[date] ||= 0
+        @total_by_date[date] += hours
       end
       {
         date: date,
@@ -47,10 +46,9 @@ class SummaryQuery
       str_column = column.to_s
       @total_by_column[str_column] = summary_by_column column
     end
-
   end
 
-  def summary_by_column column
+  def summary_by_column(column)
     scope.where(group_column => column).sum(:hours)
   end
 
@@ -71,11 +69,11 @@ class SummaryQuery
 
   def scope
     s = TimeShift.includes(:project, :user)
-    s = s.where :project_id => available_projects_ids
-    s.where :user_id => available_users_ids
+    s = s.where project_id: available_projects_ids
+    s.where user_id: available_users_ids
   end
 
-  def grouped_scope date
+  def grouped_scope(date)
     scope.group(group_column).where(date: date).sum(:hours)
   end
 
@@ -83,27 +81,26 @@ class SummaryQuery
     scope.group(group_column)
   end
 
-
   def group_column
     @group_by == :project ? :project_id : :user_id
   end
 
   def dates
-   @dates ||= begin
-                today = Date.today
-                if @period == 'month'
-                  start_date = today.at_beginning_of_month
-                  start_date = start_date.prev_month if today-start_date<10
-                else
-                  start_date = today.at_beginning_of_week
-                  start_date = start_date.prev_week if today-start_date<3
-                end
+    @dates ||= begin
+                 today = Date.today
+                 if @period == 'month'
+                   start_date = today.at_beginning_of_month
+                   start_date = start_date.prev_month if today - start_date < 10
+                 else
+                   start_date = today.at_beginning_of_week
+                   start_date = start_date.prev_week if today - start_date < 3
+                 end
 
-                (start_date..Date.today).to_a.reverse
-              end
+                 (start_date..Date.today).to_a.reverse
+               end
   end
 
-  def item_find id
+  def item_find(id)
     klass = @group_by == :project ? Project : User
     klass.find id
   rescue => e
@@ -117,5 +114,4 @@ class SummaryQuery
   def available_users_ids
     @available_users.map &:id
   end
-
 end

@@ -6,6 +6,6 @@ FactoryGirl.define do
     sequence(:nickname) { |n| "nick#{n}" }
     sequence(:pivotal_person_id) { |n| n }
     sequence(:email) { |n| "email#{n}@asdf.ru" }
-    password "123"
+    password '123'
   end
 end
