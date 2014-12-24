@@ -1,0 +1,22 @@
+AllCops:
+  RunRailsCops: true
+
+
+Metrics/MethodLength:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+Metrics/AbcSize:
+  Enabled: false
+
+
+
+Lint/ConditionPosition:
+  Enabled: true
+Lint/AssignmentInCondition:
+  Enabled: true
+
+
+
+Documentation:
+  Enabled: false
