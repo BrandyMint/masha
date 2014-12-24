@@ -16,9 +16,13 @@
     bsPlus    =  bStepper.find '.plus'
     bsMinus   =  bStepper.find '.minus'
     bsInput   =  bStepper.find 'input'
+    bsValue   =  null
+
+    floatValue = parseFloat(bsInput.val())
+    bsValue = floatValue unless isNaN(floatValue)
 
     controller =
-      _currentvalue: bsMin
+      _currentvalue: bsValue
 
       makePlus: ->
         val = @getCurrentValue()
