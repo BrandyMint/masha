@@ -265,3 +265,5 @@ group :deploy do
   gem 'capistrano-bundler', github: 'capistrano/bundler', require: false
   gem 'capistrano-db-tasks', require: false
 end
+
+gem 'rubocop', require: false
