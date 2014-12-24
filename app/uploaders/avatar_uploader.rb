@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class AvatarUploader < CarrierWave::Uploader::Base
-
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
@@ -27,6 +26,6 @@ class AvatarUploader < CarrierWave::Uploader::Base
   def default_url
     cname = model.class.to_s.underscore
     cname = 'user' if cname == 'common_user'
-    [cname, version_name].compact.join('_') + ".png"
+    [cname, version_name].compact.join('_') + '.png'
   end
 end

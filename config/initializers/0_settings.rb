@@ -4,7 +4,7 @@ class Settings < Settingslogic
 
   suppress_errors Rails.env.production?
 
-  Rails.configuration.action_mailer.merge!(self.action_mailer.symbolize_keys)
+  Rails.configuration.action_mailer.merge!(action_mailer.symbolize_keys)
 end
 
 class Settings::Omniauth < Settingslogic

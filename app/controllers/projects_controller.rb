@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :require_login
   inherit_resources
-  authority_actions :activate => 'update', :archivate => 'update'
+  authority_actions activate: 'update', archivate: 'update'
 
   def index
     @project = Project.new
@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-  	@project = Project.new(permited_params)
+    @project = Project.new(permited_params)
 
     if @project.save
       current_user.set_role :owner, @project
@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    redirect_to new_time_shift_url(:time_shift => { :project_id => params[:id] })
+    redirect_to new_time_shift_url(time_shift: { project_id: params[:id] })
   end
 
   def edit

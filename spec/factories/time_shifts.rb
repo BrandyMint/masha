@@ -6,6 +6,6 @@ FactoryGirl.define do
     user
     date Date.today
     hours 1
-    sequence(:description) {|n| "desc#{n}" }
+    sequence(:description) { |n| "desc#{n}" }
   end
 end

@@ -4,5 +4,4 @@ class Owner::BaseController < ApplicationController
   before_filter do
     @namespace = :admin
   end
-
 end

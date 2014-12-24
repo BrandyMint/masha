@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :project do
-  	sequence(:name) {|n| "name#{n}" }
-  	sequence(:slug) {|n| "slug#{n}" }
+    sequence(:name) { |n| "name#{n}" }
+    sequence(:slug) { |n| "slug#{n}" }
     # name "MyString"
     # owner nil
   end

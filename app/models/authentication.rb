@@ -3,13 +3,13 @@ class Authentication < ActiveRecord::Base
 
   serialize :auth_hash
 
-  scope :by_provider, lambda { |provider| where(:provider => provider) }
+  scope :by_provider, lambda { |provider| where(provider: provider) }
 
-  validate :provider, :presence => true
-  validate :uid, :presence => true, :uniqueness => { :scope => :provider }
+  validate :provider, presence: true
+  validate :uid, presence: true, uniqueness: { scope: :provider }
 
   def self.providers
-    @providers ||= Authentication.group(:provider).order(:provider).pluck(:provider).map { |p| p.to_sym }
+    @providers ||= Authentication.group(:provider).order(:provider).pluck(:provider).map(&:to_sym)
   end
 
   def email
@@ -19,7 +19,7 @@ class Authentication < ActiveRecord::Base
   end
 
   def url
-    #github url
+    # github url
     auth_hash['extra']['raw_info']['url']
   rescue
   end

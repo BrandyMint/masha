@@ -1,5 +1,4 @@
 class SessionForm < FormObjectBase
-
   property :email
   property :password
   property :remember_me

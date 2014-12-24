@@ -15,7 +15,7 @@ class Owner::UsersController < Owner::BaseController
   private
 
   def permitted_params
-    params.permit :user => [:name, :is_root]
+    params.permit user: [:name, :is_root]
   end
 
   def project

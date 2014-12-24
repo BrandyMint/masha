@@ -1,13 +1,12 @@
 class SessionsController < ApplicationController
-
   def create
     @session = SessionForm.new params[:session_form]
     user = login @session.email, @session.password, @session.remember_me
-    
+
     if user
       redirect_to time_shifts_url
     else
-      gflash :now, error: t("gflash.session_failed")
+      gflash :now, error: t('gflash.session_failed')
       render :new
     end
   end

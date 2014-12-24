@@ -2,7 +2,7 @@ class UserDecorator < ApplicationDecorator
   delegate_all
 
   def name
-    email = source.email.present? ? source.email : "no email"
+    email = source.email.present? ? source.email : 'no email'
     "#{source.name} <span class='text-muted'>(#{email})</span>".html_safe
   end
 
@@ -17,16 +17,16 @@ class UserDecorator < ApplicationDecorator
       return image if image.present?
     end
 
-    return 'http://placehold.it/80x80'
+    'http://placehold.it/80x80'
   end
 
   def avatar
-    helpers.image_tag avatar_url, :size => '80x80'
+    helpers.image_tag avatar_url, size: '80x80'
   end
 
   def available_projects
-    arbre :user => source do
-      ul :class => 'horizontal-list' do
+    arbre user: source do
+      ul class: 'horizontal-list' do
         user.projects.each do |p|
           li do
             helpers.link_to helpers.project_url(p) do
@@ -37,5 +37,4 @@ class UserDecorator < ApplicationDecorator
       end
     end
   end
-
 end

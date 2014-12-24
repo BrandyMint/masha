@@ -1,29 +1,26 @@
 ActiveAdmin.register TimeShift do
+  menu priority: 3, label: proc { I18n.t('active_admin.time_shift') }
 
-  menu :priority => 3, :label => proc{ I18n.t("active_admin.time_shift") }
-  
   index do
     column :updated_at
     column :date
-    column :project, :sortable => :project_id
-    column :user, :sortable => :user_id
+    column :project, sortable: :project_id
+    column :user, sortable: :user_id
     column :hours
     column :description
     actions
   end
 
-
   form do |f|
-    f.inputs "Details" do
+    f.inputs 'Details' do
       f.input :project
       f.input :user
       f.input :date
-      f.input :hours, :min => 0.1, :max => 24
+      f.input :hours, min: 0.1, max: 24
     end
-    f.inputs "Content" do
+    f.inputs 'Content' do
       f.input :description
     end
     f.actions
   end
-
 end

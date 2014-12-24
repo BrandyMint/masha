@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   def new
     @reg = RegisterForm.new params[:register_form]
   end
@@ -10,7 +9,7 @@ class UsersController < ApplicationController
     user = @reg.save
     if user.present?
       login user.email, @reg.password
-      redirect_to time_shifts_url, gflash: { notice: t("gflash.signed_up") }
+      redirect_to time_shifts_url, gflash: { notice: t('gflash.signed_up') }
     else
       render :new
     end
@@ -20,5 +19,4 @@ class UsersController < ApplicationController
     @user = User.find params[:id]
     authorize_action_for @user
   end
-
 end
