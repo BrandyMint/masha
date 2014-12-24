@@ -37,8 +37,11 @@ textarea
   &.error
     .help-inline
       @extend small
-      display: block /* что бы не лез в одну строку с предшествующим элементом */
       color: $red
+    .date-shortcuts + .help-inline
+      &::before
+        content: ""
+        display: block
 
 .form-group
   .control-group

@@ -1,6 +1,5 @@
 class TimeSheetFormNormalizer
 
-  INVERT_DATE_FORMAT = /\A\d{2}(\.|\/|\:|\-|\*)\d{2}(\.|\/|\:|\-|\*)\d{4}\Z/
   STRANGE_LOCALES = ["en-US","en_BZ","fil-PH","ar_SA","iu-Cans-CA"]
 
   def initialize params
@@ -32,15 +31,27 @@ class TimeSheetFormNormalizer
   end
 
   def normalize_date date, locale = ''
-    if date.present? && ((date =~ INVERT_DATE_FORMAT) == 0)
-      y, m, d = date.split(/\.|\/|\:|\-|\*|\~|\#/)
-      y, m, d = [y, m, d].reverse if y.length == 2
-      m, d = d, m if STRANGE_LOCALES.include?(locale)
+    return if date.blank?
 
-      (y==nil ? "" : y) + (m==nil ? "" : "-" + m) + (d==nil ? "" : "-" + d)
-    else
-      date
-    end
+    #приводим к виду dd-mm-yy
+    d, m, y = date.split(/[\.\/\:\-\*\~\#]/)
+    d, m, y = [d, m, y].reverse if d.length == 4
+    src_date = [d, m, y].reject(&:blank?).join('-')
+
+    Date.parse( src_date ).to_s
+
+  rescue
+
+    date_by_locale src_date, locale
+
+  end
+
+
+  def date_by_locale d, locale
+    return d unless STRANGE_LOCALES.include?(locale)
+    Date.strptime(d, '%m-%d-%Y').to_s
+  rescue
+    d
   end
 
 end
