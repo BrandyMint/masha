@@ -24,6 +24,12 @@ class Authentication < ActiveRecord::Base
   rescue
   end
 
+  def html_url
+    # github html_url
+    auth_hash['extra']['raw_info']['html_url']
+  rescue
+  end
+
   def nickname
     auth_hash['info']['nickname']
   rescue
