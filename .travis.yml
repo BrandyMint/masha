@@ -8,4 +8,5 @@ before_script:
   - psql -c 'create database masha_test' -U postgres
 
 script:
-  - bundle exec rubocop app/
+  - bundle exec rake
+# - bundle exec rubocop app/
