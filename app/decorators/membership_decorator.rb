@@ -4,6 +4,7 @@ class MembershipDecorator < Draper::Decorator
 
   delegate :name, to: :user
   delegate :avatar, to: :user
+  delegate :name_as_link, to: :user
 
   def remove_link
     if source.project.active && h.current_user.can_delete?(source)
