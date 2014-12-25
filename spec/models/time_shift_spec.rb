@@ -1,5 +1,13 @@
 require 'spec_helper'
 
 describe TimeShift do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe "#find TimeSift by bad date format" do
+
+    it do
+      expect{ TimeShift.where("date<=?", "15-12-2014".to_date).count }.to_not raise_error
+    end
+
+  end
+
 end
