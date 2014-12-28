@@ -3,7 +3,7 @@ class TimeShiftsController < ApplicationController
   inherit_resources
 
   def summary
-    @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
+    @time_sheet_form = TimeSheetForm.build_from_params params[:time_sheet_form]
 
     template = 'summary'
     @result = build_summary
@@ -19,22 +19,17 @@ class TimeShiftsController < ApplicationController
     if viewable_projects_collection.empty?
       render 'no_projects'
     else
-      @time_sheet_form = TimeSheetForm.new params[:time_sheet_form]
-      if @time_sheet_form.empty?
-        # Отправили пустую форму
-        if params[:time_sheet_form].present?
-          return render 'empty'
+      @time_sheet_form = TimeSheetForm.build_from_params params[:time_sheet_form]
+      if params[:time_sheet_form].present?
+        if @time_sheet_form.valid?
+          template = 'index'
+          query = TimeSheetQuery.new @time_sheet_form
         else
-          @result = build_summary
-          return render 'blank'
+          return render 'empty'
         end
-        # else
-        #  template = 'summary'
-        #  query = SummaryQuery.new
-        # end
       else
-        template = 'index'
-        query = TimeSheetQuery.new @time_sheet_form
+        @result = build_summary
+        return render 'blank'
       end
 
       query.available_projects = current_user.available_projects
@@ -42,7 +37,6 @@ class TimeShiftsController < ApplicationController
       query.perform
 
       @result = query
-
       respond_to do |format|
         format.xlsx { render xlsx: template }
         format.csv  { send_data @result.to_csv }
@@ -81,7 +75,7 @@ class TimeShiftsController < ApplicationController
     redirect_to time_shifts_url
   end
 
-  protected
+  private
 
   def build_summary
     query = SummaryQuery.new params[:period]
@@ -111,12 +105,11 @@ class TimeShiftsController < ApplicationController
   end
 
   def permitted_params
-    # TODO Проверить что проект разрешен для добавления времени
+    # TODO: Check that the project is allowed to add time
     params[:time_shift] ||= {}
-    params[:time_shift][:user_id] = current_user.id unless action_name == 'update' # unless current_user.is_root?
+    params[:time_shift][:user_id] = current_user.id if action_name != 'update'
     params[:time_shift][:project_id] ||= nil
     params.require(:time_shift).permit!
-
     params
   end
 end

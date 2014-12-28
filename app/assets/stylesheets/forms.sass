@@ -38,6 +38,10 @@ textarea
     .help-inline
       @extend small
       color: $red
+    .date-shortcuts + .help-inline
+      &::before
+        content: ""
+        display: block
 
 .form-group
   .control-group
