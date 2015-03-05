@@ -9,4 +9,5 @@ before_script:
 
 script:
   - bundle exec rake
+  - RAILS_ENV=production bundle exec rake assets:clean assets:precompile
 # - bundle exec rubocop app/

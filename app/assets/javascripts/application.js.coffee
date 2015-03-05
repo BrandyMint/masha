@@ -11,7 +11,7 @@
 #  require jquery.ui.datepicker-ru
 #= require jquery.role
 #= require bootstrap
-#= require jquery-autosize/jquery.autosize
+#= require jquery-autosize/dest/autosize
 #= require stepper
 #= require purl/purl
 #= require gritter
