@@ -3,7 +3,7 @@
   "version": "0.1",
   "dependencies": {
     "purl": "latest",
-    "jquery-autosize": "latest"
+    "jquery-autosize": "2.0.0"
   },
   "ignore": [
     "**/.*",
