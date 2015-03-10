@@ -15,6 +15,7 @@
 #= require stepper
 #= require purl/purl
 #= require gritter
+#= require form_locale
 # require wiselinks
 
 $ ->
@@ -29,7 +30,7 @@ $ ->
   (jsHandlers = ->
     window.App.bstepper()
     $('@tooltip').tooltip()
-    $('@autosize').autosize()
+    autosize $('[autosize]')
 
     $("#session_form_email").data "holder", $("#session_form_email").attr("placeholder")
     $("#session_form_email").focusin -> $(@).attr "placeholder", ""
@@ -120,7 +121,3 @@ $ ->
       window.scrollTo(0)
 
 )(window.App ||= {})
-
-$ ->
-  localeField = document.getElementById 'time_sheet_form_locale'
-  localeField.value = navigator.userLanguage || navigator.language
