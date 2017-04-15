@@ -54,18 +54,23 @@ $ ->
   $(document).on 'click', '@date-shortcut', (e) ->
     $('#time_shift_date').val $(@).data('value')
     $(@).trigger 'change'
+    $(@).addClass("selected")
+    .parents('.date-shortcuts')
+    .find('@date-shortcut')
+    .not(@)
+    .removeClass("selected")
+
     e.preventDefault()
 
   $(document).on 'click', '@period-shortcut', (e) ->
     $('#time_sheet_form_date_from').val $(@).data('date-from')
     $('#time_sheet_form_date_to').val $(@).data('date-to')
     $(@).trigger 'change'
-    $(e.target)
-    .addClass("selected")
-    .parents('.date-shortcuts')
-    .find('@period-shortcut')
-    .not(this)
-    .removeClass("selected")
+    $(@).addClass("selected")
+      .parents('.date-shortcuts')
+      .find('@period-shortcut')
+      .not(@)
+      .removeClass("selected")
 
     e.preventDefault()
 
