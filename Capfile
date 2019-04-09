@@ -14,11 +14,10 @@ install_plugin Capistrano::SCM::Git
 require 'capistrano/scm/git-with-submodules'
 install_plugin Capistrano::SCM::Git::WithSubmodules
 
+require 'capistrano/nvm'
 require 'capistrano/rbenv'
 require 'capistrano/yarn'
-require 'capistrano/yarn'
 require 'capistrano-db-tasks'
-# require 'capistrano/chruby'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
