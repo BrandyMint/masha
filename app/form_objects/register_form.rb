@@ -3,10 +3,10 @@ class RegisterForm < FormObjectBase
   property :email
   property :password
 
+  validate :email_existence
   validates :name, presence: true
   validates :password, presence: true
   validates :email, presence: true, email: true
-  before_validation :email_unique?
 
   def user
     user_params = to_hash
@@ -19,8 +19,7 @@ class RegisterForm < FormObjectBase
 
   private
 
-  def email_unique?
+  def email_existence
     errors.add(:email, I18n.t('errors.messages.taken')) if User.exists?(email: email)
-    errors.blank?
   end
 end
