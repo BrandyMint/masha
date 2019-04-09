@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-class SetupMigration < ActiveRecord::Migration[4.2]
+class Setup < ActiveRecord::Migration[5.2]
   def up
     # These are extensions that must be enabled in order to support this database
     enable_extension "plpgsql"
