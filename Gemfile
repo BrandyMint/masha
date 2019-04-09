@@ -215,6 +215,7 @@ group :deploy do
   gem 'capistrano-nvm', require: false
   gem 'capistrano-bundler', github: 'capistrano/bundler', require: false
   gem 'capistrano-yarn', require: false
+  gem 'capistrano-shell', require: false
   gem 'capistrano-db-tasks', require: false
   gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
   gem 'capistrano-git-with-submodules', '~> 2.0', github: 'ekho/capistrano-git-with-submodules'

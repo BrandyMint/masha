@@ -24,6 +24,8 @@ set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
 append :rbenv_map_bins, 'puma', 'pumactl'
 
+set :nginx_server_name,  -> { "#{fetch(:application)}" }
+
 set :bundle_without, %w(development test deploy).join(' ')
 set :bundle_jobs, 10
 
