@@ -27,7 +27,3 @@
 
 Логин: admin@example.com
 Пароль: password
-
-## Task tracking
-
-* [honeybadger](https://www.honeybadger.io/projects/39754/faults/8778121#notice-summary_
