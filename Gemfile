@@ -211,6 +211,7 @@ group :deploy do
   gem 'capistrano-bundler', github: 'capistrano/bundler', require: false
   gem 'capistrano-yarn', require: false
   gem 'capistrano-db-tasks', require: false
+  gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
 end
 
 gem 'rubocop', require: false

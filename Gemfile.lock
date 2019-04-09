@@ -49,6 +49,15 @@ GIT
       activemodel (>= 5.0)
 
 GIT
+  remote: git://github.com/seuros/capistrano-puma.git
+  revision: 3e6af4fd460b226216dd85e73de7c4fe4d66c143
+  specs:
+    capistrano3-puma (3.1.1)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (~> 3.4)
+
+GIT
   remote: git://github.com/thoughtbot/factory_bot_rails.git
   revision: dcfc9f666239be71a56f0ba4f1ad003d3c8550bf
   specs:
@@ -633,6 +642,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1)
   capistrano-rbenv
   capistrano-yarn
+  capistrano3-puma!
   capybara
   capybara-screenshot
   carrierwave

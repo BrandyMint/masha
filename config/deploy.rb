@@ -1,4 +1,4 @@
-lock '3.2.1'
+lock '3.11.0'
 set :application, 'masha.brandymint.ru'
 set :repo_url, 'https://github.com/BrandyMint/masha.git'
 
