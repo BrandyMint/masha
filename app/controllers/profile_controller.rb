@@ -1,5 +1,5 @@
 class ProfileController < ApplicationController
-  before_filter :require_login
+  before_action :require_login
 
   def edit
     @user = current_user

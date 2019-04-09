@@ -48,10 +48,10 @@ Spork.prefork do
 
     config.fail_fast = false
 
-    config.include FactoryGirl::Syntax::Methods
+    config.include FactoryBot::Syntax::Methods
     config.include Sorcery::TestHelpers::Rails
     OmniAuth.config.test_mode = true
-    OmniAuth.config.add_mock(:default, FactoryGirl.attributes_for(:authentication))
+    OmniAuth.config.add_mock(:default, FactoryBot.attributes_for(:authentication))
 
     # If you're not using ActiveRecord, or you'd prefer not to run each of your
     # examples within a transaction, remove the following line or assign false

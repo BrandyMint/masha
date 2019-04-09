@@ -5,8 +5,8 @@ class Authentication < ActiveRecord::Base
 
   scope :by_provider, lambda { |provider| where(provider: provider) }
 
-  validate :provider, presence: true
-  validate :uid, presence: true, uniqueness: { scope: :provider }
+  validates :provider, presence: true
+  validates :uid, presence: true, uniqueness: { scope: :provider }
 
   def self.providers
     @providers ||= Authentication.group(:provider).order(:provider).pluck(:provider).map(&:to_sym)

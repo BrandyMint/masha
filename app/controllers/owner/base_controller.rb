@@ -1,7 +1,7 @@
 class Owner::BaseController < ApplicationController
-  before_filter :require_login
+  before_action :require_login
 
-  before_filter do
+  before_action do
     @namespace = :admin
   end
 end

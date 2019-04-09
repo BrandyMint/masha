@@ -1,6 +1,19 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :developer if Rails.env.development?
-  unless Rails.env.test?
-    provider :github, Settings::Omniauth.github.client_id, Settings::Omniauth.github.client_secret
+
+  if Rails.env.development?
+    provider :github, ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'], scope: 'user'
+
+    puts ENV['GITHUB_CLIENT_ID']
+    puts ENV['GITHUB_CLIENT_SECRET']
+
+  elsif Rails.env.production?
+    github = Rails.application.credentials.github
+    if github.present?
+      provider :github, github[:client_id], github[:client_secret], scope: 'user' unless Rails.env.test?
+    else
+      puts
+      puts 'Please set up github setting in ./config/secrets.yml'
+    end
   end
 end

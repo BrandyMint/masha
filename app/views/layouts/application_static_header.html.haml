@@ -1,8 +1,5 @@
-- if request.wiselinks?
-  = render 'layouts/application_body'
-- else
-  !!!
-  %html
-    %head
-      = render 'layouts/head'
-    = render 'layouts/application_body', header: @header_type
+!!!
+%html
+  %head
+    = render 'layouts/head'
+  = render 'layouts/application_body', header: @header_type

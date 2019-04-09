@@ -1,8 +1,5 @@
 set :stage, :production
-server 'mashtime.ru', user: 'wwwmasha', roles: %w(web app db)
-set :ssh_options,
-    forward_agent: true,
-    port: 227
+server 'masha.brandymint.ru', user: 'wwwbrandymint', roles: %w(web app db)
 
 set :branch, ENV['BRANCH'] || 'master'
 set :rails_env, :production

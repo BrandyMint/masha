@@ -1,5 +1,5 @@
 class MembershipsController < ApplicationController
-  before_filter :require_login, :users_available
+  before_action :require_login, :users_available
   inherit_resources
   belongs_to :project
 

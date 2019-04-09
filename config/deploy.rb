@@ -1,16 +1,14 @@
-require 'capistrano-db-tasks'
 lock '3.2.1'
-set :application, 'mashtime.ru'
-set :repo_url, 'https://github.com/BrandyMint/mashtime.ru.git'
+set :application, 'masha.brandymint.ru'
+set :repo_url, 'https://github.com/BrandyMint/masha.git'
 
-set :deploy_to, proc { "/home/wwwmasha/#{fetch(:application)}" }
-set :scm, :git
+set :deploy_to, -> { "/home/#{fetch(:user)}/#{fetch(:application)}" }
 
 # set :format, :pretty
 set :log_level, :info
 # set :pty, true
 
-set :linked_files, %w(config/database.yml config/omniauth.yml)
+set :linked_files, %w(config/database.yml config/master.key)
 set :linked_dirs, %w(bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads)
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -21,7 +19,7 @@ set :db_local_clean, true
 set :db_remote_clean, false
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.1.2'
+set :rbenv_ruby, File.read('.ruby-version').strip
 
 set :bundle_without, %w(development test deploy).join(' ')
 set :bundle_jobs, 10

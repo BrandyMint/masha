@@ -16,16 +16,8 @@
 #= require purl/purl
 #= require gritter
 #= require form_locale
-# require wiselinks
 
 $ ->
-#  window.wiselinks = new Wiselinks()
-#  $(document).on 'click', 'a:not([role]):not([data-target])', (e) ->
-#    anchor = e.currentTarget
-#    if document.location.host == anchor.host
-#      e.preventDefault()
-#      wiselinks.load(anchor.href)
-#      false
 
   (jsHandlers = ->
     window.App.bstepper()

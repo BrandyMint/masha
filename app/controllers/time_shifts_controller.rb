@@ -1,5 +1,5 @@
 class TimeShiftsController < ApplicationController
-  before_filter :require_login
+  before_action :require_login
   inherit_resources
 
   def summary

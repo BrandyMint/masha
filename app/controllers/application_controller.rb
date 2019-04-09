@@ -3,15 +3,13 @@ class ApplicationController < ActionController::Base
   end
   include ApplicationHelper
 
-  after_filter :check_email_existence
+  before_action :define_page_title
+  after_action :check_email_existence
 
   protect_from_forgery with: :exception if Rails.env.production?
 
   helper_method :current_user, :logged_in?, :admin_namespace?, :home_url
-
   helper :all
-
-  before_filter :define_page_title
 
   rescue_from NotLogged, with: :handle_not_authorized_error
 
@@ -21,11 +19,13 @@ class ApplicationController < ActionController::Base
   # rescue_from CanCan::AccessDenied, :with => :handle_no_access
   # rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
-  def wiselinks_layout
-    _layout.is_a?(ActionView::Template) ? _layout.virtual_path : _layout
-  end
-
   private
+
+  def check_email_existence
+    if logged_in? && current_user.email.blank?
+      flash[:alert] = t('no_email', url: edit_profile_path).html_safe
+    end
+  end
 
   def home_url
     if current_user.present?

@@ -4,11 +4,10 @@
       = app_version
     .col-sm-4.footer-links
       %ul.horizontal
-        %li= link_to 'github', 'https://github.com/brandymint/mashtime.ru', class: 'footer-feedback-link'
-        %li= link_to 'Блог', 'http://blog.mashtime.ru', class: 'footer-feedback-link'
+        %li= link_to 'github', Settings.github_repo, target: :_blank, class: 'footer-feedback-link'
     .col-sm-4.footer-made-logo-block
       Сделано в 
-      = link_to 'http://brandymint.ru', target: :blank do
+      = link_to 'http://brandymint.ru', target: :_blank do
         = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
         = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
 

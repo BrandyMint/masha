@@ -1,10 +1,11 @@
 defaults: &defaults
+  github_repo: https://github.com/brandymint/masha
   app:
-    title: Mashtime
-    asset_host: http://mashtime.ru/
+    title: Masha
+    asset_host: http://masha.brandymint.ru/
 
     default_url_options: &default_url_options
-      host: mashtime.ru
+      host: masha.brandymint.ru
       port: 80
 
   action_mailer: &action_mailer
@@ -12,18 +13,16 @@ defaults: &defaults
     default_url_options:
       <<: *default_url_options
     default_options:
-      from: 'masha@mashtime.ru'
+      from: 'masha@brandymint.ru'
 
   mailer_defaults:
-    from: 'masha@mashtime.ru'
-    host: mashtime.ru
-
-  convead_widget_url: "http://widget.icrm.icfdev.ru/assets/v3.js"
+    from: 'masha@brandymint.ru'
+    host: masha.brandymint.ru
 
 development:
   <<: *defaults
   default_url_options: &default_url_options
-    host: 3003.vkontraste.ru
+    host: <%= ENV['APP_HOST'] || 'localhost' %>
     port: 80
   action_mailer:
     <<: *action_mailer
@@ -32,7 +31,6 @@ development:
       address: localhost
       port: 1025   # mailcatcher
     raise_delivery_errors: true
-  convead_widget_url: "http://3007.vkontraste.ru/assets/v1.js"
 
 test:
   <<: *defaults

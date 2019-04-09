@@ -68,12 +68,6 @@ module ApplicationHelper
     content_tag :i, '', class: "icon #{css}"
   end
 
-  def check_email_existence
-    if logged_in? && current_user.email.blank?
-      flash[:alert] = t('no_email', url: edit_profile_path).html_safe
-    end
-  end
-
   def badge(count, css_id = '', type = '')
     # Скрываем badge если в нем пусто. JS сам его покажет когда появится информация
     #
@@ -111,7 +105,7 @@ module ApplicationHelper
   end
 
   def export_btn(format, options = {})
-    link_to url_for({ format: format }.merge(options)), class: 'export-btn', role: 'no-wiselinks' do
+    link_to url_for({ format: format }.merge(options)), class: 'export-btn' do
       ficon('export-1') + t(format, scope: [:helpers, :export])
     end
   end
@@ -219,7 +213,7 @@ module ApplicationHelper
 
   def login_with_github(welcome = nil, _signup = nil)
     btn_class = welcome.present? ? 'btn-welcome-github' : 'btn-github'
-    link_to "#{root_url}auth/github", class: "#{btn_class}", role: 'no-wiselinks' do
+    link_to "#{root_url}auth/github", class: "#{btn_class}" do
       ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'войти с github')
     end
   end

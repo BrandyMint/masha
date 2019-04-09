@@ -1,9 +1,6 @@
-- if request.wiselinks?
-  = render 'layouts/application_body'
-- else
-  !!!
-  %html
-    %head
-      = render 'layouts/head'
-    - @page_header_type ||= :fixed
-    = render 'layouts/application_body', header: @page_header_type
+!!!
+%html
+  %head
+    = render 'layouts/head'
+  - @page_header_type ||= :fixed
+  = render 'layouts/application_body', header: @page_header_type
