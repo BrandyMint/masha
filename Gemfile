@@ -53,6 +53,7 @@ gem 'friendly_id', '~> 5.0.0'
 gem 'recipient_interceptor'
 
 gem 'mini_magick'
+gem 'mini_racer'
 gem 'carrierwave'
 
 # Контроллеры
