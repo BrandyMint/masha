@@ -72,6 +72,9 @@ gem 'active_link_to'
 
 gem 'draper'
 gem 'arbre'
+
+gem 'rubyzip', '>= 1.2.1'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
