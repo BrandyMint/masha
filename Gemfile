@@ -136,6 +136,7 @@ gem 'uglifier', '~> 2.7'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails'
 gem 'role-rails'
+gem 'non-stupid-digest-assets'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
