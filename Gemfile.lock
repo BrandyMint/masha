@@ -6,6 +6,13 @@ GIT
       capistrano (~> 3.1)
 
 GIT
+  remote: git://github.com/ekho/capistrano-git-with-submodules.git
+  revision: d1a85bffe0db2c314353155c119ccf98ee224585
+  specs:
+    capistrano-git-with-submodules (2.0.3)
+      capistrano (~> 3.7)
+
+GIT
   remote: git://github.com/gregbell/active_admin.git
   revision: 14d6e500c777e82111faafe9392d90a6efed7e0b
   specs:
@@ -639,6 +646,7 @@ DEPENDENCIES
   capistrano (~> 3.2)
   capistrano-bundler!
   capistrano-db-tasks
+  capistrano-git-with-submodules (~> 2.0)!
   capistrano-rails (~> 1.1)
   capistrano-rbenv
   capistrano-yarn

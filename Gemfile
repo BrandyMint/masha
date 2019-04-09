@@ -212,6 +212,7 @@ group :deploy do
   gem 'capistrano-yarn', require: false
   gem 'capistrano-db-tasks', require: false
   gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
+  gem 'capistrano-git-with-submodules', '~> 2.0', github: 'ekho/capistrano-git-with-submodules'
 end
 
 gem 'rubocop', require: false
