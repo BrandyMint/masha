@@ -1,6 +1,6 @@
 # Маша учетчица
 
-[![Build Status](https://travis-ci.org/BrandyMint/mashtime.ru.svg?branch=master)](https://travis-ci.org/BrandyMint/mashtime.ru)
+[![Build Status](https://travis-ci.org/BrandyMint/masha.svg?branch=master)](https://travis-ci.org/BrandyMint/masha)
 
 ## Установка
 
