@@ -2,9 +2,7 @@
 
 FactoryBot.define do
   factory :invite do
-    user nil
-    email 'MyString'
-    role 'MyString'
-    project nil
+    email { 'MyString' }
+    role { 'MyString' }
   end
 end

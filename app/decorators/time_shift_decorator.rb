@@ -2,43 +2,43 @@ class TimeShiftDecorator < Draper::Decorator
   delegate_all
 
   def tr_class
-    if source.updated_at != source.created_at
+    if object.updated_at != object.created_at
       :warning
-    elsif source.updated_at > Time.now - 1.minutes
+    elsif object.updated_at > Time.now - 1.minutes
       :success
     end
   end
 
   def date
-    h.human_date source.date
+    h.human_date object.date
   end
 
   def user
-    h.link_to source.user, h.url_for(time_sheet_form: time_sheet_form.merge(user_id: user_id))
+    h.link_to object.user, h.url_for(time_sheet_form: time_sheet_form.merge(user_id: user_id))
   end
 
   def project
-    h.link_to source.project, h.url_for(time_sheet_form: time_sheet_form.merge(project_id: project_id))
+    h.link_to object.project, h.url_for(time_sheet_form: time_sheet_form.merge(project_id: project_id))
   end
 
   def description
-    h.auto_link CGI.h(source.description), html: { target: '_blank' }
+    h.auto_link CGI.h(object.description), html: { target: '_blank' }
   end
 
   def update_link(args = {})
     args[:css_class] ||= ''
-    if h.current_user.can_update?(source)
-      h.link_to h.edit_time_shift_path(source), class: args[:css_class] do
+    if h.current_user.can_update?(object)
+      h.link_to h.edit_time_shift_path(object), class: args[:css_class] do
         h.ficon 'edit', color: 'gray-light', size: 16
       end
     end
   end
 
   def remove_link
-    return unless source.persisted?
-    if h.current_user.can_delete?(source)
+    return unless object.persisted?
+    if h.current_user.can_delete?(object)
       h.link_to 'Удалить',
-                h.time_shift_path(source),
+                h.time_shift_path(object),
                 class: 'btn btn-link btn-small icon-color-red', data: { method: :delete, confirm: I18n.t('time_shifts.delete.confirm') }
     end
   end

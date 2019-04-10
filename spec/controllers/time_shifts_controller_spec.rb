@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TimeShiftsController do
+describe TimeShiftsController, type: :controller do
   let!(:time_shift_attrs) { attributes_for :time_shift }
   let!(:project) { create :project }
 
@@ -9,7 +9,7 @@ describe TimeShiftsController do
       actions = [:index, :show, :new, :create, :edit, :destroy]
 
       actions.each do |action|
-        get action,  id: 1
+        get action, params: { id: 1 }
         response.code.should == '401'
       end
     end
@@ -31,7 +31,7 @@ describe TimeShiftsController do
 
     describe '#show' do
       it 'should redirect to time_shifts_url' do
-        get :show, id: @time_shift.id
+        get :show, params: { id: @time_shift.id }
         response.should redirect_to time_shifts_url
       end
     end
@@ -47,7 +47,7 @@ describe TimeShiftsController do
       context 'with valid params' do
         it 'should redirect to new_time_shift_url' do
           time_shift_attrs.merge!(project_id: project.id)
-          post :create, time_shift: time_shift_attrs
+          post :create, params: { time_shift: time_shift_attrs }
           TimeShift.where(time_shift_attrs).first.should be_an_instance_of(TimeShift)
           response.should redirect_to new_time_shift_url
         end
@@ -55,7 +55,7 @@ describe TimeShiftsController do
 
       context 'with invalid params' do
         it 'should be success' do
-          post :create, time_shift: {}
+          post :create, params: { time_shift: {} }
           response.should be_success
         end
       end
@@ -63,14 +63,14 @@ describe TimeShiftsController do
 
     describe '#edit' do
       it 'should render new' do
-        get :edit, id: @time_shift.id
+        get :edit, params: { id: @time_shift.id }
         response.should render_template('edit')
       end
     end
 
     describe '#destroy' do
       it 'should redirect to time_shifts_url' do
-        get :destroy, id: @time_shift.id
+        get :destroy, params: { id: @time_shift.id }
         TimeShift.where(id: @time_shift.id).first.should be_nil
         response.should redirect_to time_shifts_url
       end

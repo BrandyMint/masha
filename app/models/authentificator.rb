@@ -76,7 +76,7 @@ class Authentificator::Base
         begin
           user.update_attribute key, auth_hash['info'][key.to_s]
         rescue ActiveRecord::RecordNotUnique => err
-          Airbrake.notify err
+          Bugsnag.notify err
           user.reload!
         end
       end

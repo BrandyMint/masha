@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe WelcomeController do
+describe WelcomeController, type: :controller do
   describe '#index' do
     context 'when logged in' do
       before do

@@ -23,12 +23,6 @@ ru:
       short_human: '%e %B'
       human: '%e %B %Y'
       input: '%e/%m/%Y'
-  activerecord:
-    errors:
-      messages:
-        record_invalid: Испорченная запись
-        invalid_range: Дата окончания периода должна быть больше даты начала
-        intersection: Период пересекается с другим (id = %{id})
   form_objects:
     errors:
       messages:

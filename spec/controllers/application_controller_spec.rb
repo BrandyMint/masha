@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe ApplicationController do
+describe ApplicationController, type: :controller do
   controller do
     def index
       fail ApplicationController::NotLogged
-   end
+    end
   end
 
   it 'should return 401 if NotLogged raised' do

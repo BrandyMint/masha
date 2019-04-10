@@ -1,7 +1,7 @@
 class EmailForm < FormObjectBase
   property :email
 
-  validates :email, presence: true
+  validates :email, presence: true, email: true
   validate :existing_email
 
   private

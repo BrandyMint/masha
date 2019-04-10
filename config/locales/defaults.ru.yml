@@ -118,60 +118,6 @@ ru:
       month: Месяц
       second: Секунд
       year: Год
-  errors: &errors
-    format: ! '%{attribute} %{message}'
-    messages:
-      carrierwave_processing_error: не могу обработать загружаемый файл, возможно это не изображение
-      carrierwave_integrity_error: неразрешенный тип файла
-      carrierwave_download_error: не могу загрузить файл из сети
-      extension_white_list_error: "Мы не принимаем файлы таких расширений %{extension}, разрешены только: %{allowed_types}"
-      extension_black_list_error: "Мы не принимаем файлы таких расширений %{extension}, запрещенные расширения: %{prohibited_types}"
-      mime_types_processing_error: "Не могу распознать MIME::Types файла: %{e}"
-      url_error: Неверный URL для загрузки
-      mini_magick_processing_error: "Ошибка обработки изображения, может быть это и не изображение? %{e}"
-      invalid_url: не является правильной ссылкой
-      accepted: нужно подтвердить
-      blank: не может быть пустым
-      confirmation: не совпадает с подтверждением
-      empty: не может быть пустым
-      equal_to: может иметь лишь значение, равное %{count}
-      even: может иметь лишь нечетное значение
-      exclusion: имеет зарезервированное значение
-      greater_than: может иметь значение большее %{count}
-      greater_than_or_equal_to: может иметь значение большее или равное %{count}
-      inclusion: имеет непредусмотренное значение
-      invalid: имеет неверное значение
-      less_than: может иметь значение меньшее чем %{count}
-      less_than_or_equal_to: может иметь значение меньшее или равное %{count}
-      not_a_number: не является числом
-      not_an_integer: не является целым числом
-      odd: может иметь лишь четное значение
-      record_invalid: ! 'Возникли ошибки: %{errors}'
-      taken: уже существует
-      invalid_date: не может быть пустым
-      on_or_before: не может быть больше текущего времени
-      too_long:
-        few: Слишком большой длины (не может быть больше чем %{count} символа)
-        many: Слишком большой длины (не может быть больше чем %{count} символов)
-        one: Слишком большой длины (не может быть больше чем %{count} символ)
-        other: Слишком большой длины (не может быть больше чем %{count} символа)
-      too_short:
-        few: Недостаточной длины (не может быть меньше %{count} символов)
-        many: Недостаточной длины (не может быть меньше %{count} символов)
-        one: Недостаточной длины (не может быть меньше %{count} символов)
-        other: Недостаточной длины (не может быть меньше %{count} символов)
-      wrong_length:
-        few: Неверной длины (может быть длиной ровно %{count} символа)
-        many: Неверной длины (может быть длиной ровно %{count} символов)
-        one: Неверной длины (может быть длиной ровно %{count} символ)
-        other: Неверной длины (может быть длиной ровно %{count} символа)
-    template:
-      body: ! 'Проблемы возникли со следующими полями:'
-      header:
-        few: ! '%{model}: сохранение не удалось из-за %{count} ошибок'
-        many: ! '%{model}: сохранение не удалось из-за %{count} ошибок'
-        one: ! '%{model}: сохранение не удалось из-за %{count} ошибки'
-        other: ! '%{model}: сохранение не удалось из-за %{count} ошибки'
   helpers:
     select:
       prompt: ! 'Выберите: '
@@ -261,19 +207,6 @@ ru:
       long: ! '%d %B %Y, %H:%M'
       short: ! '%d %B, %H:%M'
     pm: вечера
-  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
-  activemodel:
-    errors:
-      <<: *errors
-      # for phony_rails
-      models:
-        registration_form:
-          attributes:
-           phone:
-             improbable_phone: Некорректный номер телефона
-  activerecord:
-    errors:
-      <<: *errors
   errors:
     building:
       destroy: Не возможно удалить запись 

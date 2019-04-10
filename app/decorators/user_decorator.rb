@@ -2,8 +2,8 @@ class UserDecorator < ApplicationDecorator
   delegate_all
 
   def name
-    email = source.email.present? ? source.email : 'no email'
-    "#{source.name} <span class='text-muted'>(#{email})</span>".html_safe
+    email = object.email.present? ? object.email : 'no email'
+    "#{object.name} <span class='text-muted'>(#{email})</span>".html_safe
   end
 
   def name_as_link
@@ -16,7 +16,7 @@ class UserDecorator < ApplicationDecorator
   end
 
   def link
-    h.link_to source.name, h.user_url(source)
+    h.link_to object.name, h.user_url(object)
   end
 
   def remote_profile_url
@@ -44,7 +44,7 @@ class UserDecorator < ApplicationDecorator
 
 
   def available_projects
-    arbre user: source do
+    arbre user: object do
       ul class: 'horizontal-list' do
         user.projects.each do |p|
           li do

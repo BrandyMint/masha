@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :authentication do
     user
-    provider 'MyString'
-    uid 'MyString'
+    provider { 'MyString' }
+    uid { 'MyString' }
   end
 end

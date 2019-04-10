@@ -104,7 +104,9 @@ class SummaryQuery
     klass = @group_by == :project ? Project : User
     klass.find id
   rescue => e
-    Airbrake.notify e, context: { group_by: @group_by }
+    Bugsnag.notify e do |b|
+      b.meta_data = { group_by: @group_by }
+    end
   end
 
   def available_projects_ids
