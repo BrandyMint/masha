@@ -4,5 +4,4 @@ git add .semver
 git commit -m `semver`
 git tag -a `semver` -m `semver`
 git push
-bundle exec cap production deploy && \
-    ./upload_sourcemap.sh
+bundle exec cap production deploy
