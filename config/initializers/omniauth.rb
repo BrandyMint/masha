@@ -4,9 +4,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.development?
     provider :github, ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'], scope: 'user'
 
-    puts ENV['GITHUB_CLIENT_ID']
-    puts ENV['GITHUB_CLIENT_SECRET']
-
   elsif Rails.env.production?
     github = Rails.application.credentials.github
     if github.present?

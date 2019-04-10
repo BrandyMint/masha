@@ -58,8 +58,8 @@ gem 'carrierwave'
 
 # Контроллеры
 # gem 'has_scope'
-gem 'responders', git: 'git://github.com/plataformatec/responders.git'
-gem 'inherited_resources', git: 'git://github.com/josevalim/inherited_resources.git'
+gem 'responders', github: 'plataformatec/responders'
+gem 'inherited_resources', github: 'josevalim/inherited_resources'
 gem 'rails-observers'
 
 # "~> 1.4.0"
@@ -85,7 +85,7 @@ gem 'axlsx_rails'
 gem 'simple-navigation', '~> 3.13.0' # git: 'git://github.com/andi/simple-navigation.git'
 gem 'simple-navigation-bootstrap'
 
-gem 'simple_form', git: 'git://github.com/plataformatec/simple_form.git'
+gem 'simple_form', github: 'plataformatec/simple_form'
 
 # gem 'nested_form'
 # gem 'cocoon'
@@ -156,6 +156,7 @@ end
 group :development, :test do
   gem 'rspec-rails' # , ">= 2.11.0"
   gem 'rb-inotify', '~> 0.9', require: false
+  gem 'pry'
 end
 
 group :development do
@@ -180,29 +181,23 @@ group :test do
   gem 'factory_bot'
   gem 'factory_bot_rails', github: 'thoughtbot/factory_bot_rails'
 
+  gem 'rails-controller-testing'
+
   gem 'rspec-prof'
   # Start Pry in the context of a failed test
   # gem 'plymouth'
   gem 'fakeredis', require: 'fakeredis/rspec'
   gem 'resque_spec'
   gem 'email_spec', '>= 1.2.1'
-  gem 'cucumber-rails', '>= 1.3.0', require: false
   gem 'guard'
   # gem 'debugger' unless `whoami`=~/jenkins/
-  #gem 'guard-spork'
   #gem 'guard-rspec'
   #gem 'guard-rails'
-  #gem 'guard-bundler'
+  # gem 'guard-bundler'
   #gem 'guard-cucumber'
-  #gem 'guard-ctags-bundler'
-
-  gem 'simplecov', require: false
-  gem 'simplecov-rcov', require: false
+  gem 'guard-ctags-bundler'
 
   gem 'database_cleaner'
-  gem 'capybara'
-  gem 'capybara-screenshot'
-  gem 'poltergeist'
 
   gem 'launchy', '>= 2.1.2'
   gem 'turn', require: false
@@ -223,3 +218,5 @@ group :deploy do
 end
 
 gem 'rubocop', require: false
+
+gem "bugsnag", "~> 6.11"
