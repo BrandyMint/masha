@@ -14,11 +14,11 @@ class TimeShiftDecorator < Draper::Decorator
   end
 
   def user
-    h.link_to object.user, h.url_for(time_sheet_form: time_sheet_form.merge(user_id: user_id))
+    h.link_to object.user, h.url_for(time_sheet_form: time_sheet_form.permit!.to_h.merge(user_id: user_id))
   end
 
   def project
-    h.link_to object.project, h.url_for(time_sheet_form: time_sheet_form.merge(project_id: project_id))
+    h.link_to object.project, h.url_for(time_sheet_form: time_sheet_form.permit!.to_h.merge(project_id: project_id))
   end
 
   def description
