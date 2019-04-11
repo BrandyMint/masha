@@ -1,4 +1,4 @@
-class InviteMailer < BaseMailer
+class InviteMailer < ApplicationMailer
   def new_invite_email(invite)
     @invite = invite
     @role = role_human @invite.role

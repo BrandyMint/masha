@@ -13,14 +13,14 @@ class InviteService
     if @invite.present?
 
       # Отправляем повторно email, раз просят
-      # InviteMailer.new_invite_email(@invite).deliver
+      InviteMailer.new_invite_email(@invite).deliver_later
 
       success.call
     else
       @invite = @project.invites.build @invite_params
 
       if @invite.save
-        InviteMailer.new_invite_email(@invite).deliver
+        InviteMailer.new_invite_email(@invite).deliver_later
         success.call
       else
         failure.call

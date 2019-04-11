@@ -1,0 +1,7 @@
+:verbose: true
+:concurrency: 1
+# Set timeout to 8 on Heroku, longer if you manage your own systems.
+:timeout: 30
+:queues:
+  - [default, 1]
+  - [mailers, 1]

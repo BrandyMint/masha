@@ -1,4 +1,4 @@
-class ViewerMailer < BaseMailer
+class ViewerMailer < ApplicationMailer
   def new_time_shift_email(time_shift)
     @human_hours = human_hours(time_shift.hours)
     @human_date = l(time_shift.date)

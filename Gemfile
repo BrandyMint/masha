@@ -60,7 +60,6 @@ gem 'carrierwave'
 # gem 'has_scope'
 gem 'responders', github: 'plataformatec/responders'
 gem 'inherited_resources', github: 'josevalim/inherited_resources'
-gem 'rails-observers'
 
 # "~> 1.4.0"
 
@@ -111,6 +110,8 @@ gem 'compass-rails'
 # active admin
 gem 'activeadmin', github: 'gregbell/active_admin'
 
+gem 'sendgrid-actionmailer'
+
 # Очередь
 # gem 'redis-namespace'
 # gem 'resque'
@@ -148,6 +149,8 @@ gem 'jquery-ui-sass-rails'
 # gem 'select2-rails'
 gem 'gritter', '1.1.0'
 
+gem 'sidekiq'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -172,10 +175,8 @@ group :development do
 
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
-  # Пока не нужны
-  # gem 'ruby-graphviz'
-  gem 'mailcatcher'
-  gem 'foreman'
+  gem 'letter_opener'
+  gem 'letter_opener_web'
 end
 
 group :test do

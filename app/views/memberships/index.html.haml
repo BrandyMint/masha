@@ -7,7 +7,8 @@
   = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn btn-success'
 - if @project.active and current_user.can_create?(Membership.new(project: @project))
   = render 'form'
-%h3 Участник
+%hr
+%h3 Участники
 %table.table
   - @project.memberships.each do |m|
     - d = MembershipDecorator.decorate m
@@ -21,7 +22,7 @@
       %td.col-xs-2
         = d.remove_link
 - if @project.invites.present?
-  %h3 Приглашенные
+  %h3 Приглашенные, но не принявшие
   %table.table
     - @project.invites.each do |i|
       - d = InviteDecorator.decorate i
