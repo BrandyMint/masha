@@ -6,9 +6,10 @@
       %ul.horizontal
         %li= link_to 'github', Settings.github_repo, target: :_blank, class: 'footer-feedback-link'
     .col-sm-4.footer-made-logo-block
-      Сделано в 
-      = link_to 'http://brandymint.ru', target: :_blank do
-        = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
-        = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
+      .pull-right
+        Сделано в 
+        = link_to 'http://brandymint.ru', target: :_blank do
+          = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
+          = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
 
 = render 'analytics' if Rails.env.production?
