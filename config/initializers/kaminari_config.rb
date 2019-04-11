@@ -8,8 +8,3 @@ Kaminari.configure do |_config|
   # config.page_method_name = :page
   # config.param_name = :page
 end
-Kaminari::Helpers::Tag.class_eval do
-  def to_s(locals = {}) #:nodoc:
-    @template.render partial: "../views/kaminari/#{@theme}#{self.class.name.demodulize.underscore}", locals: @options.merge(locals)
-  end
-end

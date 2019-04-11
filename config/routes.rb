@@ -1,10 +1,13 @@
 require 'sidekiq/web'
+require 'admin_constraint'
+
 Masha::Application.routes.draw do
   ActiveAdmin.routes(self)
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
 
-  # TODO restrict access to admins
-  mount Sidekiq::Web => '/sidekiq'
+  Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]
+
+  mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
 
   root 'welcome#index'
 
