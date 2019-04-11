@@ -139,7 +139,7 @@ module ApplicationHelper
   def available_users_to_view_collection
     # User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
     #
-    @auvc = current_user.active_available_users.without(current_user).ordered
+    @auvc = current_user.active_available_users.without(current_user)
 
     user = OpenStruct.new(current_user.attributes.clone)
     user.name = user.name.clone.concat t('helpers.you')
