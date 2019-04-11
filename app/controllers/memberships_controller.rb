@@ -1,5 +1,8 @@
 class MembershipsController < ApplicationController
-  before_action :require_login, :users_available
+  before_action :require_login
+
+  helper_method :users_available_for_project
+
   inherit_resources
   belongs_to :project
 
@@ -70,8 +73,8 @@ class MembershipsController < ApplicationController
     end
   end
 
-  def users_available
-    @users_available_for_project = current_user.available_users.to_a - parent.users
+  def users_available_for_project
+    @users_available_for_project ||= current_user.available_users.to_a - parent.users
   end
 
   def membership_params

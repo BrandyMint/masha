@@ -32,10 +32,10 @@
           = role_human i.role
         %td.col-xs-2
           = d.remove_link
-- if @project.active and @users_available_for_project.present?
+- if @project.active and users_available_for_project.present?
   %h3 Возможно вы захотите их тоже пригласить
   %table.table
-    - @users_available_for_project.each do |u|
+    - users_available_for_project.each do |u|
       - u = UserDecorator.new u
       - target_id = "invite_user-#{u.id}"
       %tr
