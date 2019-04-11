@@ -1,4 +1,6 @@
 .print-hide
   %hr
 
-  %a.text-muted{:href=>'javascript: window.print();', role: :tooltip, title: 'Кликните чтобы вывести на печать.'} К печати готов!
+  %a.pull-right.text-muted{:href=>'javascript: window.print();', role: :tooltip, title: 'Кликните чтобы вывести на печать.'}
+    = ficon :print
+    %span К печати готов!
