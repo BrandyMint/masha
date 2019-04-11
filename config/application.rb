@@ -37,7 +37,5 @@ module Masha
     config.assets.version = '1.0'
 
     config.assets.precompile += %w( admin.css *.png *.jpg *.jpeg *.gif)
-
-    config.active_record.observers = :time_shift_observer
   end
 end

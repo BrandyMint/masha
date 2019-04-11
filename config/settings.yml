@@ -1,51 +1,30 @@
 defaults: &defaults
   github_repo: https://github.com/brandymint/masha
-  app:
-    title: Masha
-    asset_host: http://masha.brandymint.ru/
+  title: MASHA
+  asset_host: http://masha.brandymint.ru/
 
-    default_url_options: &default_url_options
-      host: masha.brandymint.ru
-      port: 80
+  sidekiq_redis:
+    url: <%= "redis://#{ENV['REDIS_HOST'] || '127.0.0.1'}:6379/3" %>
 
-  action_mailer: &action_mailer
-    raise_delivery_errors: true
-    default_url_options:
-      <<: *default_url_options
-    default_options:
-      from: 'masha@brandymint.ru'
-
-  mailer_defaults:
-    from: 'masha@brandymint.ru'
+  default_url_options: &default_url_options
     host: masha.brandymint.ru
+    port: 80
+
+  mail_from: masha@brandymint.ru
 
 development:
   <<: *defaults
   default_url_options: &default_url_options
     host: <%= ENV['APP_HOST'] || 'localhost' %>
     port: 80
-  action_mailer:
-    <<: *action_mailer
-    delivery_method: :smtp
-    smtp_settings:
-      address: localhost
-      port: 1025   # mailcatcher
-    raise_delivery_errors: true
 
 test:
   <<: *defaults
   capybara:
     port: 57500
 
-  action_mailer:
-    <<: *action_mailer
-    delivery_method: :test
-
 production:
   <<: *defaults
-  action_mailer:
-    <<: *action_mailer
-    delivery_method: :sendmail
 
 staging:
   <<: *defaults

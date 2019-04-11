@@ -3,6 +3,4 @@ class Settings < Settingslogic
   namespace Rails.env
 
   suppress_errors Rails.env.production?
-
-  Rails.configuration.action_mailer.merge!(action_mailer.symbolize_keys)
 end

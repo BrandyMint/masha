@@ -1,5 +1,6 @@
 Masha::Application.routes.draw do
   ActiveAdmin.routes(self)
+  mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
 
   root 'welcome#index'
 
