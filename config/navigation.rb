@@ -23,7 +23,7 @@ SimpleNavigation::Configuration.run do |navigation|
         user.item :projects, 'Проекты', projects_url
         if current_user.is_root?
           user.item :admin, 'Админ', admin_root_url
-          user.item :admin, 'Sidekiq', '/sidekiq'
+          user.item :admin, 'Sidekiq', sidekiq_web_url
         end
         user.item :letter, 'Letter opener', letter_opener_web_url if Rails.env.development?
         user.item :logout, 'Выйти', logout_url

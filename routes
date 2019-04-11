@@ -64,6 +64,7 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                      admin_comment GET    /admin/comments/:id(.:format)                                                            admin/comments#show
                                    DELETE /admin/comments/:id(.:format)                                                            admin/comments#destroy
                  letter_opener_web        /letter_opener                                                                           LetterOpenerWeb::Engine
+                       sidekiq_web        /sidekiq                                                                                 Sidekiq::Web
                               root GET    /                                                                                        welcome#index
                                    GET    /auth/:provider/callback(.:format)                                                       omniauth_session#create
                                    POST   /auth/:provider/callback(.:format)                                                       omniauth_session#create

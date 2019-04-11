@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
     self.email = nil if email.blank?
   end
 
+  before_create do
+    self.is_root = true if User.count.zero?
+  end
+
   after_save do
     Invite.activate_for self
   end

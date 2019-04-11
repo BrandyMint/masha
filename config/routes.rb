@@ -1,6 +1,10 @@
+require 'sidekiq/web'
 Masha::Application.routes.draw do
   ActiveAdmin.routes(self)
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
+
+  # TODO restrict access to admins
+  mount Sidekiq::Web => '/sidekiq'
 
   root 'welcome#index'
 
