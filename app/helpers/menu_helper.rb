@@ -9,6 +9,11 @@ module MenuHelper
       content_tag(:span, 'Получить отчёт', class: 'navbar-menu-label')
   end
 
+  def menu_projects
+    content_tag(:span, ficon('rocket'), class: 'navbar-menu-icon') +
+      content_tag(:span, 'Проекты', class: 'navbar-menu-label')
+  end
+
   def menu_new_time
     content_tag(:span, ficon('clock-1'), class: ' navbar-menu-icon') +
       content_tag(:span, content_tag(:span, 'Отметить время'), class: 'navbar-menu-label')
