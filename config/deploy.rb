@@ -9,7 +9,7 @@ set :deploy_to, -> { "/home/#{fetch(:user)}/#{fetch(:application)}" }
 set :log_level, :info
 
 set :linked_files, %w(config/database.yml config/master.key)
-set :linked_dirs, %w(bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads)
+set :linked_dirs, %w(log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads)
 
 set :nvm_type, :user # or :system, depends on your nvm setup
 set :nvm_node, File.read('.nvmrc').strip
