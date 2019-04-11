@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def roles_collection
+    @roles_collection ||= Membership.roles.keys.each_with_object([]) { |v, roles| roles << [t("roles.#{v}"), v] }
+  end
+
   def summary_hours(summary, d, column)
     hsf = {
       date_from: d[:date],

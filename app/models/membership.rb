@@ -3,12 +3,6 @@ class Membership < ActiveRecord::Base
   after_initialize :set_defaults
   self.authorizer_name = 'MembershipAuthorizer'
 
-  def self.roles_collection
-    roles = {}
-    self.roles.each_key { |v| roles[v] = I18n.t "roles.#{v}" }
-    roles
-  end
-
   scope :last_updates,    -> { order('updated_at desc') }
   scope :viewable,        -> { order 'role_cd < 2' }
   scope :ordered_by_role, -> { order :role_cd }
