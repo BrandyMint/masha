@@ -23,6 +23,7 @@ require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
 require 'capistrano/shell'
 require 'capistrano/puma'
+require 'capistrano/sidekiq'
 install_plugin Capistrano::Puma
 install_plugin Capistrano::Puma::Nginx
 

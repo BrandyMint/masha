@@ -15,6 +15,9 @@ set :nvm_type, :user # or :system, depends on your nvm setup
 set :nvm_node, File.read('.nvmrc').strip
 set :nvm_map_bins, %w[node yarn]
 
+set :sidekiq_processes, 1
+set :sidekiq_options_per_process, ['--queue critical --queue default --queue mailers']
+
 # if you want to remove the local dump file after loading
 set :db_local_clean, true
 # if you want to remove the dump file from the server after downloading
