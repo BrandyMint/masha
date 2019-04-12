@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     user = login @session.email, @session.password, @session.remember_me
 
     if user
-      redirect_to time_shifts_url
+      redirect_back_or_to time_shifts_url
     else
       gflash :now, error: t('gflash.session_failed')
       render :new

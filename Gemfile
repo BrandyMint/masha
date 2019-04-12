@@ -32,6 +32,7 @@ gem 'simple_enum'
 
 gem 'socksify'
 gem 'telegram-bot'
+gem 'telegram-bot-types'
 
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'

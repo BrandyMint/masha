@@ -2,12 +2,12 @@ class OmniauthSessionController < ApplicationController
   def create
     auto_login Authentificator::Base.authentificate auth_hash
 
-    redirect_to just_authorized_redirect_url
+    redirect_back_or_to just_authorized_redirect_url
 
   rescue StandardError => err
     Bugsnag.notify err
     Rails.logger.error err
-    redirect_to root_url, gflash: { notice: t('gflash.session_problems') }
+    redirect_back_or_to root_url, gflash: { notice: t('gflash.session_problems') }
   end
 
   protected

@@ -44,6 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_not_authorized_error
+    session[:return_to_url] = request.url
     show_login_form 401
   end
 
@@ -73,12 +74,9 @@ class ApplicationController < ActionController::Base
     @namespace == :admin
   end
 
+  # TODO use default method from sorcery
   def require_login
-    unless logged_in?
-      session[:return_to_url] = request.url && request.get?
-
-      fail NotLogged
-    end
+    fail NotLogged unless logged_in?
   end
 
   def authenticate_admin!

@@ -27,7 +27,10 @@ Masha::Application.routes.draw do
 
   resources :users, only: [:new, :create]
   resources :sessions, only: [:new, :create, :destroy]
-  get 'telegram/:id' => 'telegram#attach', as: :attach_telegram
+
+  get 'ta/:id', action: :create, controller: 'telegram/attach', as: :attach_telegram
+
+  telegram_webhook Telegram::WebhookController
 
   # Личный контроллер пользователя
   resource :profile, controller: :profile do

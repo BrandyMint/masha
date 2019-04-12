@@ -14,26 +14,8 @@ Telegram::Bot::Client.run(token, logger: Logger.new($stderr)) do |bot|
     when Telegram::Bot::Types::Message
       case message.text
       when '/projects'
-        authentication = Authentication.by_provider(:telegram).where(uid: message.from.id).take
-
-        if authentication.present?
-          bot.api.sendMessage(
-            chat_id: message.chat.id,
-            text: "Доступные проекты:\n#{authentication.user.projects.join(', ')}"
-          )
-        else
-          bot.api.sendMessage(
-            chat_id: message.chat.id,
-            text: "Сначала привяжите аккаунт (/start)"
-          )
-        end
       when '/start' # "/start@MashTimeBot"
 
-        name = [message.from.first_name, message.from.last_name].compact.join(' ')
-        bot.api.sendMessage(
-          chat_id: message.chat.id,
-          text: "Hello, #{message.from.first_name}!\nПривяжи телеграм к своему аккаунту на сайте по этой ссылке: #{TelegramVerifier.get_link(uid: message.from.id, nickname: message.from.username, name: name)}"
-        )
       else
         if message.left_chat_member && message.left_chat_member.username == Settings.telegram_bot_name
           bot.logger.info("Leave chat #{message.chat.title}")
