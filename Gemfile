@@ -30,6 +30,10 @@ gem 'sorcery'
 # gem 'rolify'
 gem 'simple_enum'
 
+gem 'socksify'
+gem 'telegram-bot'
+gem 'telegram-bot-types'
+
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
@@ -161,11 +165,11 @@ group :development, :test do
   gem 'rb-inotify', '~> 0.9', require: false
   gem 'pry'
   gem 'pry-byebug'
+  gem 'pry-rails'
 end
 
 group :development do
   gem 'bond'
-  gem 'jist'
 
   gem 'hpricot', '>= 0.8.6'
   gem 'ruby_parser', '>= 2.3.1'

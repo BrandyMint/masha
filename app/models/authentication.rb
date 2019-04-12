@@ -24,6 +24,7 @@ class Authentication < ActiveRecord::Base
   rescue
   end
 
+  # TODO add telegram url
   def html_url
     # github html_url
     auth_hash['extra']['raw_info']['html_url']

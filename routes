@@ -2,6 +2,7 @@ SIDEKIQ inline mode
 **************************************************
 ⛔️ WARNING: Sidekiq testing API enabled, but this is not the test environment.  Your jobs will not go to Redis.
 **************************************************
+initialize socks
                             Prefix Verb   URI Pattern                                                                              Controller#Action
                         admin_root GET    /admin(.:format)                                                                         admin/dashboard#index
     batch_action_admin_time_shifts POST   /admin/time_shifts/batch_action(.:format)                                                admin/time_shifts#batch_action
@@ -80,6 +81,8 @@ batch_action_admin_authentications POST   /admin/authentications/batch_action(.:
                           sessions POST   /sessions(.:format)                                                                      sessions#create
                        new_session GET    /sessions/new(.:format)                                                                  sessions#new
                            session DELETE /sessions/:id(.:format)                                                                  sessions#destroy
+                   attach_telegram GET    /ta/:id(.:format)                                                                        telegram/attach#create
+                  telegram_webhook POST   /telegram/841894751_AAGJMrT97aU1LCEEsAWqeQ9Q3SQDcvte38w                                  #<Telegram::Bot::Middleware(Telegram::WebhookController)>
            change_password_profile POST   /profile/change_password(.:format)                                                       profile#change_password
                        new_profile GET    /profile/new(.:format)                                                                   profile#new
                       edit_profile GET    /profile/edit(.:format)                                                                  profile#edit

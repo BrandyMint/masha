@@ -47,8 +47,8 @@ module ApplicationHelper
   end
 
   def app_version
-    content_tag :small, class: 'text-muted', data: { version: Masha.version.to_s } do
-      link_to 'v' + Masha.version.format('%M.%m.%p'), 'http://github.com/brandymint/mashatime.ru'
+    content_tag :small, class: 'text-muted', data: { version: AppVersion.to_s } do
+      link_to 'v' + AppVersion.format('%M.%m.%p'), Settings.github_repo
     end
   end
 

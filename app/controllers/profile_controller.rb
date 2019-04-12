@@ -1,6 +1,10 @@
 class ProfileController < ApplicationController
   before_action :require_login
 
+  def show
+    redirect_to edit_profile_url
+  end
+
   def edit
     @user = current_user
     @password_form = PasswordChangeForm.new
