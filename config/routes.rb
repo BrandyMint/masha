@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'admin_constraint'
 
 Masha::Application.routes.draw do
+  default_url_options Settings.default_url_options.symbolize_keys
   ActiveAdmin.routes(self)
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
 
@@ -26,6 +27,7 @@ Masha::Application.routes.draw do
 
   resources :users, only: [:new, :create]
   resources :sessions, only: [:new, :create, :destroy]
+  get 'telegram/:id' => 'telegram#attach', as: :attach_telegram
 
   # Личный контроллер пользователя
   resource :profile, controller: :profile do

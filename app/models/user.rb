@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   end
 
   before_create do
+    self.telegram_confirmation_token = SecureRandom.hex(16)
     self.is_root = true if User.count.zero?
   end
 

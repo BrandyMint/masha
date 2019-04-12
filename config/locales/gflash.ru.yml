@@ -10,6 +10,7 @@ ru:
       error: "Error"
       progress: "Progress"
 
+    telegram_attached: Привязали Телеграм
     signed_up: Вы успешно зарегистрировались!
     session_problems: Проблемы с авторизацией
     session_failed: Неправильный email или пароль

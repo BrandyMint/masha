@@ -30,6 +30,9 @@ gem 'sorcery'
 # gem 'rolify'
 gem 'simple_enum'
 
+gem 'socksify'
+gem 'telegram-bot-ruby'
+
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
