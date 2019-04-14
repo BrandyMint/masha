@@ -96,7 +96,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   def current_user
     return unless from
     return @current_user if defined? @current_user
-    @current_user = User.joins(:authentications).find_by(authentications: { provider: :telegram, uid: from.id})
+    @current_user = User.joins(:authentications).find_by(authentications: { provider: :telegram, uid: from[:id]})
   end
 
   def logged_in?
