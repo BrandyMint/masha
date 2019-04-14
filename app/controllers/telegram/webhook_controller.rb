@@ -90,7 +90,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def with_locale(&block)
-    I18n.with_locale(locale_for_update, &block)
+    I18n.with_locale(current_locale, &block)
   end
 
   def current_user
@@ -103,7 +103,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     current_user.present?
   end
 
-  def locale_for_update
+  def current_locale
     if from
       # locale for user
       :ru

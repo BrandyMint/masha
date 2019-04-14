@@ -148,8 +148,12 @@ GEM
     ast (2.4.0)
     authority (3.3.0)
       activesupport (>= 3.0.0)
+    auto_logger (0.1.4)
+      activesupport
+      beautiful-log
     autoprefixer-rails (9.5.1)
       execjs
+    awesome_print (1.8.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -162,6 +166,9 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     bcrypt (3.1.12)
+    beautiful-log (0.2.2)
+      awesome_print (~> 1.8.0)
+      colorize (~> 0.8.1)
     better_errors (2.5.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -214,6 +221,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    colorize (0.8.1)
     compass (1.0.3)
       chunky_png (~> 1.2)
       compass-core (~> 1.0.2)
@@ -632,6 +640,7 @@ DEPENDENCIES
   activeadmin!
   arbre
   authority
+  auto_logger
   axlsx!
   axlsx_rails
   better_errors

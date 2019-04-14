@@ -15,6 +15,7 @@ gem 'settingslogic'
 gem 'rails_autolink'
 # gem 'cache_digests'
 
+gem 'auto_logger'
 gem 'russian'
 
 gem 'breadcrumbs_on_rails'
