@@ -8,7 +8,7 @@ defaults: &defaults
 
   default_url_options: &default_url_options
     host: masha.brandymint.ru
-    port: 80
+    protocol: https
 
   mail_from: masha@brandymint.ru
 
@@ -18,7 +18,6 @@ development:
   <<: *defaults
   default_url_options: &default_url_options
     host: <%= ENV['APP_HOST'] || 'localhost' %>
-    port: 80
 
 test:
   <<: *defaults

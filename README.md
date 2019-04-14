@@ -7,6 +7,10 @@
 * создай ключи для oauth на `github`
 * пропиши их в <tt>./config/omniauth.yml</tt> по примеру <tt>./config/omniauth.yml.example</tt>
 
+## On server
+
+> rake telegram:bot:set_webhook RAILS_ENV=production CERT=path/to/cert
+
 ## Распределение прав доступа
 
 Для каждого проекта у пользователя устанавливается его роль в проекте (владелец, смотритель, участник)
