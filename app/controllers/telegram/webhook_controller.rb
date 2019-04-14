@@ -45,7 +45,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       respond_with :message, text: multiline( 'Мы уже знакомы.', nil, nil, help_message )
     else
       response = multiline(
-        "Привет, #{from.first_name}!",
+        "Привет, #{from[:first_name]}!",
         nil,
         "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
       )
@@ -83,9 +83,9 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   def generate_start_link
     TelegramVerifier.get_link(
-      uid: from.id,
-      nickname: from.username,
-      name: [from.first_name, from.last_name].compact.join(' ')
+      uid: from[:id],
+      nickname: from[:username],
+      name: [from[:first_name], from[:last_name]].compact.join(' ')
     )
   end
 
