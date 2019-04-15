@@ -8,6 +8,7 @@ ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
+require 'telegram/bot/updates_controller/rspec_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -16,11 +17,20 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # ResqueSpec.disable_ext = true
 
 RSpec.configure do |config|
+  config.after { Telegram.bot.reset }
   # Use color not only in STDOUT but also in pagers and files
   config.tty = true
 
   # Use the specified formatter
   config.formatter = :documentation # :progress, :html, :textmate
+
+  if ENV['FORBID_FOCUSED_SPECS']
+    config.before(:example, :focus) do
+      raise ':focus should not be committed'
+    end
+  else
+    config.filter_run_when_matching :focus
+  end
 
   # ## Mock Framework
   #

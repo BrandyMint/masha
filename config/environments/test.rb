@@ -36,3 +36,6 @@ Masha::Application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 end
+
+Telegram.reset_bots
+Telegram::Bot::ClientStub.stub_all!

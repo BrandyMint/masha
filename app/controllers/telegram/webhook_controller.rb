@@ -1,4 +1,31 @@
 class Telegram::WebhookController < Telegram::Bot::UpdatesController
+  Error = Class.new StandardError
+  Unauthenticated = Class.new Error
+  NotAvailableInPublicChat = Class.new Error
+
+  include Telegram::Bot::UpdatesController::Session
+  include Telegram::Bot::UpdatesController::MessageContext
+
+  before_action :require_personal_chat, except: [:report!]
+  before_action :require_authenticated, only: [:projects!, :add!, :start!]
+  rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
+  rescue_from Unauthenticated, with: :handle_unauthenticated
+
+  # rescue_from ArgumentError, with: -> { respond_with :message, text: 'Rescued' }
+  # This basic methods receives commonly used params:
+  #
+  #   message(payload)
+  #   inline_query(query, offset)
+  #   chosen_inline_result(result_id, query)
+  #   callback_query(data)
+
+  # Define public methods ending with `!` to handle commands.
+  # Command arguments will be parsed and passed to the method.
+  # Be sure to use splat args and default values to not get errors when
+  # someone passed more or less arguments in the message.
+
+  use_session!
+
   # use callbacks like in any other controllers
   around_action :with_locale
 
@@ -20,42 +47,12 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def projects!(data = nil, *)
-    if logged_in?
-      text = multiline 'Доступные проекты:', nil, current_user.projects.join(', ')
-    else
-      text = "Сначала привяжите аккаунт (/start)"
-    end
-
+    text = multiline 'Доступные проекты:', nil, current_user.projects.join(', ')
     respond_with :message, text: text
   end
 
-  # This basic methods receives commonly used params:
-  #
-  #   message(payload)
-  #   inline_query(query, offset)
-  #   chosen_inline_result(result_id, query)
-  #   callback_query(data)
-
-  # Define public methods ending with `!` to handle commands.
-  # Command arguments will be parsed and passed to the method.
-  # Be sure to use splat args and default values to not get errors when
-  # someone passed more or less arguments in the message.
   def start!(data = nil, *)
-    if logged_in?
-      respond_with :message, text: multiline( 'Мы уже знакомы.', nil, nil, help_message )
-    else
-      response = multiline(
-        "Привет, #{from[:first_name]}!",
-        nil,
-        "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
-      )
-
-      # response = from ? "Hello #{from['username']}!" : 'Hi there!'
-      respond_with :message, text: response
-    end
-
-    # `reply_with` also sets `reply_to_message_id`:
-    # reply_with :photo, photo: File.open('party.jpg')
+    respond_with :message, text: multiline( 'Мы уже знакомы.', nil, nil, help_message )
   end
 
   def help!(*)
@@ -83,9 +80,9 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   def generate_start_link
     TelegramVerifier.get_link(
-      uid: from[:id],
-      nickname: from[:username],
-      name: [from[:first_name], from[:last_name]].compact.join(' ')
+      uid: from['id'],
+      nickname: from['username'],
+      name: [from['first_name'], from['last_name']].compact.join(' ')
     )
   end
 
@@ -96,7 +93,15 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   def current_user
     return unless from
     return @current_user if defined? @current_user
-    @current_user = User.joins(:authentications).find_by(authentications: { provider: :telegram, uid: from[:id]})
+    @current_user = User.joins(:authentications).find_by(authentications: { provider: :telegram, uid: from['id']})
+  end
+
+  def require_authenticated
+    raise Unauthenticated unless logged_in?
+  end
+
+  def require_personal_chat
+    raise NotAvailableInPublicChat unless is_personal_chat?
   end
 
   def logged_in?
@@ -111,5 +116,25 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       # locale for chat
       :ru
     end
+  end
+
+  def handle_unauthenticated
+    message = multiline(
+      "Привет, #{from['first_name']}!",
+      nil,
+      "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
+    )
+
+    respond_with :message, text: message
+  end
+
+  def is_personal_chat?
+    chat['id'] == from['id']
+  end
+
+  # In this case session will persist for user only in specific chat.
+  # Same user in other chat will have different session.
+  def session_key
+    "#{bot.username}:#{chat['id']}:#{from['id']}" if chat && from
   end
 end

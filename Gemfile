@@ -32,8 +32,8 @@ gem 'sorcery'
 gem 'simple_enum'
 
 gem 'socksify'
-gem 'telegram-bot'
-gem 'telegram-bot-types'
+gem 'telegram-bot', github: 'telegram-bot-rb/telegram-bot'
+# gem 'telegram-bot-types'
 
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
@@ -155,6 +155,11 @@ gem 'jquery-ui-sass-rails'
 gem 'gritter', '1.1.0'
 
 gem 'sidekiq'
+gem 'redis'
+gem 'hiredis'
+
+# Used for telegram sessions
+gem 'redis-rails'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -171,6 +176,8 @@ end
 
 group :development do
   gem 'bond'
+
+  gem 'spring-commands-rspec'
 
   gem 'hpricot', '>= 0.8.6'
   gem 'ruby_parser', '>= 2.3.1'
@@ -198,7 +205,7 @@ group :test do
   gem 'email_spec', '>= 1.2.1'
   gem 'guard'
   # gem 'debugger' unless `whoami`=~/jenkins/
-  #gem 'guard-rspec'
+  gem 'guard-rspec'
   #gem 'guard-rails'
   # gem 'guard-bundler'
   #gem 'guard-cucumber'
