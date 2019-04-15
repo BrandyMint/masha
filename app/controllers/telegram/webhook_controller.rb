@@ -8,6 +8,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   before_action :require_personal_chat, except: [:report!]
   before_action :require_authenticated, only: [:projects!, :add!, :start!]
+  rescue_from Telegram::Bot::Forbidden, with: -> (error) { Rails.application.config.telegram_updates_controller.logger.error(error) }
   rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
   rescue_from Unauthenticated, with: :handle_unauthenticated
 
