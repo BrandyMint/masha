@@ -158,6 +158,8 @@ gem 'sidekiq'
 gem 'redis'
 gem 'hiredis'
 
+gem 'terminal-table'
+
 # Used for telegram sessions
 gem 'redis-rails'
 

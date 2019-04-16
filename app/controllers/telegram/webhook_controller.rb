@@ -47,6 +47,14 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
   end
 
+  def report!(project_slug = nil, *)
+    text = Reporter.new.perform(current_user, group_by: :user)
+    text << "\n"
+    text << Reporter.new.perform(current_user, group_by: :project)
+
+    respond_with :message, text: "```#{text}```", parse_mode: :Markdown
+  end
+
   def projects!(data = nil, *)
     text = multiline 'Доступные проекты:', nil, current_user.available_projects.join(', ')
     respond_with :message, text: text
@@ -152,7 +160,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def find_project(key)
-    current_user.available_projects.active.find_by_name(key)
+    current_user.available_projects.active.find_by_slug(key)
   end
 
   def logger

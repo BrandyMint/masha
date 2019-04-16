@@ -620,6 +620,8 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     temple (0.8.1)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
     thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.9)
@@ -745,6 +747,7 @@ DEPENDENCIES
   sprockets
   sprockets-rails
   telegram-bot!
+  terminal-table
   turbolinks (~> 5)
   turn
   uglifier (~> 2.7)
