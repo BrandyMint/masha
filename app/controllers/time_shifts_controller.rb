@@ -6,12 +6,11 @@ class TimeShiftsController < ApplicationController
     @time_sheet_form = TimeSheetForm.build_from_params params[:time_sheet_form]
 
     template = 'summary'
-    @result = build_summary
 
     respond_to do |format|
       format.xlsx { render xlsx: template }
-      format.csv  { send_data @result.to_csv }
-      format.html { render action: template }
+      format.csv  { send_data build_summary.to_csv }
+      format.html { render action: template, locals: { result: build_summary } }
     end
   end
 
@@ -28,19 +27,17 @@ class TimeShiftsController < ApplicationController
           return render 'empty'
         end
       else
-        @result = build_summary
-        return render 'blank'
+        return render 'blank', locals: { result: build_summary }
       end
 
       query.available_projects = current_user.available_projects
       query.available_users = current_user.available_users
       query.perform
 
-      @result = query
       respond_to do |format|
-        format.xlsx { render xlsx: template }
-        format.csv  { send_data @result.to_csv }
-        format.html { render action: template }
+        format.xlsx { render xlsx: template, locals: { result: query } }
+        format.csv  { send_data query.to_csv }
+        format.html { render action: template, locals: { result: query } }
       end
     end
   end
@@ -78,14 +75,11 @@ class TimeShiftsController < ApplicationController
   private
 
   def build_summary
-    query = SummaryQuery.new params[:period]
-
-    query.available_projects = current_user.available_projects
-    query.available_users = current_user.available_users
-    query.group_by = params[:group_by]
+    query = SummaryQuery.for_user(current_user,
+               period: params[:period] || 'week',
+               group_by: params[:group_by]
+              )
     query.perform
-
-    query
   end
 
   def default_time_shift_form

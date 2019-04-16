@@ -1,6 +1,6 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: 'Report') do |sheet|
-  @result.result.each do |g|
+  result.result.each do |g|
     sheet.add_row [g[:title], title_of_group_results(g)]
     render partial: 'list', locals: { time_shifts: g[:time_shifts], sheet: sheet }
   end

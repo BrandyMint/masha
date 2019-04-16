@@ -1,7 +1,7 @@
 .container
   = render 'time_sheet_form'
 
-  - @result.result.each do |g|
+  - result.result.each do |g|
     %h3.no-margin-top
       = g[:title]
       %small
@@ -9,11 +9,11 @@
     = render 'list', :time_shifts => g[:time_shifts]
 
 
-  - if @result.result.present?
+  - if result.result.present?
     .pull-left
       = render 'print_ready'
     .pull-right
-      - if @result.present?
+      - if result.present?
         = render 'export_links'
     .clearfix
 

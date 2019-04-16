@@ -1,43 +1,41 @@
-- if @result.columns.present?
-  -#%div{ class: @result.projects.count < 8 ? 'container' : '' }
+- if result[:columns].present?
+  -#%div{ class: result.projects.count < 8 ? 'container' : '' }
   %table.table.summary-table
     %thead
       %tr
         %th
           Сводка за
-          = summary_period_link @result
+          = summary_period_link result
           %br
-          = summary_group_link @result
-        - @result.columns.each do |p|
+          = summary_group_link result
+        - result[:columns].each do |p|
           %th= p
         %th= t('time_shifts.total')
 
     %tbody
-      - @result.days.each do |d|
+      - result[:days].each do |d|
         %tr
           %th{class: "#{week_day_class(d[:date])} summary-table-date"}= human_date d[:date]
-          - @result.columns.each do |column|
+          - result[:columns].each do |column|
             %td{class: week_day_class(d[:date]), data: {'cell-title' => column} }
               - if d[:columns][column.id].blank?
                 .muted= '-'
               - else
-                = summary_hours @result, d, column
+                = summary_hours result, d, column
           %td{class: week_day_class(d[:date]), data: {'cell-title' => t('time_shifts.total')}}
             %b
               = link_to time_shifts_url(time_sheet_form: {date_from: d[:date], date_to: d[:date], group_by: :project}) do
-                = human_hours @result.total_by_date[d[:date]]
+                = human_hours result[:total_by_date][d[:date]]
       %tr{class:"summary-row"}
         %th
           За весь период:
-        - @result.columns.each do |column|
-          %td= human_hours @result.total_by_column[column.to_s]
-        %td= human_hours @result.total
+        - result[:columns].each do |column|
+          %td= human_hours result[:total_by_column][column.to_s]
+        %td= human_hours result[:total]
 
-  - if @result.columns.present?
+  - if result[:columns].present?
     = render 'print_ready'
 
 - else
   .container
     .alert.alert-info Нет сводных данных за ближайший период.
-
-
