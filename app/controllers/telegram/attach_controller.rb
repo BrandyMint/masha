@@ -13,7 +13,10 @@ class Telegram::AttachController < ApplicationController
       )
     end
 
-    Telegram.bot.send_message chat_id: info[:uid], text: "Спасибо, теперь я знаю, что ты – #{current_user} на сайте. Дальше напиши /help"
+    begin
+      Telegram.bot.send_message chat_id: info[:uid], text: "Спасибо, теперь я знаю, что ты – #{current_user} на сайте. Дальше напиши /help"
+    rescue Telegram::Bot::Forbidden
+    end
 
     redirect_to profile_url, gflash: {notice: t('gflash.telegram_attached')}
   end

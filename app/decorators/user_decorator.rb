@@ -23,7 +23,7 @@ class UserDecorator < ApplicationDecorator
     url = nil
     authentications.each do |a|
       extra = a.auth_hash['extra']
-      url = extra['raw_info']['html_url'] if extra['raw_info'].present?
+      url = extra.fetch('raw_info', {}).fetch('html_url', '')
     end
     url
   end
