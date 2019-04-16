@@ -57,10 +57,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       subject { -> { dispatch_message 'talk something' } }
       it { should_not respond_with_message }
     end
-    describe '#start!' do
-      subject { -> { dispatch_command :start } }
-      it { should_not respond_with_message }
-    end
   end
 
   ## There is context for callback queries with related matchers,
