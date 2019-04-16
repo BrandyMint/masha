@@ -8,6 +8,8 @@ Masha::Application.routes.draw do
 
   Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]
 
+  # Для zabbix
+  get '/sidekiq-stats' => proc { [200, { 'Content-Type' => 'text/plain' }, [Sidekiq::Stats.new.to_json]] }
   mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
 
   root 'welcome#index'
