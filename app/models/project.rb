@@ -26,7 +26,7 @@ class Project < ActiveRecord::Base
   end
 
   def to_s
-    name
+    slug
   end
 
   def roles_of_user(user)

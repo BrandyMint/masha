@@ -6,13 +6,13 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::Session
   include Telegram::Bot::UpdatesController::MessageContext
 
-  before_action :require_personal_chat, except: [:report!, :add!, :projects!, :start!]
+  before_action :require_personal_chat, except: [:report!, :summary!, :add!, :projects!, :start!]
   before_action :require_authenticated, only: [:projects!, :add!, :start!]
   rescue_from Telegram::Bot::Forbidden, with: -> (error) { logger.error error }
   rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
   rescue_from Unauthenticated, with: :handle_unauthenticated
+  rescue_from ActiveRecord::ActiveRecordError, with: :handle_active_record_error
 
-  # rescue_from ArgumentError, with: -> { respond_with :message, text: 'Rescued' }
   # This basic methods receives commonly used params:
   #
   #   message(payload)
@@ -47,12 +47,17 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
   end
 
-  def report!(project_slug = nil, *)
-    text = Reporter.new.perform(current_user, group_by: :user)
-    text << "\n"
-    text << Reporter.new.perform(current_user, group_by: :project)
+  def summary!(*)
+    text = Reporter.new.projects_to_users_matrix(current_user)
+    respond_with :message, text: code(text), parse_mode: :Markdown
+  end
 
-    respond_with :message, text: "```#{text}```", parse_mode: :Markdown
+  def report!(*)
+    text = Reporter.new.list_by_days(current_user, group_by: :user)
+    text << "\n"
+    text << Reporter.new.list_by_days(current_user, group_by: :project)
+
+    respond_with :message, text: code(text), parse_mode: :Markdown
   end
 
   def projects!(data = nil, *)
@@ -68,10 +73,10 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: help_message
   end
 
-  def add!(project_id = nil, hours = nil, *description)
+  def add!(project_slug = nil, hours = nil, *description)
     description = description.join(' ')
 
-    project = find_project(project_id)
+    project = find_project(project_slug)
 
     if project.present?
       project.time_shifts.create!(
@@ -83,21 +88,28 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
       message = "Отметили в #{project.name} #{hours} часов"
     else
-      message = "Не найден такой проект '#{project_id}'. Вам доступны: #{ current_user.available_projects.join(', ') }"
+      message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{ current_user.available_projects.join(', ') }"
     end
 
     respond_with :message, text: message
-  rescue => err
-    respond_with :message, text: "Error: #{err.message}"
+  end
+
+  def new!(slug = nil, *)
+    project = current_user.projects.create!(name: slug, slug: slug)
+
+    respond_with :message, text: "Создан проект `#{project.slug}`"
   end
 
   private
 
   def help_message
     multiline(
-      '/help - эта подсказка',
-      '/projects - список проектов',
-      '/add {project_id} {hours} {comment} - отметить время'
+      '/help - Эта подсказка',
+      '/projects - Список проектов',
+      '/add {project_slug} {hours} {comment} - Отметить время',
+      '/new {project_slug} - Создать новый проект',
+      '/report - Детальный по команды и проектам',
+      '/summary - Сумарное за неделю',
     )
   end
 
@@ -145,6 +157,10 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     end
   end
 
+  def code(text)
+    multiline '```', text, '```'
+  end
+
   def handle_unauthenticated
     message = multiline(
       "Привет, #{from['first_name']}!",
@@ -161,6 +177,10 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   def find_project(key)
     current_user.available_projects.active.find_by_slug(key)
+  end
+
+  def handle_active_record_error(err)
+    respond_with :message, text: "Error: #{err.message}"
   end
 
   def logger

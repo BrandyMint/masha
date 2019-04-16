@@ -1,5 +1,5 @@
 class SummaryQuery
-  attr_accessor :days, :columns, :total_by_date, :total_by_column, :total
+  attr_accessor :total
 
   def self.for_user(user, group_by: nil, period: [])
     new(users: user.available_users, projects: user.available_projects, period: period, group_by: group_by)
@@ -15,57 +15,55 @@ class SummaryQuery
     @period   = build_period period
   end
 
-  def perform
-    ids = []
-    @total_by_date = {}
-    @total_by_column = {}
-    @days = period.map do |date|
-      res = grouped_scope date
-      ids += res.keys
-
-      res.each_pair do |_id, hours|
-        @total_by_date[date] ||= 0
-        @total_by_date[date] += hours
-      end
-      {
-        date: date,
-        columns: res
-      }
-    end
-
-    @columns = ids.uniq.sort.map { |id| item_find id }.compact
-
-    @total = scope.sum(:hours)
-
-    @columns.each do |column|
-      str_column = column.to_s
-      @total_by_column[str_column] = summary_by_column column
-    end
-
+  def list_by_days
     {
-      columns: columns,
-      total: total,
-      total_by_date: total_by_date,
+      columns:         columns,
+      total:           total,
+      total_by_date:   total_by_date,
       total_by_column: total_by_column,
-      days: days,
-      group_by: group_by,
-      period: period
+      days:            days,
+      group_by:        group_by,
+      period:          period
     }
   end
 
-  def summary_by_column(column)
-    scope.where(group_column => column).sum(:hours)
+  def projects_to_users_matrix
+    matrix = { total: {} }
+    projects = Set.new
+    users = Set.new
+    scope.each do |time_shift|
+      projects << time_shift.project
+      users << time_shift.user
+      project_row = (matrix[time_shift.project] ||= {})
+      project_row[time_shift.user] ||= 0
+      project_row[time_shift.user] += time_shift.hours
+      project_row[:total] ||= 0
+      project_row[:total] += time_shift.hours
+
+      all_project_row = matrix[:total]
+      all_project_row[time_shift.user] ||= 0
+      all_project_row[time_shift.user] += time_shift.hours
+      all_project_row[:total] ||= 0
+      all_project_row[:total] += time_shift.hours
+    end
+    {
+      matrix:   matrix,
+      period:   period,
+      projects: projects,
+      users:    users,
+      days:     days
+    }
   end
 
   def to_csv
     CSV.generate(col_sep: ';') do |csv|
-      csv << ['date'] + @columns + ['total']
-      @days.each do |day|
+      csv << ['date'] + columns + ['total']
+      days.each do |day|
         row = [day[:date]]
-        @columns.each do |column|
+        columns.each do |column|
           row << (day[:columns][column.id].blank? ? '-' : day[:columns][column.id])
         end
-        csv << row.push(@total_by_date[day[:date]])
+        csv << row.push(total_by_date[day[:date]])
       end
     end
   end
@@ -74,10 +72,19 @@ class SummaryQuery
 
   attr_reader :users, :group_by, :projects, :period
 
+  def total
+    @total ||= scope.sum(:hours)
+  end
+
+  def summary_by_column(column)
+    scope.where(group_column => column).sum(:hours)
+  end
+
   def scope
-    s = TimeShift.includes(:project, :user)
-    s = s.where project_id: projects_ids
-    s.where user_id: users_ids
+    TimeShift.
+      includes(:project, :user).
+      where(project_id: projects_ids).
+      where(user_id: users_ids)
   end
 
   def grouped_scope(date)
@@ -124,6 +131,51 @@ class SummaryQuery
     else
       projects.map &:id
     end
+  end
+
+  def build_totals
+    ids = Set.new
+    @total_by_date = {}
+    @days = period.map do |date|
+      res = grouped_scope date
+      ids += res.keys
+
+      res.each_pair do |_id, hours|
+        @total_by_date[date] ||= 0
+        @total_by_date[date] += hours
+      end
+      {
+        date: date,
+        columns: res
+      }
+    end
+
+    @columns = ids.uniq.sort.map { |id| item_find id }.compact
+    @total_by_column = {}
+    @columns.each do |column|
+      str_column = column.to_s
+      @total_by_column[str_column] = summary_by_column column
+    end
+  end
+
+  def days
+    build_totals unless @days
+    @days
+  end
+
+  def columns
+    build_totals unless @columns
+    @columns
+  end
+
+  def total_by_date
+    build_totals unless @total_by_date
+    @total_by_date
+  end
+
+  def total_by_column
+    build_totals unless @total_by_column
+    @total_by_column
   end
 
   def users_ids

@@ -75,11 +75,12 @@ class TimeShiftsController < ApplicationController
   private
 
   def build_summary
-    query = SummaryQuery.for_user(current_user,
-               period: params[:period] || 'week',
-               group_by: params[:group_by]
-              )
-    query.perform
+    SummaryQuery.for_user(
+      current_user,
+      period: params[:period] || 'week',
+      group_by: params[:group_by]
+    ).
+    list_by_days
   end
 
   def default_time_shift_form
