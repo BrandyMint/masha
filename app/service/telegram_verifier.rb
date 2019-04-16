@@ -14,6 +14,6 @@ class TelegramVerifier
   private
 
   def verifier
-    @verifier ||= ActiveSupport::MessageVerifier.new Rails.application.credentials.secret_key_base
+    @verifier ||= ActiveSupport::MessageVerifier.new Rails.application.credentials.secret_key_base || 'fake_for_testing'
   end
 end
