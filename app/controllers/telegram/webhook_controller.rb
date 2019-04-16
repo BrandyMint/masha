@@ -47,8 +47,8 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
   end
 
-  def summary!(*)
-    text = Reporter.new.projects_to_users_matrix(current_user)
+  def summary!(period = 'week', *)
+    text = Reporter.new.projects_to_users_matrix(current_user, period.to_sym)
     respond_with :message, text: code(text), parse_mode: :Markdown
   end
 
@@ -109,7 +109,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       '/add {project_slug} {hours} {comment} - Отметить время',
       '/new {project_slug} - Создать новый проект',
       '/report - Детальный по команды и проектам',
-      '/summary - Сумарное за неделю',
+      '/summary {week|summary}- Сумарное за период',
     )
   end
 

@@ -5,15 +5,16 @@ class Reporter
     tableize_list_by_days SummaryQuery.for_user(user, period: period, group_by: group_by).list_by_days
   end
 
-  def projects_to_users_matrix(user, period: :week)
-    tableize_projects_to_users_matris SummaryQuery.for_user(user, period: period).projects_to_users_matrix
+  def projects_to_users_matrix(user, period = :week)
+    tableize_projects_to_users_matrix SummaryQuery.for_user(user, period: period).projects_to_users_matrix
   end
 
   private
 
-  def tableize_projects_to_users_matris(result)
+  def tableize_projects_to_users_matrix(result)
+    title = result[:period].empty? ? 'All days' : "#{result[:period].last} - #{result[:period].first}"
     columns = [:total] + result[:projects].to_a
-    table = Terminal::Table.new do |t|
+    table = Terminal::Table.new title: title do |t|
       t << [''] + columns.map(&:to_s)
       t << :separator
 
