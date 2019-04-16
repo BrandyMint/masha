@@ -16,7 +16,7 @@ class Reporter
       result[:days].each do |day|
         row = []
         row << day[:date].to_s
-        row << result[:total_by_date][day[:date]]
+        row << result[:total_by_date][day[:date]] || 0
 
         row += result[:columns].map { |r| day[:columns][r.id] || '·' }
         t << row
