@@ -12,7 +12,7 @@ class TimeShift < ActiveRecord::Base
   validates :user, presence: true
   validates :date, timeliness: { on_or_before: lambda { Date.today }, type: :date }
   validates :hours, presence: true, numericality: { greater_than_or_equal_to: 0.1 }
-  validates :description, presence: true, uniqueness: { scope: [:project_id, :user_id, :date, :hours] }
+  validates :description, presence: true
 
   after_commit on: :create do
     ViewerMailer.new_time_shift_email(self).deliver_later

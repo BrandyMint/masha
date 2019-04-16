@@ -6,7 +6,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::Session
   include Telegram::Bot::UpdatesController::MessageContext
 
-  before_action :require_personal_chat, except: [:report!]
+  before_action :require_personal_chat, except: [:report!, :add!, :projects!, :start!]
   before_action :require_authenticated, only: [:projects!, :add!, :start!]
   rescue_from Telegram::Bot::Forbidden, with: -> (error) { logger.error error }
   rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
@@ -48,7 +48,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def projects!(data = nil, *)
-    text = multiline 'Доступные проекты:', nil, current_user.projects.join(', ')
+    text = multiline 'Доступные проекты:', nil, current_user.available_projects.join(', ')
     respond_with :message, text: text
   end
 
@@ -60,9 +60,27 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: help_message
   end
 
-  def add!(project_id = nil, time = nil, *comment)
-    comment = comment.join(' ')
-    respond_with :message, text: "Эта команда еще не готова, но вы прислали project_id=#{project_id}, time=#{time}, comment=#{comment}"
+  def add!(project_id = nil, hours = nil, *description)
+    description = description.join(' ')
+
+    project = find_project(project_id)
+
+    if project.present?
+      project.time_shifts.create!(
+        date: Date.today,
+        hours: hours.to_s.tr(',','.').to_f,
+        description: description,
+        user: current_user
+      )
+
+      message = "Отметили в #{project.name} #{hours} часов"
+    else
+      message = "Не найден такой проект '#{project_id}'. Вам доступны: #{ current_user.available_projects.join(', ') }"
+    end
+
+    respond_with :message, text: message
+  rescue => err
+    respond_with :message, text: "Error: #{err.message}"
   end
 
   private
@@ -71,7 +89,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     multiline(
       '/help - эта подсказка',
       '/projects - список проектов',
-      '/add {project_id} {time} {comment} - отметить время'
+      '/add {project_id} {hours} {comment} - отметить время'
     )
   end
 
@@ -131,6 +149,10 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   def is_personal_chat?
     chat['id'] == from['id']
+  end
+
+  def find_project(key)
+    current_user.available_projects.active.find_by_name(key)
   end
 
   def logger

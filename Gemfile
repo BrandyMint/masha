@@ -187,7 +187,6 @@ group :development do
 
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
-  gem 'letter_opener'
   gem 'letter_opener_web'
 end
 
