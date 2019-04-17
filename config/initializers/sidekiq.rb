@@ -13,8 +13,6 @@ if Rails.env.production? || Rails.env.include?('staging') || ENV['SIDEKIQ_ASYNC'
         b.meta_data = context
       end
     end
-    config.failures_max_count = 10
-    config.failures_default_mode = :exhausted
   end
 
   Sidekiq.configure_client do |config|
