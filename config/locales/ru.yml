@@ -48,7 +48,7 @@ ru:
 
   project:
     archivate: Архивировать
-    activate: Активировать
+    activate: Вытащить их архива
     remove: Удалить
 
   projects:

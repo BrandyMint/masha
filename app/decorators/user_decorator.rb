@@ -9,9 +9,9 @@ class UserDecorator < ApplicationDecorator
   def name_as_link
     remote_url = self.remote_profile_url
     if remote_url.present?
-      h.link_to self.name, remote_url
+      h.link_to name, remote_url
     else
-      self.name
+      name
     end
   end
 
@@ -20,12 +20,11 @@ class UserDecorator < ApplicationDecorator
   end
 
   def remote_profile_url
-    url = nil
-    authentications.each do |a|
-      extra = a.auth_hash['extra']
-      url = extra.fetch('raw_info', {}).fetch('html_url', '')
-    end
-    url
+    authentications.map do |a|
+      (a.auth_hash['extra'] || {}).
+        fetch('raw_info', {}).
+        fetch('html_url', '')
+    end.first
   end
 
   def avatar_url

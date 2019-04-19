@@ -3,10 +3,13 @@
   .row
     .col-sm-6
       .row
-        .col-xs-8
+        .col-xs-12
           .form-group
-            = f.input :name, :label => false, :require => true, input_html: {class: 'form-control'}
-        .col-xs-4
+            = f.input :name, :require => true, input_html: {class: 'form-control'}
+        .col-xs-12
+          .form-group
+            = f.input :slug, :require => true, input_html: {class: 'form-control'}, hint: 'Только латинские буквы и цифры, а также символы -_ без пробелов'
+        .col-xs-12
           .form-group
             = f.button :submit, :class => 'btn btn-primary btn-block'
 

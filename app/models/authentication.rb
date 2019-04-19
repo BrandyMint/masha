@@ -19,27 +19,23 @@ class Authentication < ActiveRecord::Base
   end
 
   def url
-    # github url
-    auth_hash['extra']['raw_info']['url']
-  rescue
+    if provider == 'telegram'
+      "https://t.me/#{nickname}"
+    else
+      auth_hash.
+        dig('extra', 'raw_info', 'url')
+    end
   end
 
-  # TODO add telegram url
   def html_url
-    # github html_url
-    auth_hash['extra']['raw_info']['html_url']
-  rescue
+    auth_hash.dig 'extra', 'raw_info', 'html_url'
   end
 
   def nickname
-    auth_hash['info']['nickname']
-  rescue
-    '-'
+    auth_hash.dig('info', 'nickname') || 'unknown nickname'
   end
 
   def username
-    auth_hash['info']['name']
-  rescue
-    '-'
+    auth_hash.dig('info', 'name') || 'unknown username'
   end
 end

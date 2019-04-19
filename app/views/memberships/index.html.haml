@@ -1,13 +1,14 @@
 = projects_link
 %h1
-  = @project.name
-  = edit_project_link @project
-  = change_project_status_link @project
-  = link_to 'Отметить', new_time_shift_url(time_shift: { project_id: @project.id}), class: 'btn btn-success'
-  = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn btn-success'
-- if @project.active and current_user.can_create?(Membership.new(project: @project))
-  = render 'form'
-%hr
+  Проект '#{@project.name}'
+  %span.m-l-md
+    = edit_project_link @project if @project.active?
+    = change_project_status_link @project
+    = link_to 'Внести запись', new_time_shift_url(time_shift: { project_id: @project.id}), class: 'btn' if @project.active?
+    = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn'
+%br
+- unless @project.active?
+  .label.label-default Проект в архиве
 %h3 Участники
 %table.table
   - @project.memberships.each do |m|
@@ -15,12 +16,31 @@
     %tr
       %td.col-xs-1
         = d.avatar
-      %td.col-xs-5
+      %td.col-xs-4
         = d.name_as_link
-      %td.col-xs-5.form-inline-controls
+      %td.col-xs-1
+        = d.telegram_link
+      %td.col-xs-4.form-inline-controls
         = roles_select m
       %td.col-xs-2
         = d.remove_link
+%br
+- if @project.active and current_user.can_create?(Membership.new(project: @project))
+  = render 'form'
+%br
+- if @project.active and users_available_for_project.present?
+  %h3 Возможно вы захотите их тоже пригласить
+  %table.table
+    - users_available_for_project.each do |u|
+      - u = UserDecorator.new u
+      - target_id = "invite_user-#{u.id}"
+      %tr
+        %td.col-xs-3
+          = u.name
+        %td.col-xs-9.form-inline-controls
+          = select_tag :role, options_for_select(roles_collection, :include_blank => false, :selected => Membership::DEFAULT_ROLE), data: { target_id: "##{target_id}" }, role: 'membership_role_selector'
+          %span.m-l-md= link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-primary btn-mini'
+%hr
 - if @project.invites.present?
   %h3 Приглашенные, но не принявшие
   %table.table
@@ -33,23 +53,12 @@
           = role_human i.role
         %td.col-xs-2
           = d.remove_link
-- if @project.active and users_available_for_project.present?
-  %h3 Возможно вы захотите их тоже пригласить
-  %table.table
-    - users_available_for_project.each do |u|
-      - u = UserDecorator.new u
-      - target_id = "invite_user-#{u.id}"
-      %tr
-        %td.col-xs-5
-          = u.name
-        %td.col-xs-5.form-inline-controls
-          = select_tag :role, options_for_select(roles_collection, :include_blank => false, :selected => Membership::DEFAULT_ROLE), data: { target_id: "##{target_id}" }, role: 'membership_role_selector'
-        %td.col-xs-2
-          = link_to 'Добавить', project_memberships_url( @project, invite: {user_id: u.id} ), method: :post, id: target_id, class: 'btn btn-default btn-mini'
-%hr
-%p.text-muted
-  Роли участников проекта:
-  %ul.text-muted
-    %li <em>Владалец</em> - имеет право добавлять/удалять и изменять роли участников проекта. Получает отчеты по всем участникам, может изменить любую информацию.
-    %li <em>Смотритель</em> - имеет право только получать любые отчеты по всем участникам проекта.
-    %li <em>Участник</em> - имеет право отмечать и изменять свое время. Не видит отчеты по другим участникам.
+
+%br
+.panel.panel-default
+  .panel-heading Роли участников проекта:
+  .panel-body
+    %ul.text-muted
+      %li <em>Владалец</em> - имеет право добавлять/удалять и изменять роли участников проекта. Получает отчеты по всем участникам, может изменить любую информацию.
+      %li <em>Смотритель</em> - имеет право только получать любые отчеты по всем участникам проекта.
+      %li <em>Участник</em> - имеет право отмечать и изменять свое время. Не видит отчеты по другим участникам.

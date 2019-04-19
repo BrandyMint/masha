@@ -1,5 +1,5 @@
-%h4
-  Пригласить пользователя
+%h3 Пригласить пользователя
+%hr
 = simple_form_for @invite, :url => project_memberships_url(@project), :method => :post, html: {class: 'form-inline-controls form-inline'} do |f|
   = f.error_notification
   .form-inputs

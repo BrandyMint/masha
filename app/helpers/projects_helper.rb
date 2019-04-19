@@ -1,10 +1,6 @@
 module ProjectsHelper
   def edit_project_link(project)
-    if current_user.can_update? project
-      link_to edit_project_path(project) do
-        'edit' # icon :edit
-      end
-    end
+    link_to 'Переименовать', edit_project_path(project), class: 'btn btn-default' if current_user.can_update? project
   end
 
   def projects_link
