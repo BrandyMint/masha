@@ -1,16 +1,19 @@
-.pull-left= render 'brand'
+-# header = :static or :fixed
 
--#%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
-  = ficon('menu-1', color: 'white', size: 24)
+%div.navbar.application-navbar{class: "navbar-#{header}-top" }
+  .container
+    .pull-left= render 'brand'
 
--#.navbar-collapse.collapse
-.navbar-navigation.hidden-xs.hidden-sm
-  = render_navigation :expand_all => true, :renderer => :bootstrap
-  .clearfix
-.navbar-navigation-mobile.visible-xs.visible-sm
-  = render_navigation :expand_all => true, :renderer => :bootstrap
-  .clearfix
+    -#%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
+      = ficon('menu-1', color: 'white', size: 24)
+
+    -#.navbar-collapse.collapse
+    .navbar-navigation.hidden-xs.hidden-sm
+      = render_navigation :expand_all => true, :renderer => :bootstrap
+      .clearfix
+    .navbar-navigation-mobile.visible-xs.visible-sm
+      = render_navigation :expand_all => true, :renderer => :bootstrap
+      .clearfix
 
 
--#= render_navigation :expand_all => true, :renderer => :bootstrap, :context => :admin
-
+    -#= render_navigation :expand_all => true, :renderer => :bootstrap, :context => :admin

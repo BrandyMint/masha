@@ -2,8 +2,8 @@
 %html
   %head
     = render 'layouts/head'
-  %body.page-header-fixed{:class => "#{controller_name} #{action_name}"}
-    = render 'layouts/navigation', header: :fixed
+  %body.page-header-static{:class => "#{controller_name} #{action_name}"}
+    = render 'layouts/navigation', header: :static
     #main.application-main-content{:role => "main"}
       .container
         .content

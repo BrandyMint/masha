@@ -1,15 +1,17 @@
-.container
-  .row
-    .col-sm-4.print-hide.footer-version
-      = app_version
-    .col-sm-4.footer-links
-      %ul.horizontal
-        %li= link_to 'Masha on GitHub', Settings.github_repo, target: :_blank, class: 'footer-feedback-link'
-    .col-sm-4.footer-made-logo-block
-      .pull-right
-        Сделано в 
-        = link_to 'http://brandymint.ru', target: :_blank do
-          = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
-          = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
+%footer.footer
+  .container
+    .row
+      .col-sm-3.print-hide.footer-version
+        = app_version
+      .col-sm-6.footer-links
+        %ul.horizontal
+          %li= link_to 'Source code on GitHub', Settings.github_repo, target: :_blank, class: 'footer-feedback-link'
+          %li= link_to 'Telegram bot @MashTimeBot', Settings.telegram_bot_link, target: :_blank, class: 'footer-feedback-link'
+      .col-sm-3.footer-made-logo-block
+        .pull-right
+          Сделано в 
+          = link_to 'http://brandymint.ru', target: :_blank do
+            = image_tag 'brandymint_logo.svg', class: 'footer-made-logo'
+            = image_tag 'brandymint_logo_black.svg', class: 'footer-made-logo print'
 
 = render 'analytics' if Rails.env.production?
