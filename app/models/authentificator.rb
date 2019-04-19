@@ -1,10 +1,7 @@
 # Auth Hash Schema
 # https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema
 #
-module Authentificator
-end
-
-class Authentificator::Base
+class Authentificator
   attr_accessor :auth_hash, :user
 
   def self.authentificate(auth_hash)

@@ -1,6 +1,7 @@
 class OmniauthSessionController < ApplicationController
   def create
-    auto_login Authentificator::Base.authentificate auth_hash
+    binding.pry
+    auto_login Authentificator.authentificate auth_hash
 
     redirect_back_or_to just_authorized_redirect_url
 

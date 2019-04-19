@@ -1,46 +1,60 @@
 .welcome-content
   .row
     .col-sm-offset-3.col-sm-8
+      .welcome-brand= render 'brand'
+  .row
+    .col-sm-offset-3.col-sm-8
       %h1.welcome-header
         %strong Лёгкий учёт времени
         %br
         для команд и проектов
+      %br
+      .welcome-subheader 
+        %ul 
+          %li 
+            %span Бот в телеграм –
+            = link_to '@' + Settings.telegram_bot_name, Settings.telegram_bot_link, target: '_blank'
+          %li 
+            Открытый код на Ruby On Rails –
+            = link_to  Settings.github_repo, target: '_blank' do
+              = ion_icon 'logo-github', text: Settings.github_repo.split('/').last
+          %li Бесплатные аккаунты здесь
       .row
         .col-sm-6.col-md-6
           .welcome-start-button
             = login_with_github :welcome
             %p.welcome-button-caption
-              %strong Бесплатные аккаунты для всех,
-              %br успейте до конца года!
+              = link_to signup_url, class: 'btn btn-welcome btn-block' do
+                Или войти через email.
         .col-sm-5.col-md-2.col-lg-3.col-sm-offset-1.col-lg-offset-0
           .btn-welcome-block
             = link_to signup_url, class: 'btn btn-welcome btn-block' do
-              %small Нет аккаунта на github?
+              %small Нет аккаунта?
               %br
-              %strong Войдите с email
-  .welcome-description
-    .row
-      .col-md-5.welcome-feature-block
-        .row
-          .col-sm-1.col-xs-2.col-md-3
-            = image_tag 'clock-icon.svg', class: 'welcome-feature-icon-clock pull-right'
-            .clearfix
-          .col-sm-11.col-xs-10.col-md-9
-            %strong
-            Простой тайм–менеджмент
-            %p
-              поможет вам с анализом выполненных
-              задач и оценкой новых
-      .col-md-5.col-md-offset-1.welcome-feature-block
-        .row
-          .col-sm-1.col-xs-2.col-md-3
-            = image_tag 'gantt-icon.svg', class: 'welcome-feature-icon-gantt pull-right'
-            .clearfix
-          .col-sm-11.col-xs-10.col-md-9
-            %strong
-              Интеграция
-            %p
-              с современными системами проект-
-              %br
-              менеджмента — Pivotal Tracker и Github
+              %strong Зарегистрируйтесь
+  -#.welcome-description
+    -#.row
+      -#.col-md-5.welcome-feature-block
+        -#.row
+          -#.col-sm-1.col-xs-2.col-md-3
+            -#= image_tag 'clock-icon.svg', class: 'welcome-feature-icon-clock pull-right'
+            -#.clearfix
+          -#.col-sm-11.col-xs-10.col-md-9
+            -#%strong
+            -#Простой тайм–менеджмент
+            -#%p
+              -#поможет вам с анализом выполненных
+              -#задач и оценкой новых
+      -#.col-md-5.col-md-offset-1.welcome-feature-block
+        -#.row
+          -#.col-sm-1.col-xs-2.col-md-3
+            -#= image_tag 'gantt-icon.svg', class: 'welcome-feature-icon-gantt pull-right'
+            -#.clearfix
+          -#.col-sm-11.col-xs-10.col-md-9
+            -#%strong
+              -#Интеграция
+            -#%p
+              -#с современными системами проект-
+              -#%br
+              -#менеджмента — Pivotal Tracker и Github
 

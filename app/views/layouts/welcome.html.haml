@@ -2,4 +2,7 @@
 %html
   %head
     = render 'layouts/head'
-  = render 'layouts/welcome_body'
+  %body{:class => "#{controller_name} #{action_name}"}
+    .welcome-container
+      .container
+        = yield

@@ -13,6 +13,7 @@ defaults: &defaults
   mail_from: masha@brandymint.ru
 
   telegram_bot_name: MashTimeBot
+  telegram_bot_link: https://t.me/MashTimeBot
 
 development:
   <<: *defaults
