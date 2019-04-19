@@ -20,6 +20,10 @@ class Project < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true, format: {with: /[a-z0-9._+\-]/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
 
+  before_validation on: :create do
+    self.slug = Russian.translit(name.to_s).squish.parameterize unless slug.present?
+  end
+
   # active_admin в упор не видит friendly_id-шный slug
   def to_param
     id.to_s

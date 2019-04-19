@@ -159,6 +159,7 @@ gem 'redis'
 gem 'hiredis'
 
 gem 'terminal-table'
+gem 'russian'
 
 # Used for telegram sessions
 gem 'redis-rails'
