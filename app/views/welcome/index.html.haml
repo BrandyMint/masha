@@ -12,13 +12,13 @@
       .welcome-subheader 
         %ul 
           %li 
-            %span Бот в телеграм –
+            %span Бот в Telegramm –
             = link_to '@' + Settings.telegram_bot_name, Settings.telegram_bot_link, target: '_blank'
           %li 
             Открытый код на Ruby On Rails –
             = link_to  Settings.github_repo, target: '_blank' do
               = ion_icon 'logo-github', text: Settings.github_repo.split('/').last
-          %li Бесплатные аккаунты здесь
+          %li Бесплатные аккаунты
       .row
         .col-sm-6.col-md-6
           .welcome-start-button
