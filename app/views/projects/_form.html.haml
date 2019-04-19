@@ -8,7 +8,7 @@
             = f.input :name, :require => true, input_html: {class: 'form-control'}
         .col-xs-12
           .form-group
-            = f.input :slug, :require => true, input_html: {class: 'form-control'}, hint: 'Только латинские буквы и цифры, а также символы -_ без пробелов'
+            = f.input :slug, placeholder: 'project_12', input_html: {class: 'form-control'}, hint: 'Только латинские буквы и цифры, а также символы -_ без пробелов. Создастся автоматически если не укажите.'
         .col-xs-12
           .form-group
             = f.button :submit, :class => 'btn btn-primary btn-block'
