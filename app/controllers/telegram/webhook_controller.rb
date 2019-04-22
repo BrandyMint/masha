@@ -65,6 +65,19 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: text
   end
 
+  def attach!(project_slug = nil, *)
+    if project_slug.blank?
+      message = 'Укажите первым аргументом проект, к которому присоединяете этот чат'
+    elsif chat['id'].to_i < 0
+      project = find_project(project_slug)
+      project.update telegram_chat_id: chat[:id]
+      message = "Установили этот чат основным в проекте #{project}"
+    else
+      message = 'Присоединять можно только чаты, личную переписку нельзя'
+    end
+    respond_with :message, text: message
+  end
+
   def start!(data = nil, *)
     respond_with :message, text: multiline( 'Мы уже знакомы.', nil, nil, help_message )
   end
@@ -110,6 +123,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       '/new {project_slug} - Создать новый проект',
       '/report - Детальный по команды и проектам',
       '/summary {week|summary}- Сумарное за период',
+      '/attach {project_slug} - Присоеденить текущий чат к проекту'
     )
   end
 

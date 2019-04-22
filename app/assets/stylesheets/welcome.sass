@@ -10,7 +10,7 @@ body.welcome.index
   @media screen and (max-width: $screen-xs)
     margin-bottom: 20px
   @media screen and (min-width: $screen-sm)
-    margin-bottom: 120px
+    margin-bottom: 60px
   .brand-caption
     margin-left: 5px
     font-size: 24px
@@ -27,7 +27,7 @@ body.welcome.index
     font-size: 12px
     margin-bottom: 0.5em
   @media screen and (min-width: $screen-md)
-    margin-bottom: 2em
+    margin-bottom: 1.5em
     font-size: 24px
 
   ion-icon[name="logo-github"]
@@ -40,11 +40,12 @@ body.welcome.index
     @media screen and (max-width: $screen-xs)
       margin-bottom: 40px
     li
-      margin-bottom: 13px
+      margin-bottom: 23px
       list-style-type: none
 
   a
     +link-colors(#fff, rgba(255,255,255,0.8)) 
+    border-bottom: dashed 1px white
 
 .welcome-content
   color: #fff
@@ -56,7 +57,7 @@ body.welcome.index
     bottom: 2em
   @media screen and (min-width: $screen-md)
     padding:
-      top: 7em
+      top: 5em
       bottom: 2em
 
 .welcome-header
@@ -64,11 +65,9 @@ body.welcome.index
   font-weight: 300
   margin:
     top: 0
-    bottom: 1em
+    bottom: 0.75em
   @media screen and (min-width: $screen-md)
     font-size: 52px
-    margin:
-      top: 1em
   @media screen and (max-width: $screen-sm)
     margin:
       bottom: 0.5em
