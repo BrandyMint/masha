@@ -12,6 +12,11 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
   rescue_from Unauthenticated, with: :handle_unauthenticated
   rescue_from ActiveRecord::ActiveRecordError, with: :handle_active_record_error
+  rescue_from StandardError do |error|
+    Bugsnag.notify error do |b|
+      b.meta_data = { chat: chat, from: from }
+    end
+  end
 
   # This basic methods receives commonly used params:
   #
