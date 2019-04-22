@@ -145,7 +145,7 @@ class SummaryQuery
         @total_by_date[date] += hours
       end
       {
-        date: date,
+        date: Date.parse(date),
         columns: res
       }
     end

@@ -38,12 +38,13 @@ module ApplicationHelper
 
   def week_day_class(date)
     # TODO Расчитывать выходной согласно локали
-    c = ''
-    c = 'danger' if date.cwday > 5
-
-    c = 'active' if c.blank? && date.today?
-
-    c
+    if date.cwday > 5
+      'danger'
+    elsif c.blank? && date.today?
+      'active'
+    else
+      ''
+    end
   end
 
   def app_version
