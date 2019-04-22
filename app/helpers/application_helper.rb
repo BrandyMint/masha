@@ -40,7 +40,7 @@ module ApplicationHelper
     # TODO Расчитывать выходной согласно локали
     if date.cwday > 5
       'danger'
-    elsif c.blank? && date.today?
+    elsif date.today?
       'active'
     else
       ''
