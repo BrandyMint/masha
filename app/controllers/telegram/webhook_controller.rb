@@ -65,6 +65,11 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: text
   end
 
+  def attach!(project_slug, *)
+    project = find_project(project_slug)
+    respond_with :message, text: "Установили этот чат основным в проекте #{project}"
+  end
+
   def start!(data = nil, *)
     respond_with :message, text: multiline( 'Мы уже знакомы.', nil, nil, help_message )
   end

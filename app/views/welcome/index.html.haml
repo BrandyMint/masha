@@ -2,31 +2,32 @@
   .row
     .col-sm-offset-3.col-sm-8
       .welcome-brand
-        = render 'brand'
+        = link_to home_url, class: 'brand' do
+          = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
+          %span.brand-caption
+            = Settings.title
+            %span - бот в помощь
   .row
     .col-sm-offset-3.col-sm-8
       %h1.welcome-header
-        %strong Робот учёта трудозатрат
+        %strong Учёт времени
         %br
-        для команд и проектов
+        для личных и командных проектов
       %br
       .welcome-subheader 
         %ul 
           %li 
-            %span Бот в Telegramm –
-            = link_to '@' + Settings.telegram_bot_name, Settings.telegram_bot_link, target: '_blank'
+            = link_to 'Бот в Telegramm', Settings.telegram_bot_link, target: '_blank'
           %li 
-            Открытый код на Ruby On Rails –
-            = link_to  Settings.github_repo, target: '_blank' do
-              = ion_icon 'logo-github', text: Settings.github_repo.split('/').last
-          %li Бесплатные аккаунты
+            = link_to 'Открытый исходный код', Settings.github_repo, target: '_blank'
+          %li Web-интерфейс с бесплатными аккаунтами
       .row
         .col-sm-6.col-md-6
           .welcome-start-button
             = login_with_github :welcome
             %p.welcome-button-caption
               = link_to signup_url, class: 'btn btn-welcome btn-block' do
-                Или войти через email.
+                Или войти через email
         .col-sm-5.col-md-2.col-lg-3.col-sm-offset-1.col-lg-offset-0
           .btn-welcome-block
             = link_to signup_url, class: 'btn btn-welcome btn-block' do
