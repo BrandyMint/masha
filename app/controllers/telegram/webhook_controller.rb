@@ -8,16 +8,8 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   before_action :require_personal_chat, except: [:report!, :summary!, :add!, :projects!, :start!]
   before_action :require_authenticated, only: [:projects!, :add!, :start!]
-  rescue_from Telegram::Bot::Forbidden, with: -> (error) { logger.error error }
-  rescue_from NotAvailableInPublicChat, with: -> { } # do nothing
-  rescue_from Unauthenticated, with: :handle_unauthenticated
-  rescue_from ActiveRecord::ActiveRecordError, with: :handle_active_record_error
-  rescue_from StandardError do |error|
-    logger.error error
-    Bugsnag.notify error do |b|
-      b.meta_data = { chat: chat, from: from }
-    end
-  end
+
+  rescue_from StandardError, with: :handle_error
 
   # This basic methods receives commonly used params:
   #
@@ -181,26 +173,12 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     multiline '```', text, '```'
   end
 
-  def handle_unauthenticated
-    message = multiline(
-      "Привет, #{from['first_name']}!",
-      nil,
-      "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
-    )
-
-    respond_with :message, text: message
-  end
-
   def is_personal_chat?
     chat['id'] == from['id']
   end
 
   def find_project(key)
     current_user.available_projects.active.find_by_slug(key)
-  end
-
-  def handle_active_record_error(err)
-    respond_with :message, text: "Error: #{err.message}"
   end
 
   def logger
@@ -211,5 +189,26 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   # Same user in other chat will have different session.
   def session_key
     "#{bot.username}:#{chat['id']}:#{from['id']}" if chat && from
+  end
+
+  def handle_error(error)
+    case error
+    when Telegram::Bot::Forbidden
+      logger.error(error)
+    when NotAvailableInPublicChat
+      # do nothing
+    when Unauthenticated
+      respond_with :message, text: multiline(
+        "Привет, #{from['first_name']}!",
+        nil,
+        "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
+      )
+    else # ActiveRecord::ActiveRecordError
+      logger.error error
+      Bugsnag.notify error do |b|
+        b.meta_data = { chat: chat, from: from }
+      end
+      respond_with :message, text: "Error: #{err.message}"
+    end
   end
 end
