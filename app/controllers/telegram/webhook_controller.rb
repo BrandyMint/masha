@@ -5,6 +5,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
   include Telegram::Bot::UpdatesController::Session
   include Telegram::Bot::UpdatesController::MessageContext
+  include Telegram::Bot::UpdatesController::CallbackQueryContext
 
   before_action :require_personal_chat, except: [:report!, :summary!, :add!, :projects!, :start!]
   before_action :require_authenticated, only: [:projects!, :add!, :start!]
@@ -18,6 +19,11 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   #   chosen_inline_result(result_id, query)
   #   callback_query(data)
 
+  # Варианты ответов:
+  #
+  # Ответ в верхней шапке
+  # answer_callback_query data
+  #
   # Define public methods ending with `!` to handle commands.
   # Command arguments will be parsed and passed to the method.
   # Be sure to use splat args and default values to not get errors when
@@ -41,8 +47,40 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   def message(message)
     # message can be also accessed via instance method
     message == self.payload # true
-    # store_message(message['text'])
+    # store_message(message['tex'])
     respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
+  end
+
+  def chosen_inline_result(result_id, query)
+    respond_with :message, text: 'Неизвестный тип сообщение chosen_inline_result'
+  end
+
+  def inline_query(query, offset)
+    respond_with :message, text: 'Неизвестный тип сообщение inline_query'
+  end
+
+  def callback_query(data)
+    edit_message :text, text: "Вы выбрали #{data}"
+  end
+
+  def select_project_callback_query(project_slug)
+    save_context :add_time
+    project = find_project project_slug
+    session[:add_time_project_id] = project.id
+    edit_message :text, text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
+  end
+
+  def add_time(hours, *description)
+    project = current_user.available_projects.find(session[:add_time_project_id]) || raise("Не указан проект")
+    description = description.join(' ')
+    project.time_shifts.create!(
+      date: Date.today,
+      hours: hours.to_s.tr(',','.').to_f,
+      description: description,
+      user: current_user
+    )
+
+    respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
   end
 
   def summary!(period = 'week', *)
@@ -68,7 +106,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       message = 'Укажите первым аргументом проект, к которому присоединяете этот чат'
     elsif chat['id'].to_i < 0
       project = find_project(project_slug)
-      project.update telegram_chat_id: chat[:id]
+      project.update telegram_chat_id: chat['id']
       message = "Установили этот чат основным в проекте #{project}"
     else
       message = 'Присоединять можно только чаты, личную переписку нельзя'
@@ -85,9 +123,19 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def add!(project_slug = nil, hours = nil, *description)
-    description = description.join(' ')
+    if project_slug.nil?
+      save_context :add_callback_query
+      return respond_with :message,
+        text: 'Выберите проект, в котором отметить время:',
+        reply_markup: {
+          inline_keyboard: [
+            current_user.available_projects.map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
+          ]
+        }
+    end
 
     project = find_project(project_slug)
+    description = description.join(' ')
 
     if project.present?
       project.time_shifts.create!(
@@ -191,6 +239,10 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     "#{bot.username}:#{chat['id']}:#{from['id']}" if chat && from
   end
 
+  def attached_project
+    current_user.available_projects.find_by(telegram_chat_id: chat['id'])
+  end
+
   def handle_error(error)
     case error
     when Telegram::Bot::Forbidden
@@ -208,7 +260,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       Bugsnag.notify error do |b|
         b.meta_data = { chat: chat, from: from }
       end
-      respond_with :message, text: "Error: #{err.message}"
+      respond_with :message, text: "Error: #{error.message}"
     end
   end
 end
