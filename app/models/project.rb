@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
 
   scope :ordered, -> { order(:name) }
   scope :active, -> { where(active: true) }
+  scope :alive, -> { where(active: true) }
   scope :archive, -> { where(active: false) }
 
   validates :name, presence: true, uniqueness: true

@@ -97,7 +97,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def projects!(data = nil, *)
-    text = multiline 'Доступные проекты:', nil, current_user.available_projects.join(', ')
+    text = multiline 'Доступные проекты:', nil, current_user.available_projects.alive.join(', ')
     respond_with :message, text: text
   end
 
@@ -129,7 +129,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
         text: 'Выберите проект, в котором отметить время:',
         reply_markup: {
           inline_keyboard: [
-            current_user.available_projects.map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
+            current_user.available_projects.alive.map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
           ]
         }
     end
@@ -147,7 +147,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
 
       message = "Отметили в #{project.name} #{hours} часов"
     else
-      message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{ current_user.available_projects.join(', ') }"
+      message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{ current_user.available_projects.alive.join(', ') }"
     end
 
     respond_with :message, text: message
@@ -226,7 +226,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   end
 
   def find_project(key)
-    current_user.available_projects.active.find_by_slug(key)
+    current_user.available_projects.alive.find_by_slug(key)
   end
 
   def logger
