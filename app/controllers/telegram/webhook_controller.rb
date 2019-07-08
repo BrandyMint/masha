@@ -165,6 +165,7 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
     multiline(
       '/help - Эта подсказка',
       '/projects - Список проектов',
+      '/attach {projects_slug} - Указать проект этого чата',
       '/add {project_slug} {hours} {comment} - Отметить время',
       '/new {project_slug} - Создать новый проект',
       '/report - Детальный по команды и проектам',
