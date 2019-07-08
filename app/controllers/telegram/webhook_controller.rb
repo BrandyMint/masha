@@ -7,8 +7,8 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::MessageContext
   include Telegram::Bot::UpdatesController::CallbackQueryContext
 
-  before_action :require_personal_chat, except: [:report!, :summary!, :add!, :projects!, :start!]
-  before_action :require_authenticated, only: [:projects!, :add!, :start!]
+  before_action :require_authenticated, only: [:new!, :projects!, :add!, :start!]
+  before_action :require_personal_chat, except: [:attach!, :report!, :summary!, :add!, :projects!, :start!]
 
   rescue_from StandardError, with: :handle_error
 
