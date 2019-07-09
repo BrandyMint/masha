@@ -63,8 +63,8 @@ gem 'carrierwave'
 
 # Контроллеры
 # gem 'has_scope'
-gem 'responders', github: 'plataformatec/responders'
-gem 'inherited_resources', github: 'josevalim/inherited_resources'
+gem 'responders'
+gem 'inherited_resources'
 
 # "~> 1.4.0"
 
@@ -79,7 +79,7 @@ gem 'draper'
 gem 'arbre'
 
 gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx'
 gem 'axlsx_rails'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
@@ -89,7 +89,7 @@ gem 'axlsx_rails'
 gem 'simple-navigation', '~> 3.13.0' # git: 'git://github.com/andi/simple-navigation.git'
 gem 'simple-navigation-bootstrap'
 
-gem 'simple_form', github: 'plataformatec/simple_form'
+gem 'simple_form'
 
 # gem 'nested_form'
 # gem 'cocoon'
@@ -113,7 +113,7 @@ gem 'sass-rails'
 gem 'compass-rails'
 
 # active admin
-gem 'activeadmin', github: 'gregbell/active_admin'
+gem 'activeadmin'
 
 gem 'sendgrid-actionmailer'
 
@@ -194,7 +194,7 @@ end
 
 group :test do
   gem 'factory_bot'
-  gem 'factory_bot_rails', github: 'thoughtbot/factory_bot_rails'
+  gem 'factory_bot_rails'
 
   gem 'rails-controller-testing'
 
@@ -216,7 +216,6 @@ group :test do
 
   gem 'launchy', '>= 2.1.2'
   gem 'turn', require: false
-  # gem "test_active_admin", :git => "git://github.com/BrandyMint/test_active_admin.git"
 end
 
 group :deploy do
@@ -224,13 +223,13 @@ group :deploy do
   gem 'capistrano-rbenv', require: false
   gem 'capistrano-rails', '~> 1.1', require: false
   gem 'capistrano-nvm', require: false
-  gem 'capistrano-bundler', github: 'capistrano/bundler', require: false
+  gem 'capistrano-bundler', require: false
   gem 'capistrano-yarn', require: false
   gem 'capistrano-shell', require: false
   gem 'capistrano-db-tasks', require: false
   gem 'capistrano-sidekiq', require: false
-  gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
-  gem 'capistrano-git-with-submodules', '~> 2.0', github: 'ekho/capistrano-git-with-submodules'
+  gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false, ref: '3e6af4f'
+  gem 'capistrano-git-with-submodules', '~> 2.0'
 end
 
 gem 'rubocop', require: false
