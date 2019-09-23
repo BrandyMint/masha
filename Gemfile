@@ -32,7 +32,7 @@ gem 'sorcery'
 gem 'simple_enum'
 
 gem 'socksify'
-gem 'telegram-bot', github: 'telegram-bot-rb/telegram-bot'
+gem 'telegram-bot'
 # gem 'telegram-bot-types'
 
 # Модели, value object и form objects
