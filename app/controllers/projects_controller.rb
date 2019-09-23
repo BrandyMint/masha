@@ -39,10 +39,11 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     authorize_action_for(@project)
-    @project.name = permited_params[:name]
-    @project.save
+    @project.update! permited_params
 
     redirect_to project_memberships_url(@project)
+  rescue ActiveRecord::RecordInvalid
+    render :edit
   end
 
   def activate

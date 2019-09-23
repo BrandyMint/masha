@@ -1,11 +1,14 @@
 = projects_link
 %h1
   Проект '#{@project.name}'
-  %span.m-l-md
-    = edit_project_link @project if @project.active?
-    = change_project_status_link @project
-    = link_to 'Внести запись', new_time_shift_url(time_shift: { project_id: @project.id}), class: 'btn' if @project.active?
-    = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn'
+  - unless @project.slug == @project.name
+    %code.text-muted= @project.slug 
+%div.m-t-md
+  = edit_project_link @project if @project.active?
+  = change_project_status_link @project
+  = link_to 'Внести запись', new_time_shift_url(time_shift: { project_id: @project.id}), class: 'btn btn-default' if @project.active?
+  = link_to 'Отчеты', time_shifts_url(time_sheet_form: { project_id: @project.id}), class: 'btn'
+- 
 %br
 - unless @project.active?
   .label.label-default Проект в архиве
