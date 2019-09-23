@@ -125,13 +125,15 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
   def add!(project_slug = nil, hours = nil, *description)
     if project_slug.nil?
       save_context :add_callback_query
-      return respond_with :message,
+      respond_with :message,
         text: 'Выберите проект, в котором отметить время:',
         reply_markup: {
+          resize_keyboard: true,
           inline_keyboard: [
-            current_user.available_projects.alive.map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
+            current_user.available_projects.alive.each_slice(3).to_a.map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
           ]
         }
+      return
     end
 
     project = find_project(project_slug)
