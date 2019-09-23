@@ -7,9 +7,16 @@
 * создай ключи для oauth на `github`
 * пропиши их в <tt>./config/omniauth.yml</tt> по примеру <tt>./config/omniauth.yml.example</tt>
 
-## On server
+## При деплое на сервере выполнить
 
 > rake telegram:bot:set_webhook RAILS_ENV=production CERT=path/to/cert
+
+## Разработка
+
+> rake telegram:bot:poller 
+> rails s
+
+Разработческий бот @MashDevBot
 
 ## Распределение прав доступа
 
