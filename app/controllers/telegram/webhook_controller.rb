@@ -171,9 +171,8 @@ class Telegram::WebhookController < Telegram::Bot::UpdatesController
       '/attach {projects_slug} - Указать проект этого чата',
       '/add {project_slug} {hours} {comment} - Отметить время',
       '/new {project_slug} - Создать новый проект',
-      '/report - Детальный по команды и проектам',
-      '/summary {week|summary}- Сумарное за период',
-      '/attach {project_slug} - Присоеденить текущий чат к проекту'
+      '/report - Детальный отчёт по командам и проектам',
+      '/summary {week|month}- Сумарный отчёт за период'
     )
   end
 
