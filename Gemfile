@@ -25,7 +25,7 @@ gem 'semver2'
 
 # Авторизация и аутентификация
 gem 'omniauth'
-gem 'omniauth-github'
+gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
 gem 'authority'
 gem 'sorcery'
 # gem 'rolify'
