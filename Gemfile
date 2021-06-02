@@ -58,7 +58,7 @@ gem 'friendly_id', '~> 5.0.0'
 gem 'recipient_interceptor'
 
 gem "mini_magick", '>= 4.9.4'
-gem 'mini_racer', '>= 0.2.6'
+# gem 'mini_racer', '>= 0.2.6'
 gem 'carrierwave'
 
 # Контроллеры
