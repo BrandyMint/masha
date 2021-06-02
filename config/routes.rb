@@ -15,8 +15,8 @@ Masha::Application.routes.draw do
 
   root 'welcome#index'
 
-  get '/auth/:provider/callback', to: 'omniauth_session#create'
-  post '/auth/:provider/callback', to: 'omniauth_session#create'
+  get 'auth/:provider/callback', to: 'omniauth_session#create'
+  post 'auth/:provider/callback', to: 'omniauth_session#create'
   # TODO Добавить routes для отработки
   # http://masha.brandymint.ru/auth/failure?message=invalid_credentials&strategy=github
 
