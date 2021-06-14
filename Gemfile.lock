@@ -384,7 +384,7 @@ GEM
       pry (>= 0.10.4)
     psych (3.1.0)
     public_suffix (3.0.3)
-    puma (3.12.2)
+    puma (3.12.6)
     racc (1.5.2)
     rack (2.2.3)
     rack-protection (2.0.5)
