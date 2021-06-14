@@ -4,8 +4,9 @@
 
 ## Установка
 
-* создай ключи для oauth на `github`
-* пропиши их в <tt>./config/omniauth.yml</tt> по примеру <tt>./config/omniauth.yml.example</tt>
+1. Используйте менеджеро версий ruby, например rbenv - https://github.com/rbenv/rbenv
+2. создай ключи для oauth на `github`
+3.* пропиши их в <tt>./config/omniauth.yml</tt> по примеру <tt>./config/omniauth.yml.example</tt>
 
 ## При деплое на сервере выполнить
 
