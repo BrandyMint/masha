@@ -591,7 +591,7 @@ GEM
     turbolinks-source (5.2.0)
     turn (0.9.6)
       ansi
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uglifier (2.7.2)
       execjs (>= 0.3.0)
