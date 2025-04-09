@@ -179,8 +179,6 @@ end
 group :development do
   gem 'bond'
 
-  gem 'spring-commands-rspec'
-
   gem 'hpricot', '>= 0.8.6'
   gem 'ruby_parser', '>= 2.3.1'
 
@@ -189,6 +187,7 @@ group :development do
 
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
+  gem 'rubocop', require: false
   gem 'letter_opener_web'
 end
 
@@ -218,20 +217,5 @@ group :test do
   gem 'turn', require: false
 end
 
-group :deploy do
-  gem 'capistrano', '~> 3.2', require: false
-  gem 'capistrano-rbenv', require: false
-  gem 'capistrano-rails', '~> 1.1', require: false
-  gem 'capistrano-nvm', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-yarn', require: false
-  gem 'capistrano-shell', require: false
-  gem 'capistrano-db-tasks', require: false
-  gem 'capistrano-sidekiq', require: false
-  gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false, ref: '3e6af4f'
-  gem 'capistrano-git-with-submodules', '~> 2.0'
-end
-
-gem 'rubocop', require: false
 
 gem "bugsnag", "~> 6.11"
