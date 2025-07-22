@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/haf/semver.git
+  revision: 515fc5c6ccec6eee1bdd7b7e94e7ff505cecf935
+  specs:
+    semver2 (3.4.2)
+
+GIT
   remote: https://github.com/omniauth/omniauth-github.git
   revision: f27bb4e018150d87e9444ad13955acfc9e76f4d7
   branch: master
@@ -595,7 +601,6 @@ GEM
       tilt
     sdoc (2.6.1)
       rdoc (>= 5.0)
-    semver2 (3.4.2)
     sendgrid-actionmailer (3.2.0)
       mail (~> 2.7)
       sendgrid-ruby (~> 6.4)
@@ -762,7 +767,7 @@ DEPENDENCIES
   russian
   sass-rails
   sdoc
-  semver2
+  semver2!
   sendgrid-actionmailer
   settingslogic
   sidekiq

@@ -21,7 +21,7 @@ gem 'russian'
 gem 'breadcrumbs_on_rails'
 
 # Управление версиями проекта
-gem 'semver2'
+gem "semver2", github: "haf/semver"
 
 # Авторизация и аутентификация
 gem 'omniauth'
