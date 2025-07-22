@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'puma'
 
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 7.2'
 
 # Use postgresql as the database for ActiveRecord
 gem 'pg'
