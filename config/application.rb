@@ -1,45 +1,25 @@
-require File.expand_path('../boot', __FILE__)
+require_relative "boot"
 
-require 'rails/all'
-require 'csv'
-class File
-  def self.exists? file
-    exist? file
-  end
+require "rails/all"
+
+def File.exists? file
+  exist? file
 end
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(assets: %w(development test)))
-  # If you want your assets lazily compiled in production, use this line
-end
+Bundler.require(*Rails.groups)
 
 module Masha
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.0
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    config.time_zone = 'Moscow'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :ru
-    I18n.config.enforce_available_locales = true
-
-    # Enable the asset pipeline
-    config.assets.enabled = true
-
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
-    # config.assets.paths << Rails.root.join('vendor', 'assets')
-
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-
-    config.assets.precompile += %w( admin.css *.png *.jpg *.jpeg *.gif)
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
   end
 end

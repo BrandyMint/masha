@@ -1,17 +1,9 @@
-require 'sidekiq/web'
 require 'admin_constraint'
 
 Masha::Application.routes.draw do
   default_url_options Settings.default_url_options.symbolize_keys
   ActiveAdmin.routes(self)
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
-
-  Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]
-  Sidekiq::Web.set :sessions, Rails.application.config.session_options
-
-  # Для zabbix
-  get '/sidekiq-stats' => proc { [200, { 'Content-Type' => 'text/plain' }, [Sidekiq::Stats.new.to_json]] }
-  mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
 
   root 'welcome#index'
 

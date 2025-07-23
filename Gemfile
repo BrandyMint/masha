@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'puma'
 
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6.0'
 
 # Use postgresql as the database for ActiveRecord
 gem 'pg'
@@ -154,7 +154,6 @@ gem 'jquery-ui-sass-rails'
 # gem 'select2-rails'
 gem 'gritter', '1.1.0'
 
-gem 'sidekiq'
 gem 'redis'
 gem 'hiredis'
 
@@ -223,3 +222,7 @@ gem "bugsnag", "~> 6.11"
 gem "bootsnap", "~> 1.18"
 
 gem "csv", "~> 3.3"
+
+gem "logger", "~> 1.7"
+
+gem 'concurrent-ruby', '1.3.4'
