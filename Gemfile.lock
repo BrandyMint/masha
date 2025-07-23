@@ -260,7 +260,7 @@ GEM
       oauth2 (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    gritter (1.1.0)
+    gritter (1.2.0)
     guard (2.19.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -735,7 +735,7 @@ DEPENDENCIES
   fakeredis
   friendly_id (~> 5.0.0)
   github_api
-  gritter (= 1.1.0)
+  gritter (= 1.2.0)
   guard
   guard-ctags-bundler
   guard-rspec

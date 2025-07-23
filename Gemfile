@@ -152,7 +152,7 @@ gem 'jquery-ui-sass-rails'
 # gem 'jquery_datepicker'
 
 # gem 'select2-rails'
-gem 'gritter', '1.1.0'
+gem 'gritter', '1.2.0'
 
 gem 'redis'
 gem 'hiredis'
