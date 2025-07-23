@@ -86,7 +86,7 @@ gem 'axlsx_rails'
 # gem 'tabulous'
 # gem 'authbuttons-rails'
 
-gem 'simple-navigation', '~> 3.13.0' # git: 'git://github.com/andi/simple-navigation.git'
+gem 'simple-navigation', '~> 3.14.0' # git: 'git://github.com/andi/simple-navigation.git'
 gem 'simple-navigation-bootstrap'
 
 gem 'simple_form'
