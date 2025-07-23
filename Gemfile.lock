@@ -625,7 +625,7 @@ GEM
     settingslogic (2.0.9)
     sexp_processor (4.17.3)
     shellany (0.0.1)
-    simple-navigation (3.13.0)
+    simple-navigation (3.14.0)
       activesupport (>= 2.3.2)
     simple-navigation-bootstrap (1.0.2)
       railties (>= 3.1)
@@ -784,7 +784,7 @@ DEPENDENCIES
   semver2!
   sendgrid-actionmailer
   settingslogic
-  simple-navigation (~> 3.13.0)
+  simple-navigation (~> 3.14.0)
   simple-navigation-bootstrap
   simple_enum
   simple_form
