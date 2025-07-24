@@ -668,7 +668,7 @@ GEM
     thor (1.4.0)
     thread_safe (0.3.6)
     tilt (2.6.0)
-    timeliness (0.3.10)
+    timeliness (0.5.3)
     timeout (0.4.3)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -686,8 +686,9 @@ GEM
     validates (1.0.0)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
-    validates_timeliness (3.0.15)
-      timeliness (~> 0.3.7)
+    validates_timeliness (6.0.1)
+      activemodel (>= 6.0.0, < 7)
+      timeliness (>= 0.3.10, < 1)
     version_gem (1.1.6)
     websocket-driver (0.8.0)
       base64
@@ -798,7 +799,7 @@ DEPENDENCIES
   turn
   uglifier (~> 2.7)
   validates
-  validates_timeliness (~> 3.0)
+  validates_timeliness (~> 6.0)
 
 BUNDLED WITH
    2.6.7

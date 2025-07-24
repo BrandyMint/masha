@@ -39,7 +39,7 @@ gem 'telegram-bot'
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
 gem 'validates'
-gem 'validates_timeliness', '~> 3.0'
+gem 'validates_timeliness', '~> 6.0'
 gem 'hashie'
 
 gem 'friendly_id', '~> 5.0.0'
