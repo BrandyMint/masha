@@ -233,3 +233,6 @@ gem 'anyway_config', '~> 2.7'
 gem 'drb', '~> 2.2'
 
 gem 'brakeman', '~> 7.1'
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false

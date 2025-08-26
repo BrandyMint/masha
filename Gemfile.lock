@@ -683,6 +683,11 @@ GEM
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.4.0)
     thread_safe (0.3.6)
+    thruster (0.1.15)
+    thruster (0.1.15-aarch64-linux)
+    thruster (0.1.15-arm64-darwin)
+    thruster (0.1.15-x86_64-darwin)
+    thruster (0.1.15-x86_64-linux)
     tilt (2.6.1)
     timeliness (0.5.3)
     timeout (0.4.3)
@@ -817,6 +822,7 @@ DEPENDENCIES
   sprockets-rails
   telegram-bot
   terminal-table
+  thruster
   turbolinks (~> 5)
   turn
   uglifier (~> 2.7)
