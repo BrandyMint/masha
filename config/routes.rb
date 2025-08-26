@@ -25,7 +25,7 @@ Masha::Application.routes.draw do
 
   get 'ta/:id', action: :create, controller: 'telegram/attach', as: :attach_telegram
 
-  telegram_webhook Telegram::WebhookController unless Rails.env.test?
+  # telegram_webhook Telegram::WebhookController unless Rails.env.test?
 
   # Личный контроллер пользователя
   resource :profile, controller: :profile do

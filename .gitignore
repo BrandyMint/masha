@@ -41,3 +41,6 @@ vendor/assets/components
 /config/master.key
 .envrc
 node_modules/
+
+/config/*.local.yml
+/config/credentials/local.*

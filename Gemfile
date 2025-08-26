@@ -79,8 +79,8 @@ gem 'draper'
 gem 'arbre'
 
 gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx'
-gem 'axlsx_rails'
+gem 'caxlsx'
+gem 'caxlsx_rails'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
 # gem 'tabulous'
@@ -162,12 +162,16 @@ gem 'terminal-table'
 # Used for telegram sessions
 gem 'redis-rails'
 
+gem 'psych', "< 4"
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
 group :development, :test do
+  gem 'irb'
+  gem 'reline'
   gem 'rspec-rails' # , ">= 2.11.0"
   gem 'rb-inotify', '~> 0.9', require: false
   gem 'pry'
@@ -177,9 +181,6 @@ end
 
 group :development do
   gem 'bond'
-
-  gem 'hpricot', '>= 0.8.6'
-  gem 'ruby_parser', '>= 2.3.1'
 
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -226,3 +227,7 @@ gem "csv", "~> 3.3"
 gem "logger", "~> 1.7"
 
 gem 'concurrent-ruby', '1.3.4'
+
+gem "anyway_config", "~> 2.7"
+
+gem "drb", "~> 2.2"
