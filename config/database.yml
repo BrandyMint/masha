@@ -37,6 +37,10 @@ _default: &_default
   <% if ENV.key?('DATABASE_PASSWORD') %>
   password: <%= ENV["DATABASE_PASSWORD"] %>
   <% end %>
+  <% if ENV.key?('DATABASE_PORT') %>
+  port: <%= ENV['DATABASE_PORT'] %>
+  <% end %>
+
   <% if ENV.key?('DATABASE_URL') %>
   url: <%= ENV['DATABASE_URL'] %>
   <% end %>
