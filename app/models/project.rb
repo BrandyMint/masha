@@ -22,7 +22,7 @@ class Project < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true,
-                   format: { with: /[a-z0-9._+-]/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
+                   format: { with: /\A[a-z0-9._+-]\Z/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
 
   before_validation on: :create do
     self.slug = Russian.translit(name.to_s).squish.parameterize if slug.blank?
