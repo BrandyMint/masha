@@ -58,6 +58,7 @@ RUN yarn install --immutable
 # Copy application code
 COPY . .
 RUN rm vendor/assets/components
+RUN ln -s vendor/assets/components node_modules/@bower_components
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
