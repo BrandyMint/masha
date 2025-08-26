@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/Riki4321/compass-rails.git
+  revision: f6391d0d30fa63bb9bf6cd94e0e5608012584e6e
+  specs:
+    compass-rails (4.0.0)
+      compass (~> 1.0.0)
+      sass-rails (< 5.1)
+      sprockets (< 4.0)
+
+GIT
   remote: https://github.com/haf/semver.git
   revision: 515fc5c6ccec6eee1bdd7b7e94e7ff505cecf935
   specs:
@@ -177,8 +186,6 @@ GEM
       sass (>= 3.3.0, < 3.5)
     compass-import-once (1.0.5)
       sass (>= 3.2, < 3.5)
-    compass-rails (2.0.1)
-      compass (~> 1.0.0)
     concurrent-ruby (1.3.4)
     crass (1.0.6)
     csv (3.3.3)
@@ -608,16 +615,14 @@ GEM
     russian (0.6.0)
       i18n (>= 0.5.0)
     sass (3.4.25)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
+    sass-rails (5.0.8)
+      railties (>= 5.2.0)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (>= 1.1, < 3)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     sdoc (2.6.1)
       rdoc (>= 5.0)
     sendgrid-actionmailer (3.2.0)
@@ -650,10 +655,10 @@ GEM
       bcrypt (~> 3.1)
       oauth (~> 0.5, >= 0.5.5)
       oauth2 (~> 1.0, >= 0.8.0)
-    sprockets (4.2.2)
+    sprockets (3.7.5)
+      base64
       concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
+      rack (> 1, < 3)
     sprockets-rails (3.5.2)
       actionpack (>= 6.1)
       activesupport (>= 6.1)
@@ -726,7 +731,7 @@ DEPENDENCIES
   caxlsx
   caxlsx_rails
   coffee-rails
-  compass-rails
+  compass-rails!
   concurrent-ruby (= 1.3.4)
   csv (~> 3.3)
   database_cleaner

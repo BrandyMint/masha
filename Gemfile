@@ -110,7 +110,7 @@ gem 'haml-rails'
 
 gem 'bootstrap-sass'
 gem 'sass-rails'
-gem 'compass-rails'
+gem 'compass-rails', github: 'Riki4321/compass-rails'
 
 # active admin
 gem 'activeadmin'
