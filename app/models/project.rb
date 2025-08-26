@@ -1,4 +1,6 @@
-class Project < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Project < ApplicationRecord
   include Authority::Abilities
   extend FriendlyId
 
@@ -19,10 +21,11 @@ class Project < ActiveRecord::Base
   scope :archive, -> { where(active: false) }
 
   validates :name, presence: true, uniqueness: true
-  validates :slug, presence: true, uniqueness: true, format: {with: /[a-z0-9._+\-]/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
+  validates :slug, presence: true, uniqueness: true,
+                   format: { with: /[a-z0-9._+-]/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
 
   before_validation on: :create do
-    self.slug = Russian.translit(name.to_s).squish.parameterize unless slug.present?
+    self.slug = Russian.translit(name.to_s).squish.parameterize if slug.blank?
   end
 
   # active_admin в упор не видит friendly_id-шный slug

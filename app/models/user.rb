@@ -1,4 +1,6 @@
-class User < ActiveRecord::Base
+# frozen_string_literal: true
+
+class User < ApplicationRecord
   authenticates_with_sorcery!
   include Authority::UserAbilities
   include Authority::Abilities
@@ -45,7 +47,7 @@ class User < ActiveRecord::Base
 
   # Пользователь репортер больше чем овнер?
   def reporter?
-    # TODO настраивать в профиле
+    # TODO: настраивать в профиле
     memberships.members.count > memberships.count / 2
   end
 
@@ -58,8 +60,8 @@ class User < ActiveRecord::Base
   end
 
   def email
-    # TODO change :develop to :email
-    authentications.where(provider: :developer).pluck(:uid).first || read_attribute(:email)
+    # TODO: change :develop to :email
+    authentications.where(provider: :developer).pick(:uid) || read_attribute(:email)
   end
 
   def membership_of(project)

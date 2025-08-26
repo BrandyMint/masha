@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 I18n.default_locale = :ru
-I18n.load_path += Dir[File.expand_path('../../locales/*.yml', __FILE__)]
+I18n.load_path += Dir[File.expand_path('../locales/*.yml', __dir__)]
 
 ActiveAdmin.setup do |config|
   # == Site Title

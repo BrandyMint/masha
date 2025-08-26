@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ApplicationController, type: :controller do
   controller do
     def index
-      fail ApplicationController::NotLogged
+      raise ApplicationController::NotLogged
     end
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectAuthorizer < ApplicationAuthorizer
   def creatable_by?(user)
     has_permission? user

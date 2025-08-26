@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 class UserDecorator < ApplicationDecorator
   delegate_all
 
   def name
-    email = object.email.present? ? object.email : 'no email'
+    email = object.email.presence || 'no email'
     "#{object.name} <span class='text-muted'>(#{email})</span>".html_safe
   end
 
   def name_as_link
-    remote_url = self.remote_profile_url
+    remote_url = remote_profile_url
     if remote_url.present?
       h.link_to name, remote_url
     else
@@ -21,9 +23,9 @@ class UserDecorator < ApplicationDecorator
 
   def remote_profile_url
     authentications.map do |a|
-      (a.auth_hash['extra'] || {}).
-        fetch('raw_info', {}).
-        fetch('html_url', '')
+      (a.auth_hash['extra'] || {})
+        .fetch('raw_info', {})
+        .fetch('html_url', '')
     end.first
   end
 
@@ -40,7 +42,6 @@ class UserDecorator < ApplicationDecorator
   def avatar
     helpers.image_tag avatar_url, size: '80x80'
   end
-
 
   def available_projects
     arbre user: object do

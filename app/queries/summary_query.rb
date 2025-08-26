@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SummaryQuery
   attr_accessor :total
 
@@ -17,13 +19,13 @@ class SummaryQuery
 
   def list_by_days
     {
-      columns:         columns,
-      total:           total,
-      total_by_date:   total_by_date,
+      columns: columns,
+      total: total,
+      total_by_date: total_by_date,
       total_by_column: total_by_column,
-      days:            days,
-      group_by:        group_by,
-      period:          period
+      days: days,
+      group_by: group_by,
+      period: period
     }
   end
 
@@ -47,11 +49,11 @@ class SummaryQuery
       all_project_row[:total] += time_shift.hours
     end
     {
-      matrix:   matrix,
-      period:   period,
+      matrix: matrix,
+      period: period,
       projects: projects,
-      users:    users,
-      days:     days
+      users: users,
+      days: days
     }
   end
 
@@ -61,7 +63,7 @@ class SummaryQuery
       days.each do |day|
         row = [day[:date]]
         columns.each do |column|
-          row << (day[:columns][column.id].blank? ? '-' : day[:columns][column.id])
+          row << (day[:columns][column.id].presence || '-')
         end
         csv << row.push(total_by_date[day[:date]])
       end
@@ -81,10 +83,10 @@ class SummaryQuery
   end
 
   def scope
-    TimeShift.
-      includes(:project, :user).
-      where(project_id: projects_ids).
-      where(user_id: users_ids)
+    TimeShift
+      .includes(:project, :user)
+      .where(project_id: projects_ids)
+      .where(user_id: users_ids)
   end
 
   def grouped_scope(date)
@@ -100,7 +102,7 @@ class SummaryQuery
   end
 
   def build_period(period)
-    today = Date.today
+    today = Time.zone.today
     if period.is_a? Enumerable
       return period
     elsif period.to_sym == :month
@@ -119,7 +121,7 @@ class SummaryQuery
   def item_find(id)
     klass = group_by == :project ? Project : User
     klass.find id
-  rescue => e
+  rescue StandardError => e
     Bugsnag.notify e do |b|
       b.meta_data = { group_by: group_by }
     end

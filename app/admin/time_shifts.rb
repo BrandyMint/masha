@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register TimeShift do
   menu priority: 3, label: proc { I18n.t('active_admin.time_shift') }
 

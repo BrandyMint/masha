@@ -1,24 +1,28 @@
-class Owner::UsersController < Owner::BaseController
-  authorize_actions_for User
+# frozen_string_literal: true
 
-  inherit_resources
+module Owner
+  class UsersController < Owner::BaseController
+    authorize_actions_for User
 
-  def edit
-    @projects = Project.all
-    super
-  end
+    inherit_resources
 
-  def show
-    redirect_to users_url
-  end
+    def edit
+      @projects = Project.all
+      super
+    end
 
-  private
+    def show
+      redirect_to users_url
+    end
 
-  def permitted_params
-    params.permit user: [:name, :is_root]
-  end
+    private
 
-  def project
-    @project ||= Project.find params[:project_id]
+    def permitted_params
+      params.permit user: %i[name is_root]
+    end
+
+    def project
+      @project ||= Project.find params[:project_id]
+    end
   end
 end

@@ -1,4 +1,4 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 class AvatarUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
@@ -20,12 +20,12 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   def extension_white_list
-    %w(jpg jpeg gif png)
+    %w[jpg jpeg gif png]
   end
 
   def default_url
     cname = model.class.to_s.underscore
     cname = 'user' if cname == 'common_user'
-    [cname, version_name].compact.join('_') + '.png'
+    "#{[cname, version_name].compact.join('_')}.png"
   end
 end

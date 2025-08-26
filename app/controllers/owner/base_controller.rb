@@ -1,7 +1,11 @@
-class Owner::BaseController < ApplicationController
-  before_action :require_login
+# frozen_string_literal: true
 
-  before_action do
-    @namespace = :admin
+module Owner
+  class BaseController < ApplicationController
+    before_action :require_login
+
+    before_action do
+      @namespace = :admin
+    end
   end
 end

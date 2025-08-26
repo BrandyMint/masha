@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmailForm < FormObjectBase
   property :email
 
@@ -7,6 +9,6 @@ class EmailForm < FormObjectBase
   private
 
   def existing_email
-    errors.add(:email, :no_user) unless User.find_by(email: email).present?
+    errors.add(:email, :no_user) if User.find_by(email: email).blank?
   end
 end

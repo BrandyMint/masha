@@ -1,7 +1,13 @@
-class SimpleForm::Inputs::Base
-  protected
+# frozen_string_literal: true
 
-  def arbre(assigns, &block)
-    Arbre::Context.new assigns, template, &block
+module SimpleForm
+  module Inputs
+    class Base
+      protected
+
+      def arbre(assigns, &block)
+        Arbre::Context.new assigns, template, &block
+      end
+    end
   end
 end

@@ -2,16 +2,16 @@
 
 # Base class for application config classes
 class ApplicationConfig < Anyway::Config
-  TELEGRAM_LINK_PREFIX = "https://t.me/"
+  TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
   env_prefix :vilna
   attr_config(
-    host: "localhost",
-    protocol: "https",
+    host: 'localhost',
+    protocol: 'https',
     telegram_auth_expiration: 120, # В Секундах
-    redis_cache_store_url: "redis://localhost:6379/2",
-    bot_token: "",
-    bot_username: "",
+    redis_cache_store_url: 'redis://localhost:6379/2',
+    bot_token: '',
+    bot_username: ''
   )
 
   coerce_types(
@@ -20,9 +20,9 @@ class ApplicationConfig < Anyway::Config
 
   def home_url
     if home_subdomain.present?
-      protocol + "://" + home_subdomain + "." + host
+      "#{protocol}://#{home_subdomain}.#{host}"
     else
-      protocol + "://" + host
+      "#{protocol}://#{host}"
     end
   end
 
@@ -31,7 +31,7 @@ class ApplicationConfig < Anyway::Config
   end
 
   def bot_id
-    bot_token.split(":").first
+    bot_token.split(':').first
   end
 
   class << self

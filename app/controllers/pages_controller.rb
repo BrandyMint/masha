@@ -1,4 +1,5 @@
+# frozen_string_literal: true
+
 class PagesController < ApplicationController
-  def feedback
-  end
+  def feedback; end
 end

@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 class OmniauthSessionController < ApplicationController
   def create
     auto_login Authentificator.authentificate auth_hash
 
     redirect_back_or_to just_authorized_redirect_url
-
-  rescue StandardError => err
-    Bugsnag.notify err
-    Rails.logger.error err
+  rescue StandardError => e
+    Bugsnag.notify e
+    Rails.logger.error e
     redirect_back_or_to root_url, gflash: { notice: t('gflash.session_problems') }
   end
 

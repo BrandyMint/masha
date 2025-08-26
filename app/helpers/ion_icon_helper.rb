@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IonIconHelper
   # Add in <head> <script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
   #

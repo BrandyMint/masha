@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class InvitesController < ApplicationController
-  def create
-  end
+  def create; end
 
   def destroy
     @invite = Invite.find params[:id]

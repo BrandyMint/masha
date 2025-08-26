@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Authority.configure do |_config|
   # USER_METHOD
   # ===========

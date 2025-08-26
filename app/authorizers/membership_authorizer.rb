@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MembershipAuthorizer < ApplicationAuthorizer
   def creatable_by?(user)
     has_permission? user
@@ -5,6 +7,7 @@ class MembershipAuthorizer < ApplicationAuthorizer
 
   def updatable_by?(user)
     return false if user.has_role?(:owner, resource.project) && user == resource.user
+
     has_permission? user
   end
 

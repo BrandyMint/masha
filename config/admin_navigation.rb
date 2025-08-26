@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
     # if logged_in? && current_user.is_root?

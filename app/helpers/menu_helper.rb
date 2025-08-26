@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MenuHelper
   def menu_current_user
     content_tag(:span, ficon('user-1'), class: 'navbar-menu-icon') +

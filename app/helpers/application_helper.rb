@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def roles_collection
     @roles_collection ||= Membership.roles.keys.each_with_object([]) { |v, roles| roles << [t("roles.#{v}"), v] }
@@ -22,22 +24,25 @@ module ApplicationHelper
 
   def summary_group_link(result)
     if result.group_by == :project
-      link_to 'по проекту', summary_time_shifts_url(period: result[:period], group_by: :user), title: 'Переключить на сводку по исполнителям', role: :tooltip
+      link_to 'по проекту', summary_time_shifts_url(period: result[:period], group_by: :user),
+              title: 'Переключить на сводку по исполнителям', role: :tooltip
     else
-      link_to 'по исполнителю', summary_time_shifts_url(period: result[:period], group_by: :project), title: 'Переключить на сводку по проектам', role: :tooltip
+      link_to 'по исполнителю', summary_time_shifts_url(period: result[:period], group_by: :project),
+              title: 'Переключить на сводку по проектам', role: :tooltip
     end
   end
 
   def summary_period_link(result)
     if result[:period] == :week
-      link_to 'неделю', summary_time_shifts_url(period: :month), title: 'Переключить на сводку за месяц', role: 'tooltip'
+      link_to 'неделю', summary_time_shifts_url(period: :month), title: 'Переключить на сводку за месяц',
+                                                                 role: 'tooltip'
     elsif result[:period] == :month
       link_to 'месяц', summary_time_shifts_url(period: :week), title: 'Переключить на сводку за неделю', role: 'tooltip'
     end
   end
 
   def week_day_class(date)
-    # TODO Расчитывать выходной согласно локали
+    # TODO: Расчитывать выходной согласно локали
     if date.cwday > 5
       'danger'
     elsif date.today?
@@ -49,7 +54,7 @@ module ApplicationHelper
 
   def app_version
     content_tag :small, class: 'text-muted', data: { version: AppVersion.to_s } do
-      link_to 'v' + AppVersion.format('%M.%m.%p'), Settings.github_repo
+      link_to "v#{AppVersion.format('%M.%m.%p')}", Settings.github_repo
     end
   end
 
@@ -58,7 +63,7 @@ module ApplicationHelper
     owner: 'warning',
     viewer: 'info',
     member: 'success'
-  }
+  }.freeze
 
   def this_day_shifts
     current_user.time_shifts.ordered.this_day
@@ -84,7 +89,7 @@ module ApplicationHelper
   end
 
   def counter_tag(count, options = {})
-    count = '' if count == 0
+    count = '' if count.zero?
     content_tag :span, count, options
   end
 
@@ -94,11 +99,14 @@ module ApplicationHelper
 
   def grouping_collection
     # [['none','']] + TimeSheetForm::GROUP_BY.map { |g| [g,g] }
-    [[t('simple_form.labels.group.none'), '']] + TimeSheetForm::GROUP_BY.map { |g| [t("simple_form.labels.group.#{g}"), g] }
+    [[t('simple_form.labels.group.none'), '']] + TimeSheetForm::GROUP_BY.map do |g|
+      [t("simple_form.labels.group.#{g}"), g]
+    end
   end
 
   def human_hours(value)
     return '-' if value.nil?
+
     str = Russian.pluralize value, 'час', 'часа', 'часов', 'часа'
     value = value.to_i if value.to_i == value
     "#{value} #{str}"
@@ -111,16 +119,16 @@ module ApplicationHelper
 
   def export_btn(format, options = {})
     link_to url_for({ format: format }.merge(options)), class: 'export-btn' do
-      ficon('export-1') + t(format, scope: [:helpers, :export])
+      ficon('export-1') + t(format, scope: %i[helpers export])
     end
   end
 
   def setable_projects_collection
-    @spc ||= available_projects
+    @setable_projects_collection ||= available_projects
   end
 
   def viewable_projects_collection
-    @vpc ||= available_projects
+    @viewable_projects_collection ||= available_projects
   end
 
   # def available_users_to_set_collection
@@ -144,25 +152,25 @@ module ApplicationHelper
 
     user = OpenStruct.new(current_user.attributes.clone)
     user.name = user.name.clone.concat t('helpers.you')
-    @auvc = @auvc.unshift user
+    @auvc.unshift user
 
     @auvc
   end
 
-  # TODO одни проекты ращрешены для ввода, другие для просмотра, не путать
+  # TODO: одни проекты ращрешены для ввода, другие для просмотра, не путать
   def available_projects
     current_user.projects.active.ordered
   end
 
   def user_roles(user)
     buffer = ''
-    # TODO Показывтаь все роли на классы и глобальные
+    # TODO: Показывтаь все роли на классы и глобальные
     buffer << role_label(:admin) if user.is_root?
     buffer.html_safe
   end
 
   def role_label(role, active = true, title = nil)
-    return unless role.present?
+    return if role.blank?
 
     role = role.role if role.is_a? Membership
 
@@ -218,8 +226,9 @@ module ApplicationHelper
 
   def login_with_github(welcome = nil, _signup = nil)
     btn_class = welcome.present? ? 'btn-welcome-github' : 'btn-github'
-    link_to "#{root_url}auth/github", class: "#{btn_class}" do
-      ficon('github-circled', size: 20, v_align: :middle) + content_tag(:span, 'Войти через GitHub', style: 'margin-left: 8px')
+    link_to "#{root_url}auth/github", class: btn_class.to_s do
+      ficon('github-circled', size: 20,
+                              v_align: :middle) + content_tag(:span, 'Войти через GitHub', style: 'margin-left: 8px')
     end
   end
 

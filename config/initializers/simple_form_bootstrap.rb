@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Use this setup block to configure all options available in SimpleForm.
 # Inside your views, use the 'simple_form_for' with one of the Bootstrap form
 # classes, '.form-horizontal', '.form-inline', '.form-search' or

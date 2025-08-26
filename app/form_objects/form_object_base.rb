@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FormObjectBase < Hashie::Trash
   include Hashie::Extensions::IndifferentAccess
   extend ActiveModel::Naming

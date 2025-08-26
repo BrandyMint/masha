@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'terminal-table'
 
 class Reporter
@@ -29,7 +31,7 @@ class Reporter
 
   def tableize_list_by_days(result)
     table = Terminal::Table.new do |t|
-      t << [:date, :total] + result[:columns].map(&:name)
+      t << %i[date total] + result[:columns].map(&:name)
       t << :separator
 
       result[:days].each do |day|
@@ -42,7 +44,9 @@ class Reporter
       end
 
       t << :separator
-      t << ['All days', result[:total_by_column].values.compact.sum] + result[:columns].map { |c| result[:total_by_column][c.to_s] }
+      t << ['All days', result[:total_by_column].values.compact.sum] + result[:columns].map { |c|
+        result[:total_by_column][c.to_s]
+      }
     end
 
     table.columns.count.times { |i| table.align_column(i, :right) }

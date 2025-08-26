@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MembershipsController < ApplicationController
   before_action :require_login
 
@@ -37,7 +39,10 @@ class MembershipsController < ApplicationController
         is = InviteService.new @project, invite_params
         is.make_invite(
           success: -> { gflash success: (t 'gflash.invite_sent', email: is.invite.email) },
-          failure: -> { gflash error: (t 'gflash.invite_error', email: is.invite.email; render(:index) and return) }
+          failure: lambda {
+            gflash error: (t 'gflash.invite_error', email: is.invite.email
+                           render(:index) and return)
+          }
         )
 
         @invite = is.invite

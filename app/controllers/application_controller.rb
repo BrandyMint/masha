@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   class NotLogged < StandardError
   end
@@ -13,7 +15,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from NotLogged, with: :handle_not_authorized_error
 
-  # TODO Тут нужно кидать на страницу где написано нет доступа
+  # TODO: Тут нужно кидать на страницу где написано нет доступа
   # Потому что если кидать на страницу логина, а пользователь залогинен
   # то его кинет обратно и будет цикл
   # rescue_from CanCan::AccessDenied, :with => :handle_no_access
@@ -22,9 +24,9 @@ class ApplicationController < ActionController::Base
   private
 
   def check_email_existence
-    if logged_in? && current_user.email.blank?
-      flash[:alert] = t('no_email', url: edit_profile_path).html_safe
-    end
+    return unless logged_in? && current_user.email.blank?
+
+    flash[:alert] = t('no_email', url: edit_profile_path).html_safe
   end
 
   def home_url
@@ -40,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def define_page_title
-    @page_title = Settings.title + ' - ' + t(action_name, scope: [:titles, controller_name], default: 'Учет в кармане')
+    @page_title = "#{Settings.title} - #{t(action_name, scope: [:titles, controller_name], default: 'Учет в кармане')}"
   end
 
   def handle_not_authorized_error
@@ -74,12 +76,12 @@ class ApplicationController < ActionController::Base
     @namespace == :admin
   end
 
-  # TODO use default method from sorcery
+  # TODO: use default method from sorcery
   def require_login
-    fail NotLogged unless logged_in?
+    raise NotLogged unless logged_in?
   end
 
   def authenticate_admin!
-    redirect_to root_path unless current_user && current_user.is_root?
+    redirect_to root_path unless current_user&.is_root?
   end
 end

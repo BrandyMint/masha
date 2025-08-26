@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PasswordInput < SimpleForm::Inputs::Base
   enable :placeholder, :maxlength
 

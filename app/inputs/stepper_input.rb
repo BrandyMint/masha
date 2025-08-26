@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StepperInput < SimpleForm::Inputs::StringInput
   enable :placeholder
 
@@ -5,7 +7,7 @@ class StepperInput < SimpleForm::Inputs::StringInput
     # input_html_options[:min] = 0
     # input_html_options[:max] = 24
 
-    value = object.send(attribute_name) if object.respond_to? attribute_name
+    object.send(attribute_name) if object.respond_to? attribute_name
 
     input_html_options[:type] = 'numeric'
     input_html_options[:autocomplete] = 'off'

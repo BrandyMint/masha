@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'http://rubygems.org'
 
 gem 'puma'
@@ -21,12 +23,12 @@ gem 'russian'
 gem 'breadcrumbs_on_rails'
 
 # Управление версиями проекта
-gem "semver2", github: "haf/semver"
+gem 'semver2', github: 'haf/semver'
 
 # Авторизация и аутентификация
+gem 'authority'
 gem 'omniauth'
 gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
-gem 'authority'
 gem 'sorcery'
 # gem 'rolify'
 gem 'simple_enum'
@@ -38,9 +40,9 @@ gem 'telegram-bot'
 # Модели, value object и form objects
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
+gem 'hashie'
 gem 'validates'
 gem 'validates_timeliness', '~> 3.0'
-gem 'hashie'
 
 gem 'friendly_id', '~> 5.0.0'
 # берется последняя версия для совместимости с rails 4
@@ -57,14 +59,14 @@ gem 'friendly_id', '~> 5.0.0'
 # Почта
 gem 'recipient_interceptor'
 
-gem "mini_magick", '>= 4.9.4'
-gem 'mini_racer', '>= 0.2.6'
 gem 'carrierwave'
+gem 'mini_magick', '>= 4.9.4'
+gem 'mini_racer', '>= 0.2.6'
 
 # Контроллеры
 # gem 'has_scope'
-gem 'responders'
 gem 'inherited_resources'
+gem 'responders'
 
 # "~> 1.4.0"
 
@@ -75,12 +77,12 @@ gem 'inherited_resources'
 # Вьюхи и презентеры
 gem 'active_link_to'
 
-gem 'draper'
 gem 'arbre'
+gem 'draper'
 
-gem 'rubyzip', '>= 1.2.1'
 gem 'caxlsx'
 gem 'caxlsx_rails'
+gem 'rubyzip', '>= 1.2.1'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
 # gem 'tabulous'
@@ -109,8 +111,8 @@ gem 'turbolinks', '~> 5'
 gem 'haml-rails'
 
 gem 'bootstrap-sass'
-gem 'sass-rails'
 gem 'compass-rails', github: 'Riki4321/compass-rails'
+gem 'sass-rails'
 
 # active admin
 gem 'activeadmin'
@@ -133,16 +135,16 @@ gem 'sendgrid-actionmailer'
 gem 'github_api'
 
 # Use edge version of sprockets-rails
-gem 'sprockets-rails'
 gem 'sprockets'
+gem 'sprockets-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '~> 2.7'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails'
-gem 'role-rails'
 gem 'non-stupid-digest-assets'
+gem 'role-rails'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -154,15 +156,15 @@ gem 'jquery-ui-sass-rails'
 # gem 'select2-rails'
 gem 'gritter', '1.1.0'
 
-gem 'redis'
 gem 'hiredis'
+gem 'redis'
 
 gem 'terminal-table'
 
 # Used for telegram sessions
 gem 'redis-rails'
 
-gem 'psych', "< 4"
+gem 'psych', '< 4'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -171,12 +173,12 @@ end
 
 group :development, :test do
   gem 'irb'
-  gem 'reline'
-  gem 'rspec-rails' # , ">= 2.11.0"
-  gem 'rb-inotify', '~> 0.9', require: false
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
+  gem 'rb-inotify', '~> 0.9', require: false
+  gem 'reline'
+  gem 'rspec-rails' # , ">= 2.11.0"
 end
 
 group :development do
@@ -187,8 +189,9 @@ group :development do
 
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
-  gem 'rubocop', require: false
   gem 'letter_opener_web'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', '~> 2.33', require: false
 end
 
 group :test do
@@ -200,15 +203,15 @@ group :test do
   gem 'rspec-prof'
   # Start Pry in the context of a failed test
   # gem 'plymouth'
-  gem 'fakeredis', require: 'fakeredis/rspec'
-  gem 'resque_spec'
   gem 'email_spec', '>= 1.2.1'
+  gem 'fakeredis', require: 'fakeredis/rspec'
   gem 'guard'
+  gem 'resque_spec'
   # gem 'debugger' unless `whoami`=~/jenkins/
   gem 'guard-rspec'
-  #gem 'guard-rails'
+  # gem 'guard-rails'
   # gem 'guard-bundler'
-  #gem 'guard-cucumber'
+  # gem 'guard-cucumber'
   gem 'guard-ctags-bundler'
 
   gem 'database_cleaner'
@@ -217,19 +220,18 @@ group :test do
   gem 'turn', require: false
 end
 
+gem 'bugsnag', '~> 6.11'
 
-gem "bugsnag", "~> 6.11"
+gem 'bootsnap', '~> 1.18'
 
-gem "bootsnap", "~> 1.18"
+gem 'csv', '~> 3.3'
 
-gem "csv", "~> 3.3"
-
-gem "logger", "~> 1.7"
+gem 'logger', '~> 1.7'
 
 gem 'concurrent-ruby', '1.3.4'
 
-gem "anyway_config", "~> 2.7"
+gem 'anyway_config', '~> 2.7'
 
-gem "drb", "~> 2.2"
+gem 'drb', '~> 2.2'
 
-gem "brakeman", "~> 7.1"
+gem 'brakeman', '~> 7.1'

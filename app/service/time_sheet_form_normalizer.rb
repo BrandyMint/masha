@@ -1,57 +1,49 @@
+# frozen_string_literal: true
+
 class TimeSheetFormNormalizer
+  STRANGE_LOCALES = %w[en-US en_BZ fil-PH ar_SA iu-Cans-CA].freeze
 
-  STRANGE_LOCALES = ["en-US","en_BZ","fil-PH","ar_SA","iu-Cans-CA"]
-
-  def initialize params
+  def initialize(params)
     @params = params
   end
 
   def perform
-    if @params.present?
+    return if @params.blank?
 
-      obj = {
-          date_from:  normalize_date(@params[:date_from], @params[:locale]),
-          date_to:    normalize_date(@params[:date_to], @params[:locale]),
-          project_id: @params[:project_id],
-          user_id:    @params[:user_id],
-          group_by:   @params[:group_by]
-      }
+    obj = {
+      date_from: normalize_date(@params[:date_from], @params[:locale]),
+      date_to: normalize_date(@params[:date_to], @params[:locale]),
+      project_id: @params[:project_id],
+      user_id: @params[:user_id],
+      group_by: @params[:group_by]
+    }
 
-      begin
-        if Date.parse(obj[:date_to]) < Date.parse(obj[:date_from])
-          obj[:date_from], obj[:date_to] = obj[:date_to], obj[:date_from]
-        end
-      rescue
-
-      end
-
-      obj
-
+    begin
+      obj[:date_from], obj[:date_to] = obj[:date_to], obj[:date_from] if Date.parse(obj[:date_to]) < Date.parse(obj[:date_from])
+    rescue StandardError
     end
+
+    obj
   end
 
-  def normalize_date date, locale = ''
+  def normalize_date(date, locale = '')
     return if date.blank?
 
-    #приводим к виду dd-mm-yy
-    d, m, y = date.split(/[\.\/\:\-\*\~\#]/)
+    # приводим к виду dd-mm-yy
+    d, m, y = date.split(%r{[./:\-*~\#]})
     d, m, y = [d, m, y].reverse if d.length == 4
     src_date = [d, m, y].reject(&:blank?).join('-')
 
-    Date.parse( src_date ).to_s
-
-  rescue
-
+    Date.parse(src_date).to_s
+  rescue StandardError
     date_by_locale src_date, locale
-
   end
 
-
-  def date_by_locale d, locale
+  def date_by_locale(d, locale)
     return d unless STRANGE_LOCALES.include?(locale)
+
     Date.strptime(d, '%m-%d-%Y').to_s
-  rescue
+  rescue StandardError
     d
   end
-
 end

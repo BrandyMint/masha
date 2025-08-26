@@ -1,24 +1,23 @@
-#inherit_from: .rubocop_todo.yml
+inherit_from: .rubocop_todo.yml
 
-AllCops:
-  RunRailsCops: true
+#inherit_from: .rubocop_todo.yml
+#
+plugins: rubocop-rails
+Rails:
+  Enabled: true
 
 
 Metrics/MethodLength:
   Enabled: false
-Metrics/LineLength:
-  Max: 120
+Layout/LineLength:
+  Max: 140
 Metrics/AbcSize:
   Enabled: false
 
-
-
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 Lint/AssignmentInCondition:
   Enabled: true
-
-
 
 Documentation:
   Enabled: false

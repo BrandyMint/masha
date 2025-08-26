@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IconHelper
   def ficon(icon, args = {})
     fontello icon, args
@@ -5,6 +7,7 @@ module IconHelper
 
   def fontello(icon, args = {})
     return unless args.is_a? Hash
+
     args.each_pair do |key, _value|
       args[key] ||= ''
     end

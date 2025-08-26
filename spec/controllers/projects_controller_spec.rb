@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ProjectsController, type: :controller do
@@ -6,7 +8,7 @@ describe ProjectsController, type: :controller do
 
   context 'when not logged in' do
     it 'all actions should return 401' do
-      actions = [:index, :show, :new, :create]
+      actions = %i[index show new create]
 
       actions.each do |action|
         get action, params: { id: project.id }

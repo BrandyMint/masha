@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
@@ -9,14 +11,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   #   dispatch_command(cmd, *args)
 
   # Available matchers can be found in Telegram::Bot::RSpec::ClientMatchers.
-  #it 'shows usage of basic matchers' do
-    ## The most basic one is #make_telegram_request(bot, endpoint, params_matcher)
-    #expect { dispatch_command(:start) }.
-      #to make_telegram_request(bot, :sendMessage, hash_including(text: 'msg text'))
+  # it 'shows usage of basic matchers' do
+  ## The most basic one is #make_telegram_request(bot, endpoint, params_matcher)
+  # expect { dispatch_command(:start) }.
+  # to make_telegram_request(bot, :sendMessage, hash_including(text: 'msg text'))
 
-    ## There are some shortcuts for dispatching basic updates and testing responses.
-    #expect { dispatch_message('Hi') }.to send_telegram_message(bot, /msg regexp/, some: :option)
-  #end
+  ## There are some shortcuts for dispatching basic updates and testing responses.
+  # expect { dispatch_message('Hi') }.to send_telegram_message(bot, /msg regexp/, some: :option)
+  # end
 
   let!(:user) { create :user }
 
@@ -61,10 +63,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
   ## There is context for callback queries with related matchers,
   ## use :callback_query tag to include it.
-  #describe '#hey_callback_query', :callback_query do
-    #let(:data) { "hey:#{name}" }
-    #let(:name) { 'Joe' }
-    #it { should answer_callback_query('Hey Joe') }
-    #it { should edit_current_message :text, text: 'Done' }
-  #end
+  # describe '#hey_callback_query', :callback_query do
+  # let(:data) { "hey:#{name}" }
+  # let(:name) { 'Joe' }
+  # it { should answer_callback_query('Hey Joe') }
+  # it { should edit_current_message :text, text: 'Done' }
+  # end
 end

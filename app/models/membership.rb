@@ -1,4 +1,6 @@
-class Membership < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Membership < ApplicationRecord
   include Authority::Abilities
 
   belongs_to :user
@@ -26,6 +28,6 @@ class Membership < ActiveRecord::Base
   validates :user_id, uniqueness: { scope: :project_id }
 
   def set_defaults
-    self.role  ||= DEFAULT_ROLE   # will set the default value only if it's nil
+    self.role ||= DEFAULT_ROLE # will set the default value only if it's nil
   end
 end

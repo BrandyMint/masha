@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 set :stage, :staging
 set :application, 'staging.mashtime.ru'
-server 'staging.mashtime.ru', user: 'wwwmasha', roles: %w(web app db)
+server 'staging.mashtime.ru', user: 'wwwmasha', roles: %w[web app db]
 set :ssh_options,
     forward_agent: true,
     port: 227

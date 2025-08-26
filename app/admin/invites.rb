@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Invite do
   menu label: proc { I18n.t('active_admin.invites') }, parent: 'Люди'
 

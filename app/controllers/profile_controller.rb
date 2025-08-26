@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProfileController < ApplicationController
   before_action :require_login
 
@@ -16,9 +18,9 @@ class ProfileController < ApplicationController
     @user.assign_attributes user_permited_params
 
     if @user.save
-      redirect_to edit_profile_url, gflash: {notice: t('gflash.profile_update')}
+      redirect_to edit_profile_url, gflash: { notice: t('gflash.profile_update') }
     else
-      render action: :edit, gflash: {error: t('gflash.profile_errors')}
+      render action: :edit, gflash: { error: t('gflash.profile_errors') }
     end
   end
 

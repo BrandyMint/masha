@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegisterForm < FormObjectBase
   property :name
   property :email

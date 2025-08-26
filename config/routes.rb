@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'admin_constraint'
 
 Masha::Application.routes.draw do
@@ -9,7 +11,7 @@ Masha::Application.routes.draw do
 
   get 'auth/:provider/callback', to: 'omniauth_session#create'
   post 'auth/:provider/callback', to: 'omniauth_session#create'
-  # TODO Добавить routes для отработки
+  # TODO: Добавить routes для отработки
   # http://masha.brandymint.ru/auth/failure?message=invalid_credentials&strategy=github
 
   get 'logout' => 'sessions#destroy', :as => 'logout'
@@ -20,8 +22,8 @@ Masha::Application.routes.draw do
   get 'support' => redirect('/feedback')
   get 'error' => 'errors#index', :as => 'error'
 
-  resources :users, only: [:new, :create]
-  resources :sessions, only: [:new, :create, :destroy]
+  resources :users, only: %i[new create]
+  resources :sessions, only: %i[new create destroy]
 
   get 'ta/:id', action: :create, controller: 'telegram/attach', as: :attach_telegram
 
@@ -34,7 +36,7 @@ Masha::Application.routes.draw do
     end
   end
 
-  resources :password_resets, only: [:new, :create, :edit, :update]
+  resources :password_resets, only: %i[new create edit update]
 
   resources :projects do
     resources :memberships
@@ -48,7 +50,7 @@ Masha::Application.routes.draw do
       get :summary
     end
   end
-  resources :invites, only: [:create, :destroy]
+  resources :invites, only: %i[create destroy]
 
   namespace :owner do
     root controller: :users, action: :index

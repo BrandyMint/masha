@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Membership do
   menu priority: 5, label: proc { I18n.t('active_admin.membership') }
 

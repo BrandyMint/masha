@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class TimeSheetQuery
-  attr_accessor :tsf, :result
+  attr_accessor :tsf, :result, :available_projects, :available_users
 
-  attr_accessor :available_projects, :available_users
-
-  delegate *TimeSheetForm.properties.to_a, to: :tsf
+  delegate(*TimeSheetForm.properties.to_a, to: :tsf)
 
   def initialize(time_sheet_form)
     @tsf = time_sheet_form
@@ -33,7 +33,8 @@ class TimeSheetQuery
           time_shifts: [],
           total: 0,
           min_date: nil,
-          max_date: nil }
+          max_date: nil
+        }
 
         hr = hash[resource.id]
 
@@ -51,13 +52,13 @@ class TimeSheetQuery
                    total: scope.sum(:hours),
                    min_date: scope.minimum(:date),
                    max_date: scope.maximum(:date) }]
-      @present = @result.first[:total] > 0
+      @present = @result.first[:total].positive?
     end
   end
 
   def to_csv
     CSV.generate(col_sep: ';') do |csv|
-      csv << %w(date hours project user description)
+      csv << %w[date hours project user description]
       @result.each do |group|
         group[:time_shifts].each do |p|
           csv << [p.date, p.hours, p.project, p.user, p.description]

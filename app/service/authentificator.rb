@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Auth Hash Schema
 # https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema
 #
@@ -18,12 +20,12 @@ class Authentificator
   end
 
   def find_by_email
-    return nil unless email.present?
+    return nil if email.blank?
 
-    # TODO Предусмотреть факт неподтвержденности емайла
+    # TODO: Предусмотреть факт неподтвержденности емайла
     @user = User.where(email: email).first
 
-    return nil unless @user.present?
+    return nil if @user.blank?
 
     add_authentication @user
 
@@ -35,11 +37,11 @@ class Authentificator
   def find(_prov, _uid)
     auth = Authentication.where(provider: _prov, uid: _uid).first
 
-    return nil unless auth.present?
+    return nil if auth.blank?
 
     auth.update_attribute :auth_hash, auth_hash
 
-    auth.update_attribute :user, create_user unless auth.user.present?
+    auth.update_attribute :user, create_user if auth.user.blank?
 
     update_user_info auth.user if auth.user.present?
 
@@ -68,14 +70,14 @@ class Authentificator
   end
 
   def update_user_info(user)
-    [:nickname, :email].each do |key|
-      unless user.read_attribute(key).present?
-        begin
-          user.update_attribute key, auth_hash['info'][key.to_s]
-        rescue ActiveRecord::RecordNotUnique => err
-          Bugsnag.notify err
-          user.reload!
-        end
+    %i[nickname email].each do |key|
+      next if user.read_attribute(key).present?
+
+      begin
+        user.update_attribute key, auth_hash['info'][key.to_s]
+      rescue ActiveRecord::RecordNotUnique => e
+        Bugsnag.notify e
+        user.reload!
       end
     end
   end
@@ -95,7 +97,7 @@ class Authentificator
   def user_name
     name = auth_hash['info']['name']
 
-    name.blank? ? nickname : name
+    name.presence || nickname
   end
 
   def email

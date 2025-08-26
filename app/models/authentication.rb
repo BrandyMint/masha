@@ -1,9 +1,11 @@
-class Authentication < ActiveRecord::Base
+# frozen_string_literal: true
+
+class Authentication < ApplicationRecord
   belongs_to :user
 
   serialize :auth_hash
 
-  scope :by_provider, lambda { |provider| where(provider: provider) }
+  scope :by_provider, ->(provider) { where(provider: provider) }
 
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
@@ -14,7 +16,7 @@ class Authentication < ActiveRecord::Base
 
   def email
     auth_hash['info']['email']
-  rescue
+  rescue StandardError
     '-'
   end
 
@@ -22,8 +24,8 @@ class Authentication < ActiveRecord::Base
     if provider == 'telegram'
       "https://t.me/#{nickname}"
     else
-      auth_hash.
-        dig('extra', 'raw_info', 'url')
+      auth_hash
+        .dig('extra', 'raw_info', 'url')
     end
   end
 

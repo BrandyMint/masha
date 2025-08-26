@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe TimeShiftsController, type: :controller do
@@ -6,7 +8,7 @@ describe TimeShiftsController, type: :controller do
 
   context 'when not logged in' do
     it 'all actions return 401' do
-      actions = [:index, :show, :new, :create, :edit, :destroy]
+      actions = %i[index show new create edit destroy]
 
       actions.each do |action|
         get action, params: { id: 1 }

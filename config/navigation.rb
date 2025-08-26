@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
+
 # configures your navigation
 #
 # ListBootstrap - https://gist.github.com/gmjorge/2572869
@@ -21,9 +22,7 @@ SimpleNavigation::Configuration.run do |navigation|
       primary.item :profile, menu_current_user do |user|
         # user.item :available_projects, 'Доступные проект', projects_url, :highlights_on => %r(/projects)
         user.item :edit_profile, 'Профиль', edit_profile_url
-        if current_user.is_root?
-          user.item :admin, 'Админ', admin_root_url
-        end
+        user.item :admin, 'Админ', admin_root_url if current_user.is_root?
         user.item :letter, 'Letter opener', letter_opener_web_url if Rails.env.development?
         user.item :logout, 'Выйти', logout_url
       end

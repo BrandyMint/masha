@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Project do
   menu priority: 2, label: proc { I18n.t('active_admin.project') }
 

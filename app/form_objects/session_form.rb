@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionForm < FormObjectBase
   property :email
   property :password

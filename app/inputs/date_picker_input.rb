@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DatePickerInput < SimpleForm::Inputs::StringInput
   enable :placeholder
 
@@ -14,9 +16,8 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   protected
 
   def shortcuts
-
-    date = object.send( attribute_name )
-    date = Date.today if ( date.blank? || object.invalid? )
+    date = object.send(attribute_name)
+    date = Time.zone.today if date.blank? || object.invalid?
     date = Date.parse date if date.is_a? String
 
     case attribute_name
@@ -24,7 +25,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
       arbre today: t(:today), yesterday: t(:yesterday) do
         ul class: 'date-shortcuts' do
           li helpers.link_to(yesterday, '#', role: 'date-shortcut', data: { value: Date.yesterday.to_s })
-          li helpers.link_to(today,     '#', role: 'date-shortcut', data: { value: Date.today.to_s })
+          li helpers.link_to(today,     '#', role: 'date-shortcut', data: { value: Time.zone.today.to_s })
         end
       end
     when :date_from
@@ -44,7 +45,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
 
           # weeks
           [date.prev_week, date].each do |m|
-            this = m.end_of_week >= Date.today ? '(текущая)' : ''
+            this = m.end_of_week >= Time.zone.today ? '(текущая)' : ''
             week_name = "Неделя##{m.strftime '%U'}#{this}"
             li helpers.link_to(
               week_name,
@@ -59,6 +60,6 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   end
 
   def t(key)
-    I18n.t key, scope: [:simple_form, :shortcuts]
+    I18n.t key, scope: %i[simple_form shortcuts]
   end
 end

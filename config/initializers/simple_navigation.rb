@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Сходу не удалось запустить
 # require 'simple_navigation/rails_controller_methods'
 

@@ -1,27 +1,29 @@
+# frozen_string_literal: true
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-#guard 'bundler' do
-  #watch('Gemfile')
-  ## Uncomment next line if Gemfile contain `gemspec' command
-  ## watch(/^.+\.gemspec/)
-#end
+# guard 'bundler' do
+# watch('Gemfile')
+## Uncomment next line if Gemfile contain `gemspec' command
+## watch(/^.+\.gemspec/)
+# end
 
-guard 'ctags-bundler', src_path: ['app', 'lib', 'spec'] do
-  watch(/^(app|lib|spec)\/.*\.rb$/)
+guard 'ctags-bundler', src_path: %w[app lib spec] do
+  watch(%r{^(app|lib|spec)/.*\.rb$})
   watch('Gemfile.lock')
 end
 
-#guard 'livereload' do
-  #watch(%r{app/views/.+\.(erb|haml|slim)$})
-  #watch(%r{app/helpers/.+\.rb})
-  #watch(%r{public/.+\.(css|js|html)})
-  #watch(%r{config/locales/.+\.yml})
-  ## Rails Assets Pipeline
-  #watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|scss|js|coffee|html))).*}) { |m| "/assets/#{m[3]}" }
-#end
+# guard 'livereload' do
+# watch(%r{app/views/.+\.(erb|haml|slim)$})
+# watch(%r{app/helpers/.+\.rb})
+# watch(%r{public/.+\.(css|js|html)})
+# watch(%r{config/locales/.+\.yml})
+## Rails Assets Pipeline
+# watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|sass|scss|js|coffee|html))).*}) { |m| "/assets/#{m[3]}" }
+# end
 
-# Note: The cmd option is now required due to the increasing number of ways
+# NOTE: The cmd option is now required due to the increasing number of ways
 #       rspec may be run, below are examples of the most common uses.
 #  * bundler: 'bundle exec rspec'
 #  * bundler binstubs: 'bin/rspec'
@@ -30,8 +32,8 @@ end
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bin/rspec" do
-  require "guard/rspec/dsl"
+guard :rspec, cmd: 'bin/rspec' do
+  require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
 
   # Feel free to open issues for suggestions and improvements
@@ -47,7 +49,7 @@ guard :rspec, cmd: "bin/rspec" do
   dsl.watch_spec_files_for(ruby.lib_files)
 
   # Rails files
-  rails = dsl.rails(view_extensions: %w(erb haml slim))
+  rails = dsl.rails(view_extensions: %w[erb haml slim])
   dsl.watch_spec_files_for(rails.app_files)
   dsl.watch_spec_files_for(rails.views)
 
@@ -71,6 +73,6 @@ guard :rspec, cmd: "bin/rspec" do
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
-    Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
+    Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance'
   end
 end

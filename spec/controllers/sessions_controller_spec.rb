@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe SessionsController, type: :controller do
   before do
-    @user = create :user,  password: 123
+    @user = create :user, password: 123
   end
 
   describe '#new' do

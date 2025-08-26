@@ -1,8 +1,10 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
 
-def File.exists? file
+require 'rails/all'
+
+def File.exists?(file)
   exist? file
 end
 # Require the gems listed in Gemfile, including any gems

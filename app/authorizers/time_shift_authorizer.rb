@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimeShiftAuthorizer < ApplicationAuthorizer
   def updatable_by?(user)
     has_permission?(user)

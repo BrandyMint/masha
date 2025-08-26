@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe ProfileController, type: :controller do
   context 'when not logged in' do
     it 'all actions should return 401' do
-      actions = [:edit, :update]
+      actions = %i[edit update]
 
       actions.each do |action|
         get action, params: { id: 1 }

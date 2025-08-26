@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PasswordResetsController < ApplicationController
   skip_before_action :require_login, raise: false
 
@@ -9,7 +11,7 @@ class PasswordResetsController < ApplicationController
     @email_form = EmailForm.new params.require(:email_form).permit(:email)
 
     if @email_form.valid?
-      user = User.find_by_email(params[:email_form][:email])
+      user = User.find_by(email: params[:email_form][:email])
       user.deliver_reset_password_instructions!
       redirect_to(new_session_path, gflash: { notice: t('devise.passwords.send_instructions') })
     else
