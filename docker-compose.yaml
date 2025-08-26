@@ -14,3 +14,14 @@ services:
       - ./tmp/postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  app:
+    build:
+      context: .
+    environment:
+      DATABASE_URL: postgres:5443/masha_development
+      MASHA_REDIS_CACHE_STORE_URL: redis://redis:6379
+
+  redis:
+    image: redis
+

@@ -231,3 +231,5 @@ gem 'concurrent-ruby', '1.3.4'
 gem "anyway_config", "~> 2.7"
 
 gem "drb", "~> 2.2"
+
+gem "brakeman", "~> 7.1"

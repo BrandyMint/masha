@@ -140,6 +140,8 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
+    brakeman (7.1.0)
+      racc
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
     bugsnag (6.27.1)
@@ -725,6 +727,7 @@ DEPENDENCIES
   bond
   bootsnap (~> 1.18)
   bootstrap-sass
+  brakeman (~> 7.1)
   breadcrumbs_on_rails
   bugsnag (~> 6.11)
   carrierwave
