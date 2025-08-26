@@ -1,24 +1,26 @@
-# frozen_string_literal: true
+require_relative "boot"
 
-require_relative 'boot'
+require "rails/all"
 
-require 'rails/all'
-
-def File.exists?(file)
-  exist? file
+class File
+  def self.exists? file
+    exist? file
+  end
 end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module Masha
   class Application < Rails::Application
-    # Configure the path for configuration classes that should be used before initialization
-    # NOTE: path should be relative to the project root (Rails.root)
-    # config.anyway_config.autoload_static_config_path = "config/configs"
-    #
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.0
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
