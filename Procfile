@@ -1,4 +1,5 @@
 postgres: docker compose up postgres
 redis: docker compose up redis
+# jobs: ./bin/jobs
 bot: bundle exec rake telegram:bot:poller
 server: bundle exed rails s

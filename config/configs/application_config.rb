@@ -11,7 +11,9 @@ class ApplicationConfig < Anyway::Config
     telegram_auth_expiration: 120, # В Секундах
     redis_cache_store_url: 'redis://localhost:6379/2',
     bot_token: '',
-    bot_username: ''
+    bot_username: '',
+    github_client_id: '',
+    github_client_secret: '',
   )
 
   coerce_types(
