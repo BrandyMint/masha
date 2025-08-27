@@ -22,6 +22,7 @@ class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
   attr_config(
+    title: 'MashTime',
     host: 'localhost',
     protocol: 'https',
     telegram_auth_expiration: 120, # В Секундах
@@ -30,6 +31,7 @@ class ApplicationConfig < Anyway::Config
     bot_username: '',
     github_client_id: '',
     github_client_secret: '',
+    mail_from: ''
   )
 
   coerce_types(
