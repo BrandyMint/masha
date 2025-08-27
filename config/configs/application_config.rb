@@ -1,27 +1,10 @@
 # frozen_string_literal: true
-#defaults: &defaults
-  #github_repo: https://github.com/brandymint/masha
-  #title: MASHA
-  #asset_host: http://masha.brandymint.ru/
-
-  #sidekiq_redis:
-    #url: <%= "redis://#{ENV['REDIS_HOST'] || '127.0.0.1'}:6379/3" %>
-
-  #default_url_options: &default_url_options
-    #host: masha.brandymint.ru
-    #protocol: https
-
-  #mail_from: masha@brandymint.ru
-
-  #telegram_bot_name: MashTimeBot
-  #telegram_bot_link: https://t.me/MashTimeBot
-
-
 # Base class for application config classes
 class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
   attr_config(
+    github_repo: 'https://github.com/brandymint/masha',
     title: 'MashTime',
     host: 'localhost',
     protocol: 'https',
@@ -31,7 +14,7 @@ class ApplicationConfig < Anyway::Config
     bot_username: '',
     github_client_id: '',
     github_client_secret: '',
-    mail_from: ''
+    mail_from: 'masha@brandymint.ru'
   )
 
   coerce_types(
@@ -57,6 +40,11 @@ class ApplicationConfig < Anyway::Config
   def default_url_options
     { host: , protocol: }
   end
+
+  def telegram_bot_link
+    'https://t.me/' + bot_username
+  end
+
 
   class << self
     # Make it possible to access a singleton config instance

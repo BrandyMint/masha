@@ -18,7 +18,7 @@ describe OmniauthSessionController, type: :controller do
         create :membership, user: user, project: project
       end
       it 'should log in and redirect to projects_url' do
-        post :create
+        post :create, params: { provider: 'default' }
 
         response.should redirect_to(projects_url)
         controller.current_user.should be_an_instance_of(User)
@@ -28,7 +28,7 @@ describe OmniauthSessionController, type: :controller do
     context 'with invalid params' do
       it 'should not log in' do
         controller.request.env['omniauth.auth'] = {}
-        post :create
+        post :create, params: { provider: 'default' }
 
         controller.current_user.should_not be_an_instance_of(User)
       end

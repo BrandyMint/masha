@@ -14,7 +14,6 @@ class OmniauthSessionController < ApplicationController
   protected
 
   def just_authorized_redirect_url
-    debugger
     if current_user.available_projects.empty?
       projects_url
     else
