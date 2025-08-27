@@ -10,7 +10,7 @@ describe SessionsController, type: :controller do
   describe '#new' do
     it 'should return success' do
       get :new
-      response.should be_success
+      response.should be_successful
     end
   end
 

@@ -19,7 +19,7 @@ describe WelcomeController, type: :controller do
     context 'when not logged in' do
       it 'should be success' do
         get :index
-        response.should be_success
+        response.should be_successful
       end
     end
   end

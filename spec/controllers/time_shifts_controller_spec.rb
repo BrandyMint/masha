@@ -27,7 +27,7 @@ describe TimeShiftsController, type: :controller do
     describe '#index' do
       it 'should be success' do
         get :index
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -41,7 +41,7 @@ describe TimeShiftsController, type: :controller do
     describe '#new' do
       it 'should be success' do
         get :new
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -58,7 +58,7 @@ describe TimeShiftsController, type: :controller do
       context 'with invalid params' do
         it 'should be success' do
           post :create, params: { time_shift: {} }
-          response.should be_success
+          response.should be_successful
         end
       end
     end

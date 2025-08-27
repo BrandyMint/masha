@@ -1,0 +1,2 @@
+class NotLogged < StandardError
+end

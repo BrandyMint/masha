@@ -9,7 +9,7 @@ describe PasswordResetsController, type: :controller do
   describe '#new' do
     it 'should return success' do
       get :new
-      response.should be_success
+      response.should be_successful
     end
   end
 
@@ -36,14 +36,14 @@ describe PasswordResetsController, type: :controller do
     context 'with valid params' do
       it 'should allow access to set password' do
         get :edit, params: { id: user.reset_password_token }
-        response.should be_success
+        response.should be_successful
       end
     end
 
     context 'with invalid params' do
       it 'should not allow access to set password' do
         get :edit, params: { id: '32' }
-        response.should_not be_success
+        response.should_not be_successful
       end
     end
   end
@@ -58,7 +58,7 @@ describe PasswordResetsController, type: :controller do
                        password_change_form: { password: '1234', password_confirmation: '1234' } }
         user.reload
         user.crypted_password.should_not
-        response.should_not be_success
+        response.should_not be_successful
       end
     end
 

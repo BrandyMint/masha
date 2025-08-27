@@ -26,7 +26,7 @@ describe ProjectsController, type: :controller do
     describe '#index' do
       it 'should return success' do
         get :index
-        response.should be_success
+        response.should be_successful
       end
     end
 
@@ -40,7 +40,7 @@ describe ProjectsController, type: :controller do
     describe '#new' do
       it 'should return success' do
         get :index
-        response.should be_success
+        response.should be_successful
       end
     end
 

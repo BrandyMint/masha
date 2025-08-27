@@ -27,7 +27,7 @@ describe ProfileController, type: :controller do
     describe '#edit' do
       it 'should return success' do
         get :edit
-        response.should be_success
+        response.should be_successful
       end
     end
 

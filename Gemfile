@@ -41,7 +41,6 @@ gem 'telegram-bot'
 # gem 'phony_rails', :git => 'git://github.com/joost/phony_rails.git'
 gem 'active_attr'
 gem 'hashie'
-gem 'validates'
 gem 'validates_timeliness'
 
 gem 'friendly_id', '~> 5.0.0'
@@ -184,7 +183,6 @@ group :development do
 
   gem 'better_errors'
   gem 'binding_of_caller'
-
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
   gem 'letter_opener_web'
@@ -242,3 +240,7 @@ gem "solid_queue_dashboard", "~> 0.2.0"
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
+
+# gem 'valid_email', require: 'valid_email/validate_email'
+
+gem "email_validator", "~> 2.2"

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  class NotLogged < StandardError
-  end
   include ApplicationHelper
 
   before_action :define_page_title

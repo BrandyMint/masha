@@ -5,7 +5,7 @@ require 'spec_helper'
 describe ApplicationController, type: :controller do
   controller do
     def index
-      raise ApplicationController::NotLogged
+      raise NotLogged
     end
   end
 
