@@ -1,23 +1,27 @@
-# Маша учетчица
+# Маша-учетчицa
 
-[![Build Status](https://travis-ci.org/BrandyMint/masha.svg?branch=master)](https://travis-ci.org/BrandyMint/masha)
+Сервис для учета потраченного на работу время в виде телеграм бота https://t.me/MashTimeBot и веб-сервиса https://mashtime.ru
+
+[![Tests](https://github.com/BrandyMint/masha/actions/workflows/tests.yml/badge.svg)](https://github.com/BrandyMint/masha/actions/workflows/tests.yml)
+
+## Зависимости:
+
+* rbenv
+* docker compose
 
 ## Установка
 
-1. Используйте менеджеро версий ruby, например rbenv - https://github.com/rbenv/rbenv
+1. docker compose up
 2. создай ключи для oauth на `github`
-3.* пропиши их в <tt>./config/omniauth.yml</tt> по примеру <tt>./config/omniauth.yml.example</tt>
 
 ## При деплое на сервере выполнить
 
-> rake telegram:bot:set_webhook RAILS_ENV=production CERT=path/to/cert
+> rake telegram:bot:set_webhook RAILS_ENV=production 
 
 ## Разработка
 
 > rake telegram:bot:poller 
 > rails s
-
-Разработческий бот @MashDevBot
 
 ## Распределение прав доступа
 
@@ -34,8 +38,3 @@
 <tr><td>Смотритель</td><td>&#10004;</td><td>&#10004;</td><td>&middot;</td><td>&middot;</td></tr>
 <tr><td>Участник</td><td>&#10004;</td><td>&middot;</td><td>&middot;</td><td>&middot;</td></tr>
 </table>
-
-## Active admin in development
-
-Логин: admin@example.com
-Пароль: password
