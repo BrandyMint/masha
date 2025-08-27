@@ -46,13 +46,43 @@ _default: &_default
   <% end %>
 
 development:
-  <<: *_default
-  database: masha_development
+  primary: &development
+    <<: *_default
+    database: masha_development
+  cache:
+    <<: *development
+    database: masha_development_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *development
+    database: masha_development_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *development
+    database: masha_development_cable
+    migrations_paths: db/cable_migrate
 
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
 test:
   <<: *_default
   database: masha_test
 
 production:
-  <<: *_default
-  database: <%= ENV.fetch( 'DATABASE_NAME', 'masha_production' ) %>
+  primary: &production
+    <<: *_default
+    database: <%= ENV.fetch( 'DATABASE_NAME', 'masha_production' ) %>
+    migrations_paths: db/migrate
+  cache:
+    <<: *production
+    database: <%= ENV.fetch( 'DATABASE_NAME', 'masha_production' ) %>_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *production
+    database: <%= ENV.fetch( 'DATABASE_NAME', 'masha_production' ) %>_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *production
+    database: <%= ENV.fetch( 'DATABASE_NAME', 'masha_production' ) %>_cable
+    migrations_paths: db/cable_migrate
