@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 gem 'puma'
 
-gem 'rails', '~> 7.2'
+gem 'rails', '~> 8'
 
 # Use postgresql as the database for ActiveRecord
 gem 'pg'
@@ -147,9 +147,6 @@ gem 'hiredis'
 gem 'redis'
 
 gem 'terminal-table'
-
-# Used for telegram sessions
-gem 'redis-rails'
 
 gem 'psych', '< 4'
 
