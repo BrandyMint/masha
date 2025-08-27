@@ -230,3 +230,5 @@ gem 'thruster', require: false
 # gem 'valid_email', require: 'valid_email/validate_email'
 
 gem 'email_validator', '~> 2.2'
+
+gem "importmap-rails", "~> 2.2"
