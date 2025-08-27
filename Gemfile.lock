@@ -1,10 +1,11 @@
 GIT
   remote: https://github.com/Riki4321/compass-rails.git
-  revision: f6391d0d30fa63bb9bf6cd94e0e5608012584e6e
+  revision: 0b1066142b11ce8582217f3165a159f6103a50f3
+  branch: rails-6-support
   specs:
     compass-rails (4.0.0)
       compass (~> 1.0.0)
-      sass-rails (< 5.1)
+      sass-rails (< 6.1)
       sprockets (< 4.0)
 
 GIT
@@ -151,13 +152,12 @@ GEM
       concurrent-ruby (~> 1.0)
     builder (3.3.0)
     byebug (12.0.0)
-    carrierwave (2.2.6)
-      activemodel (>= 5.0.0)
-      activesupport (>= 5.0.0)
+    carrierwave (3.1.2)
+      activemodel (>= 6.0.0)
+      activesupport (>= 6.0.0)
       addressable (~> 2.6)
       image_processing (~> 1.1)
       marcel (~> 1.0.0)
-      mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
     chartkick (5.2.0)
     childprocess (5.1.0)
@@ -386,8 +386,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     method_source (1.1.0)
-    mini_magick (5.2.0)
-      benchmark
+    mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
     mini_racer (0.18.1)
@@ -470,7 +469,7 @@ GEM
       pry (>= 0.13.0)
     psych (3.3.4)
     public_suffix (6.0.2)
-    puma (6.6.0)
+    puma (6.6.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -618,7 +617,7 @@ GEM
     ruby-next-core (1.1.2)
     ruby-prof (1.7.1)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.2.3)
+    ruby-vips (2.2.5)
       ffi (~> 1.12)
       logger
     ruby2_keywords (0.0.5)
@@ -626,14 +625,16 @@ GEM
     russian (0.6.0)
       i18n (>= 0.5.0)
     sass (3.4.25)
-    sass-rails (5.0.8)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     sdoc (2.6.1)
       rdoc (>= 5.0)
     securerandom (0.4.1)
@@ -689,7 +690,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.2.0)
+    ssrf_filter (1.3.0)
     telegram-bot (0.16.7)
       actionpack (>= 4.0, < 8.1)
       activesupport (>= 4.0, < 8.1)

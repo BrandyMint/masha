@@ -108,7 +108,7 @@ gem 'turbolinks', '~> 5'
 gem 'haml-rails'
 
 gem 'bootstrap-sass'
-gem 'compass-rails', github: 'Riki4321/compass-rails'
+gem 'compass-rails', github: 'Riki4321/compass-rails', branch: 'rails-6-support'
 gem 'sass-rails'
 
 # active admin
