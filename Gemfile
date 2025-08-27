@@ -77,8 +77,8 @@ gem 'active_link_to'
 gem 'arbre'
 gem 'draper'
 
-#gem 'caxlsx'
-#gem 'caxlsx_rails'
+# gem 'caxlsx'
+# gem 'caxlsx_rails'
 gem 'rubyzip', '>= 1.2.1'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
@@ -222,15 +222,14 @@ gem 'drb', '~> 2.2'
 
 gem 'brakeman', '~> 7.1'
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-gem "solid_cache"
-gem "solid_queue"
-gem "solid_cable"
-gem "solid_queue_dashboard", "~> 0.2.0"
-
+gem 'solid_cable'
+gem 'solid_cache'
+gem 'solid_queue'
+gem 'solid_queue_dashboard', '~> 0.2.0'
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
-gem "thruster", require: false
+gem 'thruster', require: false
 
 # gem 'valid_email', require: 'valid_email/validate_email'
 
-gem "email_validator", "~> 2.2"
+gem 'email_validator', '~> 2.2'

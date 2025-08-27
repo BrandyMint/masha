@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Base class for application config classes
 class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
@@ -38,13 +39,12 @@ class ApplicationConfig < Anyway::Config
   end
 
   def default_url_options
-    { host: , protocol: }
+    { host:, protocol: }
   end
 
   def telegram_bot_link
-    'https://t.me/' + bot_username
+    "https://t.me/#{bot_username}"
   end
-
 
   class << self
     # Make it possible to access a singleton config instance

@@ -43,7 +43,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  #config.fixture_path = Rails.root.join('spec/fixtures').to_s
+  # config.fixture_path = Rails.root.join('spec/fixtures').to_s
 
   config.fail_fast = false
 

@@ -6,7 +6,7 @@ class Project < ApplicationRecord
 
   friendly_id :name, use: :slugged
 
-  #belongs_to :owner, class_name: 'User'
+  # belongs_to :owner, class_name: 'User'
 
   has_many :time_shifts
   has_many :timed_projects, through: :time_shift, class_name: 'Project'

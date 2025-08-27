@@ -160,5 +160,3 @@ Style/OptionalBooleanParameter:
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, SplitStrings.
 # URISchemes: http, https
-Layout/LineLength:
-  Max: 195

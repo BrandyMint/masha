@@ -1,9 +1,11 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+
+require 'rails/all'
 
 class File
-  def self.exists? file
+  def self.exists?(file)
     exist? file
   end
 end
