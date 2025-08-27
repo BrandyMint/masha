@@ -4,14 +4,15 @@
 class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
-  env_prefix :vilna
   attr_config(
     host: 'localhost',
     protocol: 'https',
     telegram_auth_expiration: 120, # В Секундах
     redis_cache_store_url: 'redis://localhost:6379/2',
     bot_token: '',
-    bot_username: ''
+    bot_username: '',
+    github_client_id: '',
+    github_client_secret: '',
   )
 
   coerce_types(

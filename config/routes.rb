@@ -4,7 +4,6 @@ require 'admin_constraint'
 
 Masha::Application.routes.draw do
   default_url_options Settings.default_url_options.symbolize_keys
-  ActiveAdmin.routes(self)
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
 
   root 'welcome#index'

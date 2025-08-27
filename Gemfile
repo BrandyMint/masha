@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 gem 'puma'
 
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 7.2'
 
 # Use postgresql as the database for ActiveRecord
 gem 'pg'
@@ -42,7 +42,7 @@ gem 'telegram-bot'
 gem 'active_attr'
 gem 'hashie'
 gem 'validates'
-gem 'validates_timeliness', '~> 3.0'
+gem 'validates_timeliness'
 
 gem 'friendly_id', '~> 5.0.0'
 # берется последняя версия для совместимости с rails 4
@@ -115,8 +115,6 @@ gem 'compass-rails', github: 'Riki4321/compass-rails'
 gem 'sass-rails'
 
 # active admin
-gem 'activeadmin'
-
 gem 'sendgrid-actionmailer'
 
 # Очередь
@@ -235,3 +233,12 @@ gem 'anyway_config', '~> 2.7'
 gem 'drb', '~> 2.2'
 
 gem 'brakeman', '~> 7.1'
+# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
+gem "solid_queue_dashboard", "~> 0.2.0"
+
+
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
