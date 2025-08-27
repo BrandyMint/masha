@@ -18,11 +18,6 @@
 
 > rake telegram:bot:set_webhook RAILS_ENV=production 
 
-## Разработка
-
-> rake telegram:bot:poller 
-> rails s
-
 ## Распределение прав доступа
 
 Для каждого проекта у пользователя устанавливается его роль в проекте (владелец, смотритель, участник)
