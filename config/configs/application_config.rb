@@ -4,7 +4,6 @@
 class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
-  env_prefix :vilna
   attr_config(
     host: 'localhost',
     protocol: 'https',
