@@ -5,7 +5,7 @@ class User < ApplicationRecord
   include Authority::UserAbilities
   include Authority::Abilities
 
-  has_many :owned_projects, class_name: 'Project', foreign_key: :owner_id
+  # has_many :owned_projects, class_name: 'Project', foreign_key: :owner_id
 
   has_many :time_shifts
   has_many :timed_projects, through: :time_shift, class_name: 'Project'

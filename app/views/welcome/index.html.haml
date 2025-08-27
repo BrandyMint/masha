@@ -5,7 +5,7 @@
         = link_to home_url, class: 'brand' do
           = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
           %span.brand-caption
-            = Settings.title
+            = ApplicationConfig.title
             %span - бот в помощь
   .row
     .col-sm-offset-3.col-sm-8
@@ -17,9 +17,9 @@
       .welcome-subheader 
         %ul 
           %li 
-            = link_to 'Бот в Telegramm', Settings.telegram_bot_link, target: '_blank'
+            = link_to 'Бот в Telegramm', ApplicationConfig.telegram_bot_link, target: '_blank'
           %li 
-            = link_to 'Открытый исходный код', Settings.github_repo, target: '_blank'
+            = link_to 'Открытый исходный код', ApplicationConfig.github_repo, target: '_blank'
           %li Web-интерфейс с бесплатными аккаунтами
       .row
         .col-sm-6.col-md-6

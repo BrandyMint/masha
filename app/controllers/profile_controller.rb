@@ -17,13 +17,11 @@ class ProfileController < ApplicationController
     @password_form = PasswordChangeForm.new
     @user.assign_attributes user_permited_params
 
-    if @user.save!
+    if @user.save
       redirect_to edit_profile_url, gflash: { notice: t('gflash.profile_update') }
     else
       render action: :edit, gflash: { error: t('gflash.profile_errors') }
     end
-  rescue => err
-    debugger
   end
 
   def change_password

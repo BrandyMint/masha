@@ -2,7 +2,7 @@
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :developer if Rails.env.development?
-  provider :github, ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'], scope: 'user'
+  provider :github, ApplicationConfig.github_client_id, ApplicationConfig.github_client_secret, scope: 'user'
 end
 
 OmniAuth.config.logger = Rails.logger

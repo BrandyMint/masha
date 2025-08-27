@@ -54,7 +54,7 @@ module ApplicationHelper
 
   def app_version
     content_tag :small, class: 'text-muted', data: { version: AppVersion.to_s } do
-      link_to "v#{AppVersion.format('%M.%m.%p')}", Settings.github_repo
+      link_to "v#{AppVersion.format('%M.%m.%p')}", ApplicationConfig.github_repo
     end
   end
 

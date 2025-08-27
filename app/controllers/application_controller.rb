@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def define_page_title
-    @page_title = "#{Settings.title} - #{t(action_name, scope: [:titles, controller_name], default: 'Учет в кармане')}"
+    @page_title = "#{ApplicationConfig.title} - #{t(action_name, scope: [:titles, controller_name], default: 'Учет в кармане')}"
   end
 
   def handle_not_authorized_error

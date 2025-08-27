@@ -5,8 +5,8 @@
         = app_version
       .col-sm-6.footer-links
         %ul.horizontal
-          %li= link_to 'Source code on GitHub', Settings.github_repo, target: :_blank, class: 'footer-feedback-link'
-          %li= link_to 'Telegram bot @MashTimeBot', Settings.telegram_bot_link, target: :_blank, class: 'footer-feedback-link'
+          %li= link_to 'Source code on GitHub', ApplicationConfig.github_repo, target: :_blank, class: 'footer-feedback-link'
+          %li= link_to 'Telegram bot @MashTimeBot', ApplicationConfig.telegram_bot_link, target: :_blank, class: 'footer-feedback-link'
       .col-sm-3.footer-made-logo-block
         .pull-right
           Сделано в 

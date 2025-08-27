@@ -37,14 +37,14 @@ module Telegram
     # use callbacks like in any other controllers
     around_action :with_locale
 
-    # if message.left_chat_member && message.left_chat_member.username == Settings.telegram_bot_name
+    # if message.left_chat_member && message.left_chat_member.username == ApplicationConfig.telegram_bot_name
     # bot.logger.info("Leave chat #{message.chat.title}")
 
-    # elsif message.new_chat_members.any? && message.new_chat_members.map(&:username).include?(Settings.telegram_bot_name)
+    # elsif message.new_chat_members.any? && message.new_chat_members.map(&:username).include?(ApplicationConfig.telegram_bot_name)
     # bot.logger.info("Added to chat #{message.chat.title}")
     # bot.api.send_message(chat_id: message.chat.id,
     # text: "Привет всем!\nМеня зовут Маша.
-    # Я помогаю учитывать ресурсы.\nПришлите /start@#{Settings.telegram_bot_name} чтобы познакомиться лично.")
+    # Я помогаю учитывать ресурсы.\nПришлите /start@#{ApplicationConfig.telegram_bot_name} чтобы познакомиться лично.")
 
     # Every update can have one of: message, inline_query, chosen_inline_result,
     # callback_query, etc.

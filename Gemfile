@@ -12,8 +12,6 @@ gem 'pg'
 
 gem 'rake'
 
-gem 'settingslogic'
-
 gem 'rails_autolink'
 # gem 'cache_digests'
 
@@ -79,8 +77,8 @@ gem 'active_link_to'
 gem 'arbre'
 gem 'draper'
 
-gem 'caxlsx'
-gem 'caxlsx_rails'
+#gem 'caxlsx'
+#gem 'caxlsx_rails'
 gem 'rubyzip', '>= 1.2.1'
 # gem 'cells'
 # gem 'breadcrumbs_on_rails'
@@ -114,20 +112,12 @@ gem 'compass-rails', github: 'Riki4321/compass-rails'
 gem 'sass-rails'
 
 # active admin
-gem 'sendgrid-actionmailer'
-
-# Очередь
-# gem 'redis-namespace'
-# gem 'resque'
-# gem 'resque-pool'
-# gem 'resque-status'
+# gem 'sendgrid-actionmailer'
 
 # gem 'ruby-progressbar'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 1.0.1'
-
-# gem 'honeybadger', github: 'honeybadger-io/honeybadger-ruby' # , :require => 'honeybadger/rails'
 
 gem 'github_api'
 
