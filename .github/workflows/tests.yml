@@ -73,8 +73,11 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run tests
+      - name: Prepare database
         run: bin/rails db:test:prepare 
+
+      - name: Run rspec
+        run: bin/rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
