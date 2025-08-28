@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     user = @reg.save
     if user.present?
       login user.email, @reg.password
-      redirect_to time_shifts_url, gflash: { notice: t('gflash.signed_up') }
+      redirect_to time_shifts_url, flash: { notice: t('flash.signed_up') }
     else
       render :new
     end

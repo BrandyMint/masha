@@ -8,7 +8,7 @@ class OmniauthSessionController < ApplicationController
   rescue StandardError => e
     Bugsnag.notify e
     Rails.logger.error e
-    redirect_back_or_to root_url, gflash: { notice: t('gflash.session_problems') }
+    redirect_back_or_to root_url, flash: { notice: t('flash.session_problems') }
   end
 
   protected

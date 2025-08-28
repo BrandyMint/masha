@@ -43,7 +43,7 @@ class TimeShiftsController < ApplicationController
     super do |success, _error|
       success.html do
         redirect_to new_time_shift_url,
-                    gflash: { notice: t('gflash.time_shift_addition', hours: human_hours(@time_shift.hours), project: @time_shift.project,
+                    flash: { notice: t('flash.time_shift_addition', hours: human_hours(@time_shift.hours), project: @time_shift.project,
                                                                       date: l(@time_shift.date)) }
       end
     end

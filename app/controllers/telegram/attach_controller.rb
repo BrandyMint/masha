@@ -22,7 +22,7 @@ module Telegram
       rescue Telegram::Bot::Forbidden
       end
 
-      redirect_to profile_url, gflash: { notice: t('gflash.telegram_attached') }
+      redirect_to profile_url, flash: { notice: t('flash.telegram_attached') }
     end
   end
 end
