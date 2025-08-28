@@ -53,7 +53,8 @@ RUN bundle install && \
 
 # Install node modules
 COPY package.json yarn.lock ./
-RUN yarn install --immutable
+RUN npm install -g bun
+RUN bun install --immutable
 
 # Copy application code
 COPY . .

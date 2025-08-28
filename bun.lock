@@ -7,7 +7,6 @@
         "autoprefixer": "^10.4.20",
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",
-        "bootstrap-scss": "4.0.0",
         "compass-mixins": "^0.12.12",
         "nodemon": "^3.1.9",
         "postcss": "^8.5.1",
@@ -62,8 +61,6 @@
     "bootstrap": ["bootstrap@5.3.8", "", { "peerDependencies": { "@popperjs/core": "^2.11.8" } }, "sha512-HP1SZDqaLDPwsNiqRqi5NcP0SSXciX2s9E+RyqJIIqGo+vJeN5AJVM98CXmW/Wux0nQ5L7jeWUdplCEf0Ee+tg=="],
 
     "bootstrap-icons": ["bootstrap-icons@1.13.1", "", {}, "sha512-ijombt4v6bv5CLeXvRWKy7CuM3TRTuPEuGaGKvTV5cz65rQSY8RQ2JcHt6b90cBBAC7s8fsf2EkQDldzCoXUjw=="],
-
-    "bootstrap-scss": ["bootstrap-scss@4.0.0", "", {}, "sha512-uYYn2W7GtSEFN53KshS+0mgsrHe1CumRtJe8yfBoivqobZ4vySMQVXXQBRaIzYzWlKph2j4Lxpj8wS7ckycpVA=="],
 
     "brace-expansion": ["brace-expansion@1.1.12", "", { "dependencies": { "balanced-match": "^1.0.0", "concat-map": "0.0.1" } }, "sha512-9T9UjW3r0UW5c1Q7GTwllptXwhvYmEzFhzMfZ9H7FQWt+uZePjZPjBP/W1ZEyZ1twGWom5/56TF4lPcqjnDHcg=="],
 
