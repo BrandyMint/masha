@@ -58,16 +58,11 @@ RUN bun install --immutable
 
 # Copy application code
 COPY . .
-RUN rm -f vendor/assets/components
-RUN ln -s vendor/assets/components node_modules/@bower_components
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE=123 SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
-RUN rm -rf node_modules
-
 
 # Final stage for app image
 FROM base
