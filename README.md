@@ -10,6 +10,8 @@
 * bun (вместо node)
 * docker compose
 
+Можешь их получить через `make deps`
+
 ## Установка
 
 1. docker compose up

@@ -44,6 +44,7 @@ create_user:
 
 deps:
 	brew install terminal-notifier
+	brew install oven-sh/bun/bun
 	bundle install
 
 watch:
