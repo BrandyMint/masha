@@ -230,7 +230,7 @@ GEM
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
     formatador (1.1.0)
-    friendly_id (5.0.5)
+    friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fugit (1.11.2)
       et-orbi (~> 1, >= 1.2.11)
@@ -722,7 +722,7 @@ DEPENDENCIES
   factory_bot
   factory_bot_rails
   fakeredis
-  friendly_id (~> 5.0.0)
+  friendly_id (~> 5.5.1)
   github_api
   guard
   guard-ctags-bundler
