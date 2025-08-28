@@ -28,6 +28,12 @@ Masha::Application.routes.draw do
 
   telegram_webhook Telegram::WebhookController unless Rails.env.test?
 
+  constraints subdomain: "admin" do
+    constraints AdminConstraint do
+      mount SolidQueueDashboard::Engine, at: "/solid-queue"
+    end
+  end
+
   # Личный контроллер пользователя
   resource :profile, controller: :profile do
     collection do

@@ -17,6 +17,7 @@
                                  session DELETE /sessions/:id(.:format)                                                                           sessions#destroy
                          attach_telegram GET    /ta/:id(.:format)                                                                                 telegram/attach#create
                         telegram_webhook POST   /telegram/ofejTJKjoj2Qzsc-aElbtH63syA                                                             #<Telegram::Bot::Middleware(Telegram::WebhookController)>
+                   solid_queue_dashboard        /solid-queue                                                                                      SolidQueueDashboard::Engine {subdomain: "admin"}
                  change_password_profile POST   /profile/change_password(.:format)                                                                profile#change_password
                              new_profile GET    /profile/new(.:format)                                                                            profile#new
                             edit_profile GET    /profile/edit(.:format)                                                                           profile#edit
@@ -124,3 +125,16 @@ clear_letters POST /clear(.:format)                 letter_opener_web/letters#cl
        letter GET  /:id(/:style)(.:format)          letter_opener_web/letters#show
 delete_letter POST /:id/delete(.:format)            letter_opener_web/letters#destroy
               GET  /:id/attachments/:file(.:format) letter_opener_web/letters#attachment
+
+Routes for SolidQueueDashboard::Engine:
+             retry_job POST /jobs/:id/retry(.:format)              solid_queue_dashboard/jobs#retry
+                  jobs GET  /jobs(.:format)                        solid_queue_dashboard/jobs#index
+                   job GET  /jobs/:id(.:format)                    solid_queue_dashboard/jobs#show
+             processes GET  /processes(.:format)                   solid_queue_dashboard/processes#index
+               process GET  /processes/:id(.:format)               solid_queue_dashboard/processes#show
+enqueue_recurring_task POST /recurring-tasks/:id/enqueue(.:format) solid_queue_dashboard/recurring_tasks#enqueue
+       recurring_tasks GET  /recurring-tasks(.:format)             solid_queue_dashboard/recurring_tasks#index
+        recurring_task GET  /recurring-tasks/:id(.:format)         solid_queue_dashboard/recurring_tasks#show
+                 stats GET  /stats(.:format)                       solid_queue_dashboard/stats#index
+     toggle_appearance POST /appearance/toggle(.:format)           solid_queue_dashboard/appearance#toggle
+                  root GET  /                                      solid_queue_dashboard/dashboard#index
