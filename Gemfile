@@ -232,3 +232,5 @@ gem 'thruster', require: false
 gem 'email_validator', '~> 2.2'
 
 gem 'importmap-rails', '~> 2.2'
+
+gem "cssbundling-rails", "~> 1.4"

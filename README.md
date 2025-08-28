@@ -7,6 +7,7 @@
 ## Зависимости:
 
 * rbenv
+* bun (вместо node)
 * docker compose
 
 ## Установка
