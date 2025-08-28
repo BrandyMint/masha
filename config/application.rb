@@ -5,7 +5,7 @@ require_relative 'boot'
 require 'rails/all'
 
 class File
-  def self.exists? file
+  def self.exists?(file)
     exist? file
   end
 end
