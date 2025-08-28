@@ -122,7 +122,7 @@ gem 'sprockets'
 gem 'sprockets-rails'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 2.7'
+gem 'uglifier', '~> 4.2'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails'
