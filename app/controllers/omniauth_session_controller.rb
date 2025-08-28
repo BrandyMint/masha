@@ -2,7 +2,7 @@
 
 class OmniauthSessionController < ApplicationController
   def create
-    auto_login Authentificator.authentificate auth_hash
+    auto_login Authentificator.authentificate auth_hash.to_hash
 
     redirect_back_or_to just_authorized_redirect_url
   rescue StandardError => e
