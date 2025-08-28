@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user
       redirect_back_or_to time_shifts_url
     else
-      flash.now[:error]= t('flash.session_failed')
+      flash.now[:error] = t('flash.session_failed')
       render :new
     end
   end

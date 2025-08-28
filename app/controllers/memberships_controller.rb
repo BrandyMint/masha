@@ -41,7 +41,7 @@ class MembershipsController < ApplicationController
           success: -> { flash.now[:success] = (t 'flash.invite_sent', email: is.invite.email) },
           failure: lambda {
             flash.now[:error] = (t 'flash.invite_error', email: is.invite.email
-                           render(:index) and return)
+                                 render(:index) and return)
           }
         )
 
