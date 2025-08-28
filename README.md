@@ -24,7 +24,6 @@
 2. bundle
 3. bun install
 4. rake db:create
-4. rake db:load_cable_schema  db:load_cache_schema db:load_queue_schema
 
 ## При деплое на сервере выполнить
 
