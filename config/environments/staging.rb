@@ -5,7 +5,6 @@ Masha::Application.configure do
   config.active_support.deprecation = :notify
   config.assets.compile = true
   config.assets.digest = true
-  config.assets.js_compressor = :uglifier
   config.assets.version = '1.0'
   config.cache_classes = true
   config.consider_all_requests_local = false

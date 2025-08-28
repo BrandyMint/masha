@@ -665,9 +665,6 @@ GEM
       ansi
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (2.7.2)
-      execjs (>= 0.3.0)
-      json (>= 1.8.0)
     unicode-display_width (3.1.5)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -788,7 +785,6 @@ DEPENDENCIES
   thruster
   turbolinks (~> 5)
   turn
-  uglifier (~> 2.7)
   validates_timeliness
 
 BUNDLED WITH
