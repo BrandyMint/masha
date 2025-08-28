@@ -52,7 +52,7 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
 # Install node modules
-COPY package.json yarn.lock ./
+COPY package.json bun.lock ./
 RUN npm install -g bun
 RUN bun install --immutable
 
