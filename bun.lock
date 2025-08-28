@@ -8,6 +8,7 @@
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",
         "compass-mixins": "^0.12.12",
+        "jquery-autosize": "^1.18.18",
         "nodemon": "^3.1.9",
         "postcss": "^8.5.1",
         "postcss-cli": "^11.0.0",
@@ -125,6 +126,8 @@
     "is-glob": ["is-glob@4.0.3", "", { "dependencies": { "is-extglob": "^2.1.1" } }, "sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg=="],
 
     "is-number": ["is-number@7.0.0", "", {}, "sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng=="],
+
+    "jquery-autosize": ["jquery-autosize@1.18.18", "", {}, "sha512-Z2nzJEbchigrxqqqr026TMPdTZJ8syt2xeGMGkqCXbb1raI3J/X0LdiIhyIMcJ+nTjwTBf/p6bbRVP0vAuqd/w=="],
 
     "jsonfile": ["jsonfile@6.2.0", "", { "dependencies": { "universalify": "^2.0.0" }, "optionalDependencies": { "graceful-fs": "^4.1.6" } }, "sha512-FGuPw30AdOIUTRMC2OMRtQV+jkVj2cfPqSeWXv1NEAJ1qZ5zb1X6z1mFhbfOB/iy3ssJCD+3KuZ8r8C3uVFlAg=="],
 

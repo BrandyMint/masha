@@ -4,3 +4,5 @@
 
 pin 'application'
 pin 'bootstrap', to: 'bootstrap.bundle.min.js'
+pin "jquery-autosize" # @1.18.18
+pin "purl" # @1.0.4

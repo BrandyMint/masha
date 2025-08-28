@@ -5,6 +5,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "compass-mixins": "^0.12.12",
+    "jquery-autosize": "^1.18.18",
     "nodemon": "^3.1.9",
     "postcss": "^8.5.1",
     "postcss-cli": "^11.0.0",
