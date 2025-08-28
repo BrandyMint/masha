@@ -5,7 +5,7 @@ require 'admin_constraint'
 Masha::Application.routes.draw do
   default_url_options ApplicationConfig.default_url_options.symbolize_keys
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if defined? LetterOpenerWeb
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   root 'welcome#index'
 
@@ -29,9 +29,9 @@ Masha::Application.routes.draw do
 
   telegram_webhook Telegram::WebhookController unless Rails.env.test?
 
-  constraints subdomain: "admin" do
+  constraints subdomain: 'admin' do
     constraints AdminConstraint do
-      mount SolidQueueDashboard::Engine, at: "/solid-queue"
+      mount SolidQueueDashboard::Engine, at: '/solid-queue'
     end
   end
 
