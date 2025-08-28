@@ -14,7 +14,7 @@
 #= require jquery-autosize/dest/autosize
 #= require stepper
 #= require purl/purl
-#= require gritter
+# require gritter
 #= require form_locale
 
 $ ->

@@ -107,10 +107,6 @@ gem 'turbolinks', '~> 5'
 # gem 'turbolinks'
 gem 'haml-rails'
 
-gem 'bootstrap-sass'
-gem 'compass-rails', github: 'Riki4321/compass-rails', branch: 'rails-6-support'
-gem 'sass-rails'
-
 # active admin
 # gem 'sendgrid-actionmailer'
 
@@ -141,7 +137,6 @@ gem 'jquery-ui-sass-rails'
 # gem 'jquery_datepicker'
 
 # gem 'select2-rails'
-gem 'gritter', '1.1.0'
 
 gem 'hiredis'
 gem 'redis'

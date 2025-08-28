@@ -50,14 +50,15 @@
       padding: 0
  
 .navbar.application-navbar
-  @extend .navbar-inverse
+// TO FIX
+  //@extend .navbar-inverse
   background: $navbarBackgroundColor
   border-bottom: 0
   +transition(opacity 0.2s ease, height 0.2s ease)
   opacity: 1
   height: auto
   overflow: visible
-  .page-header-static &,
+  .page-header-static &
     margin: 0
   &.transparent
     opacity: 0

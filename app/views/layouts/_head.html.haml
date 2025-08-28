@@ -3,7 +3,7 @@
 %meta{:content => content_for?(:description) ? yield(:description) : ApplicationConfig.title, :name => "description"}
 %meta{'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}
 = favicon_link_tag '/assets/favicon.ico'
-= stylesheet_link_tag :application, :media => "screen,print"
+= stylesheet_link_tag :application, :media => "screen,print", "data-turbo-track": "reload"
 = javascript_include_tag :application
 = javascript_include_tag 'https://unpkg.com/ionicons@4.2.2/dist/ionicons.js'
 = csrf_meta_tags
