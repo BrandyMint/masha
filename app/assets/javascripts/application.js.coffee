@@ -113,3 +113,6 @@ $ ->
       window.scrollTo(0)
 
 )(window.App ||= {})
+
+# Вынужден добавить из-за глюка в popper
+window.process = { env: { NODE_ENV: 'production' } }
