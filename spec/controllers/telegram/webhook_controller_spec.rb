@@ -28,7 +28,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     context 'unauthenticated user' do
       describe '#start!' do
         subject { -> { dispatch_command :start } }
-        it { should respond_with_message(/Привяжи/) }
+        it { should respond_with_message(/перейдите/) }
       end
 
       describe '#projects!' do
@@ -48,7 +48,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
       describe '#start!' do
         subject { -> { dispatch_command :start } }
-        it { should respond_with_message(/знакомы/) }
+        it { should respond_with_message(/возращением/) }
       end
     end
   end

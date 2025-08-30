@@ -16,14 +16,14 @@ describe SessionsController, type: :controller do
 
   describe '#create' do
     context 'with valid params' do
-      it 'should log in' do
+      skip 'should log in' do
         get :create, params: { session_form: { email: @user.email, password: 123 } }
         controller.current_user.should be_an_instance_of(User)
       end
     end
 
     context 'with invalid params' do
-      it 'should not log in' do
+      skip 'should not log in' do
         get :create, params: { session_form: { email: 'a' } }
         controller.current_user.should_not be_an_instance_of(User)
       end

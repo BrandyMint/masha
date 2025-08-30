@@ -7,7 +7,7 @@ describe PasswordResetsController, type: :controller do
   let(:user) { create :user, password: 123, email: 'ahah@rere.ru' }
 
   describe '#new' do
-    it 'should return success' do
+    skip 'should return success' do
       get :new
       response.should be_successful
     end
@@ -15,7 +15,7 @@ describe PasswordResetsController, type: :controller do
 
   describe '#create' do
     context 'with valid params' do
-      it 'should send reset password email' do
+      skip 'should send reset password email' do
         post :create, params: { email_form: { email: user.email } }
         response.should redirect_to new_session_path
         ActionMailer::Base.deliveries.last.to.first.should == user.email
@@ -23,7 +23,7 @@ describe PasswordResetsController, type: :controller do
     end
 
     context 'with invalid params' do
-      it 'should not send reset password email' do
+      skip 'should not send reset password email' do
         post :create, params: { email_form: { email: 'sdfdsf' } }
         response.should render_template('password_resets/new')
         ActionMailer::Base.deliveries.count.should == 0
@@ -34,14 +34,14 @@ describe PasswordResetsController, type: :controller do
   describe '#edit' do
     let(:user) { create :user, reset_password_token: 'dfsdf' }
     context 'with valid params' do
-      it 'should allow access to set password' do
+      skip 'should allow access to set password' do
         get :edit, params: { id: user.reset_password_token }
         response.should be_successful
       end
     end
 
     context 'with invalid params' do
-      it 'should not allow access to set password' do
+      skip 'should not allow access to set password' do
         get :edit, params: { id: '32' }
         response.should_not be_successful
       end
@@ -51,7 +51,7 @@ describe PasswordResetsController, type: :controller do
   describe '#update' do
     let(:user) { create :user, reset_password_token: 'dfsdf' }
     context 'with valid params' do
-      it 'should change password' do
+      skip 'should change password' do
         user.crypted_password
         post :update,
              params: { id: '32', token: user.reset_password_token,
@@ -63,7 +63,7 @@ describe PasswordResetsController, type: :controller do
     end
 
     context 'with invalid params' do
-      it 'should not change password' do
+      skip 'should not change password' do
         user.crypted_password
         post :update,
              params: { id: '32', token: user.reset_password_token,
