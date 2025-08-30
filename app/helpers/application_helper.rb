@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ostruct'
+
 module ApplicationHelper
   def roles_collection
     @roles_collection ||= Membership.roles.keys.each_with_object([]) { |v, roles| roles << [t("roles.#{v}"), v] }
