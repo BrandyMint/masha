@@ -256,7 +256,7 @@ module Telegram
     def handle_error(error)
       case error
       when Telegram::Bot::Forbidden
-        logger.error(error)
+        Rails.logger.error error
       when NotAvailableInPublicChat
         # do nothing
       when Unauthenticated
@@ -266,7 +266,7 @@ module Telegram
           "Привяжи телеграм к своему аккаунту по этой ссылке: #{generate_start_link}"
         )
       else # ActiveRecord::ActiveRecordError
-        logger.error error
+        Rails.logger.error error
         Bugsnag.notify error do |b|
           b.meta_data = { chat: chat, from: from }
         end
