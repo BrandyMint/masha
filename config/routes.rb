@@ -27,6 +27,8 @@ Masha::Application.routes.draw do
 
   get 'ta/:id', action: :create, controller: 'telegram/attach', as: :attach_telegram
 
+  get 'telegram/auth_callback', to: 'telegram_auth_callback#create'
+  get 'telegram/confirm', to: 'telegram_auth_callback#confirm'
   telegram_webhook Telegram::WebhookController unless Rails.env.test?
 
   constraints subdomain: 'admin' do

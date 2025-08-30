@@ -23,7 +23,6 @@ class User < ApplicationRecord
   scope :ordered, -> { order :name }
   # scope :without, -> (user) { where arel_table[:id].not_eq(user.id) }
 
-  validates :name, presence: true
   validates :nickname, uniqueness: true, allow_blank: true
   validates :pivotal_person_id, uniqueness: true, allow_blank: true, numericality: true
   validates :email, email: true, uniqueness: true, allow_blank: true
@@ -51,10 +50,6 @@ class User < ApplicationRecord
     memberships.members.count > memberships.count / 2
   end
 
-  def to_s
-    name
-  end
-
   def by_provider(prov)
     authentications.by_provider(prov).first
   end
@@ -77,6 +72,38 @@ class User < ApplicationRecord
 
     member.role = role
     member.save!
+  end
+
+  def to_s
+    telegram_user.present? ? public_name : email.split.first
+  end
+
+  def avatar_url
+    telegram_user.try(:photo_url) || Gravatar.src(email)
+  end
+
+  def self.find_or_create_by_telegram_data!(data)
+    create_with(locale: I18n.locale)
+      .find_or_create_by!(
+        telegram_user: TelegramUser.find_or_create_by_telegram_data!(data)
+      )
+  end
+
+  def self.find_or_create_by_telegram_id!(tid)
+    create_with(locale: I18n.locale)
+      .find_or_create_by!(
+        telegram_user_id: tid
+      )
+  end
+
+  def self.authenticate(data)
+    if defined?(UserSession) && data.is_a?(UserSession)
+      yield create_with(locale: I18n.locale).find_or_create_by!(email: data.email)
+    else
+      yield(
+        data.is_a?(String) ? User.find_or_create_by_telegram_id!(data) : User.find_or_create_by_telegram_data!(data),
+        nil)
+    end
   end
 
   def available_projects

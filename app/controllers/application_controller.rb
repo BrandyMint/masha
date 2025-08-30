@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   before_action :define_page_title
-  after_action :check_email_existence
 
   protect_from_forgery with: :exception if Rails.env.production?
 
@@ -20,12 +19,6 @@ class ApplicationController < ActionController::Base
   # rescue_from ActiveRecord::RecordNotFound, :with => :error_not_found
 
   private
-
-  def check_email_existence
-    return unless logged_in? && current_user.email.blank?
-
-    flash[:alert] = t('no_email', url: edit_profile_path).html_safe
-  end
 
   def home_url
     if current_user.present?

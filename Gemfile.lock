@@ -378,6 +378,7 @@ GEM
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.3.0)
+    nanoid (2.0.0)
     nenv (0.3.0)
     net-imap (0.5.9)
       date
@@ -611,9 +612,9 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (>= 3.0, < 6.0, != 5.0.0)
-    snaky_hash (2.0.1)
-      hashie
-      version_gem (~> 1.1, >= 1.1.1)
+    snaky_hash (2.0.3)
+      hashie (>= 0.1.0, < 6)
+      version_gem (>= 1.1.8, < 3)
     socksify (1.7.1)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
@@ -680,7 +681,7 @@ GEM
     validates_timeliness (8.0.0)
       activemodel (>= 8.0.0, < 9)
       timeliness (>= 0.3.10, < 1)
-    version_gem (1.1.6)
+    version_gem (1.1.8)
     webrick (1.9.1)
     websocket-driver (0.8.0)
       base64
@@ -746,6 +747,7 @@ DEPENDENCIES
   logger (~> 1.7)
   mini_magick (>= 4.9.4)
   mini_racer (>= 0.2.6)
+  nanoid (~> 2.0)
   non-stupid-digest-assets
   omniauth
   omniauth-github!

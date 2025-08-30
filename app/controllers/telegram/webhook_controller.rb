@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module Telegram
   class WebhookController < Telegram::Bot::UpdatesController
     Error = Class.new StandardError
@@ -10,7 +11,7 @@ module Telegram
     include Telegram::Bot::UpdatesController::MessageContext
     include Telegram::Bot::UpdatesController::CallbackQueryContext
 
-    before_action :require_authenticated, only: %i[new! projects! add! start!]
+    before_action :require_authenticated, only: %i[new! projects! add!]
     before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start!]
 
     rescue_from StandardError, with: :handle_error
@@ -120,8 +121,20 @@ module Telegram
       respond_with :message, text: message
     end
 
-    def start!(_data = nil, *)
-      respond_with :message, text: multiline('Мы уже знакомы.', nil, nil, help_message)
+    def start!(word = nil, *_other_words)
+      if word.to_s.start_with? ApplicationHelper::AUTH_PREFIX
+        session_token = word.delete ApplicationHelper::AUTH_PREFIX
+        verifier = Rails.application.message_verifier :telegram
+        data = { st: session_token, tid: telegram_user.id, t: Time.zone.now.to_i }
+        token = verifier.generate(data, purpose: :login)
+        respond_with :message,
+                     text: "Вы авторизованы! Перейдите на сайт: #{Rails.application.routes.url_helpers.telegram_confirm_url(token:)}"
+      elsif logged_in?
+        respond_with :message, text: multiline('С возращением!', nil, nil, help_message)
+      else
+        respond_with :message,
+                     text: "Привет! Чтобы авторизоваться перейдите на сайт: #{Rails.application.routes.url_helpers.new_session_url}"
+      end
     end
 
     def help!(*)
@@ -136,9 +149,9 @@ module Telegram
                      reply_markup: {
                        resize_keyboard: true,
                        inline_keyboard:
-                         current_user.available_projects.alive
-                                     .map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
-                                     .each_slice(3).to_a
+                       current_user.available_projects.alive
+                                   .map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
+                                   .each_slice(3).to_a
                      }
         return
       end
@@ -273,5 +286,36 @@ module Telegram
         respond_with :message, text: "Error: #{error.message}"
       end
     end
+
+    # Пользователь написал в бота и заблокировал его (наверное добавлен где-то в канале или тп)
+    def bot_forbidden(error)
+      Bugsnag.notify error
+      Rails.logger.error "#{error} #{chat.to_json}"
+    end
+
+    # У бота уже нет доступа отвечать в чат
+    #
+    def bot_error(error)
+      Bugsnag.notify error
+      Rails.logger.error "#{error} #{chat.to_json}"
+    end
+
+    def current_bot_id
+      bot.token.split(':').first
+    end
+
+    def telegram_user
+      @telegram_user ||= TelegramUser
+                         .create_with(chat.slice(*%w[first_name last_name username]))
+                         .create_or_find_by! id: chat.fetch('id')
+    end
+
+    def notify_bugsnag(message)
+      Rails.logger.err message
+      Bugsnag.notify message do |b|
+        b.metadata = payload
+      end
+    end
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_27_074826) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_30_091559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -90,6 +90,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_074826) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  create_table "telegram_users", id: :string, force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.string "photo_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "time_shifts", force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "user_id", null: false
@@ -104,7 +113,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_074826) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.boolean "is_root", default: false, null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -119,8 +128,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_074826) do
     t.string "reset_password_token"
     t.datetime "reset_password_token_expires_at", precision: nil
     t.datetime "reset_password_email_sent_at", precision: nil
+    t.bigint "telegram_user_id"
+    t.string "locale", default: "ru"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
+    t.index ["telegram_user_id"], name: "index_users_on_telegram_user_id", unique: true
   end
 end

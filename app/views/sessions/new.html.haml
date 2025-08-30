@@ -1,14 +1,30 @@
 .row
   .col-sm-9.col-sm-offset-3
     .page-header
-      %h1 Вход
+      %h1 Заходи через телегу
   .col-sm-4.col-sm-offset-3
-    = render 'sessions/form'
-  .col-sm-4.col-sm-offset-1
-    = login_with_github
-    %hr
-    Нет аккаунта?
-    = link_to "Зарегистрироваться", signup_url
-    %hr
-    = t('.password_reset_label')
-    = link_to t('.password_reset_link'), new_password_reset_path
+    = render 'telegram_login'
+    -#= render 'form'
+  -#.col-sm-4.col-sm-offset-1
+    -#= login_with_github
+    -#%hr.visible-sm
+    -#%br.hidden-sm
+    -#%br.hidden-sm
+    -#Уже есть аккаунт?
+    -#= link_to 'Войти', login_url
+
+
+-#.row
+  -#.col-sm-9.col-sm-offset-3
+    -#.page-header
+      -#%h1 Вход
+  -#.col-sm-4.col-sm-offset-3
+    -#= render 'sessions/form'
+  -#.col-sm-4.col-sm-offset-1
+    -#= login_with_github
+    -#%hr
+    -#Нет аккаунта?
+    -#= link_to "Зарегистрироваться", signup_url
+    -#%hr
+    -#= t('.password_reset_label')
+    -#= link_to t('.password_reset_link'), new_password_reset_path

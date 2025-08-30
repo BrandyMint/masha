@@ -9,6 +9,7 @@ class ApplicationConfig < Anyway::Config
     title: 'MashTime',
     host: 'localhost',
     protocol: 'https',
+    port: '443',
     telegram_auth_expiration: 120, # В Секундах
     redis_cache_store_url: 'redis://localhost:6379/2',
     bot_token: '',
@@ -24,10 +25,18 @@ class ApplicationConfig < Anyway::Config
 
   def home_url
     if home_subdomain.present?
-      "#{protocol}://#{home_subdomain}.#{host}"
+      "#{protocol}://#{home_subdomain}.#{host}:#{port_suffix}"
     else
-      "#{protocol}://#{host}"
+      "#{protocol}://#{host}#{port_suffix}"
     end
+  end
+
+  def port_suffix
+    return if port.blank?
+    return if port.to_s == '80' && protocol == 'http'
+    return if port.to_s == '443' && protocol == 'https'
+
+    ":#{port}"
   end
 
   def bot_url
@@ -39,7 +48,9 @@ class ApplicationConfig < Anyway::Config
   end
 
   def default_url_options
-    { host:, protocol: }
+    options = { host:, protocol: }
+    options.merge! port: port unless (port.to_s == '80' && protocol == 'http') || (port.to_s == '443' && protocol == 'https')
+    options
   end
 
   def telegram_bot_link

@@ -1,16 +1,17 @@
 .row
   .col-sm-9.col-sm-offset-3
     .page-header
-      %h1 Регистрация
+      %h1 Заходи через телегу
   .col-sm-4.col-sm-offset-3
-    = render 'form'
-  .col-sm-4.col-sm-offset-1
-    = login_with_github
-    %hr.visible-sm
-    %br.hidden-sm
-    %br.hidden-sm
-    Уже есть аккаунт?
-    = link_to 'Войти', login_url
+    = render 'telegram_login'
+    -#= render 'form'
+  -#.col-sm-4.col-sm-offset-1
+    -#= login_with_github
+    -#%hr.visible-sm
+    -#%br.hidden-sm
+    -#%br.hidden-sm
+    -#Уже есть аккаунт?
+    -#= link_to 'Войти', login_url
 
 
 
