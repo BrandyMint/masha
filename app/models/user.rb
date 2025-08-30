@@ -12,9 +12,8 @@ class User < ApplicationRecord
 
   has_many :authentications, dependent: :destroy
   has_many :memberships, dependent: :destroy
-  has_many :active_memberships, -> { includes(:projects).where projects: { active: true } }, class_name: 'Membership'
-
-  # TODO Выделить в query object
+  has_many :active_memberships, -> { joins(:project).where projects: { active: true } }, class_name: 'Membership'
+  has_many :active_available_users, through: :active_memberships, source: :available_users
   has_many :available_users, through: :memberships
 
   has_many :projects, through: :memberships
