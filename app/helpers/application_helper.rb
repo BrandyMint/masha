@@ -154,7 +154,7 @@ module ApplicationHelper
 
     user = OpenStruct.new(current_user.attributes.clone)
     user.name = user.name.clone.concat t('helpers.you')
-    @auvc.unshift user
+    @auvc.to_a.unshift user
 
     @auvc
   end
