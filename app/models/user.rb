@@ -5,6 +5,8 @@ class User < ApplicationRecord
   include Authority::UserAbilities
   include Authority::Abilities
 
+  belongs_to :telegram_user, optional: true
+
   # has_many :owned_projects, class_name: 'Project', foreign_key: :owner_id
 
   has_many :time_shifts
