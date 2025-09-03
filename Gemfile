@@ -203,7 +203,7 @@ gem 'csv', '~> 3.3'
 
 gem 'logger', '~> 1.7'
 
-gem 'concurrent-ruby', '1.3.4'
+gem 'concurrent-ruby', '1.3.5'
 
 gem 'anyway_config', '~> 2.7'
 
