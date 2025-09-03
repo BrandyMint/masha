@@ -11,8 +11,8 @@ module Telegram
     include Telegram::Bot::UpdatesController::MessageContext
     include Telegram::Bot::UpdatesController::CallbackQueryContext
 
-    before_action :require_authenticated, only: %i[new! projects! add!]
-    before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start!]
+    before_action :require_authenticated, only: %i[new! projects! add! adduser!]
+    before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start! adduser!]
 
     rescue_from StandardError, with: :handle_error
 
@@ -181,6 +181,69 @@ module Telegram
       respond_with :message, text: "Создан проект `#{project.slug}`"
     end
 
+    def adduser!(project_slug = nil, username = nil, role = 'member', *)
+      if project_slug.blank?
+        respond_with :message, text: 'Укажите название проекта'
+        return
+      end
+
+      if username.blank?
+        respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)'
+        return
+      end
+
+      # Remove @ from username if present
+      username = username.delete_prefix('@')
+
+      project = find_project(project_slug)
+      unless project
+        respond_with :message, text: "Не найден проект '#{project_slug}'. Вам доступны: #{current_user.available_projects.alive.join(', ')}"
+        return
+      end
+
+      # Check if current user can manage this project (owner or viewer role)
+      membership = current_user.membership_of(project)
+      unless membership&.owner? || membership&.viewer?
+        respond_with :message, text: "У вас нет прав для добавления пользователей в проект '#{project.slug}'"
+        return
+      end
+
+      # Find user by Telegram username
+      telegram_user = TelegramUser.find_by(username: username)
+      unless telegram_user
+        respond_with :message, text: "Пользователь с никнеймом '@#{username}' не найден. " \
+                                     'Пользователь должен сначала авторизоваться через бота.'
+        return
+      end
+
+      user = telegram_user.user
+      unless user
+        respond_with :message, text: "Пользователь '@#{username}' не привязан к системе. Попросите его авторизоваться через /start"
+        return
+      end
+
+      # Check if user is already in project
+      existing_membership = user.membership_of(project)
+      if existing_membership
+        respond_with :message, text: "Пользователь '@#{username}' уже участвует в проекте '#{project.slug}' " \
+                                     "с ролью #{existing_membership.role}"
+        return
+      end
+
+      # Validate role
+      valid_roles = %w[owner viewer member]
+      role = role.downcase
+      unless valid_roles.include?(role)
+        respond_with :message, text: "Неверная роль '#{role}'. Доступные роли: #{valid_roles.join(', ')}"
+        return
+      end
+
+      # Add user to project
+      user.set_role(role.to_sym, project)
+
+      respond_with :message, text: "Пользователь '@#{username}' добавлен в проект '#{project.slug}' с ролью '#{role}'"
+    end
+
     private
 
     def help_message
@@ -190,6 +253,7 @@ module Telegram
         '/attach {projects_slug} - Указать проект этого чата',
         '/add {project_slug} {hours} {comment} - Отметить время',
         '/new {project_slug} - Создать новый проект',
+        '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
         '/report - Детальный отчёт по командам и проектам',
         '/summary {week|month}- Сумарный отчёт за период'
       )

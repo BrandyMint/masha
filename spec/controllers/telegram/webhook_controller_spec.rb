@@ -50,6 +50,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         subject { -> { dispatch_command :start } }
         it { should respond_with_message(/возращением/) }
       end
+
+      describe '#adduser!' do
+        context 'without parameters' do
+          subject { -> { dispatch_command :adduser } }
+          it { should respond_with_message(/Укажите название проекта/) }
+        end
+
+        context 'without username' do
+          subject { -> { dispatch_command :adduser, 'project1' } }
+          it { should respond_with_message(/Укажите никнейм пользователя/) }
+        end
+      end
     end
   end
 
