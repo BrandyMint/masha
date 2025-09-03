@@ -49,3 +49,8 @@ node_modules/
 !/app/assets/builds/.keep
 
 /node_modules
+
+# ClaudeOnRails
+.claude-on-rails/sessions/
+.claude-swarm/
+claude-swarm.log

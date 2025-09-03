@@ -126,3 +126,4 @@ Three role levels per project:
 - Thruster for asset acceleration
 - GitHub Actions for CI (tests.yml workflow)
 - Semver-based releases via Makefile
+/file:.claude-on-rails/context.md

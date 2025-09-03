@@ -159,7 +159,7 @@ end
 
 group :development do
   gem 'bond'
-
+  gem 'claude-on-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'rb-fsevent', '~> 0.9.1', require: false

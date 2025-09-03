@@ -147,6 +147,13 @@ GEM
     chartkick (5.2.0)
     childprocess (5.1.0)
       logger (~> 1.5)
+    claude-on-rails (0.2.0)
+      claude_swarm (~> 0.1)
+      rails (>= 6.0)
+    claude_swarm (0.1.20)
+      fast-mcp-annotations
+      thor (~> 1.3)
+      zeitwerk (~> 2.7.3)
     coderay (1.1.3)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
@@ -181,6 +188,35 @@ GEM
       request_store (>= 1.0)
       ruby2_keywords
     drb (2.2.3)
+    dry-configurable (1.3.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-core (1.1.0)
+      concurrent-ruby (~> 1.0)
+      logger
+      zeitwerk (~> 2.6)
+    dry-inflector (1.2.0)
+    dry-initializer (3.2.0)
+    dry-logic (1.6.0)
+      bigdecimal
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-schema (1.14.1)
+      concurrent-ruby (~> 1.0)
+      dry-configurable (~> 1.0, >= 1.0.1)
+      dry-core (~> 1.1)
+      dry-initializer (~> 3.2)
+      dry-logic (~> 1.5)
+      dry-types (~> 1.8)
+      zeitwerk (~> 2.6)
+    dry-types (1.8.3)
+      bigdecimal (~> 3.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
     email_spec (2.3.0)
       htmlentities (~> 4.3.3)
       launchy (>= 2.1, < 4.0)
@@ -221,6 +257,13 @@ GEM
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
+    fast-mcp-annotations (1.5.3)
+      addressable (~> 2.8)
+      base64
+      dry-schema (~> 1.14)
+      json (~> 2.0)
+      mime-types (~> 3.4)
+      rack (< 3)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -363,6 +406,10 @@ GEM
       net-smtp
     marcel (1.0.4)
     method_source (1.1.0)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2025.0902)
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
@@ -715,6 +762,7 @@ DEPENDENCIES
   breadcrumbs_on_rails
   bugsnag (~> 6.11)
   carrierwave
+  claude-on-rails
   coffee-rails
   concurrent-ruby (= 1.3.4)
   cssbundling-rails (~> 1.4)
