@@ -30,7 +30,8 @@ x-backend: &backend
     - ./.bashrc:/root/.bashrc:ro
   environment: &backend_environment
     <<: *env
-    DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    DATABASE_URL: postgres://postgres:postgres@postgres:5432/masha_development
+    MASHA_REDIS_CACHE_STORE_URL: redis://redis:6379
     MALLOC_ARENA_MAX: 2
     WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
