@@ -84,10 +84,10 @@ module Telegram
         return
       end
 
-      # Check permissions
+      # Check permissions - only owners can add users
       membership = current_user.membership_of(project)
-      unless membership&.owner? || membership&.viewer?
-        edit_message :text, text: 'У вас нет прав для добавления пользователей в этот проект'
+      unless membership&.owner?
+        edit_message :text, text: 'У вас нет прав для добавления пользователей в этот проект, только владелец (owner) может это сделать.'
         return
       end
 
@@ -231,9 +231,9 @@ module Telegram
 
     def adduser!(project_slug = nil, username = nil, role = 'member', *)
       if project_slug.blank?
-        # Interactive mode - show project selection
+        # Interactive mode - show project selection (only projects where user is owner)
         manageable_projects = current_user.available_projects.alive.joins(:memberships)
-                                          .where(memberships: { user: current_user, role: %w[owner viewer] })
+                                          .where(memberships: { user: current_user, role: 'owner' })
 
         if manageable_projects.empty?
           respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
@@ -272,7 +272,8 @@ module Telegram
       # Check if current user can manage this project (owner or viewer role)
       membership = current_user.membership_of(project)
       unless membership&.owner?
-        respond_with :message, text: "У вас нет прав для добавления пользователей в проект '#{project.slug}', только владелец (owner) может это сделать."
+        respond_with :message, text: "У вас нет прав для добавления пользователей в проект '#{project.slug}', " \
+                                     'только владелец (owner) может это сделать.'
         return
       end
 
