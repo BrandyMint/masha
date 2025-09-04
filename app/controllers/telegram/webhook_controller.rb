@@ -189,6 +189,10 @@ module Telegram
       respond_with :message, text: help_message
     end
 
+    def version!(*)
+      respond_with :message, text: "Версия Маши: #{AppVersion}"
+    end
+
     def add!(project_slug = nil, hours = nil, *description)
       if project_slug.nil?
         save_context :add_callback_query
@@ -316,6 +320,7 @@ module Telegram
     def help_message
       multiline(
         '/help - Эта подсказка',
+        '/version - Версия Маши',
         '/projects - Список проектов',
         '/attach {projects_slug} - Указать проект этого чата',
         '/add {project_slug} {hours} {comment} - Отметить время',
