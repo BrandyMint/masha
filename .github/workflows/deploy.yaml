@@ -1,4 +1,4 @@
-name: Build And Push Image
+name: Deploy
 on:
   # Вызвал пользователь
   workflow_dispatch:
