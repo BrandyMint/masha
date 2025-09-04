@@ -33,8 +33,8 @@ The development server runs multiple processes:
 ```bash
 make test                    # Run full test suite (test + test:system)
 ./bin/rails db:test:prepare test test:system  # Full test command
-rspec                        # Run RSpec tests
-guard                        # Run tests with file watching
+./bin/rsp                      # Run RSpec tests
+/bin/guard                        # Run tests with file watching
 ```
 
 ### Linting and Code Quality
