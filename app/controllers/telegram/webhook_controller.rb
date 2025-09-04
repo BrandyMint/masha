@@ -237,7 +237,7 @@ module Telegram
       if project_slug.blank?
         # Interactive mode - show project selection (only projects where user is owner)
         manageable_projects = current_user.available_projects.alive.joins(:memberships)
-                                          .where(memberships: { user: current_user, role: 'owner' })
+                                          .where(memberships: { user: current_user, role_cd: 0 })
 
         if manageable_projects.empty?
           respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
@@ -304,9 +304,8 @@ module Telegram
       end
 
       # Validate role
-      valid_roles = %w[owner viewer member]
       role = role.downcase
-      unless valid_roles.include?(role)
+      unless Membership.roles.keys.include?(role)
         respond_with :message, text: "Неверная роль '#{role}'. Доступные роли: #{valid_roles.join(', ')}"
         return
       end
