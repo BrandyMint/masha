@@ -49,7 +49,9 @@ class ApplicationConfig < Anyway::Config
 
   def default_url_options
     options = { host:, protocol: }
-    options.merge! port: public_port unless (public_port.to_s == '80' && protocol == 'http') || (public_port.to_s == '443' && protocol == 'https')
+    unless (public_port.to_s == '80' && protocol == 'http') || (public_port.to_s == '443' && protocol == 'https')
+      options.merge! port: public_port
+    end
     options
   end
 

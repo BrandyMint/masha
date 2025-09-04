@@ -25,6 +25,10 @@
         .col-sm-6.col-md-6
           .welcome-start-button
             = render 'telegram_login'
+  .row
+    .col-sm-offset-3.col-sm-8
+      .welcome-version.text-muted.m-t-lg
+        = "v#{AppVersion.format('%M.%m.%p')}"
   -#.welcome-description
     -#.row
       -#.col-md-5.welcome-feature-block
