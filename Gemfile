@@ -41,7 +41,7 @@ gem 'active_attr'
 gem 'hashie'
 gem 'validates_timeliness'
 
-gem 'friendly_id', '~> 5.0.0'
+gem 'friendly_id', '~> 5.5.1'
 # берется последняя версия для совместимости с rails 4
 # gem 'state_machine', :git => 'git://github.com/pluginaweek/state_machine.git'
 # gem 'simple_enum'
