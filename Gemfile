@@ -158,6 +158,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'dip'
   gem 'bond'
   gem 'claude-on-rails'
   gem 'better_errors'
