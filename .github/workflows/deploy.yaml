@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          gh --repo ${{ env.INFRA_REPO }} workflow run ${{ env.WORKFLOW }} -F tag=${{ needs.build.outputs.version }} -F app=${{ github.event.repository.name }} -F stage=${{ env.STAGE }}
+          gh --repo ${{ env.INFRA_REPO }} workflow run ${{ env.WORKFLOW }} -F tag=${{ inputs.tag }} -F app=${{ github.event.repository.name }} -F stage=${{ env.STAGE }}
           runId=$(gh --repo ${{ env.INFRA_REPO }} run list --workflow=${{ env.WORKFLOW }} --limit 1 --json databaseId -q '.[].databaseId')
           gh --repo ${{ env.INFRA_REPO }} run watch --exit-status ${runId}
         env:
