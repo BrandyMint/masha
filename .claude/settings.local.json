@@ -4,7 +4,8 @@
       "Bash(bundle exec rubocop:*)",
       "Bash(bundle exec rspec:*)",
       "Bash(find:*)",
-      "Bash(ruby:*)"
+      "Bash(ruby:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
