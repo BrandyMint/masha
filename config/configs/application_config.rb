@@ -9,7 +9,7 @@ class ApplicationConfig < Anyway::Config
     title: 'MashTime',
     host: 'localhost',
     protocol: 'https',
-    port: '443',
+    public_port: '443',
     telegram_auth_expiration: 120, # В Секундах
     redis_cache_store_url: 'redis://localhost:6379/2',
     bot_token: '',
@@ -32,11 +32,11 @@ class ApplicationConfig < Anyway::Config
   end
 
   def port_suffix
-    return if port.blank?
-    return if port.to_s == '80' && protocol == 'http'
-    return if port.to_s == '443' && protocol == 'https'
+    return if public_port.blank?
+    return if public_port.to_s == '80' && protocol == 'http'
+    return if public_port.to_s == '443' && protocol == 'https'
 
-    ":#{port}"
+    ":#{public_port}"
   end
 
   def bot_url
@@ -49,7 +49,7 @@ class ApplicationConfig < Anyway::Config
 
   def default_url_options
     options = { host:, protocol: }
-    options.merge! port: port unless (port.to_s == '80' && protocol == 'http') || (port.to_s == '443' && protocol == 'https')
+    options.merge! port: public_port unless (public_port.to_s == '80' && protocol == 'http') || (public_port.to_s == '443' && protocol == 'https')
     options
   end
 
