@@ -77,6 +77,54 @@ module Telegram
                    text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
     end
 
+    def adduser_project_callback_query(project_slug)
+      project = find_project(project_slug)
+      unless project
+        edit_message :text, text: 'Проект не найден'
+        return
+      end
+
+      # Check permissions
+      membership = current_user.membership_of(project)
+      unless membership&.owner? || membership&.viewer?
+        edit_message :text, text: 'У вас нет прав для добавления пользователей в этот проект'
+        return
+      end
+
+      session[:adduser_project_slug] = project_slug
+      save_context :adduser_username_input
+      edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
+    end
+
+    def adduser_username_input(username, *)
+      username = username.delete_prefix('@') if username.start_with?('@')
+      session[:adduser_username] = username
+
+      save_context :adduser_role_callback_query
+      respond_with :message,
+                   text: "Пользователь: @#{username}\nВыберите роль для пользователя:",
+                   reply_markup: {
+                     inline_keyboard: [
+                       [{ text: 'Владелец (owner)', callback_data: 'adduser_role:owner' }],
+                       [{ text: 'Наблюдатель (viewer)', callback_data: 'adduser_role:viewer' }],
+                       [{ text: 'Участник (member)', callback_data: 'adduser_role:member' }]
+                     ]
+                   }
+    end
+
+    def adduser_role_callback_query(role)
+      project_slug = session[:adduser_project_slug]
+      username = session[:adduser_username]
+
+      # Clean up session
+      session.delete(:adduser_project_slug)
+      session.delete(:adduser_username)
+
+      edit_message :text, text: "Добавляем пользователя @#{username} в проект #{project_slug} с ролью #{role}..."
+
+      add_user_to_project(project_slug, username, role)
+    end
+
     def add_time(hours, *description)
       project = current_user.available_projects.find(session[:add_time_project_id]) || raise('Не указан проект')
       description = description.join(' ')
@@ -183,7 +231,21 @@ module Telegram
 
     def adduser!(project_slug = nil, username = nil, role = 'member', *)
       if project_slug.blank?
-        respond_with :message, text: 'Укажите название проекта'
+        # Interactive mode - show project selection
+        manageable_projects = current_user.available_projects.alive.joins(:memberships)
+                                          .where(memberships: { user: current_user, role: %w[owner viewer] })
+
+        if manageable_projects.empty?
+          respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
+          return
+        end
+
+        save_context :adduser_project_callback_query
+        respond_with :message,
+                     text: 'Выберите проект, в который хотите добавить пользователя:',
+                     reply_markup: {
+                       inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
+                     }
         return
       end
 
@@ -192,6 +254,12 @@ module Telegram
         return
       end
 
+      add_user_to_project(project_slug, username, role)
+    end
+
+    private
+
+    def add_user_to_project(project_slug, username, role)
       # Remove @ from username if present
       username = username.delete_prefix('@')
 
@@ -203,8 +271,8 @@ module Telegram
 
       # Check if current user can manage this project (owner or viewer role)
       membership = current_user.membership_of(project)
-      unless membership&.owner? || membership&.viewer?
-        respond_with :message, text: "У вас нет прав для добавления пользователей в проект '#{project.slug}'"
+      unless membership&.owner?
+        respond_with :message, text: "У вас нет прав для добавления пользователей в проект '#{project.slug}', только владелец (owner) может это сделать."
         return
       end
 
@@ -243,8 +311,6 @@ module Telegram
 
       respond_with :message, text: "Пользователь '@#{username}' добавлен в проект '#{project.slug}' с ролью '#{role}'"
     end
-
-    private
 
     def help_message
       multiline(

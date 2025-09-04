@@ -58,7 +58,6 @@ gem 'recipient_interceptor'
 
 gem 'carrierwave'
 gem 'mini_magick', '>= 4.9.4'
-gem 'mini_racer', '>= 0.2.6'
 
 # Контроллеры
 # gem 'has_scope'
@@ -158,11 +157,11 @@ group :development, :test do
 end
 
 group :development do
-  gem 'dip'
-  gem 'bond'
-  gem 'claude-on-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'bond'
+  gem 'claude-on-rails'
+  gem 'dip'
   gem 'rb-fsevent', '~> 0.9.1', require: false
 
   gem 'letter_opener_web'
