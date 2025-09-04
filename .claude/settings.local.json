@@ -5,7 +5,8 @@
       "Bash(bundle exec rspec:*)",
       "Bash(find:*)",
       "Bash(ruby:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(./bin/dev)"
     ],
     "deny": [],
     "ask": []

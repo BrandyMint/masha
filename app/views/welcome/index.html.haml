@@ -24,16 +24,7 @@
       .row
         .col-sm-6.col-md-6
           .welcome-start-button
-            = login_with_github :welcome
-            %p.welcome-button-caption
-              = link_to signup_url, class: 'btn btn-welcome btn-block' do
-                Или войти через email
-        .col-sm-5.col-md-2.col-lg-3.col-sm-offset-1.col-lg-offset-0
-          .btn-welcome-block
-            = link_to signup_url, class: 'btn btn-welcome btn-block' do
-              %small Нет аккаунта?
-              %br
-              %strong Зарегистрируйтесь
+            = render 'telegram_login'
   -#.welcome-description
     -#.row
       -#.col-md-5.welcome-feature-block
