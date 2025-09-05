@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Masha is a time tracking service built as both a Telegram bot (@MashTimeBot) and web application. It's a Rails 8 application with PostgreSQL backend and Bootstrap/Sass frontend.
 
+## Термины
+
+Разработчик - пользователь telegram с id указаным в developer_telegram_id
+
 ## Development Commands
 
 ### Setup and Dependencies
