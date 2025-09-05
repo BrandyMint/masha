@@ -10,6 +10,7 @@ class Membership < ApplicationRecord
   has_many :authentications, through: :user
 
   after_initialize :set_defaults
+  after_commit :notify_project_members, on: :create
 
   self.authorizer_name = 'MembershipAuthorizer'
 
@@ -29,5 +30,14 @@ class Membership < ApplicationRecord
 
   def set_defaults
     self.role ||= DEFAULT_ROLE # will set the default value only if it's nil
+  end
+
+  private
+
+  def notify_project_members
+    ProjectMemberNotificationJob.perform_later(
+      project_id: project.id,
+      new_member_id: user.id
+    )
   end
 end
