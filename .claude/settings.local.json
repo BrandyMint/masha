@@ -8,7 +8,8 @@
       "Bash(mkdir:*)",
       "Bash(./bin/dev)",
       "Bash(bundle exec rails generate migration:*)",
-      "Bash(bundle exec rails:*)"
+      "Bash(bundle exec rails:*)",
+      "WebFetch(domain:alexpeattie.com)"
     ],
     "deny": [],
     "ask": []
