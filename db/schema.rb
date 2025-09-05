@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_03_111143) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_05_043820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,8 +63,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_03_111143) do
     t.integer "project_id"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.string "telegram_username"
     t.index ["email"], name: "index_invites_on_email", unique: true
     t.index ["project_id"], name: "index_invites_on_project_id"
+    t.index ["telegram_username", "project_id"], name: "index_invites_on_telegram_username_and_project_id", unique: true
     t.index ["user_id"], name: "index_invites_on_user_id"
   end
 

@@ -6,7 +6,9 @@
       "Bash(find:*)",
       "Bash(ruby:*)",
       "Bash(mkdir:*)",
-      "Bash(./bin/dev)"
+      "Bash(./bin/dev)",
+      "Bash(bundle exec rails generate migration:*)",
+      "Bash(bundle exec rails:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,6 +5,8 @@ class TelegramUser < ApplicationRecord
 
   validates :id, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
+  after_commit :check_and_process_invitations, on: :create
+
   def self.find_or_create_by_telegram_data!(data)
     create_with(
       data.slice('first_name', 'last_name', 'username', 'photo_url')
@@ -15,8 +17,13 @@ class TelegramUser < ApplicationRecord
   # chat =>
   # {"id"=>943084337, "first_name"=>"Danil", "last_name"=>"Pismenny", "username"=>"pismenny", "type"=>"private"}
   def update_from_chat!(chat)
+    old_username = username
     assign_attributes chat.slice(*%w[first_name last_name username])
-    save! if changed?
+    return unless changed?
+
+    save!
+    # Check invitations if username changed
+    check_and_process_invitations if username != old_username
   end
 
   def name
@@ -29,5 +36,28 @@ class TelegramUser < ApplicationRecord
 
   def telegram_nick
     "@#{username}"
+  end
+
+  private
+
+  def check_and_process_invitations
+    return if username.blank?
+
+    invitations = Invite.activate_for_telegram_user(self)
+    return if invitations.blank?
+
+    # Send notifications for activated invitations
+    invitations.each do |invite|
+      send_invitation_notification(invite)
+    end
+
+    invitations.destroy_all
+  end
+
+  def send_invitation_notification(invite)
+    TelegramNotificationJob.perform_later(
+      user_id: id,
+      message: "🎉 Вы были добавлены в проект '#{invite.project.name}' с ролью '#{invite.role}' пользователем #{invite.user}!"
+    )
   end
 end

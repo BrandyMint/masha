@@ -281,39 +281,52 @@ module Telegram
         return
       end
 
-      # Find user by Telegram username
-      telegram_user = TelegramUser.find_by(username: username)
-      unless telegram_user
-        respond_with :message, text: "Пользователь с никнеймом '@#{username}' не найден. " \
-                                     'Пользователь должен сначала авторизоваться через бота.'
-        return
-      end
-
-      user = telegram_user.user
-      unless user
-        respond_with :message, text: "Пользователь '@#{username}' не привязан к системе. Попросите его авторизоваться через /start"
-        return
-      end
-
-      # Check if user is already in project
-      existing_membership = user.membership_of(project)
-      if existing_membership
-        respond_with :message, text: "Пользователь '@#{username}' уже участвует в проекте '#{project.slug}' " \
-                                     "с ролью #{existing_membership.role}"
-        return
-      end
-
       # Validate role
       role = role.downcase
       unless Membership.roles.keys.include?(role)
-        respond_with :message, text: "Неверная роль '#{role}'. Доступные роли: #{valid_roles.join(', ')}"
+        respond_with :message, text: "Неверная роль '#{role}'. Доступные роли: #{Membership.roles.keys.join(', ')}"
         return
       end
 
-      # Add user to project
-      user.set_role(role.to_sym, project)
+      # Find user by Telegram username
+      telegram_user = TelegramUser.find_by(username: username)
 
-      respond_with :message, text: "Пользователь '@#{username}' добавлен в проект '#{project.slug}' с ролью '#{role}'"
+      if telegram_user&.user
+        # User exists and is linked to system
+        user = telegram_user.user
+
+        # Check if user is already in project
+        existing_membership = user.membership_of(project)
+        if existing_membership
+          respond_with :message, text: "Пользователь '@#{username}' уже участвует в проекте '#{project.slug}' " \
+                                       "с ролью #{existing_membership.role}"
+          return
+        end
+
+        # Add user to project
+        user.set_role(role.to_sym, project)
+        respond_with :message, text: "Пользователь '@#{username}' добавлен в проект '#{project.slug}' с ролью '#{role}'"
+      else
+        # User not found or not linked - create invitation
+        existing_invite = Invite.find_by(telegram_username: username, project: project)
+        if existing_invite
+          respond_with :message,
+                       text: "Приглашение для пользователя '@#{username}' в проект '#{project.slug}' " \
+                             "уже отправлено с ролью '#{existing_invite.role}'"
+          return
+        end
+
+        # Create invitation
+        Invite.create!(
+          user: current_user,
+          project: project,
+          telegram_username: username,
+          role: role
+        )
+
+        respond_with :message, text: "Создано приглашение для пользователя '@#{username}' в проект '#{project.slug}' с ролью '#{role}'. " \
+                                     'Когда пользователь присоединится к боту, он автоматически будет добавлен в проект.'
+      end
     end
 
     def help_message
