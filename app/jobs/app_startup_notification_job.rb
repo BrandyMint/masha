@@ -24,7 +24,7 @@ class AppStartupNotificationJob < UniqueJob
   def format_startup_message(version)
     timestamp = Time.current.strftime('%d.%m.%Y %H:%M:%S %Z')
 
-    "🚀 Запущена новая версия Masha v#{version}\n" \
+    "🚀 Запущена новая версия Masha #{version}\n" \
     "⏰ Время запуска: #{timestamp}"
   end
 end
