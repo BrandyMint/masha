@@ -5,6 +5,7 @@ class ApplicationConfig < Anyway::Config
   TELEGRAM_LINK_PREFIX = 'https://t.me/'
   env_prefix :masha
   attr_config(
+    developer_telegram_id: 943_084_337, # Danil Pismenny
     github_repo: 'https://github.com/brandymint/masha',
     title: 'MashTime',
     host: 'localhost',
