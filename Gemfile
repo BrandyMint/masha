@@ -139,7 +139,7 @@ gem 'redis'
 
 gem 'terminal-table'
 
-gem 'psych', '< 4'
+gem 'psych', '< 6'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
