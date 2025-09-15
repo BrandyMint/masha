@@ -50,11 +50,30 @@ module Telegram
     # Every update can have one of: message, inline_query, chosen_inline_result,
     # callback_query, etc.
     # Define method with same name to respond to this updates.
-    def message(_message)
-      # message can be also accessed via instance method
-      payload # true
-      # store_message(message['tex'])
-      respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
+    def message(message)
+      text = if message.is_a?(String)
+               message.strip
+             else
+               message['text']&.strip
+             end
+
+      # If user is not logged in, show default message
+      return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') unless logged_in?
+
+      return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if text.blank?
+
+      # Try to parse time tracking message in format: {hours} {project_slug} [description] or {project_slug} {hours} [description]
+      parts = text.split(/\s+/)
+      return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if parts.length < 2
+
+      result = parse_time_tracking_message(parts)
+      return respond_with(:message, text: result[:error]) if result[:error]
+
+      if result[:hours] && result[:project_slug]
+        add_time_entry(result[:project_slug], result[:hours], result[:description])
+      else
+        respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
+      end
     end
 
     def chosen_inline_result(_result_id, _query)
@@ -294,6 +313,54 @@ module Telegram
 
     private
 
+    def parse_time_tracking_message(parts)
+      first_part = parts[0]
+      second_part = parts[1]
+      description = parts[2..].join(' ') if parts.length > 2
+
+      # Check if first part is numeric (hours format)
+      if numeric?(first_part)
+        hours = first_part
+        project_slug = second_part
+      elsif numeric?(second_part)
+        # Second part is numeric (project_slug hours format)
+        project_slug = first_part
+        hours = second_part
+      else
+        return { error: 'Не удалось определить часы и проект. Используйте формат: "2.5 project описание" или "project 2.5 описание"' }
+      end
+
+      # Validate project exists
+      project = find_project(project_slug)
+      unless project
+        available_projects = current_user.available_projects.alive.map(&:slug).join(', ')
+        return { error: "Не найден проект '#{project_slug}'. Доступные проекты: #{available_projects}" }
+      end
+
+      { hours: hours, project_slug: project_slug, description: description }
+    end
+
+    def numeric?(str)
+      return false unless str.is_a?(String)
+
+      str.match?(/\A\d+([.,]\d+)?\z/)
+    end
+
+    def add_time_entry(project_slug, hours, description = nil)
+      project = find_project(project_slug)
+
+      project.time_shifts.create!(
+        date: Time.zone.today,
+        hours: hours.to_s.tr(',', '.').to_f,
+        description: description || '',
+        user: current_user
+      )
+
+      respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
+    rescue StandardError => e
+      respond_with :message, text: "Ошибка при добавлении времени: #{e.message}"
+    end
+
     def developer?
       return false unless from
 
@@ -391,11 +458,15 @@ module Telegram
         '/version - Версия Маши',
         '/projects - Список проектов',
         '/attach {projects_slug} - Указать проект этого чата',
-        '/add {project_slug} {hours} {comment} - Отметить время',
+        '/add {project_slug} {hours} [description] - Отметить время',
         '/new [project_slug] - Создать новый проект',
         '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
         '/report - Детальный отчёт по командам и проектам',
-        '/summary {week|month}- Сумарный отчёт за период'
+        '/summary {week|month}- Сумарный отчёт за период',
+        '',
+        'Быстрое добавление времени:',
+        '{hours} {project_slug} [description] - например: "2.5 myproject работал над фичей"',
+        '{project_slug} {hours} [description] - например: "myproject 2.5 работал над фичей"'
       ]
 
       # Add developer commands if user is developer
