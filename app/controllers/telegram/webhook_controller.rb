@@ -193,6 +193,19 @@ module Telegram
       respond_with :message, text: "Версия Маши: #{AppVersion}"
     end
 
+    def users!(*)
+      unless developer?
+        respond_with :message, text: 'Эта команда доступна только разработчику системы'
+        return
+      end
+
+      users_text = User.includes(:telegram_user, :projects)
+                       .map { |user| format_user_info(user) }
+                       .join("\n\n")
+
+      respond_with :message, text: users_text.presence || 'Пользователи не найдены', parse_mode: :Markdown
+    end
+
     def add!(project_slug = nil, hours = nil, *description)
       if project_slug.nil?
         save_context :add_callback_query
@@ -281,6 +294,31 @@ module Telegram
 
     private
 
+    def developer?
+      return false unless from
+
+      from['id'] == ApplicationConfig.developer_telegram_id
+    end
+
+    def format_user_info(user)
+      telegram_info = if user.telegram_user
+                        "**@#{user.telegram_user.username || 'нет_ника'}** (#{user.telegram_user.name})"
+                      else
+                        '*Telegram не привязан*'
+                      end
+
+      email_info = user.email.present? ? "📧 #{user.email}" : '📧 *Email не указан*'
+
+      projects_info = if user.projects.any?
+                        projects_list = user.projects.map(&:name).join(', ')
+                        "📋 Проекты: #{projects_list}"
+                      else
+                        '📋 *Нет проектов*'
+                      end
+
+      [telegram_info, email_info, projects_info].join("\n")
+    end
+
     def add_user_to_project(project_slug, username, role)
       # Remove @ from username if present
       username = username.delete_prefix('@')
@@ -348,7 +386,7 @@ module Telegram
     end
 
     def help_message
-      multiline(
+      commands = [
         '/help - Эта подсказка',
         '/version - Версия Маши',
         '/projects - Список проектов',
@@ -358,7 +396,14 @@ module Telegram
         '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
         '/report - Детальный отчёт по командам и проектам',
         '/summary {week|month}- Сумарный отчёт за период'
-      )
+      ]
+
+      # Add developer commands if user is developer
+      if developer?
+        commands << '/users - Список всех пользователей системы (только для разработчика)'
+      end
+
+      multiline(commands)
     end
 
     def multiline(*args)
