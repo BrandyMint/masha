@@ -228,9 +228,27 @@ module Telegram
     end
 
     def new!(slug = nil, *)
+      if slug.blank?
+        save_context :new_project_slug_input
+        respond_with :message, text: 'Укажите slug (идентификатор) для нового проекта:'
+        return
+      end
+
       project = current_user.projects.create!(name: slug, slug: slug)
 
       respond_with :message, text: "Создан проект `#{project.slug}`"
+    end
+
+    def new_project_slug_input(slug, *)
+      if slug.blank?
+        respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:'
+        return
+      end
+
+      project = current_user.projects.create!(name: slug, slug: slug)
+      respond_with :message, text: "Создан проект `#{project.slug}`"
+    rescue ActiveRecord::RecordInvalid => e
+      respond_with :message, text: "Ошибка создания проекта: #{e.message}"
     end
 
     def adduser!(project_slug = nil, username = nil, role = 'member', *)
@@ -336,7 +354,7 @@ module Telegram
         '/projects - Список проектов',
         '/attach {projects_slug} - Указать проект этого чата',
         '/add {project_slug} {hours} {comment} - Отметить время',
-        '/new {project_slug} - Создать новый проект',
+        '/new [project_slug] - Создать новый проект',
         '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
         '/report - Детальный отчёт по командам и проектам',
         '/summary {week|month}- Сумарный отчёт за период'
