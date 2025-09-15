@@ -399,9 +399,7 @@ module Telegram
       ]
 
       # Add developer commands if user is developer
-      if developer?
-        commands << '/users - Список всех пользователей системы (только для разработчика)'
-      end
+      commands << '/users - Список всех пользователей системы (только для разработчика)' if developer?
 
       multiline(commands)
     end

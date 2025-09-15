@@ -9,5 +9,9 @@ FactoryBot.define do
     sequence(:pivotal_person_id) { |n| n }
     sequence(:email) { |n| "email#{n}@asdf.ru" }
     password { '123' }
+
+    trait :with_telegram do
+      association :telegram_user
+    end
   end
 end
