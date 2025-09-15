@@ -34,26 +34,55 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   end
 
   describe '#new_project_slug_input' do
-    # Skip the context setup for now, but test the method directly
+    # These tests need to simulate the message context properly
+    # The new_project_slug_input method is called during message context processing
+
     context 'when valid slug is provided' do
       it 'creates a new project' do
+        # Set up the context as if we're in the middle of new project flow
+        allow(controller).to receive(:save_context)
+        allow(controller).to receive(:respond_with)
+
         expect { controller.new_project_slug_input('my_project') }.to change { user.projects.count }.by(1)
 
         project = user.projects.last
         expect(project.slug).to eq('my_project')
         expect(project.name).to eq('my_project')
       end
+
+      it 'responds with success message' do
+        allow(controller).to receive(:save_context)
+        expect(controller).to receive(:respond_with).with(:message, text: 'Создан проект `my_project`')
+
+        controller.new_project_slug_input('my_project')
+      end
     end
 
     context 'when empty slug is provided' do
       it 'does not create project' do
+        allow(controller).to receive(:respond_with)
+
         expect { controller.new_project_slug_input('') }.not_to(change { user.projects.count })
+      end
+
+      it 'responds with error message' do
+        expect(controller).to receive(:respond_with).with(:message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:')
+
+        controller.new_project_slug_input('')
       end
     end
 
     context 'when whitespace-only slug is provided' do
       it 'does not create project' do
+        allow(controller).to receive(:respond_with)
+
         expect { controller.new_project_slug_input('   ') }.not_to(change { user.projects.count })
+      end
+
+      it 'responds with error message' do
+        expect(controller).to receive(:respond_with).with(:message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:')
+
+        controller.new_project_slug_input('   ')
       end
     end
   end
