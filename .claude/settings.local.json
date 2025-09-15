@@ -9,7 +9,9 @@
       "Bash(./bin/dev)",
       "Bash(bundle exec rails generate migration:*)",
       "Bash(bundle exec rails:*)",
-      "WebFetch(domain:alexpeattie.com)"
+      "WebFetch(domain:alexpeattie.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
