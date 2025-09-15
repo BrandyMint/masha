@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
   include_context 'telegram webhook base'
 
@@ -128,3 +129,4 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
