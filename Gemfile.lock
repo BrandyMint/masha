@@ -385,6 +385,12 @@ GEM
       letter_opener (~> 1.7)
       railties (>= 5.2)
       rexml
+    libv8-node (24.1.0.0)
+    libv8-node (24.1.0.0-aarch64-linux)
+    libv8-node (24.1.0.0-arm64-darwin)
+    libv8-node (24.1.0.0-x86_64-darwin)
+    libv8-node (24.1.0.0-x86_64-linux)
+    libv8-node (24.1.0.0-x86_64-linux-musl)
     lint_roller (1.1.0)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -408,6 +414,8 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
+    mini_racer (0.19.0)
+      libv8-node (~> 24.1.0.0)
     minitest (5.25.5)
     mono_logger (1.1.2)
     msgpack (1.8.0)
@@ -788,6 +796,7 @@ DEPENDENCIES
   letter_opener_web
   logger (~> 1.7)
   mini_magick (>= 4.9.4)
+  mini_racer (~> 0.19.0)
   nanoid (~> 2.0)
   non-stupid-digest-assets
   omniauth
