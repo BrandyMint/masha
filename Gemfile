@@ -231,4 +231,4 @@ gem 'slim-rails', '~> 3.7'
 
 gem 'nanoid', '~> 2.0'
 
-gem "mini_racer", "~> 0.19.0"
+gem 'mini_racer', '~> 0.19.0'

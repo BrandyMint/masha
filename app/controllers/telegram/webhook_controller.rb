@@ -269,11 +269,11 @@ module Telegram
       project = current_user.projects.create!(name: slug, slug: slug)
 
       respond_with :message, text: "Создан проект `#{project.slug}`"
-    rescue ActiveRecord::RecordInvalid => err
-      Bugsnag.notify err do |b|
+    rescue ActiveRecord::RecordInvalid => e
+      Bugsnag.notify e do |b|
         b.meta_data = { slug: }
       end
-      respond_with :message, text: "Ошибка создания проекта #{err.record.errors.messages.to_json}"
+      respond_with :message, text: "Ошибка создания проекта #{e.record.errors.messages.to_json}"
     end
 
     def new_project_slug_input(slug, *)
