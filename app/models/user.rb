@@ -76,7 +76,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    telegram_user.present? ? public_name : email.split.first
+    telegram_user.present? ? telegram_user.public_name : email.split.first
   end
 
   def avatar_url
