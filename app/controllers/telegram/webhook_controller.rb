@@ -271,7 +271,7 @@ module Telegram
       respond_with :message, text: "Создан проект `#{project.slug}`"
     rescue ActiveRecord::RecordInvalid => err
       Bugsnag.notify err do |b|
-        b.meta_data { slug: }
+        b.meta_data = { slug: }
       end
       respond_with :message, text: "Ошибка создания проекта #{err.record.errors.messages.to_json}"
     end
