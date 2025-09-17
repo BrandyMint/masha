@@ -576,7 +576,7 @@ GEM
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
       rspec-mocks (>= 3.0.0)
-    rexml (3.4.1)
+    rexml (3.4.2)
     role-rails (1.4.0)
       rails (>= 3.1.0)
     rouge (4.5.1)
