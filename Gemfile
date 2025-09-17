@@ -162,7 +162,7 @@ group :development do
   gem 'bond'
   gem 'claude-on-rails'
   gem 'dip'
-  gem 'rb-fsevent', '~> 0.9.1', require: false
+  gem 'rb-fsevent', '~> 0.11.2', require: false
 
   gem 'letter_opener_web'
   gem 'rubocop', require: false
