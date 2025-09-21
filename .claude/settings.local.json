@@ -11,7 +11,8 @@
       "Bash(bundle exec rails:*)",
       "WebFetch(domain:alexpeattie.com)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(psql:*)"
     ],
     "deny": [],
     "ask": []
