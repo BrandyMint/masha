@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Telegram::Commands::MergeCommand, type: :controller do
+RSpec.describe Telegram::Commands::MergeCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
 
   before do
     allow(controller).to receive(:respond_with)
     allow(controller).to receive(:developer?).and_return(developer)
+    stub_const('ApplicationConfig', double(developer_telegram_id: 123))
   end
 
   describe '#call' do
@@ -46,7 +47,7 @@ RSpec.describe Telegram::Commands::MergeCommand, type: :controller do
         let(:merger) { instance_double(TelegramUserMerger) }
 
         before do
-          allow(TelegramUserMerger).to receive(:new).and_return(merger)
+          allow(TelegramUserMerger).to receive(:new).with('email@test.com', 'username', controller: controller).and_return(merger)
           allow(merger).to receive(:merge)
         end
 

@@ -2,34 +2,37 @@
 
 require 'rails_helper'
 
-RSpec.describe Telegram::Commands::StartCommand, type: :controller do
+RSpec.describe Telegram::Commands::StartCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
+  let(:telegram_user) { double(id: 123) }
 
   before do
     allow(controller).to receive(:respond_with)
     allow(controller).to receive(:logged_in?).and_return(logged_in)
     allow(controller).to receive(:multiline).and_return('welcome message')
     allow(controller).to receive(:help_message).and_return('help text')
-    allow(controller).to receive(:telegram_user).and_return(double(id: 123))
+    allow(controller).to receive(:telegram_user).and_return(telegram_user)
   end
 
   describe '#call' do
     context 'when word starts with auth prefix' do
       let(:logged_in) { false }
-      let(:word) { "#{TelegramHelper::AUTH_PREFIX}session_token" }
+      let(:word) { 'auth_session_token' }
+      let(:verifier) { double('verifier') }
 
       before do
-        stub_const('TelegramHelper::AUTH_PREFIX', 'auth_')
-        allow(Rails.application).to receive_message_chain(:message_verifier, :generate)
-          .and_return('token')
+        allow(Rails.application).to receive(:message_verifier).with(:telegram).and_return(verifier)
+        allow(verifier).to receive(:generate).and_return('generated_token')
         allow(Rails.application.routes.url_helpers).to receive(:telegram_confirm_url)
-          .and_return('confirm_url')
+          .with(token: 'generated_token').and_return('confirm_url')
       end
 
       it 'handles auth start' do
         command.call(word)
 
+        expected_data = { st: 'session_token', tid: 123, t: kind_of(Integer) }
+        expect(verifier).to have_received(:generate).with(expected_data, purpose: :login)
         expect(controller).to have_received(:respond_with)
           .with(:message, text: 'Вы авторизованы! Перейдите на сайт: confirm_url')
       end

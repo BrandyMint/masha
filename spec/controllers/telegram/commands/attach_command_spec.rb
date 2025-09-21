@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Telegram::Commands::AttachCommand, type: :controller do
+RSpec.describe Telegram::Commands::AttachCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
   let(:project) { create(:project) }

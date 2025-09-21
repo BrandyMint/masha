@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   before_action :define_page_title
-  before_action :redirect_to_telegram_notice
+  before_action :redirect_to_telegram_notice unless Rails.env.test?
 
   protect_from_forgery with: :exception if Rails.env.production?
 

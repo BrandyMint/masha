@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Telegram::Commands::AdduserCommand, type: :controller do
+RSpec.describe Telegram::Commands::AdduserCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
   let(:user) { create(:user) }
@@ -15,20 +15,14 @@ RSpec.describe Telegram::Commands::AdduserCommand, type: :controller do
 
   describe '#call' do
     context 'when project_slug is not provided' do
-      let(:available_projects) { double('available_projects') }
-      let(:alive_projects) { double('alive_projects') }
-      let(:projects_with_memberships) { double('projects_with_memberships') }
-      let(:manageable_projects) { [create(:project)] }
-
-      before do
-        allow(user).to receive(:available_projects).and_return(available_projects)
-        allow(available_projects).to receive(:alive).and_return(alive_projects)
-        allow(alive_projects).to receive(:joins).with(:memberships).and_return(projects_with_memberships)
-        allow(projects_with_memberships).to receive(:where)
-          .with(memberships: { user: user, role_cd: 0 }).and_return(manageable_projects)
-      end
-
       context 'when user has manageable projects' do
+        let!(:project) { create(:project, name: 'Test Project') }
+
+        before do
+          # Create ownership membership
+          create(:membership, :owner, user: user, project: project)
+        end
+
         it 'shows project selection' do
           command.call
 
@@ -42,8 +36,6 @@ RSpec.describe Telegram::Commands::AdduserCommand, type: :controller do
       end
 
       context 'when user has no manageable projects' do
-        let(:manageable_projects) { [] }
-
         it 'responds with no projects message' do
           command.call
 
@@ -66,7 +58,7 @@ RSpec.describe Telegram::Commands::AdduserCommand, type: :controller do
       let(:project_manager) { instance_double(TelegramProjectManager) }
 
       before do
-        allow(TelegramProjectManager).to receive(:new).and_return(project_manager)
+        allow(TelegramProjectManager).to receive(:new).with(user, controller: controller).and_return(project_manager)
         allow(project_manager).to receive(:add_user_to_project)
       end
 

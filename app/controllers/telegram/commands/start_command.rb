@@ -17,7 +17,7 @@ module Telegram
       private
 
       def handle_auth_start(word)
-        session_token = word.delete TelegramHelper::AUTH_PREFIX
+        session_token = word.delete_prefix TelegramHelper::AUTH_PREFIX
         verifier = Rails.application.message_verifier :telegram
         data = { st: session_token, tid: telegram_user.id, t: Time.zone.now.to_i }
         token = verifier.generate(data, purpose: :login)

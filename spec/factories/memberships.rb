@@ -4,6 +4,16 @@
 
 FactoryBot.define do
   factory :membership do
-    role_cd { 1 }
+    association :user
+    association :project
+    role { 'member' }
+
+    trait :owner do
+      role { 'owner' }
+    end
+
+    trait :viewer do
+      role { 'viewer' }
+    end
   end
 end
