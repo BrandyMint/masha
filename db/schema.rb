@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_17_145907) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_21_110100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -143,4 +143,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_145907) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
     t.index ["telegram_user_id"], name: "index_users_on_telegram_user_id", unique: true
   end
+
+  add_foreign_key "authentications", "users", on_delete: :restrict
+  add_foreign_key "invites", "projects", on_delete: :restrict
+  add_foreign_key "invites", "users", on_delete: :restrict
+  add_foreign_key "memberships", "projects", on_delete: :restrict
+  add_foreign_key "memberships", "users", on_delete: :restrict
+  add_foreign_key "time_shifts", "projects", on_delete: :restrict
+  add_foreign_key "time_shifts", "users", on_delete: :restrict
+  add_foreign_key "users", "telegram_users", on_delete: :restrict
 end

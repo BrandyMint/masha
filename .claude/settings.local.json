@@ -12,7 +12,8 @@
       "WebFetch(domain:alexpeattie.com)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(bundle exec rake:*)"
     ],
     "deny": [],
     "ask": []
