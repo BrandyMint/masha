@@ -1,0 +1,10 @@
+.d-flex.justify-content-center.align-items-center{style: 'min-height: 70vh;'}
+  .text-center
+    %h2.mb-4 Проект работает только через Telegram бота
+    %p.mb-4 Для использования сервиса перейдите к нашему боту в Telegram
+    .mb-3
+      = link_to "https://t.me/MashTimeBot", class: "btn btn-primary btn-lg", target: "_blank" do
+        %i.fab.fa-telegram-plane.me-2
+        Перейти к боту
+    %p.mt-4
+      = link_to "Настройки профиля", profile_path, class: "btn btn-link"

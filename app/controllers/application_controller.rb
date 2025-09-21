@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   before_action :define_page_title
+  before_action :redirect_to_telegram_notice
 
   protect_from_forgery with: :exception if Rails.env.production?
 
@@ -75,4 +76,16 @@ class ApplicationController < ActionController::Base
   def authenticate_admin!
     redirect_to root_path unless current_user&.is_root?
   end
+
+  def redirect_to_telegram_notice
+    return unless logged_in?
+    return if controller_path.starts_with?('telegram/')
+    return if controller_name == 'telegram_auth_callback'
+    return if controller_name == 'omniauth_session'
+    return if controller_name == 'profile'
+    return if controller_name == 'sessions'
+
+    render 'application/telegram_notice', layout: 'application'
+  end
+
 end
