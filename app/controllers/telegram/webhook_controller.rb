@@ -225,6 +225,20 @@ module Telegram
       respond_with :message, text: users_text.presence || 'Пользователи не найдены', parse_mode: :Markdown
     end
 
+    def merge!(email = nil, telegram_username = nil, *)
+      unless developer?
+        respond_with :message, text: 'Эта команда доступна только разработчику системы'
+        return
+      end
+
+      if email.blank? || telegram_username.blank?
+        respond_with :message, text: 'Использование: /merge email@example.com telegram_username'
+        return
+      end
+
+      merge_user_accounts(email, telegram_username)
+    end
+
     def add!(project_slug = nil, hours = nil, *description)
       if project_slug.nil?
         save_context :add_callback_query
@@ -457,6 +471,50 @@ module Telegram
       end
     end
 
+    def merge_user_accounts(email, telegram_username)
+      # Remove @ from username if present
+      telegram_username = telegram_username.delete_prefix('@')
+
+      # Find user by email
+      user = User.find_by(email: email)
+      unless user
+        respond_with :message, text: "Пользователь с email '#{email}' не найден"
+        return
+      end
+
+      # Check if user already has telegram_user_id
+      if user.telegram_user_id.present?
+        telegram_user = user.telegram_user
+        respond_with :message, text: "Пользователь с email '#{email}' уже привязан к Telegram аккаунту " \
+                                     "@#{telegram_user.username} (#{telegram_user.name})"
+        return
+      end
+
+      # Find telegram user by username
+      telegram_user = TelegramUser.find_by(username: telegram_username)
+      unless telegram_user
+        respond_with :message, text: "Telegram пользователь '@#{telegram_username}' не найден в системе"
+        return
+      end
+
+      # Check if telegram user is already linked to another user
+      if telegram_user.user.present?
+        respond_with :message, text: "Telegram аккаунт '@#{telegram_username}' уже привязан к пользователю #{telegram_user.user.email}"
+        return
+      end
+
+      # Perform the merge
+      user.update!(telegram_user: telegram_user)
+
+      # Send notification to the user via Telegram
+      TelegramNotificationJob.perform_later(
+        user_id: telegram_user.id,
+        message: "🎉 Ваш Telegram аккаунт был объединен с веб-аккаунтом #{email}!"
+      )
+
+      respond_with :message, text: "✅ Успешно объединили аккаунты:\n📧 Email: #{email}\n📱 Telegram: @#{telegram_username}"
+    end
+
     def help_message
       commands = [
         '/help - Эта подсказка',
@@ -475,7 +533,10 @@ module Telegram
       ]
 
       # Add developer commands if user is developer
-      commands << '/users - Список всех пользователей системы (только для разработчика)' if developer?
+      if developer?
+        commands << '/users - Список всех пользователей системы (только для разработчика)'
+        commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
+      end
 
       multiline(commands)
     end
