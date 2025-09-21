@@ -499,13 +499,23 @@ module Telegram
 
       # Check if telegram user is already linked to another user
       if telegram_user.user.present?
-        # TODO В этом случае нужно проверять telegram_user.user на наличие email-а. Если емайла нет, то нужно сделать следующее:
-        # 1. Все привязанные к пользователю telegram_user.user записи в базе (узнать то по user_id) перевести на пользователя user.id
-        # 2. Удалить пользователья telegram_user.user
-        # 3. Продолжить дальше (таким образом связав telegram_user с новым user)
-        # Сделать все это в транзакции.
-        respond_with :message, text: "Telegram аккаунт '@#{telegram_username}' уже привязан к пользователю #{telegram_user.user.email}"
-        return
+        existing_user = telegram_user.user
+
+        # If existing user has no email, we can merge it with the email user
+        if existing_user.email.blank?
+          begin
+            merge_telegram_user_with_email_user(user, existing_user, telegram_user)
+            respond_with :message, text: "✅ Успешно объединили аккаунты:\n📧 Email: #{email}\n📱 Telegram: @#{telegram_username}"
+            return
+          rescue StandardError => e
+            respond_with :message, text: "❌ Ошибка при объединении аккаунтов: #{e.message}"
+            return
+          end
+        else
+          # Existing user has email, cannot merge
+          respond_with :message, text: "Telegram аккаунт '@#{telegram_username}' уже привязан к пользователю #{existing_user.email}"
+          return
+        end
       end
 
       # Perform the merge
@@ -666,6 +676,88 @@ module Telegram
       Bugsnag.notify message do |b|
         b.metadata = payload
       end
+    end
+
+    def merge_telegram_user_with_email_user(email_user, telegram_only_user, telegram_user)
+      Rails.logger.info "Starting merge of telegram_only_user #{telegram_only_user.id} into email_user #{email_user.id}"
+
+      # Проверки перед слиянием
+      raise "Telegram user #{telegram_only_user.id} has email, cannot merge" if telegram_only_user.email.present?
+      raise "Email user #{email_user.id} has no email, cannot merge" if email_user.email.blank?
+      raise "Email user #{email_user.id} already has telegram_user_id, cannot merge" if email_user.telegram_user_id.present?
+
+      User.transaction do
+        # 1. Перенос authentications
+        telegram_only_user.authentications.each do |auth|
+          # Проверяем на конфликты
+          existing_auth = email_user.authentications.find_by(provider: auth.provider, uid: auth.uid)
+          if existing_auth
+            Rails.logger.info "Skipping duplicate authentication #{auth.provider}:#{auth.uid}"
+            auth.destroy!
+          else
+            auth.update!(user: email_user)
+          end
+        end
+
+        # 2. Перенос memberships с обработкой дублей
+        telegram_only_user.memberships.each do |membership|
+          existing_membership = email_user.memberships.find_by(project: membership.project)
+          if existing_membership
+            # Выбираем более высокую роль (owner > viewer > member)
+            role_priority = { 'owner' => 3, 'viewer' => 2, 'member' => 1 }
+            current_priority = role_priority[existing_membership.role] || 0
+            new_priority = role_priority[membership.role] || 0
+
+            if new_priority > current_priority
+              existing_membership.update!(role: membership.role)
+              Rails.logger.info "Updated role for project #{membership.project.slug} to #{membership.role}"
+            end
+            membership.destroy!
+          else
+            membership.update!(user: email_user)
+          end
+        end
+
+        # 3. Перенос time_shifts
+        # rubocop:disable Rails/SkipsModelValidations
+        telegram_only_user.time_shifts.update_all(user_id: email_user.id)
+
+        # 4. Перенос invites
+        # Отправленные приглашения
+        telegram_only_user.invites.update_all(user_id: email_user.id)
+
+        # Полученные приглашения по email (если у telegram_only_user был email)
+        if telegram_only_user.read_attribute(:email).present?
+          Invite.where(email: telegram_only_user.read_attribute(:email))
+                .update_all(email: email_user.email)
+        end
+        # rubocop:enable Rails/SkipsModelValidations
+
+        # 5. Финализация слияния
+        # Привязываем telegram_user к email_user
+        email_user.update!(telegram_user: telegram_user)
+
+        # Удаляем старого пользователя
+        telegram_only_user.destroy!
+
+        Rails.logger.info "Successfully merged telegram_only_user #{telegram_only_user.id} into email_user #{email_user.id}"
+      end
+
+      # Отправляем уведомление
+      TelegramNotificationJob.perform_later(
+        user_id: telegram_user.id,
+        message: "🎉 Ваш Telegram аккаунт был объединен с веб-аккаунтом #{email_user.email}!"
+      )
+    rescue StandardError => e
+      Rails.logger.error "Error merging accounts: #{e.message}"
+      Bugsnag.notify e do |b|
+        b.meta_data = {
+          email_user_id: email_user.id,
+          telegram_only_user_id: telegram_only_user.id,
+          telegram_user_id: telegram_user.id
+        }
+      end
+      raise e
     end
   end
 end
