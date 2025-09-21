@@ -13,6 +13,8 @@ Masha is a time tracking service built as both a Telegram bot (@MashTimeBot) and
 Когда мы говорим "схема базы данных" мы имеем ввиду схему из файла
 `db/schema.rb`
 
+Команда в телеграм - метод с восклицательным знаком.
+
 ## Development Commands
 
 ### Setup and Dependencies

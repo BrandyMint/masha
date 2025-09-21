@@ -14,7 +14,8 @@
       "Bash(git commit:*)",
       "Bash(psql:*)",
       "Bash(bundle exec rake:*)",
-      "Bash(bun run:*)"
+      "Bash(bun run:*)",
+      "Bash(bundle exec ruby -c:*)"
     ],
     "deny": [],
     "ask": []

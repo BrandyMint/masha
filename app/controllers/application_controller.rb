@@ -87,5 +87,4 @@ class ApplicationController < ActionController::Base
 
     render 'application/telegram_notice', layout: 'application'
   end
-
 end
