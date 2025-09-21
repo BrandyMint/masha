@@ -733,12 +733,12 @@ module Telegram
         end
         # rubocop:enable Rails/SkipsModelValidations
 
+        # Удаляем старого пользователя
+        telegram_only_user.destroy!
+
         # 5. Финализация слияния
         # Привязываем telegram_user к email_user
         email_user.update!(telegram_user: telegram_user)
-
-        # Удаляем старого пользователя
-        telegram_only_user.destroy!
 
         Rails.logger.info "Successfully merged telegram_only_user #{telegram_only_user.id} into email_user #{email_user.id}"
       end
