@@ -499,6 +499,11 @@ module Telegram
 
       # Check if telegram user is already linked to another user
       if telegram_user.user.present?
+        # TODO В этом случае нужно проверять telegram_user.user на наличие email-а. Если емайла нет, то нужно сделать следующее:
+        # 1. Все привязанные к пользователю telegram_user.user записи в базе (узнать то по user_id) перевести на пользователя user.id
+        # 2. Удалить пользователья telegram_user.user
+        # 3. Продолжить дальше (таким образом связав telegram_user с новым user)
+        # Сделать все это в транзакции.
         respond_with :message, text: "Telegram аккаунт '@#{telegram_username}' уже привязан к пользователю #{telegram_user.user.email}"
         return
       end
