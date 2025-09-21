@@ -1,19 +1,11 @@
 -# header = :static or :fixed
 
-%div.navbar.application-navbar{class: "navbar-#{header}-top" }
+%nav.navbar.navbar-expand-lg.application-navbar{class: header == :fixed ? "fixed-top" : ""}
   .container
-    .pull-left= render 'brand'
+    .navbar-brand= render 'brand'
 
-    -#%button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", type: "button"}
-      = ficon('menu-1', color: 'white', size: 24)
+    %button.navbar-toggler{type: "button", "data-bs-toggle" => "collapse", "data-bs-target" => "#navbarNav", "aria-controls" => "navbarNav", "aria-expanded" => "false", "aria-label" => "Toggle navigation"}
+      %span.navbar-toggler-icon
 
-    -#.navbar-collapse.collapse
-    .navbar-navigation.hidden-xs.hidden-sm
+    .collapse.navbar-collapse#navbarNav
       = render_navigation :expand_all => true, :renderer => :bootstrap
-      .clearfix
-    .navbar-navigation-mobile.visible-xs.visible-sm
-      = render_navigation :expand_all => true, :renderer => :bootstrap
-      .clearfix
-
-
-    -#= render_navigation :expand_all => true, :renderer => :bootstrap, :context => :admin

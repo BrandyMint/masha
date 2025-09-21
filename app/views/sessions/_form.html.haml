@@ -1,16 +1,15 @@
 = simple_form_for @session || SessionForm.new, :url => sessions_path, :method => :create do |f|
   = f.error_notification
-  .form-group
+  .mb-3
     = f.input :email, label: false, input_html: {class: 'form-control'}
-  .form-group
+  .mb-3
     = f.input :password, as: :eye_password, label: false, input_html: {class: 'form-control'}
-  .form-group
-    .pull-left
-      = f.input :remember_me, as: :boolean, label: false
-    .pull-left
-      = f.label :remember_me, class: 'checkbox inline'
-    .clearfix
+  .mb-3
+    .form-check
+      = f.input :remember_me, as: :boolean, label: false, input_html: {class: 'form-check-input'}
+      = f.label :remember_me, class: 'form-check-label'
     %hr.small
-    = f.button :submit, 'Войти', :class => 'btn btn-primary btn-lg btn-block'
+    .d-grid
+      = f.button :submit, 'Войти', :class => 'btn btn-primary btn-lg'
 
 = render 'telegram_login'

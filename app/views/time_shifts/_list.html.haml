@@ -1,14 +1,14 @@
 - if time_shifts.present?
-  %table.table.table-condensed.table-striped.table-hover.time-shifts-table
+  %table.table.table-sm.table-striped.table-hover.time-shifts-table
     %thead
-      %th.col-lg-2
+      %th.col-2
         = t 'time_shifts.date'
-      %th.col-lg-1= t 'time_shifts.time'
-      %th.col-lg-1= t 'time_shifts.project'
-      %th.col-lg-2= t 'time_shifts.collaborator'
-      %th.col-lg-5= t 'time_shifts.description'
-      %th.print-hide.col-lg-1
-    - time_shifts.each do |ts|      
+      %th.col-1= t 'time_shifts.time'
+      %th.col-1= t 'time_shifts.project'
+      %th.col-2= t 'time_shifts.collaborator'
+      %th.col-5= t 'time_shifts.description'
+      %th.print-hide.col-1
+    - time_shifts.each do |ts|
       - ts = TimeShiftDecorator.decorate ts
       %tr{class: ts.tr_class}
         %td{ data: {'cell-title' => "#{t 'time_shifts.date'}" } }
@@ -25,9 +25,10 @@
         %td{ data: {'cell-title' => "#{t 'time_shifts.collaborator'}" } }
           = ts.user
         %td{ data: {'cell-title' => "#{t 'time_shifts.description'}" } }
-          %small.muted= ts.description
+          %small.text-muted= ts.description
         %td.print-hide
-          = ts.update_link :css_class =>'btn btn-block', :label => t('.edit')
+          .d-grid
+            = ts.update_link :css_class =>'btn', :label => t('.edit')
 
 - else
   .alert.alert-warning Нет результатов

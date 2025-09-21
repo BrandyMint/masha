@@ -1,6 +1,6 @@
 .welcome-content
   .row
-    .col-sm-offset-3.col-sm-8
+    .col-sm-8.offset-sm-3
       .welcome-brand
         = link_to home_url, class: 'brand' do
           = image_tag image_path('masha_logo.svg'), class: 'brand-logo'
@@ -8,17 +8,17 @@
             = ApplicationConfig.title
             %span - бот в помощь
   .row
-    .col-sm-offset-3.col-sm-8
+    .col-sm-8.offset-sm-3
       %h1.welcome-header
         %strong Учёт времени
         %br
         для личных и командных проектов
       %br
-      .welcome-subheader 
-        %ul 
-          %li 
+      .welcome-subheader
+        %ul
+          %li
             = link_to 'Бот в Telegramm', ApplicationConfig.telegram_bot_link, target: '_blank'
-          %li 
+          %li
             = link_to 'Открытый исходный код', ApplicationConfig.github_repo, target: '_blank'
           %li Web-интерфейс с бесплатными аккаунтами
       .row
@@ -26,8 +26,8 @@
           .welcome-start-button
             = render 'telegram_login'
   .row
-    .col-sm-offset-3.col-sm-8
-      .welcome-version.text-muted.m-t-lg
+    .col-sm-8.offset-sm-3
+      .welcome-version.text-muted.mt-5
         = "v#{AppVersion.format('%M.%m.%p')}"
   -#.welcome-description
     -#.row

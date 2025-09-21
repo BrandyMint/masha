@@ -1,40 +1,41 @@
-= simple_form_for @time_shift, :html => { :class => 'time-shift-form form-horizontal', role: 'time_shift_form' } do |f|
+= simple_form_for @time_shift, :html => { :class => 'time-shift-form', role: 'time_shift_form' } do |f|
   = f.error_notification
   .form-inputs
     .row
-      .col-md-8.col-sm-offset-3.col-sm-6
-        .form-group
-          = f.label :date, class: 'time-shift-form-label'
+      .col-md-8.offset-md-3.col-sm-6.offset-sm-3
+        .mb-3
+          = f.label :date, class: 'form-label time-shift-form-label'
           .time-shift-form-input
-            = f.input :date, :as => :date_picker, label: false, input_html: {class: 'form-control input-sm'}
-        .form-group
-          = f.label :project, class: 'time-shift-form-label'
+            = f.input :date, :as => :date_picker, label: false, input_html: {class: 'form-control form-control-sm'}
+        .mb-3
+          = f.label :project, class: 'form-label time-shift-form-label'
           .time-shift-form-input
-            = f.association :project, :include_blank => false, :collection => setable_projects_collection, label: false, input_html: {class: 'form-control input-sm'}
+            = f.association :project, :include_blank => false, :collection => setable_projects_collection, label: false, input_html: {class: 'form-select form-select-sm'}
           -# = f.association :user, :include_blank => false, :collection => available_users_to_set_collection
-        .form-group
-          = f.label :hours, class: 'time-shift-form-label'
+        .mb-3
+          = f.label :hours, class: 'form-label time-shift-form-label'
           .time-shift-form-input
             -# removed autofocus, because it hurts mobile experience
-            = f.input :hours, as: :stepper, :input_html => {:min => 0.1, :max => 24, class: 'form-control input-sm' }, label: false
-      .col-md-8.col-sm-offset-3.col-sm-6
-        .form-group
+            = f.input :hours, as: :stepper, :input_html => {:min => 0.1, :max => 24, class: 'form-control form-control-sm' }, label: false
+      .col-md-8.offset-md-3.col-sm-6.offset-sm-3
+        .mb-3
           .time-shift-form-label
           .time-shift-form-input
-            = f.input :description, :input_html => { :role => 'autosize', class: 'form-control input-sm' }, label: false
-        .form-group
+            = f.input :description, :input_html => { :role => 'autosize', class: 'form-control form-control-sm' }, label: false
+        .mb-3
           .time-shift-form-label
           .time-shift-form-button-submit
-            = button_tag type: 'submit', class: 'btn btn-primary btn-lg btn-block',
-              :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
-              = icon :ok, :white
-              = t :create, :scope => [:helpers, :submit, :time_shift]
+            .d-grid
+              = button_tag type: 'submit', class: 'btn btn-primary btn-lg',
+                :data => { 'disable-with' => t(:saving, :scope => [:simple_form, :button, :disable_with])} do
+                = icon :ok, :white
+                = t :create, :scope => [:helpers, :submit, :time_shift]
         .time-shift-form-label
         .time-shift-form-input
-          .form-group
-            = f.button :button, :type=>:reset, :class => 'btn btn-link pull-right' do
+          .mb-3
+            = f.button :button, :type=>:reset, :class => 'btn btn-link float-end' do
               Сбросить изменения
-            .pull-right
+            .float-end
               - if @time_shift.present? && @time_shift.hours
                 = TimeShiftDecorator.new(@time_shift).remove_link
             .clearfix
