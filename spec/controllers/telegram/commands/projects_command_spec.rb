@@ -6,10 +6,12 @@ RSpec.describe Telegram::Commands::ProjectsCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
   let(:user) { create(:user) }
-  let!(:projects) { [
-    create(:project, name: 'Project', slug: 'project'),
-    create(:project, name: 'Project2', slug: 'pr2')
-  ] }
+  let!(:projects) do
+    [
+      create(:project, name: 'Project', slug: 'project'),
+      create(:project, name: 'Project2', slug: 'pr2')
+    ]
+  end
 
   before do
     allow(controller).to receive(:current_user).and_return(user)

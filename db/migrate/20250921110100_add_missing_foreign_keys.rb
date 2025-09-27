@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMissingForeignKeys < ActiveRecord::Migration[8.0]
   def change
     # Add foreign key for authentications -> users

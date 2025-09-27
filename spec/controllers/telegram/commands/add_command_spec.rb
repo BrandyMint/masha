@@ -39,9 +39,9 @@ RSpec.describe Telegram::Commands::AddCommand do
       end
 
       it 'adds time to project' do
-        expect {
+        expect do
           command.call('test_project', '2.5', 'working on feature')
-        }.to change { project.time_shifts.count }.by(1)
+        end.to change { project.time_shifts.count }.by(1)
 
         expect(controller).to have_received(:respond_with)
           .with(:message, text: 'Отметили в Test Project 2.5 часов')
