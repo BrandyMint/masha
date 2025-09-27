@@ -85,6 +85,6 @@ class ApplicationController < ActionController::Base
     return if controller_name == 'profile'
     return if controller_name == 'sessions'
 
-    render 'application/telegram_notice', layout: 'application'
+    render 'application/telegram_notice', layout: 'simple'
   end
 end

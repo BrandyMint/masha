@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    = render 'layouts/head'
+  %body.page-header-static{:class => "#{controller_name} #{action_name}"}
+    #main.application-main-content{:role => "main"}
+      .container
+        .content
+          .row
+            .col-lg-12
+              = yield
