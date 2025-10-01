@@ -155,6 +155,7 @@ module TelegramHelpers
       '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
       '/report - Детальный отчёт по командам и проектам',
       '/summary {week|month}- Сумарный отчёт за период',
+      '/hours [project_slug] - Все часы за последние 3 месяца',
       '',
       'Быстрое добавление времени:',
       '{hours} {project_slug} [description] - например: "2.5 myproject работал над фичей"',
