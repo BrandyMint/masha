@@ -44,7 +44,7 @@ class Reporter
       end
 
       t << :separator
-      t << ['All days', result[:total_by_column].values.compact.sum] + result[:columns].map { |c|
+      t << ['All days', result[:total_by_date].values.compact.sum] + result[:columns].map { |c|
         result[:total_by_column][c.to_s]
       }
     end
