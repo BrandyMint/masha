@@ -15,7 +15,7 @@ module Telegram
         time_shifts = current_user.time_shifts
                                   .includes(:project)
                                   .order(date: :desc, created_at: :desc)
-                                  .limit(50)
+                                  .limit(ApplicationConfig.telegram_edit_command_limit)
 
         if time_shifts.empty?
           respond_with :message, text: 'У вас нет записей времени для редактирования'
@@ -49,7 +49,7 @@ module Telegram
         table.align_column(0, :right)
         table.align_column(3, :right)
 
-        code("Последние 50 записей:\n\n#{table}")
+        code("Последние #{ApplicationConfig.telegram_edit_command_limit} записей:\n\n#{table}")
       end
     end
   end

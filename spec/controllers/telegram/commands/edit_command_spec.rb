@@ -29,7 +29,7 @@ RSpec.describe Telegram::Commands::EditCommand do
         expect(controller).to have_received(:respond_with).with(
           :message,
           hash_including(
-            text: include('Последние 50 записей'),
+            text: include("Последние #{ApplicationConfig.telegram_edit_command_limit} записей"),
             parse_mode: :Markdown
           )
         )
@@ -62,6 +62,20 @@ RSpec.describe Telegram::Commands::EditCommand do
 
         expect(controller).to have_received(:respond_with) do |_type, options|
           expect(options[:text]).to include('...')
+        end
+      end
+    end
+
+    context 'when telegram_edit_command_limit is customized' do
+      before do
+        allow(ApplicationConfig).to receive(:telegram_edit_command_limit).and_return(10)
+      end
+
+      it 'uses custom limit from config' do
+        command.call
+
+        expect(controller).to have_received(:respond_with) do |_type, options|
+          expect(options[:text]).to include('Последние 10 записей')
         end
       end
     end
