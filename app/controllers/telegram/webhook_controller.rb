@@ -11,6 +11,7 @@ module Telegram
     include Telegram::Bot::UpdatesController::CallbackQueryContext
     include TelegramCallbacks
     include TelegramHelpers
+    include TelegramSessionHelpers
 
     # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :require_authenticated, only: %i[new! projects! add! adduser! hours! edit!]

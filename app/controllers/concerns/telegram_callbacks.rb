@@ -109,12 +109,7 @@ module TelegramCallbacks
 
     # Save time shift to session using TelegramSession
     self.telegram_session = TelegramSession.edit(
-      time_shift_id: time_shift.id,
-      original_values: {
-        project_id: time_shift.project_id,
-        hours: time_shift.hours,
-        description: time_shift.description
-      }
+      time_shift_id: time_shift.id
     )
 
     save_context :edit_field_callback_query
@@ -160,20 +155,18 @@ module TelegramCallbacks
   end
 
   def edit_edit_project
+    time_shift = edit_time_shift
+    return handle_missing_time_shift unless time_shift
+
     save_context :edit_project_callback_query
     projects = current_user.available_projects.alive
 
-    # Get current project from session
-    data = telegram_session_data
-    current_project_id = data['original_values']['project_id']
-    current_project = Project.find(current_project_id)
-
     # Form text with current project name
-    text = "Выберите новый проект (текущий: #{current_project.name}):"
+    text = "Выберите новый проект (текущий: #{time_shift.project.name}):"
 
     # Build inline keyboard with (текущий) label for current project
     inline_keyboard = projects.map do |p|
-      project_name = p.id == current_project_id ? "#{p.name} (текущий)" : p.name
+      project_name = p.id == time_shift.project_id ? "#{p.name} (текущий)" : p.name
       [{ text: project_name, callback_data: "edit_project:#{p.slug}" }]
     end
 
@@ -235,25 +228,14 @@ module TelegramCallbacks
   end
 
   def show_edit_confirmation
+    time_shift = edit_time_shift
+    return handle_missing_time_shift unless time_shift
+
     data = telegram_session_data
     field = data['field']
-    original = data['original_values']
     new_values = data['new_values']
 
-    changes = []
-
-    case field
-    when 'project'
-      new_project = Project.find(new_values['project_id'])
-      old_project = Project.find(original['project_id'])
-      changes << "Проект: #{old_project.name} → #{new_project.name}"
-    when 'hours'
-      changes << "Часы: #{original['hours']} → #{new_values['hours']}"
-    when 'description'
-      old_desc = original['description'] || '(нет)'
-      new_desc = new_values['description'] || '(нет)'
-      changes << "Описание: #{old_desc} → #{new_desc}"
-    end
+    changes = build_changes_text(time_shift, field, new_values)
 
     save_context :edit_confirm_callback_query
 
@@ -274,9 +256,10 @@ module TelegramCallbacks
       return
     end
 
+    time_shift = edit_time_shift
+    return handle_missing_time_shift unless time_shift
+
     data = telegram_session_data
-    time_shift_id = data['time_shift_id']
-    time_shift = current_user.time_shifts.find(time_shift_id)
     field = data['field']
     new_values = data['new_values']
 

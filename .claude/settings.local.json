@@ -17,7 +17,13 @@
       "Bash(psql:*)",
       "Bash(bundle exec rake:*)",
       "Bash(bun run:*)",
-      "Bash(bundle exec ruby -c:*)"
+      "Bash(bundle exec ruby -c:*)",
+      "Read(//Users/danil/**)",
+      "WebSearch",
+      "WebFetch(domain:docs.byterover.dev)",
+      "Bash(claude mcp:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(rails console:*)"
     ],
     "deny": [],
     "ask": []

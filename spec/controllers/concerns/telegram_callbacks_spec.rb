@@ -54,11 +54,8 @@ RSpec.describe TelegramCallbacks do
         expect(tg_session).not_to be_nil
         expect(tg_session.type).to eq(:edit)
         expect(tg_session.data['time_shift_id']).to eq(time_shift.id)
-        expect(tg_session.data['original_values']).to include(
-          'project_id' => project1.id,
-          'hours' => 8,
-          'description' => 'Original work'
-        )
+        expect(tg_session.data['field']).to be_nil
+        expect(tg_session.data['new_values']).to eq({})
         expect(controller).to have_received(:save_context).with(:edit_field_callback_query)
         expect(controller).to have_received(:respond_with).with(
           :message,
@@ -99,12 +96,7 @@ RSpec.describe TelegramCallbacks do
   describe '#edit_field_callback_query' do
     before do
       controller.telegram_session = TelegramSession.edit(
-        time_shift_id: time_shift.id,
-        original_values: {
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
-        }
+        time_shift_id: time_shift.id
       )
     end
 
@@ -154,12 +146,7 @@ RSpec.describe TelegramCallbacks do
   describe '#edit_edit_project' do
     before do
       controller.telegram_session = TelegramSession.edit(
-        time_shift_id: time_shift.id,
-        original_values: {
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
-        }
+        time_shift_id: time_shift.id
       )
     end
 
@@ -201,12 +188,7 @@ RSpec.describe TelegramCallbacks do
   describe '#edit_hours_input' do
     before do
       tg_session = TelegramSession.edit(
-        time_shift_id: time_shift.id,
-        original_values: {
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
-        }
+        time_shift_id: time_shift.id
       )
       tg_session[:field] = 'hours'
       controller.telegram_session = tg_session
@@ -244,12 +226,7 @@ RSpec.describe TelegramCallbacks do
   describe '#edit_description_input' do
     before do
       tg_session = TelegramSession.edit(
-        time_shift_id: time_shift.id,
-        original_values: {
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
-        }
+        time_shift_id: time_shift.id
       )
       tg_session[:field] = 'description'
       controller.telegram_session = tg_session
@@ -290,12 +267,7 @@ RSpec.describe TelegramCallbacks do
   describe '#edit_confirm_callback_query' do
     before do
       controller.telegram_session = TelegramSession.edit(
-        time_shift_id: time_shift.id,
-        original_values: {
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
-        }
+        time_shift_id: time_shift.id
       )
     end
 
