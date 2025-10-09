@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Отслеживание версий приложения для уведомлений пользователей при обновлениях.
 class NotifiedVersion < ApplicationRecord
   validates :version, presence: true, uniqueness: true
 

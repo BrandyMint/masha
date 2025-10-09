@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Приглашение пользователя в проект по email или telegram username. Автоматически активируется
+# при регистрации пользователя.
 class Invite < ApplicationRecord
   include Authority::Abilities
   self.authorizer_name = 'InviteAuthorizer'

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Связь пользователя с проектом через роль (owner/viewer/member). Обеспечивает систему прав доступа.
+# Отправляет уведомления при добавлении участника.
 class Membership < ApplicationRecord
   include Authority::Abilities
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Проект для отслеживания времени с friendly_id slug. Может быть активным или архивным.
+# Имеет участников с разными ролями и временные записи.
 class Project < ApplicationRecord
   include Authority::Abilities
   extend FriendlyId

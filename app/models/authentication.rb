@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# OAuth-аутентификация пользователя через внешние сервисы (GitHub, Telegram).
+# Хранит токены и данные провайдера.
 class Authentication < ApplicationRecord
   belongs_to :user
 

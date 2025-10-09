@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Пользователь Telegram с данными из API. Связан с User. Обрабатывает приглашения при
+# создании или изменении username.
 class TelegramUser < ApplicationRecord
   has_one :user, dependent: :restrict_with_exception
 

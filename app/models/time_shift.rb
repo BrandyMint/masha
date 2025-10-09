@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Запись о затраченном времени на проект. Содержит дату, количество часов,
+# привязку к проекту и пользователю. Отправляет уведомления при создании.
 class TimeShift < ApplicationRecord
   include Authority::Abilities
   self.authorizer_name = 'TimeShiftAuthorizer'

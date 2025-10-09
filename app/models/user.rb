@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Пользователь системы с OAuth-аутентификацией через GitHub и Telegram. Имеет временные записи,
+# участия в проектах, приглашения. Поддерживает роли в проектах и интеграцию с Telegram.
 class User < ApplicationRecord
   authenticates_with_sorcery!
   include Authority::UserAbilities
