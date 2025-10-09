@@ -1,4 +1,12 @@
-    "@bower_components/jquery-autosize": "jackmoore/autosize#2.0.0",
-    "@bower_components/purl": "allmarkedup/purl#*"
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'vendor/assets/components', 'junction') } catch (e) { }\"",
+# 1. Рефакторинг сессий
 
+Сейчас каждая сессия в виде контекста сохраняется отдельным ключем в session, пример:       
+:edit_time_shift_id, :edit_original_values, :edit_field, :edit_new_project_id, :edit_new_hours, :edit_new_description
+
+Это не хорошо, потому что:
+
+1. Пользователь НЕ может находиться одновременно в нескольких сессиях, он делает
+   что-то одно.
+2. Для очистки сессий нужно знать ВСЕ ключи, а это нарушает принципы SOLID.
+
+Изучи это и предложи 3 плана рефакторинга избавлющих от этих проблем.

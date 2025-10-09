@@ -1,6 +1,8 @@
 {
   "permissions": {
     "allow": [
+      "Read(**)",
+      "Write(**)",
       "Bash(bundle exec rubocop:*)",
       "Bash(bundle exec rspec:*)",
       "Bash(find:*)",
