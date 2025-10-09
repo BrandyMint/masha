@@ -10,7 +10,7 @@ module TelegramCallbacks
   def select_project_callback_query(project_slug)
     save_context :add_time
     project = find_project project_slug
-    session[:add_time_project_id] = project.id
+    self.telegram_session = TelegramSession.add_time(project_id: project.id)
     edit_message :text,
                  text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
   end
@@ -29,14 +29,16 @@ module TelegramCallbacks
       return
     end
 
-    session[:adduser_project_slug] = project_slug
+    self.telegram_session = TelegramSession.add_user(project_slug: project_slug)
     save_context :adduser_username_input
     edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
   end
 
   def adduser_username_input(username, *)
     username = username.delete_prefix('@') if username.start_with?('@')
-    session[:adduser_username] = username
+    tg_session = telegram_session
+    tg_session[:username] = username
+    self.telegram_session = tg_session
 
     save_context :adduser_role_callback_query
     respond_with :message,
@@ -51,12 +53,12 @@ module TelegramCallbacks
   end
 
   def adduser_role_callback_query(role)
-    project_slug = session[:adduser_project_slug]
-    username = session[:adduser_username]
+    data = telegram_session_data
+    project_slug = data['project_slug']
+    username = data['username']
 
     # Clean up session
-    session.delete(:adduser_project_slug)
-    session.delete(:adduser_username)
+    clear_telegram_session
 
     edit_message :text, text: "Добавляем пользователя @#{username} в проект #{project_slug} с ролью #{role}..."
 
@@ -64,7 +66,8 @@ module TelegramCallbacks
   end
 
   def add_time(hours, *description)
-    project = current_user.available_projects.find(session[:add_time_project_id]) || raise('Не указан проект')
+    data = telegram_session_data
+    project = current_user.available_projects.find(data['project_id']) || raise('Не указан проект')
     description = description.join(' ')
     project.time_shifts.create!(
       date: Time.zone.today,
@@ -73,6 +76,7 @@ module TelegramCallbacks
       user: current_user
     )
 
+    clear_telegram_session
     respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
   end
 
@@ -103,13 +107,15 @@ module TelegramCallbacks
       return
     end
 
-    # Save time shift to session
-    session[:edit_time_shift_id] = time_shift.id
-    session[:edit_original_values] = {
-      project_id: time_shift.project_id,
-      hours: time_shift.hours,
-      description: time_shift.description
-    }
+    # Save time shift to session using TelegramSession
+    self.telegram_session = TelegramSession.edit(
+      time_shift_id: time_shift.id,
+      original_values: {
+        project_id: time_shift.project_id,
+        hours: time_shift.hours,
+        description: time_shift.description
+      }
+    )
 
     save_context :edit_field_callback_query
 
@@ -134,13 +140,14 @@ module TelegramCallbacks
 
   def edit_field_callback_query(field)
     if field == 'cancel'
-      session.delete(:edit_time_shift_id)
-      session.delete(:edit_original_values)
+      clear_telegram_session
       edit_message :text, text: 'Редактирование отменено'
       return
     end
 
-    session[:edit_field] = field
+    tg_session = telegram_session
+    tg_session[:field] = field
+    self.telegram_session = tg_session
 
     case field
     when 'project'
@@ -156,11 +163,23 @@ module TelegramCallbacks
     save_context :edit_project_callback_query
     projects = current_user.available_projects.alive
 
+    # Get current project from session
+    data = telegram_session_data
+    current_project_id = data['original_values']['project_id']
+    current_project = Project.find(current_project_id)
+
+    # Form text with current project name
+    text = "Выберите новый проект (текущий: #{current_project.name}):"
+
+    # Build inline keyboard with (текущий) label for current project
+    inline_keyboard = projects.map do |p|
+      project_name = p.id == current_project_id ? "#{p.name} (текущий)" : p.name
+      [{ text: project_name, callback_data: "edit_project:#{p.slug}" }]
+    end
+
     edit_message :text,
-                 text: 'Выберите новый проект:',
-                 reply_markup: {
-                   inline_keyboard: projects.map { |p| [{ text: p.name, callback_data: "edit_project:#{p.slug}" }] }
-                 }
+                 text: text,
+                 reply_markup: { inline_keyboard: inline_keyboard }
   end
 
   def edit_project_callback_query(project_slug)
@@ -171,7 +190,9 @@ module TelegramCallbacks
       return
     end
 
-    session[:edit_new_project_id] = project.id
+    tg_session = telegram_session
+    tg_session[:new_values] = { project_id: project.id }
+    self.telegram_session = tg_session
     show_edit_confirmation
   end
 
@@ -188,7 +209,9 @@ module TelegramCallbacks
       return
     end
 
-    session[:edit_new_hours] = hours
+    tg_session = telegram_session
+    tg_session[:new_values] = { hours: hours }
+    self.telegram_session = tg_session
     show_edit_confirmation
   end
 
@@ -205,26 +228,30 @@ module TelegramCallbacks
       return
     end
 
-    session[:edit_new_description] = description
+    tg_session = telegram_session
+    tg_session[:new_values] = { description: description }
+    self.telegram_session = tg_session
     show_edit_confirmation
   end
 
   def show_edit_confirmation
-    field = session[:edit_field]
-    original = session[:edit_original_values]
+    data = telegram_session_data
+    field = data['field']
+    original = data['original_values']
+    new_values = data['new_values']
 
     changes = []
 
     case field
     when 'project'
-      new_project = Project.find(session[:edit_new_project_id])
+      new_project = Project.find(new_values['project_id'])
       old_project = Project.find(original['project_id'])
       changes << "Проект: #{old_project.name} → #{new_project.name}"
     when 'hours'
-      changes << "Часы: #{original['hours']} → #{session[:edit_new_hours]}"
+      changes << "Часы: #{original['hours']} → #{new_values['hours']}"
     when 'description'
       old_desc = original['description'] || '(нет)'
-      new_desc = session[:edit_new_description] || '(нет)'
+      new_desc = new_values['description'] || '(нет)'
       changes << "Описание: #{old_desc} → #{new_desc}"
     end
 
@@ -242,36 +269,28 @@ module TelegramCallbacks
 
   def edit_confirm_callback_query(action)
     if action == 'cancel'
-      session.delete(:edit_time_shift_id)
-      session.delete(:edit_original_values)
-      session.delete(:edit_field)
-      session.delete(:edit_new_project_id)
-      session.delete(:edit_new_hours)
-      session.delete(:edit_new_description)
+      clear_telegram_session
       edit_message :text, text: 'Изменения отменены'
       return
     end
 
-    time_shift_id = session[:edit_time_shift_id]
+    data = telegram_session_data
+    time_shift_id = data['time_shift_id']
     time_shift = current_user.time_shifts.find(time_shift_id)
-    field = session[:edit_field]
+    field = data['field']
+    new_values = data['new_values']
 
     case field
     when 'project'
-      time_shift.update!(project_id: session[:edit_new_project_id])
+      time_shift.update!(project_id: new_values['project_id'])
     when 'hours'
-      time_shift.update!(hours: session[:edit_new_hours])
+      time_shift.update!(hours: new_values['hours'])
     when 'description'
-      time_shift.update!(description: session[:edit_new_description])
+      time_shift.update!(description: new_values['description'])
     end
 
     # Clean up session
-    session.delete(:edit_time_shift_id)
-    session.delete(:edit_original_values)
-    session.delete(:edit_field)
-    session.delete(:edit_new_project_id)
-    session.delete(:edit_new_hours)
-    session.delete(:edit_new_description)
+    clear_telegram_session
 
     edit_message :text, text: "✅ Запись ##{time_shift.id} успешно обновлена!"
   rescue ActiveRecord::RecordInvalid => e

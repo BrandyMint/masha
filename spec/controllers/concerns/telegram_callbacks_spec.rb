@@ -6,6 +6,7 @@ RSpec.describe TelegramCallbacks do
   let(:controller_class) do
     Class.new do
       include TelegramCallbacks
+      include TelegramSessionHelpers
 
       attr_accessor :session, :current_user
 
@@ -49,11 +50,14 @@ RSpec.describe TelegramCallbacks do
       it 'shows time shift details and field selection' do
         controller.edit_select_time_shift_input(time_shift.id)
 
-        expect(controller.session[:edit_time_shift_id]).to eq(time_shift.id)
-        expect(controller.session[:edit_original_values]).to include(
-          project_id: project1.id,
-          hours: 8,
-          description: 'Original work'
+        tg_session = controller.telegram_session
+        expect(tg_session).not_to be_nil
+        expect(tg_session.type).to eq(:edit)
+        expect(tg_session.data['time_shift_id']).to eq(time_shift.id)
+        expect(tg_session.data['original_values']).to include(
+          'project_id' => project1.id,
+          'hours' => 8,
+          'description' => 'Original work'
         )
         expect(controller).to have_received(:save_context).with(:edit_field_callback_query)
         expect(controller).to have_received(:respond_with).with(
@@ -94,20 +98,21 @@ RSpec.describe TelegramCallbacks do
 
   describe '#edit_field_callback_query' do
     before do
-      controller.session[:edit_time_shift_id] = time_shift.id
-      controller.session[:edit_original_values] = {
-        project_id: project1.id,
-        hours: 8,
-        description: 'Original work'
-      }
+      controller.telegram_session = TelegramSession.edit(
+        time_shift_id: time_shift.id,
+        original_values: {
+          project_id: project1.id,
+          hours: 8,
+          description: 'Original work'
+        }
+      )
     end
 
     context 'when cancel is selected' do
       it 'clears session and cancels editing' do
         controller.edit_field_callback_query('cancel')
 
-        expect(controller.session[:edit_time_shift_id]).to be_nil
-        expect(controller.session[:edit_original_values]).to be_nil
+        expect(controller.telegram_session).to be_nil
         expect(controller).to have_received(:edit_message).with(:text, text: 'Редактирование отменено')
       end
     end
@@ -118,7 +123,7 @@ RSpec.describe TelegramCallbacks do
 
         controller.edit_field_callback_query('project')
 
-        expect(controller.session[:edit_field]).to eq('project')
+        expect(controller.telegram_session_data['field']).to eq('project')
         expect(controller).to have_received(:edit_edit_project)
       end
     end
@@ -129,7 +134,7 @@ RSpec.describe TelegramCallbacks do
 
         controller.edit_field_callback_query('hours')
 
-        expect(controller.session[:edit_field]).to eq('hours')
+        expect(controller.telegram_session_data['field']).to eq('hours')
         expect(controller).to have_received(:edit_edit_hours)
       end
     end
@@ -140,21 +145,71 @@ RSpec.describe TelegramCallbacks do
 
         controller.edit_field_callback_query('description')
 
-        expect(controller.session[:edit_field]).to eq('description')
+        expect(controller.telegram_session_data['field']).to eq('description')
         expect(controller).to have_received(:edit_edit_description)
+      end
+    end
+  end
+
+  describe '#edit_edit_project' do
+    before do
+      controller.telegram_session = TelegramSession.edit(
+        time_shift_id: time_shift.id,
+        original_values: {
+          project_id: project1.id,
+          hours: 8,
+          description: 'Original work'
+        }
+      )
+    end
+
+    it 'shows project selection with current project name in text' do
+      controller.edit_edit_project
+
+      expect(controller).to have_received(:edit_message).with(
+        :text,
+        text: 'Выберите новый проект (текущий: Project 1):',
+        reply_markup: hash_including(:inline_keyboard)
+      )
+      expect(controller).to have_received(:save_context).with(:edit_project_callback_query)
+    end
+
+    it 'shows (текущий) label for current project in buttons' do
+      controller.edit_edit_project
+
+      expect(controller).to have_received(:edit_message) do |type, options|
+        inline_keyboard = options[:reply_markup][:inline_keyboard]
+
+        # Find the button for current project (project1)
+        current_project_button = inline_keyboard.find { |button_row|
+          button_row.first[:callback_data] == 'edit_project:proj1'
+        }
+
+        # Find the button for other project (project2)
+        other_project_button = inline_keyboard.find { |button_row|
+          button_row.first[:callback_data] == 'edit_project:proj2'
+        }
+
+        # Check current project has (текущий) label
+        expect(current_project_button.first[:text]).to eq('Project 1 (текущий)')
+        # Check other project has no label
+        expect(other_project_button.first[:text]).to eq('Project 2')
       end
     end
   end
 
   describe '#edit_hours_input' do
     before do
-      controller.session[:edit_time_shift_id] = time_shift.id
-      controller.session[:edit_field] = 'hours'
-      controller.session[:edit_original_values] = {
-        project_id: project1.id,
-        hours: 8,
-        description: 'Original work'
-      }
+      tg_session = TelegramSession.edit(
+        time_shift_id: time_shift.id,
+        original_values: {
+          project_id: project1.id,
+          hours: 8,
+          description: 'Original work'
+        }
+      )
+      tg_session[:field] = 'hours'
+      controller.telegram_session = tg_session
       allow(controller).to receive(:show_edit_confirmation)
     end
 
@@ -162,14 +217,14 @@ RSpec.describe TelegramCallbacks do
       it 'saves hours and shows confirmation' do
         controller.edit_hours_input('10.5')
 
-        expect(controller.session[:edit_new_hours]).to eq(10.5)
+        expect(controller.telegram_session_data['new_values']['hours']).to eq(10.5)
         expect(controller).to have_received(:show_edit_confirmation)
       end
 
       it 'converts comma to dot' do
         controller.edit_hours_input('7,5')
 
-        expect(controller.session[:edit_new_hours]).to eq(7.5)
+        expect(controller.telegram_session_data['new_values']['hours']).to eq(7.5)
       end
     end
 
@@ -181,20 +236,23 @@ RSpec.describe TelegramCallbacks do
           :message,
           text: 'Количество часов должно быть не менее 0.1. Попробуйте еще раз:'
         )
-        expect(controller.session[:edit_new_hours]).to be_nil
+        expect(controller.telegram_session_data['new_values']['hours']).to be_nil
       end
     end
   end
 
   describe '#edit_description_input' do
     before do
-      controller.session[:edit_time_shift_id] = time_shift.id
-      controller.session[:edit_field] = 'description'
-      controller.session[:edit_original_values] = {
-        project_id: project1.id,
-        hours: 8,
-        description: 'Original work'
-      }
+      tg_session = TelegramSession.edit(
+        time_shift_id: time_shift.id,
+        original_values: {
+          project_id: project1.id,
+          hours: 8,
+          description: 'Original work'
+        }
+      )
+      tg_session[:field] = 'description'
+      controller.telegram_session = tg_session
       allow(controller).to receive(:show_edit_confirmation)
     end
 
@@ -202,14 +260,14 @@ RSpec.describe TelegramCallbacks do
       it 'saves description and shows confirmation' do
         controller.edit_description_input('New description')
 
-        expect(controller.session[:edit_new_description]).to eq('New description')
+        expect(controller.telegram_session_data['new_values']['description']).to eq('New description')
         expect(controller).to have_received(:show_edit_confirmation)
       end
 
       it 'converts dash to nil' do
         controller.edit_description_input('-')
 
-        expect(controller.session[:edit_new_description]).to be_nil
+        expect(controller.telegram_session_data['new_values']['description']).to be_nil
         expect(controller).to have_received(:show_edit_confirmation)
       end
     end
@@ -224,25 +282,29 @@ RSpec.describe TelegramCallbacks do
           :message,
           text: 'Описание не может быть длиннее 1000 символов. Попробуйте еще раз:'
         )
-        expect(controller.session[:edit_new_description]).to be_nil
+        expect(controller.telegram_session_data['new_values']['description']).to be_nil
       end
     end
   end
 
   describe '#edit_confirm_callback_query' do
     before do
-      controller.session[:edit_time_shift_id] = time_shift.id
-      controller.session[:edit_original_values] = {
-        project_id: project1.id,
-        hours: 8,
-        description: 'Original work'
-      }
+      controller.telegram_session = TelegramSession.edit(
+        time_shift_id: time_shift.id,
+        original_values: {
+          project_id: project1.id,
+          hours: 8,
+          description: 'Original work'
+        }
+      )
     end
 
     context 'when confirming hours change' do
       before do
-        controller.session[:edit_field] = 'hours'
-        controller.session[:edit_new_hours] = 12.5
+        tg_session = controller.telegram_session
+        tg_session[:field] = 'hours'
+        tg_session[:new_values] = { hours: 12.5 }
+        controller.telegram_session = tg_session
       end
 
       it 'updates time shift and clears session' do
@@ -250,7 +312,7 @@ RSpec.describe TelegramCallbacks do
 
         time_shift.reload
         expect(time_shift.hours).to eq(12.5)
-        expect(controller.session[:edit_time_shift_id]).to be_nil
+        expect(controller.telegram_session).to be_nil
         expect(controller).to have_received(:edit_message).with(
           :text,
           text: "✅ Запись ##{time_shift.id} успешно обновлена!"
@@ -260,8 +322,10 @@ RSpec.describe TelegramCallbacks do
 
     context 'when confirming project change' do
       before do
-        controller.session[:edit_field] = 'project'
-        controller.session[:edit_new_project_id] = project2.id
+        tg_session = controller.telegram_session
+        tg_session[:field] = 'project'
+        tg_session[:new_values] = { project_id: project2.id }
+        controller.telegram_session = tg_session
       end
 
       it 'updates project and clears session' do
@@ -269,14 +333,16 @@ RSpec.describe TelegramCallbacks do
 
         time_shift.reload
         expect(time_shift.project_id).to eq(project2.id)
-        expect(controller.session[:edit_time_shift_id]).to be_nil
+        expect(controller.telegram_session).to be_nil
       end
     end
 
     context 'when confirming description change' do
       before do
-        controller.session[:edit_field] = 'description'
-        controller.session[:edit_new_description] = 'Updated description'
+        tg_session = controller.telegram_session
+        tg_session[:field] = 'description'
+        tg_session[:new_values] = { description: 'Updated description' }
+        controller.telegram_session = tg_session
       end
 
       it 'updates description and clears session' do
@@ -284,7 +350,7 @@ RSpec.describe TelegramCallbacks do
 
         time_shift.reload
         expect(time_shift.description).to eq('Updated description')
-        expect(controller.session[:edit_time_shift_id]).to be_nil
+        expect(controller.telegram_session).to be_nil
       end
     end
 
@@ -296,7 +362,7 @@ RSpec.describe TelegramCallbacks do
 
         time_shift.reload
         expect(time_shift.hours).to eq(original_hours)
-        expect(controller.session[:edit_time_shift_id]).to be_nil
+        expect(controller.telegram_session).to be_nil
         expect(controller).to have_received(:edit_message).with(:text, text: 'Изменения отменены')
       end
     end
