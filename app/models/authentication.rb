@@ -3,8 +3,6 @@
 class Authentication < ApplicationRecord
   belongs_to :user
 
-  serialize :auth_hash, coder: YAML
-
   scope :by_provider, ->(provider) { where(provider: provider) }
 
   validates :provider, presence: true

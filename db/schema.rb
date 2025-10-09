@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_21_110100) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_09_062509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_21_110100) do
     t.string "uid", null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.text "auth_hash"
+    t.jsonb "auth_hash"
     t.index ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true
     t.index ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true
   end
