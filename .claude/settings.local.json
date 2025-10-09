@@ -23,7 +23,11 @@
       "WebFetch(domain:docs.byterover.dev)",
       "Bash(claude mcp:*)",
       "WebFetch(domain:github.com)",
-      "Bash(rails console:*)"
+      "Bash(rails console:*)",
+      "Bash(npx:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "mcp__memory-bank__list_projects",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []
