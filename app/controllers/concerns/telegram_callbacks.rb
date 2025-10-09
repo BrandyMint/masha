@@ -4,6 +4,12 @@ module TelegramCallbacks
   extend ActiveSupport::Concern
 
   def callback_query(data)
+    # Handle pagination callbacks
+    if data.match?(/^edit_page:\d+$/)
+      handle_edit_pagination_callback(data)
+      return
+    end
+
     edit_message :text, text: "Вы выбрали #{data}"
   end
 
@@ -278,5 +284,21 @@ module TelegramCallbacks
     edit_message :text, text: "✅ Запись ##{time_shift.id} успешно обновлена!"
   rescue ActiveRecord::RecordInvalid => e
     edit_message :text, text: "Ошибка при сохранении: #{e.message}"
+  end
+
+  def handle_edit_pagination_callback(callback_data)
+    match_data = callback_data.match(/edit_page:(\d+)/)
+    return unless match_data
+
+    page = match_data[1].to_i
+    pagination_context = session[:edit_pagination]
+
+    # Validate page number
+    return unless pagination_context
+    return if page < 1 || page > pagination_context[:total_pages]
+
+    # Update the edit list with new page
+    command = Telegram::Commands::EditCommand.new(self)
+    command.show_time_shifts_list(page)
   end
 end

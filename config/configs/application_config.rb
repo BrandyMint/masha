@@ -13,7 +13,7 @@ class ApplicationConfig < Anyway::Config
     public_port: '443',
     telegram_auth_expiration: 120, # В Секундах
     redis_cache_store_url: 'redis://localhost:6379/2',
-    telegram_edit_command_limit: 20,
+    telegram_edit_per_page: 10,
     bot_token: '',
     bot_username: '',
     github_client_id: '',
@@ -23,7 +23,7 @@ class ApplicationConfig < Anyway::Config
 
   coerce_types(
     telegram_auth_expiration: :integer,
-    telegram_edit_command_limit: :integer
+    telegram_edit_per_page: :integer
   )
 
   def home_url
