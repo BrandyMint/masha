@@ -17,9 +17,7 @@ class TelegramTimeTracker
       message = add_time_entry(result[:project_slug], result[:hours], result[:description])
 
       # Добавляем подсказку если она есть
-      if result[:suggestion]
-        message = "#{message}\n\n💡 #{result[:suggestion]}"
-      end
+      message = "#{message}\n\n💡 #{result[:suggestion]}" if result[:suggestion]
 
       @controller.respond_with :message, text: message
       { success: true }
@@ -70,14 +68,10 @@ class TelegramTimeTracker
     end
 
     # Кейс 3: Оба могут быть временем - запрос уточнения
-    if first_is_time && second_is_time
-      return handle_ambiguous_time(first_part, second_part)
-    end
+    return handle_ambiguous_time(first_part, second_part) if first_is_time && second_is_time
 
     # Кейс 3: Оба могут быть проектами - предложение вариантов
-    if first_is_project && second_is_project
-      return handle_ambiguous_project(first_part, second_part)
-    end
+    return handle_ambiguous_project(first_part, second_part) if first_is_project && second_is_project
 
     # Кейс 4: Один из них проект, другой не время
     if first_is_project
@@ -125,7 +119,7 @@ class TelegramTimeTracker
 
     # Конвертируем и проверяем диапазон
     hours = str.tr(',', '.').to_f
-    hours > 0 && hours <= 100.0  # Более широкая проверка, диапазон проверим отдельно
+    hours.positive? && hours <= 100.0 # Более широкая проверка, диапазон проверим отдельно
   end
 
   def available_projects_slugs
@@ -150,11 +144,11 @@ class TelegramTimeTracker
 
     (1..str1.length).each do |i|
       (1..str2.length).each do |j|
-        cost = str1[i-1] == str2[j-1] ? 0 : 1
+        cost = str1[i - 1] == str2[j - 1] ? 0 : 1
         matrix[i][j] = [
-          matrix[i-1][j] + 1,     # deletion
-          matrix[i][j-1] + 1,     # insertion
-          matrix[i-1][j-1] + cost # substitution
+          matrix[i - 1][j] + 1,     # deletion
+          matrix[i][j - 1] + 1,     # insertion
+          matrix[i - 1][j - 1] + cost # substitution
         ].min
       end
     end
@@ -165,10 +159,10 @@ class TelegramTimeTracker
   def handle_ambiguous_time(first_part, second_part)
     {
       error: multiline(
-        "❓ Не понял. Вы имели в виду:",
+        '❓ Не понял. Вы имели в виду:',
         "• #{first_part} часа в каком проекте?",
         "• #{second_part} часа в каком проекте?",
-        "",
+        '',
         "Укажите проект: \"#{first_part} project\" или \"#{second_part} project\""
       )
     }
@@ -177,10 +171,10 @@ class TelegramTimeTracker
   def handle_ambiguous_project(first_part, second_part)
     {
       error: multiline(
-        "❓ Не понял. Вы имели в виду:",
+        '❓ Не понял. Вы имели в виду:',
         "• Проект '#{first_part}' сколько часов?",
         "• Проект '#{second_part}' сколько часов?",
-        "",
+        '',
         "Укажите время: \"2.5 #{first_part}\" или \"2.5 #{second_part}\""
       )
     }
@@ -216,14 +210,14 @@ class TelegramTimeTracker
     available_projects = available_projects_slugs.join(', ')
     {
       error: multiline(
-        "❌ Не удалось определить часы и проект.",
-        "",
+        '❌ Не удалось определить часы и проект.',
+        '',
         "Вы ввели: '#{first_part}' '#{second_part}'",
-        "",
-        "Правильные форматы:",
-        "• 2.5 project описание",
-        "• project 2.5 описание",
-        "",
+        '',
+        'Правильные форматы:',
+        '• 2.5 project описание',
+        '• project 2.5 описание',
+        '',
         "Доступные проекты: #{available_projects}"
       )
     }
@@ -276,7 +270,7 @@ class TelegramTimeTracker
       warning_message = " ℹ️ Мало часов (#{hours_float})"
     end
 
-    time_shift = project.time_shifts.create!(
+    project.time_shifts.create!(
       date: Time.zone.today,
       hours: hours_float,
       description: description || '',

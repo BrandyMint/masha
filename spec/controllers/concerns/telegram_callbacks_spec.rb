@@ -164,18 +164,18 @@ RSpec.describe TelegramCallbacks do
     it 'shows (текущий) label for current project in buttons' do
       controller.edit_edit_project
 
-      expect(controller).to have_received(:edit_message) do |type, options|
+      expect(controller).to have_received(:edit_message) do |_type, options|
         inline_keyboard = options[:reply_markup][:inline_keyboard]
 
         # Find the button for current project (project1)
-        current_project_button = inline_keyboard.find { |button_row|
+        current_project_button = inline_keyboard.find do |button_row|
           button_row.first[:callback_data] == 'edit_project:proj1'
-        }
+        end
 
         # Find the button for other project (project2)
-        other_project_button = inline_keyboard.find { |button_row|
+        other_project_button = inline_keyboard.find do |button_row|
           button_row.first[:callback_data] == 'edit_project:proj2'
-        }
+        end
 
         # Check current project has (текущий) label
         expect(current_project_button.first[:text]).to eq('Project 1 (текущий)')

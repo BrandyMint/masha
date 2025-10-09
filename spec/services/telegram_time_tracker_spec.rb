@@ -92,7 +92,7 @@ RSpec.describe TelegramTimeTracker do
 
       context 'both parts are projects' do
         it 'asks for clarification' do
-          message_parts = ['project1', 'project2']
+          message_parts = %w[project1 project2]
           tracker = described_class.new(user, message_parts, controller)
 
           result = tracker.parse_and_add
@@ -111,14 +111,14 @@ RSpec.describe TelegramTimeTracker do
 
           result = tracker.parse_and_add
           expect(result[:error]).to include("Не найден проект 'nonexistent'")
-          expect(result[:error]).to include("Доступные проекты:")
+          expect(result[:error]).to include('Доступные проекты:')
           expect(result[:error]).to include(/project1|project2|project123/)
         end
       end
 
       context 'invalid time format' do
         it 'shows error for invalid time' do
-          message_parts = ['abc', 'project1']
+          message_parts = %w[abc project1]
           tracker = described_class.new(user, message_parts, controller)
 
           result = tracker.parse_and_add
@@ -138,7 +138,7 @@ RSpec.describe TelegramTimeTracker do
 
       context 'time out of range' do
         it 'shows error for too much time' do
-          message_parts = ['25', 'project1']
+          message_parts = %w[25 project1]
           tracker = described_class.new(user, message_parts, controller)
 
           result = tracker.parse_and_add
@@ -157,7 +157,7 @@ RSpec.describe TelegramTimeTracker do
 
     context 'with typo in project name' do
       it 'suggests similar projects and auto-corrects' do
-        message_parts = ['2.5', 'projec']  # typo: missing 't'
+        message_parts = ['2.5', 'projec'] # typo: missing 't'
         tracker = described_class.new(user, message_parts, controller)
 
         # Should work despite the typo - fuzzy matching finds project1
@@ -217,7 +217,7 @@ RSpec.describe TelegramTimeTracker do
     it 'rejects invalid time formats' do
       expect(tracker.send(:time_format?, 'abc')).to be false
       expect(tracker.send(:time_format?, '2.5.5')).to be false
-      # Note: time_format? now accepts any positive number, range validation is separate
+      # NOTE: time_format? now accepts any positive number, range validation is separate
     end
   end
 
@@ -226,7 +226,7 @@ RSpec.describe TelegramTimeTracker do
 
     it 'calculates correct distance' do
       expect(tracker.send(:levenshtein_distance, 'test', 'test')).to eq(0)
-      expect(tracker.send(:levenshtein_distance, 'test', 'tent')).to eq(1)  # s->t substitution
+      expect(tracker.send(:levenshtein_distance, 'test', 'tent')).to eq(1) # s->t substitution
       expect(tracker.send(:levenshtein_distance, 'kitten', 'sitting')).to eq(3)
     end
   end

@@ -43,7 +43,7 @@ module TelegramSessionHelpers
     case field
     when 'project'
       new_project = current_user.available_projects.find_by(id: new_values['project_id'])
-      return ["Ошибка: новый проект не найден"] unless new_project
+      return ['Ошибка: новый проект не найден'] unless new_project
 
       ["Проект: #{time_shift.project.name} → #{new_project.name}"]
     when 'hours'
@@ -53,7 +53,7 @@ module TelegramSessionHelpers
       new_desc = new_values['description'] || '(нет)'
       ["Описание: #{old_desc} → #{new_desc}"]
     else
-      ["Ошибка: неизвестное поле для редактирования"]
+      ['Ошибка: неизвестное поле для редактирования']
     end
   end
 

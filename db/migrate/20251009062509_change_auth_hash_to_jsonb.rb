@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeAuthHashToJsonb < ActiveRecord::Migration[8.0]
   def up
     # Add new jsonb column

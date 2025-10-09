@@ -48,7 +48,7 @@ module Telegram
         total_hours = 0
 
         table = Terminal::Table.new do |t|
-          t << ['Дата', 'Проект', 'Часы']
+          t << %w[Дата Проект Часы]
           t << :separator
 
           time_shifts.each do |shift|
