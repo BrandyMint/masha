@@ -4,6 +4,19 @@ module TelegramCallbacks
   extend ActiveSupport::Concern
 
   def callback_query(data)
+    # Handle rename callbacks
+    if data.start_with?('rename_project:')
+      project_slug = data.sub('rename_project:', '')
+      rename_project_callback_query(project_slug)
+      return
+    end
+
+    if data.start_with?('rename_confirm:')
+      action = data.sub('rename_confirm:', '')
+      rename_confirm_callback_query(action)
+      return
+    end
+
     # Handle pagination callbacks
     if data.match?(/^edit_page:\d+$/)
       handle_edit_pagination_callback(data)
@@ -300,5 +313,115 @@ module TelegramCallbacks
     # Update the edit list with new page
     command = Telegram::Commands::EditCommand.new(self)
     command.show_time_shifts_list(page)
+  end
+
+  # Rename project callbacks
+  def rename_project_callback_query(project_slug)
+    project = find_project(project_slug)
+    unless project
+      edit_message :text, text: 'Проект не найден'
+      return
+    end
+
+    # Check permissions - only owners can rename
+    membership = current_user.membership_of(project)
+    unless membership&.owner?
+      edit_message :text, text: 'У вас нет прав для переименования этого проекта, только владелец (owner) может это делать.'
+      return
+    end
+
+    self.telegram_session = TelegramSession.rename(project_id: project.id)
+    save_context :rename_new_name_input
+    edit_message :text, text: "Проект: #{project.name}\nВведите новое название (2-255 символов):"
+  end
+
+  def rename_new_name_input(new_name, *)
+    if new_name.blank?
+      respond_with :message, text: 'Название не может быть пустым. Попробуйте еще раз:'
+      return
+    end
+
+    # Validate new name
+    if new_name.length < 2
+      respond_with :message, text: 'Название должно содержать минимум 2 символа. Попробуйте еще раз:'
+      return
+    end
+
+    if new_name.length > 255
+      respond_with :message, text: 'Название не может быть длиннее 255 символов. Попробуйте еще раз:'
+      return
+    end
+
+    tg_session = telegram_session
+    project_id = tg_session['project_id']
+    project = current_user.available_projects.find(project_id)
+
+    unless project
+      clear_telegram_session
+      respond_with :message, text: 'Проект не найден. Операция отменена.'
+      return
+    end
+
+    if Project.where.not(id: project.id).exists?(name: new_name)
+      respond_with :message, text: 'Проект с таким названием уже существует. Попробуйте другое название:'
+      return
+    end
+
+    # Store new name in session and show confirmation
+    tg_session[:new_name] = new_name
+    self.telegram_session = tg_session
+
+    save_context :rename_confirm_callback_query
+
+    text = "Подтвердите переименование проекта:\n\n" \
+           "Текущее название: #{project.name} (#{project.slug})\n" \
+           "Новое название: #{new_name}\n\n" \
+           'Подтвердить?'
+
+    respond_with :message,
+                 text: text,
+                 reply_markup: {
+                   inline_keyboard: [
+                     [{ text: '✅ Да, переименовать', callback_data: 'rename_confirm:save' }],
+                     [{ text: '❌ Отмена', callback_data: 'rename_confirm:cancel' }]
+                   ]
+                 }
+  end
+
+  def rename_confirm_callback_query(action)
+    if action == 'cancel'
+      clear_telegram_session
+      edit_message :text, text: 'Переименование отменено'
+      return
+    end
+
+    tg_session = telegram_session
+    project_id = tg_session['project_id']
+    new_name = tg_session['new_name']
+
+    project = current_user.available_projects.find(project_id)
+    unless project
+      clear_telegram_session
+      edit_message :text, text: 'Проект не найден. Операция отменена.'
+      return
+    end
+
+    old_name = project.name
+    old_slug = project.slug
+
+    begin
+      project.update!(name: new_name)
+
+      # Clean up session
+      clear_telegram_session
+
+      edit_message :text, text: multiline(
+        '✅ Проект успешно переименован!',
+        "Старое название: #{old_name} (#{old_slug})",
+        "Новое название: #{project.name} (#{project.slug})"
+      )
+    rescue ActiveRecord::RecordInvalid => e
+      edit_message :text, text: "Ошибка при переименовании: #{e.message}"
+    end
   end
 end

@@ -152,6 +152,7 @@ module TelegramHelpers
       '/attach {projects_slug} - Указать проект этого чата',
       '/add {project_slug} {hours} [description] - Отметить время',
       '/edit - Редактировать ранее добавленную запись времени',
+      '/rename [project_slug] "Новое название" - Переименовать проект (только для владельцев)',
       '/new [project_slug] - Создать новый проект',
       '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
       '/report - Детальный отчёт по командам и проектам',
