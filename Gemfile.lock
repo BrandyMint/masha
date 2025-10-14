@@ -132,7 +132,7 @@ GEM
       racc
     breadcrumbs_on_rails (4.1.0)
       railties (>= 5.0)
-    bugsnag (6.27.1)
+    bugsnag (6.28.0)
       concurrent-ruby (~> 1.0)
     builder (3.3.0)
     byebug (12.0.0)
@@ -767,7 +767,7 @@ DEPENDENCIES
   bootsnap (~> 1.18)
   brakeman (~> 7.1)
   breadcrumbs_on_rails
-  bugsnag (~> 6.11)
+  bugsnag (~> 6.28)
   carrierwave
   claude-on-rails
   coffee-rails

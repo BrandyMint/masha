@@ -195,7 +195,7 @@ group :test do
   gem 'turn', require: false
 end
 
-gem 'bugsnag', '~> 6.11'
+gem 'bugsnag', '~> 6.28'
 
 gem 'bootsnap', '~> 1.18'
 
