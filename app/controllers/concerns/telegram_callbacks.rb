@@ -324,31 +324,20 @@ module TelegramCallbacks
     end
 
     # Check permissions - only owners can rename
-    membership = current_user.membership_of(project)
-    unless membership&.owner?
-      edit_message :text, text: 'У вас нет прав для переименования этого проекта, только владелец (owner) может это делать.'
+    service = ProjectRenameService.new
+    unless service.send(:can_rename?, current_user, project)
+      edit_message :text, text: RenameConfig::MESSAGES[:no_permission]
       return
     end
 
     self.telegram_session = TelegramSession.rename(project_id: project.id)
     save_context :rename_new_name_input
-    edit_message :text, text: "Проект: #{project.name}\nВведите новое название (2-255 символов):"
+    edit_message :text, text: format(RenameConfig::MESSAGES[:enter_new_name], project.name)
   end
 
   def rename_new_name_input(new_name, *)
     if new_name.blank?
-      respond_with :message, text: 'Название не может быть пустым. Попробуйте еще раз:'
-      return
-    end
-
-    # Validate new name
-    if new_name.length < 2
-      respond_with :message, text: 'Название должно содержать минимум 2 символа. Попробуйте еще раз:'
-      return
-    end
-
-    if new_name.length > 255
-      respond_with :message, text: 'Название не может быть длиннее 255 символов. Попробуйте еще раз:'
+      respond_with :message, text: RenameConfig::MESSAGES[:validation_error]
       return
     end
 
@@ -362,8 +351,12 @@ module TelegramCallbacks
       return
     end
 
-    if Project.where.not(id: project.id).exists?(name: new_name)
-      respond_with :message, text: 'Проект с таким названием уже существует. Попробуйте другое название:'
+    # Validate new name using service
+    service = ProjectRenameService.new
+    result = service.call(current_user, project, new_name)
+
+    unless result[:success]
+      respond_with :message, text: result[:message]
       return
     end
 
@@ -373,10 +366,10 @@ module TelegramCallbacks
 
     save_context :rename_confirm_callback_query
 
-    text = "Подтвердите переименование проекта:\n\n" \
-           "Текущее название: #{project.name} (#{project.slug})\n" \
-           "Новое название: #{new_name}\n\n" \
-           'Подтвердить?'
+    text = format(
+      RenameConfig::MESSAGES[:confirm_rename],
+      project.name, project.slug, new_name
+    )
 
     respond_with :message,
                  text: text,
@@ -391,7 +384,7 @@ module TelegramCallbacks
   def rename_confirm_callback_query(action)
     if action == 'cancel'
       clear_telegram_session
-      edit_message :text, text: 'Переименование отменено'
+      edit_message :text, text: RenameConfig::MESSAGES[:rename_cancelled]
       return
     end
 
@@ -406,22 +399,12 @@ module TelegramCallbacks
       return
     end
 
-    old_name = project.name
-    old_slug = project.slug
+    service = ProjectRenameService.new
+    result = service.call(current_user, project, new_name)
 
-    begin
-      project.update!(name: new_name)
+    # Clean up session
+    clear_telegram_session
 
-      # Clean up session
-      clear_telegram_session
-
-      edit_message :text, text: multiline(
-        '✅ Проект успешно переименован!',
-        "Старое название: #{old_name} (#{old_slug})",
-        "Новое название: #{project.name} (#{project.slug})"
-      )
-    rescue ActiveRecord::RecordInvalid => e
-      edit_message :text, text: "Ошибка при переименовании: #{e.message}"
-    end
+    edit_message :text, text: result[:message]
   end
 end
