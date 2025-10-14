@@ -111,206 +111,12 @@ module TelegramCallbacks
     respond_with :message, text: "Ошибка создания проекта: #{e.message}"
   end
 
-  # Edit time shift callbacks
-  def edit_select_time_shift_input(time_shift_id, *)
-    time_shift = current_user.time_shifts.find_by(id: time_shift_id)
-
-    unless time_shift
-      respond_with :message, text: "Запись с ID #{time_shift_id} не найдена или недоступна"
-      return
-    end
-
-    # Check permissions
-    unless time_shift.updatable_by?(current_user)
-      respond_with :message, text: 'У вас нет прав для редактирования этой записи'
-      return
-    end
-
-    # Save time shift to session using TelegramSession
-    self.telegram_session = TelegramSession.edit(
-      time_shift_id: time_shift.id
-    )
-
-    save_context :edit_field_callback_query
-
-    description = time_shift.description || '(нет)'
-    text = "Запись ##{time_shift.id}:\n" \
-           "Проект: #{time_shift.project.name}\n" \
-           "Часы: #{time_shift.hours}\n" \
-           "Описание: #{description}\n\n" \
-           'Что хотите изменить?'
-
-    respond_with :message,
-                 text: text,
-                 reply_markup: {
-                   inline_keyboard: [
-                     [{ text: '📁 Проект', callback_data: 'edit_field:project' }],
-                     [{ text: '⏰ Часы', callback_data: 'edit_field:hours' }],
-                     [{ text: '📝 Описание', callback_data: 'edit_field:description' }],
-                     [{ text: '❌ Отмена', callback_data: 'edit_field:cancel' }]
-                   ]
-                 }
-  end
-
-  def edit_field_callback_query(field)
-    if field == 'cancel'
-      clear_telegram_session
-      edit_message :text, text: 'Редактирование отменено'
-      return
-    end
-
-    tg_session = telegram_session
-    tg_session[:field] = field
-    self.telegram_session = tg_session
-
-    case field
-    when 'project'
-      edit_edit_project
-    when 'hours'
-      edit_edit_hours
-    when 'description'
-      edit_edit_description
-    end
-  end
-
-  def edit_edit_project
-    time_shift = edit_time_shift
-    return handle_missing_time_shift unless time_shift
-
-    save_context :edit_project_callback_query
-    projects = current_user.available_projects.alive
-
-    # Form text with current project name
-    text = "Выберите новый проект (текущий: #{time_shift.project.name}):"
-
-    # Build inline keyboard with (текущий) label for current project
-    inline_keyboard = projects.map do |p|
-      project_name = p.id == time_shift.project_id ? "#{p.name} (текущий)" : p.name
-      [{ text: project_name, callback_data: "edit_project:#{p.slug}" }]
-    end
-
-    edit_message :text,
-                 text: text,
-                 reply_markup: { inline_keyboard: inline_keyboard }
-  end
-
-  def edit_project_callback_query(project_slug)
-    project = find_project(project_slug)
-
-    unless project
-      edit_message :text, text: 'Проект не найден'
-      return
-    end
-
-    tg_session = telegram_session
-    tg_session[:new_values] = { project_id: project.id }
-    self.telegram_session = tg_session
-    show_edit_confirmation
-  end
-
-  def edit_edit_hours
-    save_context :edit_hours_input
-    edit_message :text, text: 'Введите новое количество часов (например, 8 или 7.5):'
-  end
-
-  def edit_hours_input(hours_str, *)
-    hours = hours_str.to_s.tr(',', '.').to_f
-
-    if hours < 0.1
-      respond_with :message, text: 'Количество часов должно быть не менее 0.1. Попробуйте еще раз:'
-      return
-    end
-
-    tg_session = telegram_session
-    tg_session[:new_values] = { hours: hours }
-    self.telegram_session = tg_session
-    show_edit_confirmation
-  end
-
-  def edit_edit_description
-    save_context :edit_description_input
-    edit_message :text, text: 'Введите новое описание (или отправьте "-" для пустого описания):'
-  end
-
-  def edit_description_input(description, *)
-    description = nil if description == '-'
-
-    if description && description.length > 1000
-      respond_with :message, text: 'Описание не может быть длиннее 1000 символов. Попробуйте еще раз:'
-      return
-    end
-
-    tg_session = telegram_session
-    tg_session[:new_values] = { description: description }
-    self.telegram_session = tg_session
-    show_edit_confirmation
-  end
-
-  def show_edit_confirmation
-    time_shift = edit_time_shift
-    return handle_missing_time_shift unless time_shift
-
-    data = telegram_session_data
-    field = data['field']
-    new_values = data['new_values']
-
-    changes = build_changes_text(time_shift, field, new_values)
-
-    save_context :edit_confirm_callback_query
-
-    respond_with :message,
-                 text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",
-                 reply_markup: {
-                   inline_keyboard: [
-                     [{ text: '✅ Сохранить', callback_data: 'edit_confirm:save' }],
-                     [{ text: '❌ Отмена', callback_data: 'edit_confirm:cancel' }]
-                   ]
-                 }
-  end
-
-  def edit_confirm_callback_query(action)
-    if action == 'cancel'
-      clear_telegram_session
-      edit_message :text, text: 'Изменения отменены'
-      return
-    end
-
-    time_shift = edit_time_shift
-    return handle_missing_time_shift unless time_shift
-
-    data = telegram_session_data
-    field = data['field']
-    new_values = data['new_values']
-
-    case field
-    when 'project'
-      time_shift.update!(project_id: new_values['project_id'])
-    when 'hours'
-      time_shift.update!(hours: new_values['hours'])
-    when 'description'
-      time_shift.update!(description: new_values['description'])
-    end
-
-    # Clean up session
-    clear_telegram_session
-
-    edit_message :text, text: "✅ Запись ##{time_shift.id} успешно обновлена!"
-  rescue ActiveRecord::RecordInvalid => e
-    edit_message :text, text: "Ошибка при сохранении: #{e.message}"
-  end
 
   def handle_edit_pagination_callback(callback_data)
-    match_data = callback_data.match(/edit_page:(\d+)/)
-    return unless match_data
+    service = Telegram::Edit::PaginationService.new(self, current_user)
+    page = service.handle_callback(callback_data)
+    return unless page
 
-    page = match_data[1].to_i
-    pagination_context = session[:edit_pagination]
-
-    # Validate page number
-    return unless pagination_context
-    return if page < 1 || page > pagination_context[:total_pages]
-
-    # Update the edit list with new page
     command = Telegram::Commands::EditCommand.new(self)
     command.show_time_shifts_list(page)
   end
@@ -406,5 +212,36 @@ module TelegramCallbacks
     clear_telegram_session
 
     edit_message :text, text: result[:message]
+  end
+
+  # Edit time shift callbacks
+  def edit_select_time_shift_input(time_shift_id, *)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_selection(time_shift_id)
+  end
+
+  def edit_field_callback_query(field)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_field_selection(field)
+  end
+
+  def edit_project_callback_query(project_slug)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_project_selection(project_slug)
+  end
+
+  def edit_hours_input(hours_str, *)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_hours_input(hours_str)
+  end
+
+  def edit_description_input(description, *)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_description_input(description)
+  end
+
+  def edit_confirm_callback_query(action)
+    service = Telegram::Edit::TimeShiftService.new(self, current_user)
+    service.handle_confirmation(action)
   end
 end
