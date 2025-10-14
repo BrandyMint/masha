@@ -5,7 +5,7 @@
 class TelegramSession
   attr_accessor :type, :data
 
-  VALID_TYPES = %i[edit add_user add_time].freeze
+  VALID_TYPES = %i[edit add_user add_time rename].freeze
 
   def initialize(type, data = {})
     @type = type.to_sym
@@ -57,6 +57,14 @@ class TelegramSession
   def self.add_time(project_id:)
     new(:add_time, {
           project_id: project_id
+        })
+  end
+
+  # Фабричный метод для создания сессии переименования
+  def self.rename(project_id:)
+    new(:rename, {
+          project_id: project_id,
+          new_name: nil
         })
   end
 

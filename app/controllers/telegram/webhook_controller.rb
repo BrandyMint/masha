@@ -14,7 +14,7 @@ module Telegram
     include TelegramSessionHelpers
 
     # rubocop:disable Rails/LexicallyScopedActionFilter
-    before_action :require_authenticated, only: %i[new! projects! add! adduser! hours! edit!]
+    before_action :require_authenticated, only: %i[new! projects! add! adduser! hours! edit! rename!]
     before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start! adduser!]
     # rubocop:enable Rails/LexicallyScopedActionFilter
 
@@ -26,7 +26,7 @@ module Telegram
     around_action :with_locale
 
     # Dynamic command method definitions
-    %w[summary report projects attach start help version users merge add new adduser hours edit].each do |command|
+    %w[summary report projects attach start help version users merge add new adduser hours edit rename].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
