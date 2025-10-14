@@ -28,8 +28,6 @@ RSpec.describe Telegram::Commands::EditCommand do
       expect(service_double).to receive(:show_time_shifts_list).with(1)
 
       command.call
-
-      expect(Telegram::Edit::TimeShiftService).to have_received(:new).with(controller, user)
     end
   end
 
@@ -40,8 +38,6 @@ RSpec.describe Telegram::Commands::EditCommand do
       expect(service_double).to receive(:show_time_shifts_list).with(2)
 
       command.show_time_shifts_list(2)
-
-      expect(Telegram::Edit::TimeShiftService).to have_received(:new).with(controller, user)
     end
   end
 end

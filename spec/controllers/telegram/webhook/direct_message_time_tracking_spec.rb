@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
@@ -14,8 +14,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let!(:other_project) { create(:project, slug: 'otherproject') }
 
     before do
-      user.set_role(:member, project)
-      user.set_role(:member, other_project)
+      create(:membership, user: user, project: project, role: :member)
+      create(:membership, user: user, project: other_project, role: :member)
     end
 
     context 'with hours first format: {hours} {project_slug} [description]' do
@@ -53,7 +53,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'responds with success message' do
         expect do
           dispatch_message '2 testproject работа'
-        end.to respond_with_message(/Отметили в #{project.name} 2 часов/)
+        end.to respond_with_message(/Отметили 2\.0ч в проекте #{project.name}/)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'responds with success message' do
         expect do
           dispatch_message 'testproject 6 разработка'
-        end.to respond_with_message(/Отметили в #{project.name} 6 часов/)
+        end.to respond_with_message(/Отметили 6\.0ч в проекте #{project.name}/)
       end
     end
 
@@ -89,7 +89,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'responds with error for non-numeric values' do
         expect do
           dispatch_message 'testproject abc описание'
-        end.to respond_with_message(/Не удалось определить часы и проект/)
+        end.to respond_with_message(/Второй параметр 'abc' не похож на время/)
       end
 
       it 'responds with error for unknown project' do
