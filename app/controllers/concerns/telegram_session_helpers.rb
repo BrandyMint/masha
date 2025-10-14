@@ -76,6 +76,7 @@ module TelegramSessionHelpers
   def validate_description(description)
     return nil if description == '-'
     return nil if description && description.length > 1000
+
     description
   end
 end

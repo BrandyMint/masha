@@ -111,7 +111,6 @@ module TelegramCallbacks
     respond_with :message, text: "Ошибка создания проекта: #{e.message}"
   end
 
-
   def handle_edit_pagination_callback(callback_data)
     service = Telegram::Edit::PaginationService.new(self, current_user)
     page = service.handle_callback(callback_data)

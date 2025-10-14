@@ -29,9 +29,9 @@ module Telegram
         keyboard_buttons = []
         nav_row = []
 
-        nav_row << { text: "⬅️ Назад", callback_data: "#{callback_prefix}:#{current_page - 1}" } if current_page > 1
-        nav_row << { text: "#{current_page}/#{total_pages}", callback_data: "noop" }
-        nav_row << { text: "Вперед ➡️", callback_data: "#{callback_prefix}:#{current_page + 1}" } if current_page < total_pages
+        nav_row << { text: '⬅️ Назад', callback_data: "#{callback_prefix}:#{current_page - 1}" } if current_page > 1
+        nav_row << { text: "#{current_page}/#{total_pages}", callback_data: 'noop' }
+        nav_row << { text: 'Вперед ➡️', callback_data: "#{callback_prefix}:#{current_page + 1}" } if current_page < total_pages
 
         keyboard_buttons << nav_row if nav_row.any?
 

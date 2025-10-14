@@ -30,13 +30,13 @@ module Telegram
         reply_markup = pagination_service.build_keyboard(result[:pagination])
 
         controller.respond_with :message,
-                     text: controller.multiline(
-                       text,
-                       nil,
-                       'Введите ID записи, которую хотите редактировать:'
-                     ),
-                     reply_markup:,
-                     parse_mode: :Markdown
+                                text: controller.multiline(
+                                  text,
+                                  nil,
+                                  'Введите ID записи, которую хотите редактировать:'
+                                ),
+                                reply_markup:,
+                                parse_mode: :Markdown
       end
 
       def handle_selection(time_shift_id)
@@ -169,15 +169,15 @@ module Telegram
                'Что хотите изменить?'
 
         controller.respond_with :message,
-                     text: text,
-                     reply_markup: {
-                       inline_keyboard: [
-                         [{ text: '📁 Проект', callback_data: 'edit_field:project' }],
-                         [{ text: '⏰ Часы', callback_data: 'edit_field:hours' }],
-                         [{ text: '📝 Описание', callback_data: 'edit_field:description' }],
-                         [{ text: '❌ Отмена', callback_data: 'edit_field:cancel' }]
-                       ]
-                     }
+                                text: text,
+                                reply_markup: {
+                                  inline_keyboard: [
+                                    [{ text: '📁 Проект', callback_data: 'edit_field:project' }],
+                                    [{ text: '⏰ Часы', callback_data: 'edit_field:hours' }],
+                                    [{ text: '📝 Описание', callback_data: 'edit_field:description' }],
+                                    [{ text: '❌ Отмена', callback_data: 'edit_field:cancel' }]
+                                  ]
+                                }
       end
 
       def show_project_selection
@@ -195,8 +195,8 @@ module Telegram
         end
 
         controller.edit_message :text,
-                     text: text,
-                     reply_markup: { inline_keyboard: inline_keyboard }
+                                text: text,
+                                reply_markup: { inline_keyboard: inline_keyboard }
       end
 
       def show_hours_input
@@ -222,13 +222,13 @@ module Telegram
         controller.save_context :edit_confirm_callback_query
 
         controller.respond_with :message,
-                     text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",
-                     reply_markup: {
-                       inline_keyboard: [
-                         [{ text: '✅ Сохранить', callback_data: 'edit_confirm:save' }],
-                         [{ text: '❌ Отмена', callback_data: 'edit_confirm:cancel' }]
-                       ]
-                     }
+                                text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",
+                                reply_markup: {
+                                  inline_keyboard: [
+                                    [{ text: '✅ Сохранить', callback_data: 'edit_confirm:save' }],
+                                    [{ text: '❌ Отмена', callback_data: 'edit_confirm:cancel' }]
+                                  ]
+                                }
       end
 
       def update_time_shift(time_shift, field, new_values)

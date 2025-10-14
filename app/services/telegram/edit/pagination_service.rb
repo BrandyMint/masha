@@ -18,10 +18,10 @@ module Telegram
         pagination = calculate_pagination(total_count, page, per_page)
 
         time_shifts = user.time_shifts
-                           .includes(:project)
-                           .order(date: :desc, created_at: :desc)
-                           .limit(pagination[:per_page])
-                           .offset(pagination[:offset])
+                          .includes(:project)
+                          .order(date: :desc, created_at: :desc)
+                          .limit(pagination[:per_page])
+                          .offset(pagination[:offset])
 
         {
           time_shifts: time_shifts,

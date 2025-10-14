@@ -64,9 +64,9 @@ RSpec.describe Telegram::Edit::PaginationService do
       service.save_pagination_context(pagination)
 
       expect(controller.session[:edit_pagination]).to eq({
-        current_page: 2,
-        total_pages: 5
-      })
+                                                           current_page: 2,
+                                                           total_pages: 5
+                                                         })
     end
   end
 
@@ -117,14 +117,14 @@ RSpec.describe Telegram::Edit::PaginationService do
         keyboard = service.build_keyboard(pagination)
 
         expect(keyboard).to eq({
-          inline_keyboard: [
-            [
-              { text: "⬅️ Назад", callback_data: "edit_page:1" },
-              { text: "2/5", callback_data: "noop" },
-              { text: "Вперед ➡️", callback_data: "edit_page:3" }
-            ]
-          ]
-        })
+                                 inline_keyboard: [
+                                   [
+                                     { text: '⬅️ Назад', callback_data: 'edit_page:1' },
+                                     { text: '2/5', callback_data: 'noop' },
+                                     { text: 'Вперед ➡️', callback_data: 'edit_page:3' }
+                                   ]
+                                 ]
+                               })
       end
     end
 
@@ -144,13 +144,13 @@ RSpec.describe Telegram::Edit::PaginationService do
         keyboard = service.build_keyboard(pagination)
 
         expect(keyboard).to eq({
-          inline_keyboard: [
-            [
-              { text: "1/3", callback_data: "noop" },
-              { text: "Вперед ➡️", callback_data: "edit_page:2" }
-            ]
-          ]
-        })
+                                 inline_keyboard: [
+                                   [
+                                     { text: '1/3', callback_data: 'noop' },
+                                     { text: 'Вперед ➡️', callback_data: 'edit_page:2' }
+                                   ]
+                                 ]
+                               })
       end
     end
 
@@ -170,13 +170,13 @@ RSpec.describe Telegram::Edit::PaginationService do
         keyboard = service.build_keyboard(pagination)
 
         expect(keyboard).to eq({
-          inline_keyboard: [
-            [
-              { text: "⬅️ Назад", callback_data: "edit_page:2" },
-              { text: "3/3", callback_data: "noop" }
-            ]
-          ]
-        })
+                                 inline_keyboard: [
+                                   [
+                                     { text: '⬅️ Назад', callback_data: 'edit_page:2' },
+                                     { text: '3/3', callback_data: 'noop' }
+                                   ]
+                                 ]
+                               })
       end
     end
 
