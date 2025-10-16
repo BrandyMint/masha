@@ -29,7 +29,8 @@
       "Bash(tree:*)",
       "WebSearch",
       "Bash(npm search:*)",
-      "Bash(bundle exec ruby:*)"
+      "Bash(bundle exec ruby:*)",
+      "Read(//Users/danil/code/NoFluff/**)"
     ],
     "deny": [],
     "ask": []
