@@ -26,7 +26,7 @@ module Telegram
     around_action :with_locale
 
     # Dynamic command method definitions
-    %w[summary report projects attach start help version users merge add new adduser hours edit rename].each do |command|
+    %w[summary report projects attach start help version users merge add new adduser hours edit rename set_commands].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
