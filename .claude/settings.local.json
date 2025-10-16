@@ -28,7 +28,8 @@
       "mcp__memory-bank__list_projects",
       "Bash(tree:*)",
       "WebSearch",
-      "Bash(npm search:*)"
+      "Bash(npm search:*)",
+      "Bash(bundle exec ruby:*)"
     ],
     "deny": [],
     "ask": []

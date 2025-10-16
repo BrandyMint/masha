@@ -12,7 +12,7 @@ RSpec.describe Telegram::Commands::RenameCommand do
   before do
     allow(controller).to receive(:current_user).and_return(user)
     allow(controller).to receive(:respond_with)
-    allow(controller).to receive(:find_project).and_return(project)
+    allow(command).to receive(:find_project).and_return(project)
     allow(controller).to receive(:save_context)
     allow(controller).to receive(:multiline)
   end
@@ -34,174 +34,111 @@ RSpec.describe Telegram::Commands::RenameCommand do
       end
     end
   end
+end
 
-  describe '#rename_project_directly' do
-    context 'with valid data' do
-      before do
-        allow(command).to receive(:can_rename_project?).and_return(true)
-        allow(Project).to receive(:exists?).with(name: 'New Project').and_return(false)
-      end
+RSpec.describe Telegram::Commands::RenameCommand, '#rename_project_directly' do
+  let(:controller) { instance_double(Telegram::WebhookController) }
+  let(:command) { described_class.new(controller) }
+  let(:user) { create(:user) }
+  let(:project) { create(:project, name: 'Old Project', slug: 'old-project') }
+  let(:membership) { create(:membership, user: user, project: project, role: :owner) }
+  let(:service) { instance_double(ProjectRenameService) }
 
-      it 'renames project successfully' do
-        expect(project).to receive(:update!).with(name: 'New Project')
-        expect(controller).to receive(:multiline).and_return('success message')
-        expect(controller).to receive(:respond_with).with(:message, text: 'success message')
+  before do
+    allow(controller).to receive(:current_user).and_return(user)
+    allow(controller).to receive(:respond_with)
+    allow(command).to receive(:find_project).with('old-project').and_return(project)
+    allow(ProjectRenameService).to receive(:new).and_return(service)
+  end
 
-        command.send(:rename_project_directly, 'old-project', 'New Project')
-      end
-    end
+  context 'with valid data' do
+    it 'renames project successfully' do
+      expect(service).to receive(:call).with(user, project, 'New Project').and_return(
+        { success: true, message: 'success message' }
+      )
+      expect(controller).to receive(:respond_with).with(:message, text: 'success message')
 
-    context 'with blank new_name' do
-      it 'responds with error message' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'Укажите новое название проекта. Например: /rename project-slug "Новое название"'
-        )
-
-        command.send(:rename_project_directly, 'old-project', '')
-      end
-    end
-
-    context 'when project not found' do
-      before do
-        allow(controller).to receive(:find_project).and_return(nil)
-      end
-
-      it 'responds with project not found error' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: "Проект с slug 'old-project' не найден или недоступен"
-        )
-
-        command.send(:rename_project_directly, 'old-project', 'New Project')
-      end
-    end
-
-    context 'when user lacks permission' do
-      before do
-        allow(command).to receive(:can_rename_project?).and_return(false)
-      end
-
-      it 'responds with permission error' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'У вас нет прав для переименования этого проекта. Только владелец (owner) может переименовывать проекты.'
-        )
-
-        command.send(:rename_project_directly, 'old-project', 'New Project')
-      end
-    end
-
-    context 'when name is too short' do
-      before do
-        allow(command).to receive(:can_rename_project?).and_return(true)
-      end
-
-      it 'responds with validation error' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'Название проекта должно содержать минимум 2 символа'
-        )
-
-        command.send(:rename_project_directly, 'old-project', 'A')
-      end
-    end
-
-    context 'when name is too long' do
-      before do
-        allow(command).to receive(:can_rename_project?).and_return(true)
-        long_name = 'A' * 256
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'Название проекта не может быть длиннее 255 символов'
-        )
-
-        command.send(:rename_project_directly, 'old-project', long_name)
-      end
-    end
-
-    context 'when project name already exists' do
-      before do
-        allow(command).to receive(:can_rename_project?).and_return(true)
-        allow(Project).to receive(:exists?).with(name: 'Existing Project').and_return(true)
-      end
-
-      it 'responds with duplicate name error' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'Проект с таким названием уже существует'
-        )
-
-        command.send(:rename_project_directly, 'old-project', 'Existing Project')
-      end
+      command.send(:rename_project_directly, 'old-project', 'New Project')
     end
   end
 
-  describe '#show_projects_selection' do
-    context 'when user has manageable projects' do
-      let(:another_project) { create(:project, name: 'Another Project', slug: 'another-project') }
-      let(:another_membership) { create(:membership, user: user, project: another_project, role: :owner) }
-
-      it 'shows projects with inline keyboard' do
-        expect(controller).to receive(:respond_with) do |type, options|
-          expect(type).to eq(:message)
-          expect(options[:text]).to eq('Выберите проект для переименования:')
-          expect(options[:reply_markup][:inline_keyboard]).to be_an(Array)
-        end
-
-        command.send(:show_projects_selection)
-      end
+  context 'when project not found' do
+    before do
+      allow(command).to receive(:find_project).with('old-project').and_return(nil)
     end
 
-    context 'when user has no manageable projects' do
-      let(:viewer_membership) { create(:membership, user: user, project: project, role: :viewer) }
+    it 'responds with project not found error' do
+      expect(controller).to receive(:respond_with).with(
+        :message,
+        text: "Проект с slug 'old-project' не найден или недоступен"
+      )
+      expect(service).not_to receive(:call)
 
-      before do
-        membership.destroy
-      end
-
-      it 'responds with no projects message' do
-        expect(controller).to receive(:respond_with).with(
-          :message,
-          text: 'У вас нет проектов, которые вы можете переименовывать. Только владельцы (owners) могут переименовывать проекты.'
-        )
-
-        command.send(:show_projects_selection)
-      end
+      command.send(:rename_project_directly, 'old-project', 'New Project')
     end
   end
 
-  describe '#can_rename_project?' do
-    context 'when user is owner' do
-      it 'returns true' do
-        result = command.send(:can_rename_project?, user, project)
-        expect(result).to be true
+  context 'when service returns error' do
+    it 'responds with service error message' do
+      expect(service).to receive(:call).with(user, project, 'New Project').and_return(
+        { success: false, message: 'Error message' }
+      )
+      expect(controller).to receive(:respond_with).with(:message, text: 'Error message')
+
+      command.send(:rename_project_directly, 'old-project', 'New Project')
+    end
+  end
+end
+
+RSpec.describe Telegram::Commands::RenameCommand, '#show_projects_selection' do
+  let(:controller) { instance_double(Telegram::WebhookController) }
+  let(:command) { described_class.new(controller) }
+  let(:user) { create(:user) }
+  let(:project) { create(:project, name: 'Old Project', slug: 'old-project') }
+  let(:membership) { create(:membership, user: user, project: project, role: :owner) }
+  let(:service) { instance_double(ProjectRenameService) }
+
+  before do
+    allow(controller).to receive(:current_user).and_return(user)
+    allow(controller).to receive(:respond_with)
+    allow(controller).to receive(:save_context)
+    allow(ProjectRenameService).to receive(:new).and_return(service)
+  end
+
+  context 'when user has manageable projects' do
+    let(:another_project) { create(:project, name: 'Another Project', slug: 'another-project') }
+    let(:another_membership) { create(:membership, user: user, project: another_project, role: :owner) }
+
+    it 'shows projects with inline keyboard' do
+      manageable_projects = [project, another_project]
+      expect(service).to receive(:manageable_projects).with(user).and_return(manageable_projects)
+      expect(controller).to receive(:save_context).with(:rename_project_callback_query)
+      expect(controller).to receive(:respond_with) do |type, options|
+        expect(type).to eq(:message)
+        expect(options[:text]).to eq('Выберите проект для переименования:')
+        expect(options[:reply_markup][:inline_keyboard]).to be_an(Array)
       end
+
+      command.send(:show_projects_selection)
+    end
+  end
+
+  context 'when user has no manageable projects' do
+    let(:viewer_membership) { create(:membership, user: user, project: project, role: :viewer) }
+
+    before do
+      membership.destroy
     end
 
-    context 'when user is not owner' do
-      let(:viewer_membership) { create(:membership, user: user, project: project, role: :viewer) }
+    it 'responds with no projects message' do
+      expect(service).to receive(:manageable_projects).with(user).and_return([])
+      expect(controller).to receive(:respond_with).with(
+        :message,
+        text: 'У вас нет проектов, которые вы можете переименовывать. Только владельцы (owners) могут переименовывать проекты.'
+      )
+      expect(controller).not_to receive(:save_context)
 
-      before do
-        membership.destroy
-        viewer_membership
-      end
-
-      it 'returns false' do
-        result = command.send(:can_rename_project?, user, project)
-        expect(result).to be false
-      end
-    end
-
-    context 'when user has no membership' do
-      before do
-        membership.destroy
-      end
-
-      it 'returns false' do
-        result = command.send(:can_rename_project?, user, project)
-        expect(result).to be false
-      end
+      command.send(:show_projects_selection)
     end
   end
 end
