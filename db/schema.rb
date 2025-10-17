@@ -98,6 +98,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_09_062509) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  create_table "telegram_command_setups", force: :cascade do |t|
+    t.string "deployment_id", null: false
+    t.string "status", default: "pending", null: false
+    t.jsonb "commands_snapshot"
+    t.text "error_message"
+    t.integer "commands_count"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_telegram_command_setups_on_created_at"
+    t.index ["deployment_id"], name: "index_telegram_command_setups_on_deployment_id", unique: true
+    t.index ["status"], name: "index_telegram_command_setups_on_status"
+  end
+
   create_table "telegram_users", id: :string, force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"

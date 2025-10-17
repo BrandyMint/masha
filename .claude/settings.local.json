@@ -30,7 +30,9 @@
       "WebSearch",
       "Bash(npm search:*)",
       "Bash(bundle exec ruby:*)",
-      "Read(//Users/danil/code/NoFluff/**)"
+      "Read(//Users/danil/code/NoFluff/**)",
+      "Bash(AUTO_SETUP_TELEGRAM_COMMANDS=true bundle exec rails runner \"Rails.logger.info ''Testing job launch...''; TelegramCommandsSetupJob.launch_safely\")",
+      "Bash(AUTO_SETUP_TELEGRAM_COMMANDS=true bundle exec rails runner \"puts ''Testing initializer loading...''; puts ''Loaded successfully''\")"
     ],
     "deny": [],
     "ask": []
