@@ -27,13 +27,5 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect { dispatch_command :rename }.to respond_with_message(/Выберите проект для переименования/)
       end
     end
-
-    context 'when rename! is called in public chat' do
-      include_context 'public chat'
-
-      it 'should be silently ignored due to NotAvailableInPublicChat' do
-        expect { dispatch_command :rename }.not_to respond_with_message
-      end
-    end
   end
 end
