@@ -15,7 +15,7 @@ module Telegram
 
     # rubocop:disable Rails/LexicallyScopedActionFilter
     before_action :require_authenticated, only: %i[new! projects! add! adduser! hours! edit! rename!]
-    before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start! adduser! rename!]
+    before_action :require_personal_chat, except: %i[attach! report! summary! add! projects! start! adduser!]
     # rubocop:enable Rails/LexicallyScopedActionFilter
 
     rescue_from StandardError, with: :handle_error
