@@ -60,9 +60,6 @@ jobs:
         bundle exec rails db:create
         bundle exec rails db:schema:load
 
-    - name: Compile CSS
-      run: bun run build:css
-
     - name: Run RSpec tests
       env:
         RAILS_ENV: test
