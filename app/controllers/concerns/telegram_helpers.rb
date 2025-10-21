@@ -186,10 +186,14 @@ module TelegramHelpers
   end
 
   def current_user
-    return unless from
     return @current_user if defined? @current_user
+    @current_user = find_current_user
+  end
 
-    @current_user = User.joins(:authentications).find_by(authentications: { provider: :telegram, uid: from['id'] })
+  def find_current_user
+    telegram_user.user || User.
+      create_with(name: telegram_user.name, nickname: telegram_user.username).
+      find_or_create_by!(telegram_user_id: telegram_user.id)
   end
 
   def logged_in?

@@ -110,23 +110,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end.to respond_with_message(/Я не Алиса, мне нужна конкретика/)
       end
     end
-
-    context 'when user is not authenticated' do
-      include_context 'unauthenticated user'
-
-      before do
-        allow(controller).to receive(:current_user).and_return(nil)
-      end
-
-      it 'does not process message and shows default help' do
-        subject = lambda do
-          dispatch_message '2 testproject работа'
-        end
-
-        expect(subject).not_to(change { project.time_shifts.count })
-        expect(subject).to respond_with_message(/конкретика/)
-      end
-    end
   end
 end
 # rubocop:enable Metrics/BlockLength

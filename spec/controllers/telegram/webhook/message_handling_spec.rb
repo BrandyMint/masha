@@ -6,17 +6,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   describe '#message' do
-    context 'private chat' do
-      include_context 'private chat'
-
-      context 'unauthenticated user' do
-        include_context 'unauthenticated user'
-
-        subject { -> { dispatch_message 'talk something' } }
-        it { should respond_with_message(/конкретика/) }
-      end
-    end
-
     context 'public chat' do
       include_context 'public chat'
 
