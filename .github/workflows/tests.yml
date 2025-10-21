@@ -40,25 +40,18 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.3'
         bundler-cache: true
 
     - uses: oven-sh/setup-bun@v2
       with:
         bun-version: latest
 
-    - name: Install dependencies
-      run: |
-        bundle install
-
     - name: Set up database
       env:
         RAILS_ENV: test
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/masha_test
         REDIS_URL: redis://localhost:6379/0
-      run: |
-        bundle exec rails db:create
-        bundle exec rails db:schema:load
+      run: bin/rails db:test:prepare
 
     - name: Run RSpec tests
       env:
@@ -66,8 +59,7 @@ jobs:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/masha_test
         REDIS_URL: redis://localhost:6379/0
         COVERAGE: true
-      run: |
-        bundle exec rspec
+      run: bin/rspec
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v4
@@ -85,7 +77,6 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.3'
         bundler-cache: true
 
     - name: Run RuboCop
@@ -100,7 +91,6 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.3'
         bundler-cache: true
 
     - name: Run Brakeman security scan
