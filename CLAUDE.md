@@ -136,3 +136,5 @@ Three role levels per project:
 - GitHub Actions for CI (tests.yml workflow)
 - Semver-based releases via Makefile
 /file:.claude-on-rails/context.md
+- Спецификации бизнес-аналитика сохраняются в .protocols/
+- План имлементации сохраняется в .protocols/{СПЕЦИФИКАЦИЯ}_plan.md
