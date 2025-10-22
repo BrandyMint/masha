@@ -156,6 +156,8 @@ module TelegramHelpers
       '/new [project_slug] - Создать новый проект',
       '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
       '/report - Детальный отчёт по командам и проектам',
+      '/day - Отчёт за день',
+      '/rename - Переименовка проекта',
       '/summary {week|month}- Сумарный отчёт за период',
       '/hours [project_slug] - Все часы за последние 3 месяца',
       '',
@@ -166,6 +168,7 @@ module TelegramHelpers
 
     # Add developer commands if user is developer
     if developer?
+      commands << '# Только для разработчика'
       commands << '/users - Список всех пользователей системы (только для разработчика)'
       commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
     end
