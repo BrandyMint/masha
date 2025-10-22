@@ -16,6 +16,8 @@ class Project < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :invites
+  has_many :member_rates, dependent: :destroy
+  has_many :rated_users, through: :member_rates, source: :user
 
   scope :ordered, -> { order(:name) }
   scope :active, -> { where(active: true) }
@@ -25,6 +27,7 @@ class Project < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true,
                    format: { with: /\A[a-z0-9._+-]+\Z/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
+  validate :slug_not_reserved
 
   before_validation on: :create do
     self.slug = Russian.translit(name.to_s).squish.parameterize if slug.blank?
@@ -49,5 +52,15 @@ class Project < ApplicationRecord
 
   def archivate
     update_attribute(:active, false)
+  end
+
+  private
+
+  def slug_not_reserved
+    return unless slug.present?
+
+    if ApplicationConfig.reserved_project_slugs.include?(slug.downcase)
+      errors.add(:slug, "не может быть зарезервированным словом: #{slug}")
+    end
   end
 end

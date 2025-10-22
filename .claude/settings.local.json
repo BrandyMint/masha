@@ -30,7 +30,10 @@
       "WebSearch",
       "Bash(npm search:*)",
       "Bash(bundle exec ruby:*)",
-      "Read(//Users/danil/code/NoFluff/**)"
+      "Read(//Users/danil/code/NoFluff/**)",
+      "Bash(bundle show:*)",
+      "Read(//home/danil/.rbenv/versions/3.4.2/lib/ruby/gems/3.4.0/gems/anyway_config-2.7.2/**)",
+      "Bash(./bin/rails runner:*)"
     ],
     "deny": [],
     "ask": []

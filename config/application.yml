@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+default: &default
+  # Application configuration using anyway_config
+  reserved_project_slugs:
+    - list
+    - remove
+    - batch
+    - help
+    - start
+    - stop
+    - day
+    - week
+    - month
+    - projects
+    - settings
+    - active
+    - orphaned
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

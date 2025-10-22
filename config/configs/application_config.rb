@@ -18,7 +18,8 @@ class ApplicationConfig < Anyway::Config
     bot_username: '',
     github_client_id: '',
     github_client_secret: '',
-    mail_from: 'masha@brandymint.ru'
+    mail_from: 'masha@brandymint.ru',
+    reserved_project_slugs: []
   )
 
   coerce_types(

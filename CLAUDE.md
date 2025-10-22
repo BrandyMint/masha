@@ -138,3 +138,5 @@ Three role levels per project:
 /file:.claude-on-rails/context.md
 - Спецификации бизнес-аналитика сохраняются в .protocols/
 - План имлементации сохраняется в .protocols/{СПЕЦИФИКАЦИЯ}_plan.md
+- Конфиг проекта лежит в ApplicationConfig
+- Доступ к ключам конифгурации осуществляпется через метод, типа ApplicationConfig.key
