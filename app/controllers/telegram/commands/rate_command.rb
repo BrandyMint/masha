@@ -39,7 +39,8 @@ module Telegram
         # Поиск проекта
         project = find_project(project_name)
         unless project
-          respond_with :message, text: "❌ Проект '#{project_name}' не найден.\nДоступные проекты: #{current_user.available_projects.alive.pluck(:slug).join(', ')}"
+          respond_with :message,
+                       text: "❌ Проект '#{project_name}' не найден.\nДоступные проекты: #{current_user.available_projects.alive.pluck(:slug).join(', ')}"
           return
         end
 
@@ -58,7 +59,8 @@ module Telegram
 
         # Проверка, что пользователь участник проекта
         unless project.users.include?(target_user)
-          respond_with :message, text: "❌ Участник @#{username} не найден в проекте '#{project.name}'.\n💡 Проверьте список участников: /rate list #{project_name}"
+          respond_with :message,
+                       text: "❌ Участник @#{username} не найден в проекте '#{project.name}'.\n💡 Проверьте список участников: /rate list #{project_name}"
           return
         end
 
@@ -89,12 +91,12 @@ module Telegram
       rescue StandardError => e
         Rails.logger.error "Error in RateCommand: #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
-        respond_with :message, text: "❌ Произошла ошибка. Попробуйте еще раз."
+        respond_with :message, text: '❌ Произошла ошибка. Попробуйте еще раз.'
       end
 
       def handle_list(project_name)
         unless project_name
-          respond_with :message, text: "❌ Укажите название проекта: /rate list project_name"
+          respond_with :message, text: '❌ Укажите название проекта: /rate list project_name'
           return
         end
 
@@ -114,7 +116,7 @@ module Telegram
 
       def handle_remove(project_name, username)
         unless project_name && username
-          respond_with :message, text: "❌ Укажите проект и пользователя: /rate remove project_name @username"
+          respond_with :message, text: '❌ Укажите проект и пользователя: /rate remove project_name @username'
           return
         end
 
@@ -144,7 +146,7 @@ module Telegram
         if member_rate.destroy
           respond_with :message, text: "✅ Ставка @#{username} удалена из проекта '#{project.name}'."
         else
-          respond_with :message, text: "❌ Ошибка удаления ставки."
+          respond_with :message, text: '❌ Ошибка удаления ставки.'
         end
       end
 
@@ -191,7 +193,7 @@ module Telegram
 
         project.users.each do |user|
           rate = rates.find { |r| r.user_id == user.id }
-          rate_text = rate ? "#{rate.hourly_rate} #{rate.currency}" : "Не установлена"
+          rate_text = rate ? "#{rate.hourly_rate} #{rate.currency}" : 'Не установлена'
           membership = project.memberships.find_by(user: user)
           role = membership&.role_cd == 0 ? ' (Владелец)' : ''
           username = user.telegram_user&.username || user.id.to_s

@@ -7,7 +7,7 @@ class CreateMemberRates < ActiveRecord::Migration[8.0]
       t.string :currency, limit: 3, default: 'RUB'
       t.timestamps
 
-      t.index [:project_id, :user_id], unique: true
+      t.index %i[project_id user_id], unique: true
     end
   end
 end

@@ -13,9 +13,7 @@ module Telegram
     include TelegramHelpers
     include TelegramSessionHelpers
 
-    before_action :require_personal_chat, only: %[message]
-    # rubocop:enable Rails/LexicallyScopedActionFilter
-
+    before_action :require_personal_chat, only: %(message)
     rescue_from StandardError, with: :handle_error
 
     use_session!

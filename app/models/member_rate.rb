@@ -10,6 +10,7 @@ class MemberRate < ApplicationRecord
 
   def rate_with_currency
     return nil unless hourly_rate.present?
+
     "#{hourly_rate} #{currency}"
   end
 end

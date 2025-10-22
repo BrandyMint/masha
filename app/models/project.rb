@@ -59,8 +59,8 @@ class Project < ApplicationRecord
   def slug_not_reserved
     return unless slug.present?
 
-    if ApplicationConfig.reserved_project_slugs.include?(slug.downcase)
-      errors.add(:slug, "не может быть зарезервированным словом: #{slug}")
-    end
+    return unless ApplicationConfig.reserved_project_slugs.include?(slug.downcase)
+
+    errors.add(:slug, "не может быть зарезервированным словом: #{slug}")
   end
 end
