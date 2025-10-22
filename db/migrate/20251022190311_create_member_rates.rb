@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMemberRates < ActiveRecord::Migration[8.0]
   def change
     create_table :member_rates do |t|

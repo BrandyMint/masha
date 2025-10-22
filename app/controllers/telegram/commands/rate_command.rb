@@ -39,42 +39,51 @@ module Telegram
         # Поиск проекта
         project = find_project(project_name)
         unless project
+          available_projects = current_user.available_projects.alive.pluck(:slug).join(', ')
           respond_with :message,
-                       text: "❌ Проект '#{project_name}' не найден.\nДоступные проекты: #{current_user.available_projects.alive.pluck(:slug).join(', ')}"
+                       text: t('telegram.commands.rate.project_not_found',
+                               project_name: project_name,
+                               available_projects: available_projects)
           return
         end
 
         # Проверка прав доступа
         unless can_manage_project_rates?(project)
-          respond_with :message, text: "❌ Ошибка доступа!\nТолько владелец проекта может устанавливать ставки участников."
+          respond_with :message, text: t('telegram.commands.rate.access_denied_owner_only')
           return
         end
 
         # Поиск пользователя
         target_user = find_user_by_username(username)
         unless target_user
-          respond_with :message, text: "❌ Пользователь @#{username} не найден в системе."
+          respond_with :message, text: t('telegram.commands.rate.user_not_found', username: username)
           return
         end
 
         # Проверка, что пользователь участник проекта
         unless project.users.include?(target_user)
           respond_with :message,
-                       text: "❌ Участник @#{username} не найден в проекте '#{project.name}'.\n💡 Проверьте список участников: /rate list #{project_name}"
+                       text: t('telegram.commands.rate.member_not_found_in_project',
+                               username: username,
+                               project_name: project.name,
+                               project_name_command: project_name)
           return
         end
 
         # Валидация суммы
         hourly_rate = amount.to_s.tr(',', '.').to_f
         if hourly_rate <= 0
-          respond_with :message, text: "❌ Неверная сумма: #{amount}. Сумма должна быть положительным числом."
+          respond_with :message, text: t('telegram.commands.rate.invalid_amount', amount: amount)
           return
         end
 
         # Валидация валюты
         currency ||= 'RUB'
         unless MemberRate::CURRENCIES.include?(currency.upcase)
-          respond_with :message, text: "❌ Неверная валюта: #{currency}. Доступные валюты: #{MemberRate::CURRENCIES.join(', ')}"
+          respond_with :message,
+                       text: t('telegram.commands.rate.invalid_currency',
+                               currency: currency,
+                               available_currencies: MemberRate::CURRENCIES.join(', '))
           return
         end
 
@@ -86,28 +95,30 @@ module Telegram
         if member_rate.save
           respond_with :message, text: format_rate_success(project, target_user, member_rate)
         else
-          respond_with :message, text: "❌ Ошибка сохранения ставки: #{member_rate.errors.full_messages.join(', ')}"
+          respond_with :message,
+                       text: t('telegram.commands.rate.save_error',
+                               errors: member_rate.errors.full_messages.join(', '))
         end
       rescue StandardError => e
         Rails.logger.error "Error in RateCommand: #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
-        respond_with :message, text: '❌ Произошла ошибка. Попробуйте еще раз.'
+        respond_with :message, text: t('telegram.commands.rate.unknown_error')
       end
 
       def handle_list(project_name)
         unless project_name
-          respond_with :message, text: '❌ Укажите название проекта: /rate list project_name'
+          respond_with :message, text: t('telegram.commands.rate.specify_project_for_list')
           return
         end
 
         project = find_project(project_name)
         unless project
-          respond_with :message, text: "❌ Проект '#{project_name}' не найден."
+          respond_with :message, text: t('telegram.commands.rate.project_not_found_simple', project_name: project_name)
           return
         end
 
         unless can_manage_project_rates?(project)
-          respond_with :message, text: "❌ Ошибка доступа!\nТолько владелец проекта может просматривать ставки."
+          respond_with :message, text: t('telegram.commands.rate.access_denied_view_rates')
           return
         end
 
@@ -116,54 +127,60 @@ module Telegram
 
       def handle_remove(project_name, username)
         unless project_name && username
-          respond_with :message, text: '❌ Укажите проект и пользователя: /rate remove project_name @username'
+          respond_with :message, text: t('telegram.commands.rate.specify_project_and_user_for_remove')
           return
         end
 
         project = find_project(project_name)
         unless project
-          respond_with :message, text: "❌ Проект '#{project_name}' не найден."
+          respond_with :message, text: t('telegram.commands.rate.project_not_found_simple', project_name: project_name)
           return
         end
 
         unless can_manage_project_rates?(project)
-          respond_with :message, text: "❌ Ошибка доступа!\nТолько владелец проекта может удалять ставки."
+          respond_with :message, text: t('telegram.commands.rate.access_denied_remove_rates')
           return
         end
 
         target_user = find_user_by_username(username)
         unless target_user
-          respond_with :message, text: "❌ Пользователь @#{username} не найден."
+          respond_with :message, text: t('telegram.commands.rate.user_not_found_simple', username: username)
           return
         end
 
         member_rate = MemberRate.find_by(project: project, user: target_user)
         unless member_rate
-          respond_with :message, text: "❌ У пользователя @#{username} нет установленной ставки в проекте '#{project.name}'."
+          respond_with :message,
+                       text: t('telegram.commands.rate.no_rate_set',
+                               username: username,
+                               project_name: project.name)
           return
         end
 
         if member_rate.destroy
-          respond_with :message, text: "✅ Ставка @#{username} удалена из проекта '#{project.name}'."
+          respond_with :message,
+                       text: t('telegram.commands.rate.rate_removed_successfully',
+                               username: username,
+                               project_name: project.name)
         else
-          respond_with :message, text: '❌ Ошибка удаления ставки.'
+          respond_with :message, text: t('telegram.commands.rate.remove_error')
         end
       end
 
       def show_rate_help
         help_text = multiline(
-          '💰 Управление ставками участников проекта',
+          t('telegram.commands.rate.help_title'),
           '',
-          '📝 Доступные команды:',
-          '• /rate project @username amount currency - установить ставку',
-          '• /rate list project_name - посмотреть все ставки проекта',
-          '• /rate remove project_name @username - удалить ставку',
+          t('telegram.commands.rate.help_commands_title'),
+          t('telegram.commands.rate.help_set_rate'),
+          t('telegram.commands.rate.help_list_rates'),
+          t('telegram.commands.rate.help_remove_rate'),
           '',
-          '💡 Примеры:',
-          '• /rate Website @john_doe 50 USD',
-          '• /rate MobileApp @mary_smith 3000 RUB',
+          t('telegram.commands.rate.help_examples_title'),
+          t('telegram.commands.rate.help_example_1'),
+          t('telegram.commands.rate.help_example_2'),
           '',
-          '🔐 Только владелец проекта может управлять ставками.'
+          t('telegram.commands.rate.help_access_note')
         )
         respond_with :message, text: help_text
       end
@@ -179,23 +196,23 @@ module Telegram
 
       def format_rate_success(project, user, member_rate)
         multiline(
-          '✅ Ставка успешно установлена!',
-          "📊 Проект: #{project.name}",
-          "👤 Участник: @#{user.telegram_user.username}",
-          "💰 Сумма: #{member_rate.hourly_rate} #{member_rate.currency}",
-          "📅 Обновлено: #{Time.current.strftime('%d.%m.%Y %H:%M')}"
+          t('telegram.commands.rate.success_title'),
+          t('telegram.commands.rate.success_project', project_name: project.name),
+          t('telegram.commands.rate.success_member', username: user.telegram_user.username),
+          t('telegram.commands.rate.success_amount', amount: member_rate.hourly_rate, currency: member_rate.currency),
+          t('telegram.commands.rate.success_updated', timestamp: Time.current.strftime('%d.%m.%Y %H:%M'))
         )
       end
 
       def format_project_rates_list(project)
         rates = project.member_rates.includes(:user)
-        text = multiline("💰 Ставки проекта \"#{project.name}\":", nil)
+        text = multiline(t('telegram.commands.rate.rates_list_title', project_name: project.name), nil)
 
         project.users.each do |user|
           rate = rates.find { |r| r.user_id == user.id }
-          rate_text = rate ? "#{rate.hourly_rate} #{rate.currency}" : 'Не установлена'
+          rate_text = rate ? "#{rate.hourly_rate} #{rate.currency}" : t('telegram.commands.rate.rate_not_set')
           membership = project.memberships.find_by(user: user)
-          role = membership&.role_cd == 0 ? ' (Владелец)' : ''
+          role = membership&.role_cd&.zero? ? t('telegram.commands.rate.owner_role') : ''
           username = user.telegram_user&.username || user.id.to_s
 
           text += "👤 @#{username}#{role}: #{rate_text}\n"
@@ -206,14 +223,14 @@ module Telegram
 
       def rate_usage_error
         multiline(
-          '❌ Неверный формат команды.',
+          t('telegram.commands.rate.usage_error_title'),
           '',
-          '📝 Правильные форматы:',
-          '• /rate project @username amount [currency]',
-          '• /rate list project_name',
-          '• /rate remove project_name @username',
+          t('telegram.commands.rate.usage_correct_formats'),
+          t('telegram.commands.rate.usage_format_set'),
+          t('telegram.commands.rate.usage_format_list'),
+          t('telegram.commands.rate.usage_format_remove'),
           '',
-          '💡 Пример: /rate Website @john_doe 50 USD'
+          t('telegram.commands.rate.usage_example')
         )
       end
     end

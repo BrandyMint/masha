@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MemberRate < ApplicationRecord
   belongs_to :project
   belongs_to :user
@@ -9,7 +11,7 @@ class MemberRate < ApplicationRecord
   CURRENCIES = %w[RUB EUR USD].freeze
 
   def rate_with_currency
-    return nil unless hourly_rate.present?
+    return nil if hourly_rate.blank?
 
     "#{hourly_rate} #{currency}"
   end

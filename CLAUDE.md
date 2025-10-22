@@ -140,3 +140,4 @@ Three role levels per project:
 - План имлементации сохраняется в .protocols/{СПЕЦИФИКАЦИЯ}_plan.md
 - Конфиг проекта лежит в ApplicationConfig
 - Доступ к ключам конифгурации осуществляпется через метод, типа ApplicationConfig.key
+- Мы не пишем тексты в коде, используем локали и I18n

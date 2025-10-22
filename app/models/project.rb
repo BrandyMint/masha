@@ -57,7 +57,7 @@ class Project < ApplicationRecord
   private
 
   def slug_not_reserved
-    return unless slug.present?
+    return if slug.blank?
 
     return unless ApplicationConfig.reserved_project_slugs.include?(slug.downcase)
 
