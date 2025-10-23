@@ -30,7 +30,8 @@
       "WebSearch",
       "Bash(npm search:*)",
       "Bash(bundle exec ruby:*)",
-      "Read(//Users/danil/code/NoFluff/**)"
+      "Read(//Users/danil/code/NoFluff/**)",
+      "Bash(./bin/rsp:*)"
     ],
     "deny": [],
     "ask": []
