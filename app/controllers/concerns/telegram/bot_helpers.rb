@@ -22,7 +22,7 @@ module Telegram
       end
     end
 
-    def is_personal_chat?
+    def personal_chat?
       chat['id'] == from['id']
     end
 

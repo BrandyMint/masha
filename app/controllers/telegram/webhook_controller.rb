@@ -159,7 +159,7 @@ module Telegram
     end
 
     def require_personal_chat
-      raise NotAvailableInPublicChat unless is_personal_chat?
+      raise NotAvailableInPublicChat unless personal_chat?
     end
 
     def handle_error(error)
