@@ -644,6 +644,8 @@ GEM
       rdoc (>= 5.0)
     securerandom (0.4.1)
     shellany (0.0.1)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     simple-navigation (3.14.0)
       activesupport (>= 2.3.2)
     simple-navigation-bootstrap (1.0.2)
@@ -833,6 +835,7 @@ DEPENDENCIES
   russian
   sdoc
   semver2!
+  shoulda-matchers
   simple-navigation (~> 3.14.0)
   simple-navigation-bootstrap
   simple_enum

@@ -33,7 +33,11 @@
       "Read(//Users/danil/code/NoFluff/**)",
       "Bash(bundle show:*)",
       "Read(//home/danil/.rbenv/versions/3.4.2/lib/ruby/gems/3.4.0/gems/anyway_config-2.7.2/**)",
-      "Bash(./bin/rails runner:*)"
+      "Bash(./bin/rails runner:*)",
+      "Bash(./bin/rails db:test:prepare:*)",
+      "Bash(./bin/rsp:*)",
+      "Bash(bundle install:*)",
+      "Bash(./bin/rails:*)"
     ],
     "deny": [],
     "ask": []

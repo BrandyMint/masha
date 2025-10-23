@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.describe MemberRate, type: :model do
   let(:member_rate) { build(:member_rate) }
 
@@ -45,7 +47,7 @@ RSpec.describe MemberRate, type: :model do
     it 'rejects negative hourly_rate' do
       member_rate.hourly_rate = -10
       expect(member_rate).not_to be_valid
-      expect(member_rate.errors[:hourly_rate]).to include('must be greater than or equal to 0')
+      expect(member_rate.errors[:hourly_rate]).to include('может иметь значение большее или равное 0')
     end
 
     it 'accepts valid currencies' do
@@ -58,14 +60,14 @@ RSpec.describe MemberRate, type: :model do
     it 'rejects invalid currency' do
       member_rate.currency = 'GBP'
       expect(member_rate).not_to be_valid
-      expect(member_rate.errors[:currency]).to include('is not included in the list')
+      expect(member_rate.errors[:currency]).to include('имеет непредусмотренное значение')
     end
 
     it 'validates uniqueness of project-user pair' do
       existing_rate = create(:member_rate)
       new_rate = build(:member_rate, project: existing_rate.project, user: existing_rate.user)
       expect(new_rate).not_to be_valid
-      expect(new_rate.errors[:project_id]).to include('has already been taken')
+      expect(new_rate.errors[:project_id]).to include('уже существует')
     end
   end
 end
