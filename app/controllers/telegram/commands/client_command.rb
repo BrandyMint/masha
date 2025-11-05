@@ -106,8 +106,6 @@ module Telegram
         end
       end
 
-      private
-
       def show_clients_list
         clients = current_user.clients.includes(:projects)
 
@@ -119,9 +117,9 @@ module Telegram
         text = multiline(t('telegram.commands.client.list_title'), nil)
         clients.each do |client|
           text += t('telegram.commands.client.list_item',
-                   key: client.key,
-                   name: client.name,
-                   count: client.projects_count) + "\n"
+                    key: client.key,
+                    name: client.name,
+                    count: client.projects_count) + "\n"
         end
 
         respond_with :message, text: text
@@ -256,7 +254,8 @@ module Telegram
         end
 
         if project.update(client: client)
-          respond_with :message, text: t('telegram.commands.client.attach_success', project_name: project.name, name: client.name, key: client.key)
+          respond_with :message,
+                       text: t('telegram.commands.client.attach_success', project_name: project.name, name: client.name, key: client.key)
         else
           respond_with :message, text: project.errors.full_messages.join(', ')
         end
@@ -288,7 +287,8 @@ module Telegram
         end
 
         if project.update(client: nil)
-          respond_with :message, text: t('telegram.commands.client.detach_success', project_name: project.name, name: client.name, key: client.key)
+          respond_with :message,
+                       text: t('telegram.commands.client.detach_success', project_name: project.name, name: client.name, key: client.key)
         else
           respond_with :message, text: project.errors.full_messages.join(', ')
         end
@@ -319,9 +319,7 @@ module Telegram
 
       def find_client(key)
         client = current_user.clients.find_by(key: key)
-        unless client
-          respond_with :message, text: t('telegram.commands.client.show_not_found', key: key)
-        end
+        respond_with :message, text: t('telegram.commands.client.show_not_found', key: key) unless client
         client
       end
 

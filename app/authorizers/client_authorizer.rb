@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ClientAuthorizer < ApplicationAuthorizer
-  def creatable_by?(user)
+  def creatable_by?(_user)
     # Любой пользователь может создавать компании
     true
   end
@@ -30,6 +30,6 @@ class ClientAuthorizer < ApplicationAuthorizer
   def project_participant?(user)
     # Проверяем, является ли пользователь участником любого проекта компании
     resource.projects.joins(:memberships)
-                  .exists?(memberships: { user_id: user.id })
+            .exists?(memberships: { user_id: user.id })
   end
 end

@@ -3,6 +3,9 @@ inherit_from: .rubocop_todo.yml
 plugins: rubocop-rails
 Rails:
   Enabled: true
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*
 
 Metrics/MethodLength:
   Enabled: false

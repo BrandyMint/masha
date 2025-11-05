@@ -12,7 +12,5 @@ class Client < ApplicationRecord
     key
   end
 
-  def projects_count
-    projects.count
-  end
+  delegate :count, to: :projects, prefix: true
 end

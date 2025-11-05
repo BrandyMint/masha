@@ -18,7 +18,8 @@ RSpec.describe Client, type: :model do
 
       it 'validates format of key' do
         valid_keys = %w[client1 acme_corp my-company test_client client123]
-        invalid_keys = %w[Client Invalid! @client# Client123! a!b c$d e%f g^h i&j k*l m(n) n+o o=p q[r s]t t}u v|w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z]
+        invalid_keys = %w[Client Invalid! @client# Client123! a!b c$d e%f g^h i&j k*l m(n) n+o o=p q[r s]t t}u v|w x y z A B C D E F G H I
+                          J K L M N O P Q R S T U V W X Y Z]
 
         valid_keys.each do |key|
           client = build(:client, key: key)
@@ -90,7 +91,7 @@ RSpec.describe Client, type: :model do
 
     it 'destroys projects as nullify on client deletion' do
       project = create(:project, client: client)
-      client_id = project.client_id
+      project.client_id
 
       client.destroy
       project.reload

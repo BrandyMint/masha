@@ -9,6 +9,6 @@ class CreateClients < ActiveRecord::Migration[8.0]
     end
 
     add_index :clients, :key
-    add_index :clients, [:user_id, :key], unique: true
+    add_index :clients, %i[user_id key], unique: true
   end
 end

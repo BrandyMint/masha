@@ -20,7 +20,6 @@ RSpec.describe TelegramCallbacks do
 
       def save_context(*args); end
 
-      
       def find_project(slug)
         Project.find_by(slug: slug)
       end
@@ -38,7 +37,7 @@ RSpec.describe TelegramCallbacks do
     allow(controller).to receive(:respond_with)
     allow(controller).to receive(:edit_message)
     allow(controller).to receive(:save_context)
-      end
+  end
 
   describe '#edit_select_time_shift_input' do
     it 'creates TimeShiftService and calls handle_selection' do
