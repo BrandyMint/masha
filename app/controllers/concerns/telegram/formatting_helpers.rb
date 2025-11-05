@@ -4,16 +4,17 @@ module Telegram
   module FormattingHelpers
     extend ActiveSupport::Concern
 
-    private
-
+    # Public methods needed by BaseCommand
     def multiline(*args)
       args.flatten.map(&:to_s).join("\n")
     end
 
+    # Public methods needed by BaseCommand
     def code(text)
       multiline '```', text, '```'
     end
 
+    # Public methods needed by BaseCommand
     def help_message
       commands = [
         '/help - Эта подсказка',

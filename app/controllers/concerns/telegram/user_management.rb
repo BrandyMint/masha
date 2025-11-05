@@ -4,8 +4,7 @@ module Telegram
   module UserManagement
     extend ActiveSupport::Concern
 
-    private
-
+    # Public methods needed by BaseCommand
     def format_user_info(user)
       telegram_info = if user.telegram_user
                         "**@#{user.telegram_user.username || 'нет_ника'}** (#{user.telegram_user.name})"
@@ -25,6 +24,7 @@ module Telegram
       [telegram_info, email_info, projects_info].join("\n")
     end
 
+    # Public methods needed by BaseCommand
     def add_user_to_project(project_slug, username, role)
       # Remove @ from username if present
       username = username.delete_prefix('@')
@@ -91,18 +91,21 @@ module Telegram
       end
     end
 
+    # Public methods needed by BaseCommand
     def find_current_user
       telegram_user.user || User
         .create_with(name: telegram_user.name, nickname: telegram_user.username)
         .find_or_create_by!(telegram_user_id: telegram_user.id)
     end
 
+    # Public methods needed by BaseCommand
     def current_user
       return @current_user if defined? @current_user
 
       @current_user = find_current_user
     end
 
+    # Public methods needed by BaseCommand
     def logged_in?
       current_user.present?
     end

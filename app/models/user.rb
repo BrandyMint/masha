@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_many :invites
   has_many :member_rates, dependent: :destroy
   has_many :rated_projects, through: :member_rates, source: :project
+  has_many :clients, dependent: :destroy
 
   scope :ordered, -> { order :name }
   # scope :without, -> (user) { where arel_table[:id].not_eq(user.id) }

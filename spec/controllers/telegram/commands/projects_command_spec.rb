@@ -26,8 +26,8 @@ RSpec.describe Telegram::Commands::ProjectsCommand do
     it 'responds with available projects' do
       command.call
 
-      expect(controller).to have_received(:multiline).with('Доступные проекты:', nil, kind_of(String))
-      expect(controller).to have_received(:respond_with).with(:message, text: 'projects list')
+      expect(controller).to have_received(:multiline).with('Доступные проекты:', nil)
+      expect(controller).to have_received(:respond_with).with(:message, text: /projects list.*Project.*Project2/m)
     end
   end
 end

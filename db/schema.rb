@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_22_190311) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_23_133957) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_22_190311) do
     t.jsonb "auth_hash"
     t.index ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true
     t.index ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true
+  end
+
+  create_table "clients", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_clients_on_key"
+    t.index ["user_id", "key"], name: "index_clients_on_user_id_and_key", unique: true
+    t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
   create_table "invites", force: :cascade do |t|
@@ -106,6 +117,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_22_190311) do
     t.text "description"
     t.boolean "active", default: true, null: false
     t.integer "telegram_chat_id"
+    t.bigint "client_id"
+    t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -156,12 +169,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_22_190311) do
   end
 
   add_foreign_key "authentications", "users", on_delete: :restrict
+  add_foreign_key "clients", "users"
   add_foreign_key "invites", "projects", on_delete: :restrict
   add_foreign_key "invites", "users", on_delete: :restrict
   add_foreign_key "member_rates", "projects"
   add_foreign_key "member_rates", "users"
   add_foreign_key "memberships", "projects", on_delete: :restrict
   add_foreign_key "memberships", "users", on_delete: :restrict
+  add_foreign_key "projects", "clients"
   add_foreign_key "time_shifts", "projects", on_delete: :restrict
   add_foreign_key "time_shifts", "users", on_delete: :restrict
   add_foreign_key "users", "telegram_users", on_delete: :restrict

@@ -141,3 +141,4 @@ Three role levels per project:
 - Конфиг проекта лежит в ApplicationConfig
 - Доступ к ключам конифгурации осуществляпется через метод, типа ApplicationConfig.key
 - Мы не пишем тексты в коде, используем локали и I18n
+- Спецификации по проекту лежат тут ./docs/specs

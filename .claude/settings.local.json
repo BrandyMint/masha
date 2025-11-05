@@ -37,7 +37,9 @@
       "Bash(./bin/rails db:test:prepare:*)",
       "Bash(./bin/rsp:*)",
       "Bash(bundle install:*)",
-      "Bash(./bin/rails:*)"
+      "Bash(./bin/rails:*)",
+      "Bash(cat:*)",
+      "Bash(RAILS_ENV=test bundle exec rails:*)"
     ],
     "deny": [],
     "ask": []

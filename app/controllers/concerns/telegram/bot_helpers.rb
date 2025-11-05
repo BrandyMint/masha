@@ -4,8 +4,7 @@ module Telegram
   module BotHelpers
     extend ActiveSupport::Concern
 
-    private
-
+    # Public methods needed by BaseCommand
     def developer?
       return false unless from
 
@@ -34,6 +33,7 @@ module Telegram
       bot.token.split(':').first
     end
 
+    # Public methods needed by BaseCommand
     def telegram_user
       @telegram_user ||= TelegramUser
                          .create_with(chat.slice(*%w[first_name last_name username]))
