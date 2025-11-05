@@ -3,8 +3,9 @@
 class SummaryQuery
   attr_accessor :total
 
-  def self.for_user(user, group_by: nil, period: [])
-    new(users: user.available_users, projects: user.available_projects, period: period, group_by: group_by)
+  def self.for_user(user, group_by: nil, period: nil)
+    parsed_period = PeriodParser.parse(period)
+    new(users: user.available_users, projects: user.available_projects, period: parsed_period, group_by: group_by)
   end
 
   # @params period = [] or :month, or :weel
@@ -102,20 +103,39 @@ class SummaryQuery
   end
 
   def build_period(period)
-    today = Time.zone.today
-    if period.is_a? Enumerable
-      return period
-    elsif period.to_sym == :month
-      start_date = today.at_beginning_of_month
-      start_date = start_date.prev_month if today - start_date < 10
-    elsif period.to_sym == :week
-      start_date = today.at_beginning_of_week
-      start_date = start_date.prev_week if today - start_date < 3
+    case period
+    when 'week' then (Date.today - 6)..Date.today
+    when 'month' then Date.today.beginning_of_month..Date.today
+    when 'last_month' then (Date.today - 1.month).beginning_of_month..(Date.today - 1.month).end_of_month
+    when 'last_week' then (Date.today - 1.week).beginning_of_week..(Date.today - 1.week).end_of_week
+    when 'last_day' then (Date.today - 1.day)..(Date.today - 1.day)
+    when 'day' then Date.today..Date.today
+    when Hash then build_period_from_hash(period)
     else
-      raise "Unknown period #{period}"
+      # Обратная совместимость для старых форматов
+      today = Time.zone.today
+      if period.is_a?(Enumerable)
+        return period
+      elsif period.to_sym == :month
+        start_date = today.at_beginning_of_month
+        start_date = start_date.prev_month if today - start_date < 10
+      elsif period.to_sym == :week
+        start_date = today.at_beginning_of_week
+        start_date = start_date.prev_week if today - start_date < 3
+      else
+        raise "Unknown period #{period}"
+      end
+      (start_date..today).to_a.reverse
     end
+  end
 
-    (start_date..today).to_a.reverse
+  def build_period_from_hash(period_hash)
+    case period_hash[:type]
+    when :date then period_hash[:date]..period_hash[:date]
+    when :month then period_hash[:date].beginning_of_month..period_hash[:date].end_of_month
+    when :range then period_hash[:start_date]..period_hash[:end_date]
+    when :month_range then period_hash[:start_date]..period_hash[:end_date].end_of_month
+    end
   end
 
   def item_find(id)
