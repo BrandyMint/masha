@@ -3,7 +3,7 @@
 module Telegram
   module Commands
     class SummaryCommand < BaseCommand
-      HELP_TEXT = <<~TEXT.freeze
+      HELP_TEXT = <<~TEXT
         📊 *Команда /summary - Статистика по проектам и пользователям*
 
         *Форматы использования:*
@@ -40,7 +40,7 @@ module Telegram
         respond_with :message, text: "❌ #{e.message}"
       rescue StandardError => e
         Rails.logger.error "SummaryCommand error: #{e.message}"
-        respond_with :message, text: "❌ Произошла ошибка. Попробуйте еще раз."
+        respond_with :message, text: '❌ Произошла ошибка. Попробуйте еще раз.'
       end
     end
   end

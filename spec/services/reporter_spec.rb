@@ -31,7 +31,7 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, 'month')
 
       expect(result).to be_a(String)
-      expect(result).to include(today.strftime("%B %Y"))
+      expect(result).to include(today.strftime('%B %Y'))
       expect(result).to include(user.to_s)
       expect(result).to include(project.to_s)
     end
@@ -40,14 +40,14 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, 'last_month')
 
       expect(result).to be_a(String)
-      expect(result).to include((today - 1.month).strftime("%B %Y"))
+      expect(result).to include((today - 1.month).strftime('%B %Y'))
     end
 
     it 'generates matrix table for day period' do
       result = reporter.projects_to_users_matrix(user, 'day')
 
       expect(result).to be_a(String)
-      expect(result).to include(today.strftime("%Y-%m-%d"))
+      expect(result).to include(today.strftime('%Y-%m-%d'))
     end
 
     it 'generates matrix table for specific date' do
@@ -55,7 +55,7 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, date_string)
 
       expect(result).to be_a(String)
-      expect(result).to include(today.strftime("%Y-%m-%d"))
+      expect(result).to include(today.strftime('%Y-%m-%d'))
     end
 
     it 'generates matrix table for month format' do
@@ -63,7 +63,7 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, month_string)
 
       expect(result).to be_a(String)
-      expect(result).to include(today.strftime("%B %Y"))
+      expect(result).to include(today.strftime('%B %Y'))
     end
 
     it 'generates matrix table for date range' do
@@ -105,13 +105,13 @@ RSpec.describe Reporter do
 
       it 'returns month title' do
         title = reporter.send(:build_period_title, 'month')
-        expected = today.strftime("%B %Y")
+        expected = today.strftime('%B %Y')
         expect(title).to eq(expected)
       end
 
       it 'returns last_month title' do
         title = reporter.send(:build_period_title, 'last_month')
-        expected = (today - 1.month).strftime("%B %Y")
+        expected = (today - 1.month).strftime('%B %Y')
         expect(title).to eq(expected)
       end
 
@@ -122,13 +122,13 @@ RSpec.describe Reporter do
 
       it 'returns last_day title' do
         title = reporter.send(:build_period_title, 'last_day')
-        expected = (today - 1.day).strftime("%Y-%m-%d")
+        expected = (today - 1.day).strftime('%Y-%m-%d')
         expect(title).to eq(expected)
       end
 
       it 'returns day title' do
         title = reporter.send(:build_period_title, 'day')
-        expected = today.strftime("%Y-%m-%d")
+        expected = today.strftime('%Y-%m-%d')
         expect(title).to eq(expected)
       end
     end
@@ -148,7 +148,7 @@ RSpec.describe Reporter do
         end_month = today.beginning_of_month
         month_range_hash = { type: :month_range, start_date: start_month, end_date: end_month }
         title = reporter.send(:build_period_title, month_range_hash)
-        expected = "#{end_month.strftime("%B %Y")} - #{start_month.strftime("%B %Y")}"
+        expected = "#{end_month.strftime('%B %Y')} - #{start_month.strftime('%B %Y')}"
         expect(title).to eq(expected)
       end
     end

@@ -125,6 +125,7 @@ class SummaryQuery
       else
         raise "Unknown period #{period}"
       end
+
       (start_date..today).to_a.reverse
     end
   end

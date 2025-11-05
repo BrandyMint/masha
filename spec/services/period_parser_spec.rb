@@ -73,7 +73,7 @@ RSpec.describe PeriodParser do
       end
 
       it 'raises error for data older than 2 years' do
-        old_date = (Date.today - 800).strftime('%Y-%m-%d')  # ~2.2 years
+        old_date = (Date.today - 800).strftime('%Y-%m-%d') # ~2.2 years
         expect { described_class.parse(old_date) }
           .to raise_error(ArgumentError, 'Data older than 2 years is not available')
       end

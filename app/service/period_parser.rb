@@ -9,22 +9,20 @@ class PeriodParser
     case arg
     when *SUPPORTED_RELATIVE then arg
     when /^\d{4}-\d{2}$/
-        date = Date.parse("#{arg}-01")
-        validate_date_range(date, date.end_of_month)
-        { type: :month, date: date }
+      date = Date.parse("#{arg}-01")
+      validate_date_range(date, date.end_of_month)
+      { type: :month, date: date }
     when /^\d{4}-\d{2}-\d{2}$/
-        date = Date.parse(arg)
-        validate_date_range(date, date)
-        { type: :date, date: date }
+      date = Date.parse(arg)
+      validate_date_range(date, date)
+      { type: :date, date: date }
     when /^\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2}$/ then parse_date_range(arg)
     when /^\d{4}-\d{2}\.\.\d{4}-\d{2}$/ then parse_month_range(arg)
-    else raise ArgumentError, "Invalid period format"
+    else raise ArgumentError, 'Invalid period format'
     end
   rescue Date::Error => e
     raise ArgumentError, "Invalid date format: #{e.message}"
   end
-
-  private
 
   def self.parse_date_range(range_str)
     start_date, end_date = range_str.split('..').map { |d| Date.parse(d) }
@@ -39,16 +37,12 @@ class PeriodParser
   end
 
   def self.validate_date_range(start_date, end_date)
-    if start_date > end_date
-      raise ArgumentError, "Start date cannot be after end date"
-    end
+    raise ArgumentError, 'Start date cannot be after end date' if start_date > end_date
 
-    if (end_date - start_date).to_i > 365
-      raise ArgumentError, "Period cannot exceed 365 days"
-    end
+    raise ArgumentError, 'Period cannot exceed 365 days' if (end_date - start_date).to_i > 365
 
-    if start_date < Date.today - 730  # ~2 years
-      raise ArgumentError, "Data older than 2 years is not available"
-    end
+    return unless start_date < Date.today - 730 # ~2 years
+
+    raise ArgumentError, 'Data older than 2 years is not available'
   end
 end
