@@ -5,7 +5,7 @@ module Telegram
     class BaseCommand
       delegate :current_user, :logged_in?, :developer?, :find_project, :respond_with,
                :save_context, :multiline, :code, :help_message, :format_user_info,
-               :chat, :telegram_user, :session, :edit_message, to: :controller
+               :chat, :telegram_user, :session, :edit_message, :t, to: :controller
 
       def initialize(controller)
         @controller = controller

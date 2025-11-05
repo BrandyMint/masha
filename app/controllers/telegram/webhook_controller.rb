@@ -22,7 +22,7 @@ module Telegram
     around_action :with_locale
 
     # Dynamic command method definitions
-    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate].each do |command|
+    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
@@ -64,6 +64,16 @@ module Telegram
 
     def inline_query(_query, _offset)
       respond_with :message, text: 'Неизвестный тип сообщение inline_query'
+    end
+
+    # Public wrapper for save_context to make it available to commands
+    def save_context(action, *args)
+      super(action, *args)
+    end
+
+    # Public wrapper for session to make it available to commands
+    def session
+      super
     end
 
     private
