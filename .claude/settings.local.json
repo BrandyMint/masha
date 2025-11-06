@@ -39,9 +39,15 @@
       "Bash(bundle install:*)",
       "Bash(./bin/rails:*)",
       "Bash(cat:*)",
-      "Bash(RAILS_ENV=test bundle exec rails:*)"
+      "Bash(RAILS_ENV=test bundle exec rails:*)",
+      "mcp__memory__create_entities",
+      "mcp__memory__create_relations"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "bugsnag",
+    "postgres"
+  ]
 }

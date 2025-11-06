@@ -1,8 +1,25 @@
 {
   "mcpServers": {
-    "byterover-store-knowledge": {
-      "transport": "http",
-      "url": "https://docs.byterover.dev/mcp"
+    "bugsnag": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "bugsnag-mcp-server"
+      ],
+      "env": {
+        "BUGSNAG_API_KEY": "${BUGSNAG_API_KEY}"
+      },
+      "disabled": false,
+      "alwaysAllow": []
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${PRODUCTION_DATABASE_URI}"
+      ]
     }
   }
 }

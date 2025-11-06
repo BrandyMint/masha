@@ -26,6 +26,7 @@ module Telegram
         '/rename [project_slug] "Новое название" - Переименовать проект (только для владельцев)',
         '/new [project_slug] - Создать новый проект',
         '/adduser {project_slug} {username} [role] - Добавить пользователя в проект (роли: owner, viewer, member)',
+        '/client - Управление клиентами (добавление, редактирование, привязка проектов)',
         '/rate {project} {username} {amount} [currency] - Установить почасовую ставку (только для владельцев)',
         '/rate list {project} - Посмотреть ставки проекта (только для владельцев)',
         '/rate remove {project} {username} - Удалить ставку (только для владельцев)',
@@ -46,6 +47,10 @@ module Telegram
         commands << '/users - Список всех пользователей системы (только для разработчика)'
         commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
       end
+
+      # Add version at the end
+      commands << ''
+      commands << "Версия Маши: #{AppVersion}"
 
       multiline(commands)
     end
