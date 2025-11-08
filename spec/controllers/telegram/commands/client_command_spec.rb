@@ -12,16 +12,22 @@ RSpec.describe Telegram::Commands::ClientCommand do
   before do
     allow(controller).to receive(:current_user).and_return(user)
     allow(controller).to receive(:respond_with)
-    allow(controller).to receive(:save_context)
     allow(controller).to receive(:multiline) { |*args| args.compact.join("\n") }
-    # Create a session hash that we can modify
-    session_data = {}
-    # Simple session stub - no and_wrap_original needed
-    allow(controller).to receive(:session).and_return(session_data)
     allow(controller).to receive(:find_project) { |slug| Project.find_by(slug: slug) }
     allow(controller).to receive(:t) { |key, options = {}| I18n.t(key, **options) }
+
+    # Create a session hash that we can modify
+    session_data = {}
+    allow(controller).to receive(:session).and_return(session_data)
+
+    # Mock save_context as private method
+    allow(controller).to receive(:save_context)
+
     # Mock can_update? method for edit operations
     allow(user).to receive(:can_update?).and_return(true)
+    # Mock other permission methods
+    allow(user).to receive(:can_read?).and_return(true)
+    allow(user).to receive(:can_delete?).and_return(true)
   end
 
   describe '#call' do

@@ -14,6 +14,7 @@ module Telegram
     include TelegramSessionHelpers
 
     before_action :require_personal_chat, only: %(message)
+    rescue_from AbstractController::ActionNotFound, with: :handle_action_not_found
     rescue_from StandardError, with: :handle_error
 
     use_session!
@@ -22,13 +23,14 @@ module Telegram
     around_action :with_locale
 
     # Dynamic command method definitions
-    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client].each do |command|
+    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client reset].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
       end
     end
 
+  
     # Core message handlers
     def message(message)
       text = if message.is_a?(String)
@@ -58,6 +60,8 @@ module Telegram
       end
     end
 
+    private
+
     def chosen_inline_result(_result_id, _query)
       respond_with :message, text: 'Неизвестный тип сообщение chosen_inline_result'
     end
@@ -76,7 +80,43 @@ module Telegram
       super
     end
 
+    # Context handler delegation - передаем вызовы контекстных методов в активную команду
+    def add_client_name(message = nil, *)
+      delegate_to_current_command(:add_client_name, message, *)
+    end
+
+    def add_client_key(message = nil, *)
+      delegate_to_current_command(:add_client_key, message, *)
+    end
+
+    def edit_client_name(message = nil, *)
+      delegate_to_current_command(:edit_client_name, message, *)
+    end
+
     private
+
+    # Helper method для делегирования вызов в текущую команду
+    def delegate_to_current_command(method_name, *args)
+      # Ищем активную команду в сессии
+      context = session[:context]
+
+      case context
+      when :add_client_name, :add_client_key
+        command_class = Telegram::Commands::ClientCommand
+      when :edit_client_name
+        command_class = Telegram::Commands::ClientCommand
+      else
+        Rails.logger.warn "Unknown context: #{context}, method: #{method_name}"
+        return
+      end
+
+      command = command_class.new(self)
+      command.public_send(method_name, *args)
+    rescue StandardError => e
+      Rails.logger.error "Error delegating #{method_name} to #{command_class}: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      respond_with :message, text: 'Произошла ошибка при обработке команды'
+    end
 
     def merge_telegram_user_with_email_user(email_user, telegram_only_user, telegram_user)
       Rails.logger.info "Starting merge of telegram_only_user #{telegram_only_user.id} into email_user #{email_user.id}"
@@ -191,6 +231,29 @@ module Telegram
         end
         respond_with :message, text: "Error: #{error.message}"
       end
+    end
+
+    def handle_action_not_found(error)
+      # Логируем ошибку для отладки
+      Rails.logger.error "ActionNotFound: #{error.message} - Context: #{session[:context]}"
+
+      # Отправляем в Bugsnag для мониторинга
+      Bugsnag.notify(error) do |b|
+        b.meta_data = {
+          chat: chat,
+          from: from,
+          context: session[:context],
+          error_type: 'ActionNotFound'
+        }
+      end
+
+      # Отправляем пользователю понятное сообщение
+      respond_with :message, text: multiline(
+        "⚠️ Произошла ошибка при обработке команды.",
+        nil,
+        "Попробуйте начать заново с команды /help или /client",
+        "Если проблема повторится, напишите @pismenny"
+      )
     end
 
     # Пользователь написал в бота и заблокировал его (наверное добавлен где-то в канале или тп)

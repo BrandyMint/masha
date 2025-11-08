@@ -8,7 +8,7 @@
         "bugsnag-mcp-server"
       ],
       "env": {
-        "BUGSNAG_API_KEY": "${BUGSNAG_API_KEY}"
+        "BUGSNAG_API_KEY": "${BUGSNAG_DATA_API_KEY}"
       },
       "disabled": false,
       "alwaysAllow": []

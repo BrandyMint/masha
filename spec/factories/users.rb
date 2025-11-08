@@ -13,6 +13,24 @@ FactoryBot.define do
 
     trait :with_telegram do
       association :telegram_user
+      telegram_user_id { association(:telegram_user).id }
+    end
+
+    trait :with_telegram_id do
+      transient do
+        telegram_id { 943084337 }
+      end
+
+      after(:build) do |user, evaluator|
+        if user.telegram_user_id.present?
+          # Создаем telegram_user с указанным ID, если он не существует
+          TelegramUser.find_or_create_by!(id: user.telegram_user_id) do |tg_user|
+            tg_user.username = "user#{user.telegram_user_id}"
+            tg_user.first_name = "Test"
+            tg_user.last_name = "User"
+          end
+        end
+      end
     end
   end
 end

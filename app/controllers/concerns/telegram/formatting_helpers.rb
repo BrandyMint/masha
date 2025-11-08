@@ -19,6 +19,7 @@ module Telegram
       commands = [
         '/help - Эта подсказка',
         '/version - Версия Маши',
+        '/reset - Сбросить сессию и контекст',
         '/projects - Список проектов',
         '/attach {projects_slug} - Указать проект этого чата',
         '/add {project_slug} {hours} [description] - Отметить время',

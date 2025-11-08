@@ -8,7 +8,7 @@ describe UsersController, type: :controller do
   describe '#new' do
     it 'should be success' do
       get :new
-      response.should be_successful
+      expect(response).to be_successful
     end
   end
 
@@ -19,14 +19,14 @@ describe UsersController, type: :controller do
              params: { register_form: { name: user_attrs[:name], email: user_attrs[:email],
                                         password: user_attrs[:password] } }
         # Invite.sent_to(User.where(email: user_attrs[:email]).first).should be_blank
-        response.should redirect_to time_shifts_url
+        expect(response).to redirect_to time_shifts_url
       end
     end
 
     context 'with invalid params' do
       it 'should render users/new' do
         post :create, params: { register_form: {} }
-        response.should render_template('users/new')
+        expect(response).to render_template('users/new')
       end
     end
   end

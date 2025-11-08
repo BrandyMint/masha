@@ -59,3 +59,6 @@ infra-view:
 list:
 	@${INFRA_GH} run list --workflow=${WORKFLOW} -L 3 -e workflow_dispatch
 
+production-psql:
+	psql ${PRODUCTION_DATABASE_URI}
+

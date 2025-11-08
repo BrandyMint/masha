@@ -3,45 +3,25 @@
 module Telegram
   module Commands
     class ClientCommand < BaseCommand
+      include Telegram::ErrorHandling
       def call(subcommand = nil, *args)
         # Если нет аргументов, покажем список клиентов
         return show_clients_list if subcommand.blank?
 
         handle_client_command(subcommand, args)
-      end
-
-      private
-
-      def handle_client_command(subcommand, args)
-        command = subcommand.downcase
-
-        case command
-        when 'add'
-          handle_add_client
-        when 'show'
-          handle_show_client(args[0])
-        when 'edit'
-          handle_edit_client(args[0])
-        when 'delete'
-          handle_delete_client(args[0], args[1])
-        when 'projects'
-          handle_list_projects(args[0])
-        when 'attach'
-          handle_attach_project(args[0], args[1])
-        when 'detach'
-          handle_detach_project(args[0], args[1])
-        when 'help'
-          show_client_help
-        else
-          respond_with :message, text: t('telegram.commands.client.usage_error')
-        end
       rescue StandardError => e
-        Rails.logger.error "Error in ClientCommand: #{e.message}"
-        Rails.logger.error e.backtrace.join("\n")
+        notify_bugsnag(e) do |b|
+          b.user = current_user
+          b.meta_data = {
+            command: subcommand,
+            args: args,
+            session_data: session.keys
+          }
+        end
         respond_with :message, text: t('telegram.commands.client.usage_error')
       end
 
-      # Public context handler methods
+      # Public context handler methods - эти методы должны быть доступны для telegram-bot gem
       def add_client_name(message = nil, *)
         name = message&.strip
         if name.blank? || name.length > 255
@@ -104,6 +84,43 @@ module Telegram
           respond_with :message, text: client.errors.full_messages.join(', ')
           save_context :edit_client_name
         end
+      end
+
+      private
+
+      def handle_client_command(subcommand, args)
+        command = subcommand.downcase
+
+        case command
+        when 'add'
+          handle_add_client
+        when 'show'
+          handle_show_client(args[0])
+        when 'edit'
+          handle_edit_client(args[0])
+        when 'delete'
+          handle_delete_client(args[0], args[1])
+        when 'projects'
+          handle_list_projects(args[0])
+        when 'attach'
+          handle_attach_project(args[0], args[1])
+        when 'detach'
+          handle_detach_project(args[0], args[1])
+        when 'help'
+          show_client_help
+        else
+          respond_with :message, text: t('telegram.commands.client.usage_error')
+        end
+      rescue StandardError => e
+        notify_bugsnag(e) do |b|
+          b.user = current_user
+          b.meta_data = {
+            command: subcommand,
+            args: args,
+            session_data: session.keys
+          }
+        end
+        respond_with :message, text: t('telegram.commands.client.usage_error')
       end
 
       def show_clients_list

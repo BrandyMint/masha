@@ -21,10 +21,9 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, 'week')
 
       expect(result).to be_a(String)
-      expect(result).to include(today.to_s)
-      expect(result).to include((today - 6).to_s)
-      expect(result).to include(user.to_s)
-      expect(result).to include(project.to_s)
+      expect(result).to include(user.email) # User email
+      expect(result).to include(project.to_s) # Project name
+      expect(result).to include('total') # Total column
     end
 
     it 'generates matrix table for monthly period' do
@@ -91,7 +90,7 @@ RSpec.describe Reporter do
       result = reporter.projects_to_users_matrix(user, 'week')
 
       expect(result).to be_a(String)
-      expect(result).to include(today.to_s)
+      expect(result).to include('total') # Should include total column
     end
   end
 

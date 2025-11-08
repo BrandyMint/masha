@@ -28,6 +28,13 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   config.after { Telegram.bot.reset }
+
+  # Suppress nil expectation warnings for Telegram testing
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+    mocks.allow_message_expectations_on_nil = true
+  end
+
   # Use color not only in STDOUT but also in pagers and files
   config.tty = true
 

@@ -40,7 +40,19 @@
       "Bash(RAILS_ENV=test bundle exec rails:*)",
       "mcp__memory__create_entities",
       "mcp__memory__create_relations",
-      "mcp__postgres__query"
+      "mcp__postgres__query",
+      "mcp__bugsnag__list_organizations",
+      "Bash(echo:*)",
+      "Bash(curl:*)",
+      "Bash(export:*)",
+      "mcp__bugsnag__list_projects",
+      "mcp__bugsnag__list_errors",
+      "mcp__bugsnag__view_error",
+      "WebFetch(domain:app.bugsnag.com)",
+      "mcp__bugsnag__list_error_events",
+      "mcp__bugsnag__view_latest_event",
+      "Bash(lsof:*)",
+      "Bash(touch:*)"
     ],
     "deny": [],
     "ask": []
