@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class AddCommand < BaseCommand
+  provides_context_methods :add_time
+
+  public
 
   def call(project_slug = nil, hours = nil, *description)
     if project_slug.nil?
@@ -8,6 +11,29 @@ class AddCommand < BaseCommand
     else
       add_time_to_project(project_slug, hours, description.join(' '))
     end
+  end
+
+  def select_project_callback_query(project_slug)
+    save_context :add_time
+    project = find_project project_slug
+    controller.telegram_session = TelegramSession.add_time(project_id: project.id)
+    edit_message :text,
+                 text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
+  end
+
+  def add_time(hours, *description)
+    data = controller.telegram_session_data
+    project = current_user.available_projects.find(data['project_id']) || raise('Не указан проект')
+    description = description.join(' ')
+    project.time_shifts.create!(
+      date: Time.zone.today,
+      hours: hours.to_s.tr(',', '.').to_f,
+      description: description,
+      user: current_user
+    )
+
+    controller.clear_telegram_session
+    respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
   end
 
   private

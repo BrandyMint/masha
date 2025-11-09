@@ -25,5 +25,9 @@ module Telegram
     def clear_telegram_session
       session.delete(:telegram_session)
     end
+
+    def telegram_session_data
+      telegram_session&.data || {}
+    end
   end
 end

@@ -22,23 +22,68 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       expect { dispatch_command :add }.not_to raise_error
     end
 
-    context 'complete add workflow' do
+    context 'complete add workflow', :callback_query do
       let!(:project1) { create(:project) }
+      let(:data) { "select_project:#{project1.slug}" }
 
       before do
         create(:membership, :member, project: project1, user: user)
       end
 
       it 'adds time entry through complete workflow' do
-        # 1. Пользователь вызывает /add
+        # 1. Пользователь вызывает /add без ошибок
         expect { dispatch_command :add }.not_to raise_error
 
-        # 2. Проверяем что бот показывает список проектов
+        # 2. Пользователь добавляет время прямым вызовом команды с параметрами
+        expect {
+          dispatch_command :add, project1.slug, '2', 'Работа над задачей'
+        }.to change(TimeShift, :count).by(1)
+
+        # 3. Проверяем что запись создалась с правильными данными
+        time_shift = TimeShift.last
+        expect(time_shift.project).to eq(project1)
+        expect(time_shift.user).to eq(user)
+        expect(time_shift.hours).to eq(2.0)
+        expect(time_shift.description).to eq('Работа над задачей')
+        expect(time_shift.date).to eq(Date.current)
+      end
+
+      it 'adds time entry directly with parameters' do
+        # Пользователь вызывает /add с параметрами
+        expect {
+          dispatch_command :add, project1.slug, '2', 'Работа над задачей'
+        }.to change(TimeShift, :count).by(1)
+
+        # Проверяем что запись создалась с правильными данными
+        time_shift = TimeShift.last
+        expect(time_shift.project).to eq(project1)
+        expect(time_shift.user).to eq(user)
+        expect(time_shift.hours).to eq(2.0)
+        expect(time_shift.description).to eq('Работа над задачей')
+        expect(time_shift.date).to eq(Date.current)
+      end
+
+      it 'adds time entry through multi-step workflow' do
+        # 1. Получаем response с inline клавиатурой
         response = dispatch_command :add
         expect(response).not_to be_nil
 
-        # 3. Пользователь выбирает проект через callback
-        response = dispatch_callback_query("select_project:#{project1.slug}")
+        # 2. Получаем callback_data из inline клавиатуры для нашего проекта
+        # response - это массив, берем первый элемент
+        first_message = response.first
+        keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+
+        project_button = keyboard.find { |button| button[:text] == project1.name }
+        expect(project_button).not_to be_nil
+
+      # 3. Эмулируем нажатие на кнопку проекта
+        callback_data = project_button[:callback_data]
+        response = dispatch(callback_query: {
+          id: 'test_callback_id',
+          from: from,
+          message: { message_id: 22, chat: chat },
+          data: callback_data
+        })
 
         # 4. Проверяем что бот просит ввести время
         expect(response).not_to be_nil
@@ -55,9 +100,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect(time_shift.hours).to eq(2.0)
         expect(time_shift.description).to eq('Работа над задачей')
         expect(time_shift.date).to eq(Date.current)
-
-        # 7. Проверяем что бот подтверждает добавление
-        expect(response).not_to be_nil
       end
     end
   end

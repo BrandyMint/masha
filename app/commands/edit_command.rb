@@ -26,4 +26,27 @@ class EditCommand < BaseCommand
     service = Telegram::Edit::TimeShiftService.new(controller, current_user)
     service.handle_description_input(description)
   end
+
+  def handle_edit_pagination_callback(callback_data)
+    service = Telegram::Edit::PaginationService.new(controller, current_user)
+    page = service.handle_callback(callback_data)
+    return unless page
+
+    show_time_shifts_list(page)
+  end
+
+  def edit_field_callback_query(field)
+    service = Telegram::Edit::TimeShiftService.new(controller, current_user)
+    service.handle_field_selection(field)
+  end
+
+  def edit_project_callback_query(project_slug)
+    service = Telegram::Edit::TimeShiftService.new(controller, current_user)
+    service.handle_project_selection(project_slug)
+  end
+
+  def edit_confirm_callback_query(action)
+    service = Telegram::Edit::TimeShiftService.new(controller, current_user)
+    service.handle_confirmation(action)
+  end
 end

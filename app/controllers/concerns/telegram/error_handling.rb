@@ -6,7 +6,9 @@ module Telegram
 
     included do
       rescue_from AbstractController::ActionNotFound, with: :handle_action_not_found
+      rescue_from Telegram::WebhookController::NotAvailableInPublicChat, with: :handle_require_personal_chat
       rescue_from StandardError, with: :handle_error
+
     end
 
     private
@@ -29,8 +31,11 @@ module Telegram
       respond_with :message, text: t('telegram.commands.unknown_command')
     end
 
+    def handle_require_personal_chat
+      respond_with :message, text: 'Работаю только в режиме личной переписки'
+    end
+
     def handle_error(exception)
-      debugger
       notify_bugsnag(exception) do |payload|
         payload.add_metadata(:telegram, {
                                from: "#{self.class.name}##{caller_locations(1, 1).first.label}",

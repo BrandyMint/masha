@@ -46,15 +46,6 @@ class BaseCommand
 
     def provides_context_methods(*methods)
       @context_methods ||= []
-
-      methods.each do |method|
-        method_name = method.to_sym
-
-        #unless method_defined?(method_name) && public_method_defined?(method_name)
-          #raise ArgumentError, "Context method '#{method_name}' does not exist or is not public in #{name}"
-        #end
-      end
-
       @context_methods.concat(methods.map(&:to_sym))
       @context_methods.uniq!
     end
@@ -64,7 +55,7 @@ class BaseCommand
     end
 
     def callback_method_names
-      public_methods.select { |m| m.ends_with? '_callback_query' }
+      public_instance_methods.select { |m| m.ends_with? '_callback_query' }
     end
   end
 

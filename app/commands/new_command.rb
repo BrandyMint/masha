@@ -19,7 +19,8 @@ class NewCommand < BaseCommand
       return
     end
 
-    create_project(slug)
+    project = current_user.projects.create!(name: slug, slug: slug)
+    respond_with :message, text: "Создан проект `#{project.slug}`"
   rescue ActiveRecord::RecordInvalid => e
     respond_with :message, text: "Ошибка создания проекта: #{e.message}"
   end

@@ -3,7 +3,6 @@
 module Telegram
   class WebhookController < Telegram::Bot::UpdatesController
     Error = Class.new StandardError
-    Unauthenticated = Class.new Error
     NotAvailableInPublicChat = Class.new Error
 
     include Telegram::Bot::UpdatesController::Session
@@ -11,42 +10,19 @@ module Telegram
     include Telegram::Bot::UpdatesController::CallbackQueryContext
 
     # Раскидать по командным модулям
-    include Telegram::Callbacks
     include Telegram::ErrorHandling
     include Telegram::SessionHelpers
+    include Telegram::CommandRegistration
 
-    before_action :require_personal_chat, only: %(message)
+    #before_action do
+    #raise NotAvailableInPublicChat unless personal_chat?
+    #end
 
     use_session!
 
     # use callbacks like in any other controllers
     around_action :with_locale
 
-    Telegram::CommandRegistry.available_commands.each do |command|
-      command_class = Telegram::CommandRegistry.get(command)
-
-      define_method "#{command}!" do |*args|
-        command_class.new(self).call(*args)
-      end
-
-      command_class.context_method_names.each do |context_method|
-        define_method context_method do |*args|
-          # Вызываем контекстный метод в экземпляре команды
-          command_class
-            .new(self)
-            .send(context_method, *args)
-        end
-      end
-
-      command_class.callback_method_names.each do |callback_method|
-        define_method callback_method do |*args|
-          # Вызываем контекстный метод в экземпляре команды
-          command_class
-            .new(self)
-            .send(callback_method, *args)
-        end
-      end
-    end
 
     # Core message handlers
     def message(message)
@@ -72,6 +48,11 @@ module Telegram
       else
         respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
       end
+    end
+
+    def callback_query(data)
+      Bugsnag.notify "Не определенный callback #{data}"
+      respond_with :message, text: "Ошибка!"
     end
 
     private
@@ -101,22 +82,17 @@ module Telegram
         I18n.locale # TODO брать и чата
       end
     end
-  end
 
+    def developer?
+      return false unless from
 
-  def require_personal_chat
-    raise NotAvailableInPublicChat unless personal_chat?
-  end
+      from['id'] == ApplicationConfig.developer_telegram_id
+    end
 
-  def developer?
-    return false unless from
-
-    from['id'] == ApplicationConfig.developer_telegram_id
-  end
-
-  def telegram_user
-    @telegram_user ||= TelegramUser
-      .create_with(chat.slice(*%w[first_name last_name username]))
-      .create_or_find_by! id: chat.fetch('id')
+    def telegram_user
+      @telegram_user ||= TelegramUser
+        .create_with(chat.slice(*%w[first_name last_name username]))
+        .create_or_find_by! id: chat.fetch('id')
+    end
   end
 end

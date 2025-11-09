@@ -43,18 +43,50 @@ class AdduserCommand < BaseCommand
   def adduser_project_callback_query(project_slug)
     project = find_project(project_slug)
     unless project
-      respond_with :message, text: 'Проект не найден'
+      edit_message :text, text: 'Проект не найден'
       return
     end
 
     # Check permissions - only owners can add users
     membership = current_user.membership_of(project)
     unless membership&.owner?
-      respond_with :message, text: 'У вас нет прав для добавления пользователей в этот проект, только владелец (owner) может это сделать.'
+      edit_message :text, text: 'У вас нет прав для добавления пользователей в этот проект, только владелец (owner) может это сделать.'
       return
     end
 
-    session[:project_slug] = project_slug
-    respond_with :message, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
+    self.telegram_session = TelegramSession.add_user(project_slug: project_slug)
+    save_context :adduser_username_input
+    edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
+  end
+
+  def adduser_username_input(username, *)
+    username = username.delete_prefix('@') if username.start_with?('@')
+    tg_session = telegram_session
+    tg_session[:username] = username
+    self.telegram_session = tg_session
+
+    save_context :adduser_role_callback_query
+    respond_with :message,
+                 text: "Пользователь: @#{username}\nВыберите роль для пользователя:",
+                 reply_markup: {
+                   inline_keyboard: [
+                     [{ text: 'Владелец (owner)', callback_data: 'adduser_role:owner' }],
+                     [{ text: 'Наблюдатель (viewer)', callback_data: 'adduser_role:viewer' }],
+                     [{ text: 'Участник (member)', callback_data: 'adduser_role:member' }]
+                   ]
+                 }
+  end
+
+  def adduser_role_callback_query(role)
+    data = telegram_session_data
+    project_slug = data['project_slug']
+    username = data['username']
+
+    # Clean up session
+    clear_telegram_session
+
+    edit_message :text, text: "Добавляем пользователя @#{username} в проект #{project_slug} с ролью #{role}..."
+
+    add_user_to_project(project_slug, username, role)
   end
 end

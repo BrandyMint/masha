@@ -4,7 +4,6 @@ module Telegram
   module Edit
     class TimeShiftService
       include Telegram::Concerns::PaginationConcern
-      include Telegram::Concerns::FormattingConcern
 
       attr_reader :controller, :user
 
@@ -249,10 +248,23 @@ module Telegram
       end
     end
 
-    # Реализация метода из FormattingConcern
-    def find_project_by_id(project_id)
-      project_service = Telegram::ProjectService.new(user)
-      project_service.find_project(project_id)
+    # Построить текст изменений для подтверждения
+    def build_changes_text(time_shift, field, new_values)
+      case field
+      when 'project'
+        new_project = user.find_project project_id new_values['project_id']
+        return ['Ошибка: новый проект не найден'] unless new_project
+
+        ["Проект: #{time_shift.project.name} → #{new_project.name}"]
+      when 'hours'
+        ["Часы: #{time_shift.hours} → #{new_values['hours']}"]
+      when 'description'
+        old_desc = time_shift.description || '(нет)'
+        new_desc = new_values['description'] || '(нет)'
+        ["Описание: #{old_desc} → #{new_desc}"]
+      else
+        ['Ошибка: неизвестное поле для редактирования']
+      end
     end
   end
 end
