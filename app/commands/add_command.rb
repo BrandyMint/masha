@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
 class AddCommand < BaseCommand
+
   def call(project_slug = nil, hours = nil, *description)
     if project_slug.nil?
       show_project_selection
-      return
+    else
+      add_time_to_project(project_slug, hours, description.join(' '))
     end
-
-    add_time_to_project(project_slug, hours, description.join(' '))
   end
 
   private
 
   def show_project_selection
-    save_context :add_callback_query
     respond_with :message,
                  text: 'Выберите проект, в котором отметить время:',
                  reply_markup: {

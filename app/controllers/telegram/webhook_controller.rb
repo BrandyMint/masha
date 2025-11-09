@@ -23,25 +23,27 @@ module Telegram
     around_action :with_locale
 
     Telegram::CommandRegistry.available_commands.each do |command|
+      command_class = Telegram::CommandRegistry.get(command)
+
       define_method "#{command}!" do |*args|
-        command_class = Telegram::CommandRegistry.get(command)
         command_class.new(self).call(*args)
       end
-
-      # Регистрируем контекстные методы команды в контроллере
-      command_class = Telegram::CommandRegistry.get(command)
-      next unless command_class&.respond_to?(:context_method_names)
 
       command_class.context_method_names.each do |context_method|
         define_method context_method do |*args|
           # Вызываем контекстный метод в экземпляре команды
-          command_instance = command_class.new(self)
-          if command_instance.respond_to?(context_method)
-            command_instance.send(context_method, *args)
-          else
-            Rails.logger.error "Context method #{context_method} not found in #{command_class}"
-            respond_with :message, text: 'Ошибка выполнения команды'
-          end
+          command_class
+            .new(self)
+            .send(context_method, *args)
+        end
+      end
+
+      command_class.callback_method_names.each do |callback_method|
+        define_method callback_method do |*args|
+          # Вызываем контекстный метод в экземпляре команды
+          command_class
+            .new(self)
+            .send(callback_method, *args)
         end
       end
     end
@@ -92,20 +94,29 @@ module Telegram
       I18n.with_locale(current_locale, &block)
     end
 
-    def require_personal_chat
-      raise NotAvailableInPublicChat unless personal_chat?
+    def current_locale
+      if from
+        I18n.locale # TODO брать у пользователя
+      elsif chat
+        I18n.locale # TODO брать и чата
+      end
     end
+  end
 
-    def developer?
-      return false unless from
 
-      from['id'] == ApplicationConfig.developer_telegram_id
-    end
+  def require_personal_chat
+    raise NotAvailableInPublicChat unless personal_chat?
+  end
 
-    def telegram_user
-      @telegram_user ||= TelegramUser
-                         .create_with(chat.slice(*%w[first_name last_name username]))
-                         .create_or_find_by! id: chat.fetch('id')
-    end
+  def developer?
+    return false unless from
+
+    from['id'] == ApplicationConfig.developer_telegram_id
+  end
+
+  def telegram_user
+    @telegram_user ||= TelegramUser
+      .create_with(chat.slice(*%w[first_name last_name username]))
+      .create_or_find_by! id: chat.fetch('id')
   end
 end

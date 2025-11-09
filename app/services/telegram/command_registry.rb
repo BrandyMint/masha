@@ -8,15 +8,10 @@ class Telegram::CommandRegistry
 
       command_list.each do |command_name|
         class_name = "#{command_name.camelize}Command"
-
-        begin
-          # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
-          command_class = class_name.constantize
-          @commands[command_name.to_sym] = command_class
-          Rails.logger.info "Command registered: #{command_name} -> #{class_name}"
-        rescue NameError => e
-          Rails.logger.error "Failed to load command: #{command_name} -> #{class_name}: #{e.message}"
-        end
+        # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
+        command_class = class_name.constantize
+        @commands[command_name.to_sym] = command_class
+        Rails.logger.info "Command registered: #{command_name} -> #{class_name}"
       end
     end
 

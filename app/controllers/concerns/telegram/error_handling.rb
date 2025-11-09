@@ -23,11 +23,14 @@ module Telegram
     end
 
     def handle_action_not_found(exception)
+      debugger
       notify_bugsnag(exception)
+      message_context_session.delete(:context)
       respond_with :message, text: t('telegram.commands.unknown_command')
     end
 
     def handle_error(exception)
+      debugger
       notify_bugsnag(exception) do |payload|
         payload.add_metadata(:telegram, {
                                from: "#{self.class.name}##{caller_locations(1, 1).first.label}",

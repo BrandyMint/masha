@@ -2,7 +2,7 @@
 
 class ClientCommand < BaseCommand
   # Декларируем контекстные методы, которые эта команда предоставляет контроллеру
-  provides_context_methods :add_client_name, :add_client_key, :edit_client_name
+  provides_context_methods ADD_CLIENT_NAME, ADD_CLIENT_KEY, EDIT_CLIENT_NAME
   def call(subcommand = nil, *args)
     # Если нет аргументов, покажем список клиентов
     return show_clients_list if subcommand.blank?
@@ -15,12 +15,12 @@ class ClientCommand < BaseCommand
     name = message&.strip
     if name.blank? || name.length > 255
       respond_with :message, text: t('telegram.commands.client.name_invalid')
-      save_context :add_client_name
+      save_context ADD_CLIENT_NAME
       return
     end
 
     session[:client_name] = name
-    save_context :add_client_key
+    save_context ADD_CLIENT_KEY
     respond_with :message, text: t('telegram.commands.client.add_prompt_key')
   end
 
@@ -31,14 +31,14 @@ class ClientCommand < BaseCommand
     # Валидация ключа
     if key.blank? || !key.match?(/\A[a-z0-9_-]+\z/) || key.length < 2 || key.length > 50
       respond_with :message, text: t('telegram.commands.client.key_invalid', key: key)
-      save_context :add_client_key
+      save_context ADD_CLIENT_KEY
       return
     end
 
     # Проверка уникальности ключа
     if current_user.clients.exists?(key: key)
       respond_with :message, text: t('telegram.commands.client.key_exists', key: key)
-      save_context :add_client_key
+      save_context ADD_CLIENT_KEY
       return
     end
 
@@ -49,7 +49,7 @@ class ClientCommand < BaseCommand
       respond_with :message, text: t('telegram.commands.client.add_success', name: client.name, key: client.key)
     else
       respond_with :message, text: client.errors.full_messages.join(', ')
-      save_context :add_client_key
+      save_context ADD_CLIENT_KEY
     end
   end
 
@@ -59,7 +59,7 @@ class ClientCommand < BaseCommand
 
     if name.blank? || name.length > 255
       respond_with :message, text: t('telegram.commands.client.name_invalid')
-      save_context :edit_client_name
+      save_context EDIT_CLIENT_NAME
       return
     end
 
@@ -71,7 +71,7 @@ class ClientCommand < BaseCommand
       respond_with :message, text: t('telegram.commands.client.edit_success', key: client.key, name: client.name)
     else
       respond_with :message, text: client.errors.full_messages.join(', ')
-      save_context :edit_client_name
+      save_context EDIT_CLIENT_NAME
     end
   end
 
@@ -122,7 +122,7 @@ class ClientCommand < BaseCommand
   end
 
   def handle_add_client
-    save_context :add_client_name
+    save_context ADD_CLIENT_NAME
     respond_with :message, text: t('telegram.commands.client.add_prompt_name')
   end
 
@@ -158,7 +158,7 @@ class ClientCommand < BaseCommand
     end
 
     session[:edit_client_key] = key
-    save_context :edit_client_name
+    save_context EDIT_CLIENT_NAME
     respond_with :message, text: t('telegram.commands.client.edit_prompt_name')
   end
 

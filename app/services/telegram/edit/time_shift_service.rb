@@ -26,7 +26,7 @@ module Telegram
         text = table_formatter.format_time_shifts_table(result[:time_shifts], result[:pagination])
 
         pagination_service.save_pagination_context(result[:pagination])
-        controller.save_context :edit_select_time_shift_input
+        controller.save_context BaseCommand::EDIT_SELECT_TIME_SHIFT_INPUT
 
         reply_markup = pagination_service.build_keyboard(result[:pagination])
 
@@ -205,12 +205,12 @@ module Telegram
       end
 
       def show_hours_input
-        controller.save_context :edit_hours_input
+        controller.save_context BaseCommand::EDIT_HOURS_INPUT
         controller.edit_message :text, text: 'Введите новое количество часов (например, 8 или 7.5):'
       end
 
       def show_description_input
-        controller.save_context :edit_description_input
+        controller.save_context BaseCommand::EDIT_DESCRIPTION_INPUT
         controller.edit_message :text, text: 'Введите новое описание (или отправьте "-" для пустого описания):'
       end
 

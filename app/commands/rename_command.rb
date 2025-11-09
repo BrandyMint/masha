@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RenameCommand < BaseCommand
+  provides_context_methods :rename_project
   def call(project_slug = nil, *name_parts)
     if project_slug.present?
       # Прямое переименование: /rename project-slug "Новое название"
@@ -36,7 +37,6 @@ class RenameCommand < BaseCommand
       return
     end
 
-    save_context :rename_project_callback_query
     respond_with :message,
                  text: RenameConfig::MESSAGES[:select_project],
                  reply_markup: {
@@ -44,5 +44,9 @@ class RenameCommand < BaseCommand
                      [{ text: "#{p.name} (#{p.slug})", callback_data: "rename_project:#{p.slug}" }]
                    end
                  }
+  end
+
+  def rename_project(project_slug)
+    call(project_slug)
   end
 end
