@@ -100,7 +100,12 @@
       "Bash(./bugsnag.rb open:*)",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(gem install:*)",
+      "Bash(git describe:*)",
+      "Bash(git push)",
+      "Bash(gh release create:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

@@ -4,6 +4,10 @@
 
 [![Tests](https://github.com/BrandyMint/masha/actions/workflows/tests.yml/badge.svg)](https://github.com/BrandyMint/masha/actions/workflows/tests.yml)
 
+## Лицензия
+
+Проект распространяется под [MIT License](LICENSE).
+
 ## Зависимости:
 
 * rbenv

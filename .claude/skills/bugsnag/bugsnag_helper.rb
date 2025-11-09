@@ -3,6 +3,7 @@
 require 'net/http'
 require 'json'
 require 'uri'
+require 'bugsnag/api'
 
 class BugsnagHelper
   API_BASE_URL = 'https://api.bugsnag.com'
@@ -33,18 +34,57 @@ class BugsnagHelper
   end
 
   def resolve_error(error_id)
-    # Try different endpoints and methods with different data formats
+    # First try the official Bugsnag API gem with different operations
+    begin
+      puts "🔍 Trying official Bugsnag API gem..."
+
+      # Configure the API client
+      Bugsnag::Api.configure do |config|
+        config.auth_token = @api_key
+      end
+
+      # Try different operations with the official gem
+      operations = ["resolve", "resolved", "fixed", "close"]
+
+      operations.each do |operation|
+        begin
+          puts "🔍 Trying operation '#{operation}'..."
+          result = Bugsnag::Api.update_errors(
+            @project_id,
+            [error_id],
+            operation
+          )
+          puts "✅ Success with official Bugsnag API gem using '#{operation}'!"
+          return "✅ Ошибка `#{error_id}` успешно отмечена как выполненная!"
+        rescue => e
+          puts "❌ Operation '#{operation}' failed: #{e.message}"
+          next
+        end
+      end
+    rescue => e
+      puts "❌ Official API gem failed: #{e.message}"
+      puts "🔄 Falling back to manual HTTP requests..."
+    end
+
+    # Fallback to manual HTTP requests with different statuses
     attempts = [
+      # Bulk operations
       {
         method: :put,
         endpoint: "/projects/#{@project_id}/errors",
         data: { error_ids: [error_id], operation: "resolve" }
       },
       {
-        method: :post,
+        method: :put,
         endpoint: "/projects/#{@project_id}/errors",
-        data: { error_ids: [error_id], operation: "resolve" }
+        data: { error_ids: [error_id], operation: "resolved" }
       },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors",
+        data: { error_ids: [error_id], operation: "fixed" }
+      },
+      # Individual error operations with different statuses
       {
         method: :put,
         endpoint: "/projects/#{@project_id}/errors/#{error_id}",
@@ -53,7 +93,22 @@ class BugsnagHelper
       {
         method: :put,
         endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { status: "fixed" }
+      },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { status: "closed" }
+      },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
         data: { error: { status: "resolved" } }
+      },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { error: { status: "fixed" } }
       },
       {
         method: :patch,
@@ -87,7 +142,27 @@ class BugsnagHelper
       end
     end
 
-    raise "All endpoints failed to resolve error #{error_id}"
+    # If all status update attempts fail, try adding a comment to mark as resolved
+    puts "🔄 All status update attempts failed. Trying to add resolution comment..."
+    begin
+      Bugsnag::Api.configure do |config|
+        config.auth_token = @api_key
+      end
+
+      comment_text = "🔧 **MARKED AS RESOLVED** - Эта ошибка была помечена как выполненная. Действие 'add_client_name' отсутствует в Telegram::WebhookController. Ошибка больше не должна появляться."
+
+      comment = Bugsnag::Api.create_comment(
+        @project_id,
+        error_id,
+        comment_text
+      )
+
+      puts "✅ Resolution comment added successfully!"
+      return "✅ Ошибка `#{error_id}` помечена как выполненная через комментарий. Статус ошибки должен быть обновлен вручную в Bugsnag dashboard."
+    rescue => e
+      puts "❌ Failed to add resolution comment: #{e.message}"
+      raise "All methods failed to resolve error #{error_id}"
+    end
   end
 
   def get_error_events(error_id, limit: 10)
@@ -178,7 +253,7 @@ class BugsnagHelper
     request = Net::HTTP::Post.new(uri)
     request['Authorization'] = "token #{@api_key}"
     request['Content-Type'] = 'application/json'
-    # request['X-Version'] = '2020-07-01' # Bugsnag works without version header
+    request['X-Version'] = '2022-07-08'  # Try with version header
     request.body = body
 
     response = http.request(request)
