@@ -47,6 +47,9 @@ changelog-and-commit:
 test:
 	./bin/rails db:test:prepare test test:system
 
+security:
+	bundle exec brakeman --skip-files bin/generate_changelog.rb,bin/generate_claude_changelog.rb
+
 up:
 	./bin/dev
 

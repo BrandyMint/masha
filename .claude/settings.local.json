@@ -106,7 +106,8 @@
       "Bash(git push)",
       "Bash(gh release create:*)",
       "Bash(git pull:*)",
-      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby .claude/skills/bugsnag/bugsnag.rb list:*)"
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby .claude/skills/bugsnag/bugsnag.rb list:*)",
+      "Bash(bundle exec brakeman:*)"
     ],
     "deny": [],
     "ask": []

@@ -27,7 +27,7 @@
       "warning_type": "Mass Assignment",
       "warning_code": 70,
       "fingerprint": "566998be8876b93829edb7b6fa32a603901d820180028c7cc0d87ac385b02708",
-      "check_name": "MassAssignment",
+      "check_name": "Mass Assignment",
       "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
       "file": "app/controllers/time_shifts_controller.rb",
       "line": 106,
@@ -46,6 +46,10 @@
       ],
       "note": ""
     }
+  ],
+  "skip_files": [
+    "bin/generate_changelog.rb",
+    "bin/generate_claude_changelog.rb"
   ],
   "brakeman_version": "7.1.0"
 }

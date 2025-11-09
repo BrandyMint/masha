@@ -1,0 +1,4 @@
+# Brakeman configuration for Masha Time Tracking
+skip_files:
+  - bin/generate_changelog.rb
+  - bin/generate_claude_changelog.rb

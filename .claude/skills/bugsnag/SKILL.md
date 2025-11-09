@@ -1,16 +1,11 @@
 ---
 name: bugsnag
-description: Bugsnag API integration tool for viewing and managing errors. Fetches current errors, retrieves error context and stack traces, and marks errors as resolved. Uses BUGSNAG_DATA_API_KEY and BUGSNAG_PROJECT_ID from environment.
+description: Bugsnag API integration tool for viewing and managing errors. Fetches current errors, retrieves error context and stack traces, and marks errors as resolved
 ---
-
-Вызывает скрипт ./bugsnag.rb с целью выполнить пользовательский запрос
 
 Skill для интеграции с Bugsnag API, позволяющий просматривать и управлять ошибками в проекте.
 
-**Как работает вызов:**
-1. При просьбе пользователя показать последние ошибки в bugnsag выполняется
-   `bugsnag.rb` пользователю показывается результат
-5. `bugsnag.rb` выполняет HTTP-запросы к Bugsnag API используя токен из `BUGSNAG_DATA_API_KEY`
+Вызывает скрипт ./bugsnag.rb с целью выполнить пользовательский запрос
 
 ## Возможности
 
@@ -18,15 +13,6 @@ Skill для интеграции с Bugsnag API, позволяющий про�
 - 🔍 **Детальный контекст ошибки** - Просмотр полной информации об ошибке включая stack trace
 - ✅ **Управление статусами** - Пометка ошибок как выполненные (resolved)
 - 🔐 **Безопасная авторизация** - Использование API ключей из переменных окружения
-
-## Переменные окружения
-
-Для работы skill необходимы следующие переменные окружения:
-
-```bash
-export BUGSNAG_DATA_API_KEY="your_bugsnag_data_api_key"
-export BUGSNAG_PROJECT_ID="your_bugsnag_project_id"
-```
 
 ## Команды bugsnag.rb
 

@@ -94,4 +94,4 @@ jobs:
         bundler-cache: true
 
     - name: Run Brakeman security scan
-      run: bundle exec brakeman
+      run: make security
