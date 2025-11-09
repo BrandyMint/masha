@@ -85,7 +85,17 @@
       "Bash(git checkout:*)",
       "mcp__context7__resolve-library-id",
       "Bash(CHANGELOG.md)",
-      "mcp__context7__get-library-docs"
+      "mcp__context7__get-library-docs",
+      "Bash(./bin/rspec:*)",
+      "Bash(RAILS_ENV=test bundle exec rspec:*)",
+      "mcp__serena__find_file",
+      "Bash(bin/rails:*)",
+      "Bash(rails c:*)",
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby .claude/skills/bugsnag/cli.rb:*)",
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby:*)",
+      "Bash(bin/rspec:*)",
+      "WebFetch(domain:docs.bugsnag.com)",
+      "mcp__tavily__tavily-search"
     ],
     "deny": [],
     "ask": []
