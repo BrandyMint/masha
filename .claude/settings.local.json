@@ -52,7 +52,8 @@
       "mcp__bugsnag__list_error_events",
       "mcp__bugsnag__view_latest_event",
       "Bash(lsof:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
