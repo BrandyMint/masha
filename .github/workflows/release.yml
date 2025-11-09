@@ -77,8 +77,42 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
+          # Сохраняем changelog в CHANGELOG.md
+          {
+            echo "# Changelog"
+            echo ""
+            echo "История релизов MashTime Bot"
+            echo ""
+            echo "---"
+            echo ""
+            cat CHANGELOG.md
+          } > CHANGELOG_FULL.md
+
+          # Если файл уже существует, добавляем старые записи
+          if [ -f CHANGELOG.md ]; then
+            # Пропускаем заголовок из существующего файла
+            tail -n +6 CHANGELOG.md >> CHANGELOG_FULL.md
+          fi
+
+          # Заменяем файл
+          mv CHANGELOG_FULL.md CHANGELOG.md
+
+          echo "✅ CHANGELOG.md обновлен"
+
           # Очищаем временные файлы
           rm -f commits.json commits_data.json
+
+      - name: Commit CHANGELOG.md
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          if git diff --staged --quiet; then
+            echo "Нет изменений в CHANGELOG.md"
+          else
+            git commit -m "docs: Обновить CHANGELOG.md для ${{ github.ref_name }}"
+            git push
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

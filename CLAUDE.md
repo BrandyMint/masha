@@ -153,3 +153,5 @@ Three role levels per project:
 
 - в bugsnag наш проект называется masha.brandymint.ru, project_id: "5cadf58377bdb800159c3b0d"
 - Чтобы зайти на боевую (production) базу мы используем `psql $PRODUCTION_DATABASE_URI`
+- ApplicationConfig НИКОГДА не нужно мокировать, используй те значения которые уже установлены в тестовом конфиге или установи нужные
+

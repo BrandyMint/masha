@@ -77,7 +77,14 @@
       "Bash(do:*)",
       "Bash(\"$file\")",
       "Bash(for file in app/commands/attach_command.rb app/commands/client_command.rb app/commands/day_command.rb app/commands/edit_command.rb app/commands/help_command.rb app/commands/hours_command.rb app/commands/merge_command.rb app/commands/projects_command.rb app/commands/rate_command.rb app/commands/rename_command.rb app/commands/report_command.rb app/commands/reset_command.rb app/commands/start_command.rb app/commands/users_command.rb app/commands/version_command.rb:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(./bin/generate_smart_changelog.sh:*)",
+      "Bash(make:*)",
+      "mcp__serena__read_memory",
+      "mcp__serena__find_symbol",
+      "Bash(git checkout:*)",
+      "mcp__context7__resolve-library-id",
+      "Bash(CHANGELOG.md)"
     ],
     "deny": [],
     "ask": []
