@@ -1,5 +1,11 @@
 # Руководство по разработке
 
+## 📚 Основная документация
+
+@docs/development/telegram-bot-architecture.md
+@docs/development/telegram-error-handling.md
+@docs/development/telegram-session-management.md
+
 ## Важные инструкции
 
 ### Обработка ошибок в Telegram
@@ -8,17 +14,23 @@
 
 Подробности: [telegram-error-handling.md](./telegram-error-handling.md)
 
+@docs/development/telegram-error-handling.md
+
 ### Управление сессиями в Telegram
 
 📚 **ВАЖНО**: Понимание разницы между `session` и `TelegramSession` для правильной разработки.
 
 Подробности: [telegram-session-management.md](./telegram-session-management.md)
 
+@docs/development/telegram-session-management.md
+
 ### Архитектура Telegram бота
 
 🏗️ **ОСНОВА**: Понимание архитектуры бота, механизма контекстов и системы команд.
 
 Подробности: [telegram-bot-architecture.md](./telegram-bot-architecture.md)
+
+@docs/development/telegram-bot-architecture.md
 
 ## Чек-лист при Code Review
 
