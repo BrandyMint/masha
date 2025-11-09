@@ -135,8 +135,8 @@ module TelegramHelpers
       existing_invite = Invite.find_by(telegram_username: username, project: project)
       if existing_invite
         respond_with :message,
-          text: "Приглашение для пользователя '@#{username}' в проект '#{project.slug}' " \
-          "уже отправлено с ролью '#{existing_invite.role}'"
+                     text: "Приглашение для пользователя '@#{username}' в проект '#{project.slug}' " \
+                     "уже отправлено с ролью '#{existing_invite.role}'"
         return
       end
 
@@ -256,8 +256,8 @@ module TelegramHelpers
 
   def telegram_user
     @telegram_user ||= TelegramUser
-      .create_with(chat.slice(*%w[first_name last_name username]))
-      .create_or_find_by! id: chat.fetch('id')
+                       .create_with(chat.slice(*%w[first_name last_name username]))
+                       .create_or_find_by! id: chat.fetch('id')
   end
 
   def notify_bugsnag(message)
