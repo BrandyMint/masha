@@ -6,14 +6,7 @@ RSpec.describe Telegram::Commands::OwnerCommand do
   let(:controller) { instance_double(Telegram::WebhookController) }
   let(:command) { described_class.new(controller) }
 
-  before do
-    stub_const('ApplicationConfig', double(
-                                      developer_telegram_id: 123,
-                                      mail_from: 'test@example.com',
-                                      default_url_options: { host: 'localhost', protocol: 'https' }
-                                    ))
-  end
-
+  
   describe '#call' do
     before do
       allow(controller).to receive(:respond_with)

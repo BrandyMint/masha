@@ -25,3 +25,7 @@ production:
 
 test:
   <<: *default
+  developer_telegram_id: 123
+  mail_from: 'test@example.com'
+  host: 'localhost'
+  protocol: 'https'
