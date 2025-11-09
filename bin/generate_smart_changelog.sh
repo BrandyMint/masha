@@ -7,7 +7,7 @@ set -euo pipefail
 
 # Получаем версию из аргумента или из git
 CURRENT_TAG="${1:-$(git describe --tags --abbrev=0)}"
-PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")
 
 # Получаем коммиты
 if [ -n "$PREVIOUS_TAG" ]; then
