@@ -5,8 +5,9 @@ SEMVER=`${SEMVER_BIN}`
 release: patch-release
 
 # Процесс релиза:
-# 1. bump-patch: увеличивает версию, коммитит .semver, пушит
-# 2. changelog-and-commit: генерирует changelog, коммитит, создает тег, пушит, создает GitHub релиз 
+# 1. generate-changelog: генерирует CHANGELOG.md на основе изменений между тегами
+# 2. bump-patch-with-changelog: увеличивает версию и коммитит её вместе с CHANGELOG.md
+# 3. push-version: создает тег, пушит изменения и создает GitHub релиз
 
 patch-release-and-deploy: patch-release watch deploy sleep infra-watch
 
@@ -16,24 +17,29 @@ minor:
 patch:
 	@${SEMVER_BIN} inc patch
 
-bump-patch: patch push-semver
-bump-minor: minor push-semver
+bump-patch: patch
+bump-minor: minor
 
-push-semver:
-	@echo "Increment version to ${SEMVER}"
-	@git add .semver
-	@git commit -m ${SEMVER}
-	@git push
+patch-release: generate-changelog bump-patch-with-changelog
+minor-release: bump-minor-with-changelog
 
-patch-release: bump-patch changelog-and-commit
-minor-release: bump-minor changelog-and-commit
-
-# Генерирует changelog и коммитит изменения
-changelog-and-commit:
+# Генерирует changelog (без коммита)
+generate-changelog:
 	@echo "📝 Генерация changelog для версии ${SEMVER}..."
 	@./bin/generate_smart_changelog.sh ${SEMVER}
-	@git add CHANGELOG.md
-	@git commit -m "📝 Add changelog for ${SEMVER}" || echo "Changelog уже был добавлен"
+
+# Увеличивает версию и коммитит её вместе с CHANGELOG
+bump-patch-with-changelog: patch commit-version-and-changelog push-version
+bump-minor-with-changelog: minor commit-version-and-changelog push-version
+
+# Коммитит версию и CHANGELOG вместе
+commit-version-and-changelog:
+	@echo "Increment version to ${SEMVER}"
+	@git add .semver CHANGELOG.md
+	@git commit -m "${SEMVER}"
+
+# Пушит версию и создает тег
+push-version:
 	@echo "🏷️ Создание тега ${SEMVER}..."
 	@git tag ${SEMVER}
 	@echo "📤 Пуш изменений и тега..."
