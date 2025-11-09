@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ClientCommand < BaseCommand
+  # Декларируем контекстные методы, которые эта команда предоставляет контроллеру
+  provides_context_methods :add_client_name, :add_client_key, :edit_client_name
   def call(subcommand = nil, *args)
     # Если нет аргументов, покажем список клиентов
     return show_clients_list if subcommand.blank?

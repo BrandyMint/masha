@@ -27,6 +27,23 @@ module Telegram
         command_class = Telegram::CommandRegistry.get(command)
         command_class.new(self).call(*args)
       end
+
+      # Регистрируем контекстные методы команды в контроллере
+      command_class = Telegram::CommandRegistry.get(command)
+      next unless command_class&.respond_to?(:context_method_names)
+
+      command_class.context_method_names.each do |context_method|
+        define_method context_method do |*args|
+          # Вызываем контекстный метод в экземпляре команды
+          command_instance = command_class.new(self)
+          if command_instance.respond_to?(context_method)
+            command_instance.send(context_method, *args)
+          else
+            Rails.logger.error "Context method #{context_method} not found in #{command_class}"
+            respond_with :message, text: 'Ошибка выполнения команды'
+          end
+        end
+      end
     end
 
     # Core message handlers

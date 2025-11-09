@@ -14,6 +14,12 @@
 
 Подробности: [telegram-session-management.md](./telegram-session-management.md)
 
+### Архитектура Telegram бота
+
+🏗️ **ОСНОВА**: Понимание архитектуры бота, механизма контекстов и системы команд.
+
+Подробности: [telegram-bot-architecture.md](./telegram-bot-architecture.md)
+
 ## Чек-лист при Code Review
 
 - [ ] Все `rescue` блоки имеют `notify_bugsnag(e)`

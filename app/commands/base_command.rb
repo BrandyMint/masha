@@ -27,6 +27,21 @@ class BaseCommand
 
   delegate :find_project, to: :current_user
 
+  # Метод для объявления контекстных методов, которые команда предоставляет контроллеру
+  class << self
+    attr_reader :context_methods
+
+    def provides_context_methods(*methods)
+      @context_methods ||= []
+      @context_methods.concat(methods.map(&:to_sym))
+      @context_methods.uniq!
+    end
+
+    def context_method_names
+      @context_methods || []
+    end
+  end
+
   private
 
   attr_reader :controller

@@ -1,114 +1,132 @@
-# Mashtime.ru Project Overview
+# Project Overview: Masha Time Tracking Bot
 
-## Project Purpose
-Masha is a comprehensive time tracking service that operates as both a Telegram bot (@MashTimeBot) and web application. The system allows users to track time spent on projects, manage team memberships, and generate reports through multiple interfaces.
+## Project Description
+Masha is a time tracking service built as both a Telegram bot (@MashTimeBot) and web application. It's a Rails 8 application with PostgreSQL backend and Bootstrap/Sass frontend.
 
-## Core Features
-- **Dual Interface**: Web application + Telegram bot for time tracking
-- **Project Management**: Create projects with role-based access control (Owner/Watcher/Participant)
-- **Time Tracking**: Record time entries with descriptions and hours
-- **Team Collaboration**: Invite users, manage roles, and track team time
-- **Multi-authentication**: OAuth via GitHub and Telegram integration
-- **Reporting**: Generate time summaries and project reports
+## Key Technologies
+- **Backend**: Rails 8, PostgreSQL
+- **Frontend**: Bootstrap 5, Sass, jQuery, Turbolinks 5
+- **Telegram Integration**: telegram-bot-rb gem
+- **Background Jobs**: Solid Queue
+- **Testing**: RSpec, Factory Bot
+- **Error Monitoring**: Bugsnag
 
-## Technology Stack
+## Architecture Overview
 
-### Backend
-- **Framework**: Ruby on Rails 8
-- **Database**: PostgreSQL with Solid Queue for background jobs
-- **Authentication**: Sorcery gem + OAuth (GitHub, Telegram)
-- **Authorization**: Authority gem for role-based permissions
-- **Background Jobs**: Solid Queue with Redis
-- **File Uploads**: CarrierWave + MiniMagick
+### Telegram Bot Architecture 🏗️
+**Critical**: Understanding context management is essential for bot development.
 
-### Frontend
-- **CSS Framework**: Bootstrap 5 with Sass
-- **JavaScript**: jQuery + Turbolinks 5
-- **Asset Pipeline**: Sprockets with PostCSS/Autoprefixer
-- **JavaScript Management**: Importmap Rails
-- **UI Components**: Bootstrap Icons, jQuery UI
+#### Context Mechanism (telegram-bot-rb)
+1. **MessageContext**: `save_context :method_name` → calls `method_name` on next message
+2. **CallbackQueryContext**: `callback_data: "prefix:data"` → calls `prefix_callback_query(data)`
 
-### Telegram Integration
-- **Bot Framework**: telegram-bot gem
-- **Real-time Communication**: Webhooks and polling
-- **Session Management**: Custom Telegram session handling
-- **Command System**: Modular command architecture with base classes
+#### Command System
+- Commands inherit from `BaseCommand`
+- Context methods declared with `provides_context_methods`
+- Auto-registration in `WebhookController`
 
-### Development Tools
-- **Testing**: RSpec with Factory Bot, Database Cleaner
-- **Code Quality**: RuboCop with Rails-specific rules
-- **Security**: Brakeman static analysis, Bugsnag error monitoring
-- **Documentation**: Custom documentation protocols in `.protocols/`
-
-## Architecture Patterns
-
-### Layered Architecture
-```
-Controllers (Web/Telegram) 
-├── Authorizers (Permissions)
-├── Service Objects (Business Logic)
-├── Models (Data Layer)
-├── Queries (Database Operations)
-└── Jobs (Background Processing)
+#### Example Implementation
+```ruby
+class ClientCommand < BaseCommand
+  provides_context_methods :add_client_name, :add_client_key
+  
+  def add_client_name(message, *)
+    save_context :add_client_key
+  end
+end
 ```
 
-### Key Components
-- **Models**: User, Project, TimeShift, Membership, Invite with proper associations
-- **Authorizers**: Role-based access control with Authority gem
-- **Services**: Telegram commands, time tracking logic, project management
-- **Controllers**: Standard Rails controllers + Telegram webhook handling
-- **Jobs**: Solid Queue for background processing
+### Core Models
+- **User**: System users with GitHub OAuth
+- **Project**: Time tracking projects with role-based access (Owner/Watcher/Participant)
+- **TimeShift**: Individual time entries
+- **Client**: Client management for projects
+- **Membership**: User-project relationships
 
-### Authentication Flow
-1. **OAuth**: GitHub integration for web users
-2. **Telegram**: Direct bot authentication with user linking
-3. **Session Management**: Separate web and Telegram sessions
-4. **User Linking**: Automatic attachment of Telegram accounts to existing users
+### Access Control
+Three role levels per project:
+- **Owner**: Full permissions
+- **Watcher**: View all time, manage own entries
+- **Participant**: Only view/manage own time entries
 
-## Database Schema
-- **Users**: Core user records with OAuth associations
-- **Projects**: Time tracking containers with friendly_id slugs
-- **TimeShifts**: Individual time entries with hours and descriptions
-- **Memberships**: User-project relationships with role-based permissions
-- **Invites**: Project invitation system with email/Telegram integration
-- **Authentications**: OAuth provider data (GitHub, Telegram)
+## Development Commands
 
-## Deployment & Operations
-- **Containerization**: Docker with docker-compose
-- **Process Management**: Puma web server with Thruster acceleration
-- **CI/CD**: GitHub Actions with automated testing and releases
-- **Monitoring**: Bugsnag error tracking, health checks
-- **Versioning**: Semantic versioning with automated releases
-
-## Development Workflow
+### Setup
 ```bash
-make deps              # Install dependencies (bun, gems)
-make up                 # Start development server
-make test              # Run full test suite
-bundle exec rubocop    # Code linting
+make deps                    # Install dependencies
+bundle install
+bun install
+rake db:create
+rake db:test:prepare
 ```
 
-Development processes:
-- Background jobs via `./bin/jobs`
-- Telegram bot via polling for development
-- CSS compilation with Sass watching
-- Guard for automated test execution
+### Development Server
+```bash
+./bin/dev                    # Start all processes
+make up
+```
 
-## Quality Standards
-- **Error Handling**: Mandatory Bugsnag notification for all caught exceptions
-- **Security**: Brakeman scanning, input validation, authorization checks
-- **Testing**: RSpec with Factory Bot, system tests, email testing
-- **Code Style**: RuboCop with 140-character line limit, Rails conventions
-- **Documentation**: Business specs in `.protocols/`, technical docs in `docs/`
+### Testing
+```bash
+make test                    # Full test suite
+./bin/rsp                    # RSpec tests
+```
 
-## Configuration
-- **Locales**: Russian locale by default, I18n for all user-facing text
-- **Settings**: Centralized configuration via `ApplicationConfig`
-- **Environment**: Standard Rails environments with specific configurations
-- **Features**: Feature toggles and optional integrations
+## Important Development Guidelines
 
-## Project Scale
-- **Target Users**: Small to medium teams requiring time tracking
-- **Concurrent Users**: Designed for moderate load with Solid Queue
-- **Data Volume**: Optimized for thousands of projects and time entries
-- **Geographic Focus**: Russian-language primary with international support
+### Telegram Bot Development
+📚 **CRITICAL**: Read architecture documentation before working on bot features.
+- Reference: `docs/development/telegram-bot-architecture.md`
+- Memory: `telegram_bot_contexts_mechanism`
+
+### Error Handling
+🚨 **MANDATORY**: All Telegram error handlers must notify Bugsnag.
+- Include `Telegram::ErrorHandling` module
+- All `rescue` blocks must call `notify_bugsnag(e)`
+
+### Code Quality
+- Follow existing project patterns
+- Use I18n for all user-facing text
+- No middleware creation
+- ApplicationConfig never needs mocking
+
+## File Structure
+```
+app/
+├── commands/           # Command classes
+├── controllers/
+│   ├── telegram/      # Telegram bot controllers
+│   └── owner/         # Admin functionality
+├── services/          # Business logic
+├── models/            # Data models
+└── jobs/              # Background jobs
+
+docs/development/       # Development documentation
+docs/specs/            # Business specifications
+```
+
+## Common Workflows
+
+### Adding New Telegram Command
+1. Create command class in `app/commands/`
+2. Declare context methods with `provides_context_methods`
+3. Register in `config/initializers/command_registry.rb`
+4. Add tests in `spec/controllers/telegram/webhook/`
+
+### Error Investigation
+1. Check Bugsnag for recent errors
+2. Use context memory: `telegram_bot_contexts_mechanism`
+3. Review logs and session data
+4. Test context flows in console
+
+## Recent Changes (2025-11-09)
+- Fixed Telegram bot context method registration issue
+- Added automatic context method delegation
+- Enhanced error handling documentation
+- Created comprehensive architecture documentation
+
+## References
+- Architecture: `docs/development/telegram-bot-architecture.md`
+- Error handling: `docs/development/telegram-error-handling.md`
+- Session management: `docs/development/telegram-session-management.md`
+- Memory: `telegram_bot_contexts_mechanism`

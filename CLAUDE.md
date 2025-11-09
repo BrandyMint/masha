@@ -149,6 +149,28 @@ Three role levels per project:
 
 @docs/development/README.md
 
+## 🏗️ Telegram Bot Architecture
+
+**Контекстные методы**: telegram-bot-rb использует два типа контекстов:
+- **MessageContext**: `save_context :method_name` → вызывает `method_name` при следующем сообщении
+- **CallbackQueryContext**: `callback_data: "prefix:data"` → вызывает `prefix_callback_query(data)`
+
+**Делегирование контекстов**: Команды декларируют контекстные методы через `provides_context_methods` в `BaseCommand`, которые автоматически регистрируются в `WebhookController`.
+
+**Пример**:
+```ruby
+class ClientCommand < BaseCommand
+  provides_context_methods :add_client_name, :add_client_key
+
+  def add_client_name(message = nil, *)
+    # обработка контекста
+    save_context :add_client_key  # переход к следующему шагу
+  end
+end
+```
+
+@docs/development/telegram-bot-architecture.md
+
 # Прочее
 
 - Чтобы зайти на боевую (production) базу мы используем `psql $PRODUCTION_DATABASE_URI`
