@@ -2,7 +2,11 @@ SEMVER_BIN=./bin/semver
 SEMVER=`${SEMVER_BIN}`
 
 # Default target
-release: patch-release 
+release: patch-release
+
+# Процесс релиза:
+# 1. bump-patch: увеличивает версию, коммитит .semver, пушит
+# 2. changelog-and-commit: генерирует changelog, коммитит, создает тег, пушит, создает GitHub релиз 
 
 patch-release-and-deploy: patch-release watch deploy sleep infra-watch
 
@@ -21,13 +25,23 @@ push-semver:
 	@git commit -m ${SEMVER}
 	@git push
 
-patch-release: bump-patch push-release
-minor-release: bump-minor push-release
+patch-release: bump-patch changelog-and-commit
+minor-release: bump-minor changelog-and-commit
 
-push-release:
-	@echo "Создание релиза ${SEMVER} с автоматическим changelog..."
-	@./bin/generate_smart_changelog.sh ${SEMVER} | gh release create ${SEMVER} --title "Release ${SEMVER}" --notes-file -
-	@git pull --tags
+# Генерирует changelog и коммитит изменения
+changelog-and-commit:
+	@echo "📝 Генерация changelog для версии ${SEMVER}..."
+	@./bin/generate_smart_changelog.sh ${SEMVER}
+	@git add CHANGELOG.md
+	@git commit -m "📝 Add changelog for ${SEMVER}" || echo "Changelog уже был добавлен"
+	@echo "🏷️ Создание тега ${SEMVER}..."
+	@git tag ${SEMVER}
+	@echo "📤 Пуш изменений и тега..."
+	@git push
+	@git push origin ${SEMVER}
+	@echo "🚀 Создание релиза на GitHub..."
+	@./bin/generate_smart_changelog.sh ${SEMVER} | head -n -1 | gh release create ${SEMVER} --title "Release ${SEMVER}" --notes-file -
+	@echo "✅ Релиз ${SEMVER} успешно создан!"
 
 .PHONY: test
 test:
@@ -77,4 +91,10 @@ test-changelog:
 	@./bin/generate_smart_changelog.sh v0.6.30
 	@echo "=========================================="
 	@echo "Chelog успешно сгенерирован!"
+
+# Быстрый предпросмотр changelog для текущей версии без сохранения
+preview-release:
+	@echo "Предпросмотр релиза для текущей версии (${SEMVER}):"
+	@echo "=========================================="
+	@./bin/generate_smart_changelog.sh ${SEMVER} | head -n -1
 

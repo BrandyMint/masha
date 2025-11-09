@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-module Telegram
-  class SummaryCommand < BaseCommand
-    HELP_TEXT = <<~TEXT
+class SummaryCommand < BaseCommand
+  HELP_TEXT = <<~TEXT
       📊 *Команда /summary - Статистика по проектам и пользователям*
 
       *Форматы использования:*
@@ -26,15 +25,14 @@ module Telegram
       _Формат даты: ГГГГ-ММ-ДД, формат месяца: ГГГГ-ММ_
     TEXT
 
-    def call(period = nil, *)
-      if period.nil?
-        respond_with :message, text: HELP_TEXT, parse_mode: :Markdown
-        return
-      end
-
-      parsed_period = PeriodParser.parse(period)
-      text = Reporter.new.projects_to_users_matrix(current_user, parsed_period)
-      respond_with :message, text: code(text), parse_mode: :Markdown
+  def call(period = nil, *)
+    if period.nil?
+      respond_with :message, text: HELP_TEXT, parse_mode: :Markdown
+      return
     end
+
+    parsed_period = PeriodParser.parse(period)
+    text = Reporter.new.projects_to_users_matrix(current_user, parsed_period)
+    respond_with :message, text: code(text), parse_mode: :Markdown
   end
-end
+  end

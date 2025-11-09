@@ -11,11 +11,11 @@ class Telegram::CommandRegistry
 
         begin
           # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
-          command_class = "Telegram::#{class_name}".constantize
+          command_class = class_name.constantize
           @commands[command_name.to_sym] = command_class
-          Rails.logger.info "Command registered: #{command_name} -> Telegram::#{class_name}"
+          Rails.logger.info "Command registered: #{command_name} -> #{class_name}"
         rescue NameError => e
-          Rails.logger.error "Failed to load command: #{command_name} -> Telegram::#{class_name}: #{e.message}"
+          Rails.logger.error "Failed to load command: #{command_name} -> #{class_name}: #{e.message}"
         end
       end
     end

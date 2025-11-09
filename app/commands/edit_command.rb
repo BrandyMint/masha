@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-module Telegram
-  class EditCommand < BaseCommand
-    def call(*)
-      service = Telegram::Edit::TimeShiftService.new(controller, current_user)
-      service.show_time_shifts_list(1)
-    end
-
-    def show_time_shifts_list(page = 1)
-      service = Telegram::Edit::TimeShiftService.new(controller, current_user)
-      service.show_time_shifts_list(page)
-    end
+class EditCommand < BaseCommand
+  def call(*)
+    service = Telegram::Edit::TimeShiftService.new(controller, current_user)
+    service.show_time_shifts_list(1)
   end
-end
+
+  def show_time_shifts_list(page = 1)
+    service = Telegram::Edit::TimeShiftService.new(controller, current_user)
+    service.show_time_shifts_list(page)
+  end
+  end
