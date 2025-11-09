@@ -84,7 +84,8 @@
       "mcp__serena__find_symbol",
       "Bash(git checkout:*)",
       "mcp__context7__resolve-library-id",
-      "Bash(CHANGELOG.md)"
+      "Bash(CHANGELOG.md)",
+      "mcp__context7__get-library-docs"
     ],
     "deny": [],
     "ask": []

@@ -50,6 +50,7 @@ module Commands
         # Add version at the end
         commands << ''
         commands << "Версия Маши: #{AppVersion}"
+        commands << 'Исходный код: https://github.com/dapi/masha'
 
         multiline(commands)
   end
