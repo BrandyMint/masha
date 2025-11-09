@@ -24,7 +24,7 @@ module Telegram
 
     # Dynamic command method definitions
     %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client
-       reset].each do |command|
+       reset owner].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)

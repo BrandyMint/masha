@@ -53,7 +53,7 @@
       "mcp__bugsnag__view_latest_event",
       "Bash(lsof:*)",
       "Bash(touch:*)",
-      "Bash(rm:*)"
+      "Bash(./bin/rsp:*)"
     ],
     "deny": [],
     "ask": []
