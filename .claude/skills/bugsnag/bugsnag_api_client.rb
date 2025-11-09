@@ -55,7 +55,10 @@ class BugsnagApiClient
   end
 
   def get_error_events(error_id, limit: 10)
-    response = Bugsnag::Api.client.error_events(@project_id, error_id, limit: limit)
+    options = {}
+    options[:limit] = limit if limit
+
+    response = Bugsnag::Api.client.error_events(@project_id, error_id, options)
     format_events_list(response)
   rescue Bugsnag::Api::Error => e
     handle_api_error(e, "получении событий ошибки")
