@@ -123,7 +123,6 @@ class TelegramTimeTracker
     hours.positive? && hours <= 100.0 # Более широкая проверка, диапазон проверим отдельно
   end
 
-  
   def handle_ambiguous_time(first_part, second_part)
     {
       error: multiline(
@@ -191,7 +190,6 @@ class TelegramTimeTracker
     }
   end
 
-  
   def time_out_of_range?(str)
     return false unless str.is_a?(String)
 

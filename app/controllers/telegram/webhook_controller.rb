@@ -2,8 +2,6 @@
 
 module Telegram
   class WebhookController < Telegram::Bot::UpdatesController
-    # Dynamic command method definitions
-    COMMANDS = %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client reset]
     Error = Class.new StandardError
     Unauthenticated = Class.new Error
     NotAvailableInPublicChat = Class.new Error
@@ -24,9 +22,9 @@ module Telegram
     # use callbacks like in any other controllers
     around_action :with_locale
 
-    COMMANDS.each do |command|
+    Telegram::CommandRegistry.available_commands.each do |command|
       define_method "#{command}!" do |*args|
-        command_class = "#{command.camelize}Command".constantize
+        command_class = Telegram::CommandRegistry.get(command)
         command_class.new(self).call(*args)
       end
     end
@@ -38,9 +36,6 @@ module Telegram
              else
                message['text']&.strip
              end
-
-      # If user is not logged in, show default message
-      return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') unless logged_in?
 
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if text.blank?
 
@@ -75,6 +70,7 @@ module Telegram
 
       @current_user = find_current_user
     end
+
     def with_locale(&block)
       I18n.with_locale(current_locale, &block)
     end

@@ -1,6 +1,10 @@
 {
-  "enabledMcpjsonServers": [
-    "bugsnag",
-    "postgres"
-  ]
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(mv:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
 }

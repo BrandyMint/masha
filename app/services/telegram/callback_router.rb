@@ -21,9 +21,7 @@ module Telegram
         prefix = extract_prefix(callback_data)
 
         # Skip routing for complex callbacks during migration
-        if LEGACY_PREFIXES.include?(prefix)
-          return false
-        end
+        return false if LEGACY_PREFIXES.include?(prefix)
 
         command_class_name = CALLBACK_PREFIXES[prefix]
         return false unless command_class_name
@@ -38,7 +36,7 @@ module Telegram
           command_instance = command_class_name.constantize.new(controller)
           command_instance.handle_callback(callback_data)
           true
-        rescue => e
+        rescue StandardError => e
           Rails.logger.error "Error routing callback to #{command_class_name}: #{e.message}"
           Rails.logger.error e.backtrace.join("\n")
           false

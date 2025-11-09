@@ -3,7 +3,7 @@ name: bugsnag
 description: Bugsnag API integration tool for viewing and managing errors. Fetches current errors, retrieves error context and stack traces, and marks errors as resolved. Uses BUGSNAG_DATA_API_KEY and BUGSNAG_PROJECT_ID from environment.
 ---
 
-# Bugsnag
+Вызывает скрипт ./bugsnag.rb с целью выполнить пользовательский запрос
 
 Skill для интеграции с Bugsnag API, позволяющий просматривать и управлять ошибками в проекте.
 
@@ -28,28 +28,7 @@ export BUGSNAG_DATA_API_KEY="your_bugsnag_data_api_key"
 export BUGSNAG_PROJECT_ID="your_bugsnag_project_id"
 ```
 
-### Как получить API ключ
-
-1. Перейдите в [Bugsnag Dashboard](https://app.bugsnag.com)
-2. Настройки → Organization → API Authentication
-3. Создайте Personal Access Token с правами на чтение ошибок
-4. Получите ID проекта из настроек проекта
-
-## Использование
-
-### Просмотр всех активных ошибок
-
-покажи все ошибки bugsang
-
-### Детальная информация об ошибке
-
-покажи детали ошибки [error_id] из bugsnag
-
-### Пометка ошибки как выполненной
-
-### Комплексный анализ ошибок
-
-## Команды
+## Команды bugsnag.rb
 
 ### Просмотр ошибок
 - `list` / `show` / `показать` - Список всех ошибок

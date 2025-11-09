@@ -33,11 +33,42 @@ class BugsnagHelper
   end
 
   def resolve_error(error_id)
-    uri = build_uri("/projects/#{@project_id}/errors/#{error_id}")
-    patch_data = { error: { status: 'resolved' } }.to_json
+    # Try different endpoints and methods
+    endpoints_and_methods = [
+      { method: :put, endpoint: "/projects/#{@project_id}/errors" },
+      { method: :post, endpoint: "/projects/#{@project_id}/errors" },
+      { method: :put, endpoint: "/projects/#{@project_id}/errors/bulk" },
+      { method: :post, endpoint: "/projects/#{@project_id}/errors/bulk" },
+      { method: :put, endpoint: "/projects/#{@project_id}/errors/#{error_id}" }
+    ]
 
-    response = make_patch_request(uri, patch_data)
-    format_resolution_response(response, error_id)
+    put_data = {
+      error_ids: [error_id],
+      operation: "resolve"
+    }.to_json
+
+    endpoints_and_methods.each do |config|
+      uri = build_uri(config[:endpoint])
+
+      puts "🔍 Trying #{config[:method].upcase} request to #{uri}"
+      puts "🔍 Request body: #{put_data}"
+
+      begin
+        if config[:method] == :put
+          response = make_put_request(uri, put_data)
+        else
+          response = make_post_request(uri, put_data)
+        end
+
+        puts "✅ Success with #{config[:method].upcase} #{config[:endpoint]}"
+        return format_resolution_response(response, error_id)
+      rescue => e
+        puts "❌ Failed with #{config[:method].upcase} #{config[:endpoint]}: #{e.message}"
+        next
+      end
+    end
+
+    raise "All endpoints failed to resolve error #{error_id}"
   end
 
   def get_error_events(error_id, limit: 10)
@@ -88,6 +119,44 @@ class BugsnagHelper
     http.use_ssl = true
 
     request = Net::HTTP::Patch.new(uri)
+    request['Authorization'] = "token #{@api_key}"
+    request['Content-Type'] = 'application/json'
+    # request['X-Version'] = '2020-07-01' # Bugsnag works without version header
+    request.body = body
+
+    response = http.request(request)
+
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "Bugsnag API error: #{response.code} - #{response.message}"
+    end
+
+    response
+  end
+
+  def make_put_request(uri, body)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Put.new(uri)
+    request['Authorization'] = "token #{@api_key}"
+    request['Content-Type'] = 'application/json'
+    # request['X-Version'] = '2020-07-01' # Bugsnag works without version header
+    request.body = body
+
+    response = http.request(request)
+
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "Bugsnag API error: #{response.code} - #{response.message}"
+    end
+
+    response
+  end
+
+  def make_post_request(uri, body)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+
+    request = Net::HTTP::Post.new(uri)
     request['Authorization'] = "token #{@api_key}"
     request['Content-Type'] = 'application/json'
     # request['X-Version'] = '2020-07-01' # Bugsnag works without version header

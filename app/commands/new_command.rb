@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Commands
+module Telegram
   class NewCommand < BaseCommand
     def call(slug = nil, *)
       if slug.blank?

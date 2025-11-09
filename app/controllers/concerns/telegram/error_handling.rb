@@ -30,10 +30,10 @@ module Telegram
     def handle_error(exception)
       notify_bugsnag(exception) do |payload|
         payload.add_metadata(:telegram, {
-          from: "#{self.class.name}##{caller_locations(1,1).first.label}",
-          user: current_user&.id,
-          chat_id: chat&.id
-        })
+                               from: "#{self.class.name}##{caller_locations(1, 1).first.label}",
+                               user: current_user&.id,
+                               chat_id: chat&.id
+                             })
       end
 
       respond_with :message, text: t('telegram.commands.error_occurred')

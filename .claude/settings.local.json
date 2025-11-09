@@ -95,7 +95,12 @@
       "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby:*)",
       "Bash(bin/rspec:*)",
       "WebFetch(domain:docs.bugsnag.com)",
-      "mcp__tavily__tavily-search"
+      "mcp__tavily__tavily-search",
+      "Skill(bugsnag)",
+      "Bash(./bugsnag.rb open:*)",
+      "Bash(mv:*)",
+      "Bash(rmdir:*)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []
