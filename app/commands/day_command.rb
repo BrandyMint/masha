@@ -40,7 +40,7 @@ class DayCommand < BaseCommand
     respond_with :message, text: code(text), parse_mode: :Markdown
   end
 
-    private
+  private
 
   def build_day_report(time_shifts, project_key, date)
     # Group by project
@@ -82,4 +82,4 @@ class DayCommand < BaseCommand
 
     "#{title}\n\n#{table}"
   end
-  end
+end

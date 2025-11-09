@@ -8,4 +8,4 @@ class ReportCommand < BaseCommand
 
     respond_with :message, text: code(text), parse_mode: :Markdown
   end
-  end
+end

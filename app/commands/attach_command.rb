@@ -13,4 +13,4 @@ class AttachCommand < BaseCommand
     end
     respond_with :message, text: message
   end
-  end
+end

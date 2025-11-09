@@ -10,4 +10,4 @@ class EditCommand < BaseCommand
     service = Telegram::Edit::TimeShiftService.new(controller, current_user)
     service.show_time_shifts_list(page)
   end
-  end
+end

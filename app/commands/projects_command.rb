@@ -17,4 +17,4 @@ class ProjectsCommand < BaseCommand
 
     respond_with :message, text: text
   end
-  end
+end

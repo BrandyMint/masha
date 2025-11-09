@@ -11,10 +11,10 @@ class NewCommand < BaseCommand
     create_project(slug)
   end
 
-    private
+  private
 
   def create_project(slug)
     project = current_user.projects.create!(name: slug, slug: slug)
     respond_with :message, text: "Создан проект `#{project.slug}`"
   end
-  end
+end

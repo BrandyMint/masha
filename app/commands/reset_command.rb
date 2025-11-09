@@ -8,7 +8,7 @@ class ResetCommand < BaseCommand
     respond_with :message, text: t('telegram.commands.reset.success')
   end
 
-    private
+  private
 
   def reset_session
     # Очищаем Telegram сессию
@@ -36,4 +36,4 @@ class ResetCommand < BaseCommand
         %w[context edit_client_key client_name edit_project_key].include?(key.to_s)
     end
   end
-  end
+end

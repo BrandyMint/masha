@@ -40,7 +40,7 @@ class HoursCommand < BaseCommand
     respond_with :message, text: code(text), parse_mode: :Markdown
   end
 
-    private
+  private
 
   def build_hours_table(time_shifts, project_key)
     total_hours = 0
@@ -68,4 +68,4 @@ class HoursCommand < BaseCommand
 
     "#{title}\n\n#{table}"
   end
-  end
+end

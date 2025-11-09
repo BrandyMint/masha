@@ -8,7 +8,7 @@ class RateCommand < BaseCommand
     show_rate_help
   end
 
-    private
+  private
 
   def handle_rate_command(args)
     args = args.split if args.is_a?(String)
@@ -227,4 +227,4 @@ class RateCommand < BaseCommand
       t('telegram.commands.rate.usage_example')
     )
   end
-  end
+end

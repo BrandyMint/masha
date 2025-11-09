@@ -13,4 +13,4 @@ class UsersCommand < BaseCommand
 
     respond_with :message, text: users_text.presence || 'Пользователи не найдены', parse_mode: :Markdown
   end
-  end
+end

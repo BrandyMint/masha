@@ -8,7 +8,7 @@ class ClientCommand < BaseCommand
     handle_client_command(subcommand, args)
   end
 
-    # Public context handler methods - эти методы должны быть доступны для telegram-bot gem
+  # Public context handler methods - эти методы должны быть доступны для telegram-bot gem
   def add_client_name(message = nil, *)
     name = message&.strip
     if name.blank? || name.length > 255
@@ -73,7 +73,7 @@ class ClientCommand < BaseCommand
     end
   end
 
-    private
+  private
 
   def handle_client_command(subcommand, args)
     command = subcommand.downcase
@@ -338,4 +338,4 @@ class ClientCommand < BaseCommand
 
     text
   end
-  end
+end

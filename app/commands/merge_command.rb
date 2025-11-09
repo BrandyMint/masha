@@ -14,4 +14,4 @@ class MergeCommand < BaseCommand
 
     TelegramUserMerger.new(email, telegram_username, controller: controller).merge
   end
-  end
+end

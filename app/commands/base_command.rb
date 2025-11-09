@@ -2,8 +2,8 @@
 
 class BaseCommand
   delegate :developer?, :respond_with,
-    :multiline, :code, :help_message, :format_user_info,
-    :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
+           :multiline, :code, :help_message, :format_user_info,
+           :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
 
   def session
     controller.send(:session)

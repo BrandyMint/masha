@@ -12,7 +12,7 @@ class RenameCommand < BaseCommand
     end
   end
 
-    private
+  private
 
   def rename_project_directly(project_slug, new_name)
     project = find_project(project_slug)
@@ -45,4 +45,4 @@ class RenameCommand < BaseCommand
                    end
                  }
   end
-  end
+end
