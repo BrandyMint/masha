@@ -30,11 +30,11 @@ Masha::Application.routes.draw do
   get 'telegram/auth_callback', to: 'telegram_auth_callback#create'
   get 'telegram/confirm', to: 'telegram_auth_callback#confirm'
   if Rails.env.test?
-  # В тестовой среде определяем роуты вручную для integration тестов
-  post '/telegram/:token', to: 'telegram/webhook#create', defaults: { format: :json }
-else
-  telegram_webhook Telegram::WebhookController
-end
+    # В тестовой среде определяем роуты вручную для integration тестов
+    post '/telegram/:token', to: 'telegram/webhook#create', defaults: { format: :json }
+  else
+    telegram_webhook Telegram::WebhookController
+  end
 
   constraints subdomain: 'admin' do
     constraints AdminConstraint do

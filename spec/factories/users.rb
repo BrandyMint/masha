@@ -18,16 +18,16 @@ FactoryBot.define do
 
     trait :with_telegram_id do
       transient do
-        telegram_id { 943084337 }
+        telegram_id { 943_084_337 }
       end
 
-      after(:build) do |user, evaluator|
+      after(:build) do |user, _evaluator|
         if user.telegram_user_id.present?
           # Создаем telegram_user с указанным ID, если он не существует
           TelegramUser.find_or_create_by!(id: user.telegram_user_id) do |tg_user|
             tg_user.username = "user#{user.telegram_user_id}"
-            tg_user.first_name = "Test"
-            tg_user.last_name = "User"
+            tg_user.first_name = 'Test'
+            tg_user.last_name = 'User'
           end
         end
       end

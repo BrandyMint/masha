@@ -2,7 +2,6 @@ inherit_from: .rubocop_todo.yml
 
 plugins: rubocop-rails
 
-require: ./lib/rubocop/cop/telegram/missing_bugsnag_notification.rb
 Rails:
   Enabled: true
   Exclude:

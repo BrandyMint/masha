@@ -23,14 +23,14 @@ module Telegram
     around_action :with_locale
 
     # Dynamic command method definitions
-    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client reset].each do |command|
+    %w[day summary report projects attach start help version users merge add new adduser hours edit rename rate client
+       reset].each do |command|
       define_method "#{command}!" do |*args|
         command_class = "Telegram::Commands::#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
       end
     end
 
-  
     # Core message handlers
     def message(message)
       text = if message.is_a?(String)
@@ -92,8 +92,6 @@ module Telegram
     def edit_client_name(message = nil, *)
       delegate_to_current_command(:edit_client_name, message, *)
     end
-
-    private
 
     # Helper method для делегирования вызов в текущую команду
     def delegate_to_current_command(method_name, *args)
@@ -249,10 +247,10 @@ module Telegram
 
       # Отправляем пользователю понятное сообщение
       respond_with :message, text: multiline(
-        "⚠️ Произошла ошибка при обработке команды.",
+        '⚠️ Произошла ошибка при обработке команды.',
         nil,
-        "Попробуйте начать заново с команды /help или /client",
-        "Если проблема повторится, напишите @pismenny"
+        'Попробуйте начать заново с команды /help или /client',
+        'Если проблема повторится, напишите @pismenny'
       )
     end
 

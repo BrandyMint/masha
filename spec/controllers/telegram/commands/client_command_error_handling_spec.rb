@@ -47,10 +47,10 @@ RSpec.describe Telegram::Commands::ClientCommand do
       # Ожидаем что user и meta_data будут установлены
       expect(notification).to receive(:user=).with(user)
       expect(notification).to receive(:meta_data=).with({
-        command: 'show',
-        args: ['test_client'],
-        session_data: []
-      })
+                                                          command: 'show',
+                                                          args: ['test_client'],
+                                                          session_data: []
+                                                        })
 
       # Мокаем find_client чтобы вызвать ошибку
       allow(command).to receive(:find_client).and_raise(StandardError, 'Test error')
@@ -72,10 +72,10 @@ RSpec.describe Telegram::Commands::ClientCommand do
 
       expect(notification).to receive(:user=).with(user)
       expect(notification).to receive(:meta_data=).with({
-        command: 'show',
-        args: ['test_client'],
-        session_data: []
-      })
+                                                          command: 'show',
+                                                          args: ['test_client'],
+                                                          session_data: []
+                                                        })
 
       allow(command).to receive(:find_client).and_raise(StandardError, 'Test error')
       command.call('show', 'test_client')
@@ -109,10 +109,10 @@ RSpec.describe Telegram::Commands::ClientCommand do
       # Ожидаем что user и meta_data будут установлены
       expect(notification).to receive(:user=).with(user)
       expect(notification).to receive(:meta_data=).with({
-        command: nil,
-        args: [],
-        session_data: []
-      })
+                                                          command: nil,
+                                                          args: [],
+                                                          session_data: []
+                                                        })
 
       # Ожидаем что respond_with будет вызван с сообщением об ошибке
       expect(controller).to receive(:respond_with).with(:message, text: I18n.t('telegram.commands.client.usage_error'))

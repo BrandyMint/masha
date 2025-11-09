@@ -7,13 +7,13 @@ module Telegram
                :multiline, :code, :help_message, :format_user_info,
                :chat, :telegram_user, :edit_message, :t, to: :controller
 
-def session
-  controller.send(:session)
-end
+      def session
+        controller.send(:session)
+      end
 
-def save_context(*args)
-  controller.send(:save_context, *args)
-end
+      def save_context(*args)
+        controller.send(:save_context, *args)
+      end
 
       def initialize(controller)
         @controller = controller
