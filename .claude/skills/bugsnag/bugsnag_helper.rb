@@ -33,32 +33,51 @@ class BugsnagHelper
   end
 
   def resolve_error(error_id)
-    # Try different endpoints and methods
-    endpoints_and_methods = [
-      { method: :put, endpoint: "/projects/#{@project_id}/errors" },
-      { method: :post, endpoint: "/projects/#{@project_id}/errors" },
-      { method: :put, endpoint: "/projects/#{@project_id}/errors/bulk" },
-      { method: :post, endpoint: "/projects/#{@project_id}/errors/bulk" },
-      { method: :put, endpoint: "/projects/#{@project_id}/errors/#{error_id}" }
+    # Try different endpoints and methods with different data formats
+    attempts = [
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors",
+        data: { error_ids: [error_id], operation: "resolve" }
+      },
+      {
+        method: :post,
+        endpoint: "/projects/#{@project_id}/errors",
+        data: { error_ids: [error_id], operation: "resolve" }
+      },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { status: "resolved" }
+      },
+      {
+        method: :put,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { error: { status: "resolved" } }
+      },
+      {
+        method: :patch,
+        endpoint: "/projects/#{@project_id}/errors/#{error_id}",
+        data: { status: "resolved" }
+      }
     ]
 
-    put_data = {
-      error_ids: [error_id],
-      operation: "resolve"
-    }.to_json
-
-    endpoints_and_methods.each do |config|
+    attempts.each do |config|
       uri = build_uri(config[:endpoint])
+      request_data = config[:data].to_json
 
       puts "🔍 Trying #{config[:method].upcase} request to #{uri}"
-      puts "🔍 Request body: #{put_data}"
+      puts "🔍 Request body: #{request_data}"
 
       begin
-        if config[:method] == :put
-          response = make_put_request(uri, put_data)
-        else
-          response = make_post_request(uri, put_data)
-        end
+        response = case config[:method]
+                  when :put
+                    make_put_request(uri, request_data)
+                  when :post
+                    make_post_request(uri, request_data)
+                  when :patch
+                    make_patch_request(uri, request_data)
+                  end
 
         puts "✅ Success with #{config[:method].upcase} #{config[:endpoint]}"
         return format_resolution_response(response, error_id)
@@ -140,7 +159,7 @@ class BugsnagHelper
     request = Net::HTTP::Put.new(uri)
     request['Authorization'] = "token #{@api_key}"
     request['Content-Type'] = 'application/json'
-    # request['X-Version'] = '2020-07-01' # Bugsnag works without version header
+    request['X-Version'] = '2022-07-08'  # Try with version header
     request.body = body
 
     response = http.request(request)
