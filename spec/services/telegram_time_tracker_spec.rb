@@ -221,16 +221,6 @@ RSpec.describe TelegramTimeTracker do
     end
   end
 
-  describe '#levenshtein_distance' do
-    let(:tracker) { described_class.new(user, [], controller) }
-
-    it 'calculates correct distance' do
-      expect(tracker.send(:levenshtein_distance, 'test', 'test')).to eq(0)
-      expect(tracker.send(:levenshtein_distance, 'test', 'tent')).to eq(1) # s->t substitution
-      expect(tracker.send(:levenshtein_distance, 'kitten', 'sitting')).to eq(3)
-    end
-  end
-
   describe '#add_time_entry' do
     let(:tracker) { described_class.new(user, [], controller) }
 

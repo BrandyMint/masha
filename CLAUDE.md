@@ -143,51 +143,11 @@ Three role levels per project:
 - Мы не пишем тексты в коде, используем локали и I18n
 - Спецификации по проекту лежат тут ./docs/specs
 
-# Error Handling in Telegram Controllers
+# Development Guidelines
 
-🚨 **КРИТИЧЕСКИ ВАЖНО**: Все обработчики ошибок в Telegram контроллерах ОБЯЗАТЕЛЬНО должны уведомлять Bugsnag.
+📚 **ВАЖНО**: Обязательно к прочтению руководство для разработчиков.
 
-### Правила обработки ошибок:
-
-1. **Включаем модуль**: `include Telegram::ErrorHandling`
-2. **При любой ошибке**: `notify_bugsnag(e)`
-3. **Добавляем контекст**: пользователь и важные данные
-
-```ruby
-class MyCommand < BaseCommand
-  include Telegram::ErrorHandling
-
-  def call(*args)
-    # основной код
-  rescue StandardError => e
-    notify_bugsnag(e) do |b|
-      b.user = current_user
-      b.meta_data = {
-        command: args[0],
-        args: args[1..-1],
-        session_data: session.keys
-      }
-    end
-    respond_with :message, text: t('telegram.errors.general')
-  end
-end
-```
-
-### ❌ Что НЕЛЬЗЯ делать:
-```ruby
-rescue StandardError => e
-  Rails.logger.error e.message
-  respond_with :message, text: 'Ошибка'
-  # Забыли notify_bugsnag(e) - НЕДОПУСТИМО!
-end
-```
-
-### Автоматическая проверка:
-```bash
-bundle exec rubocop app/controllers/telegram/
-```
-
-Подробности: [docs/development/telegram-error-handling.md](./docs/development/telegram-error-handling.md)
+@docs/development/README.md
 
 # Прочее
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class TelegramTimeTracker
+  include Telegram::Concerns::ValidationsConcern
   def initialize(user, message_parts, controller)
     @user = user
     @message_parts = message_parts
@@ -122,40 +123,7 @@ class TelegramTimeTracker
     hours.positive? && hours <= 100.0 # Более широкая проверка, диапазон проверим отдельно
   end
 
-  def available_projects_slugs
-    @available_projects_slugs ||= @user.available_projects.alive.pluck(:slug)
-  end
-
-  def find_project_fuzzy(slug)
-    # Ищем проект с опечатками (расстояние Левенштейна)
-    available_projects = @user.available_projects.alive
-
-    available_projects.find do |project|
-      levenshtein_distance(slug.downcase, project.slug.downcase) <= 2
-    end
-  end
-
-  def levenshtein_distance(str1, str2)
-    # Простая реализация расстояния Левенштейна
-    matrix = Array.new(str1.length + 1) { Array.new(str2.length + 1) }
-
-    (0..str1.length).each { |i| matrix[i][0] = i }
-    (0..str2.length).each { |j| matrix[0][j] = j }
-
-    (1..str1.length).each do |i|
-      (1..str2.length).each do |j|
-        cost = str1[i - 1] == str2[j - 1] ? 0 : 1
-        matrix[i][j] = [
-          matrix[i - 1][j] + 1,     # deletion
-          matrix[i][j - 1] + 1,     # insertion
-          matrix[i - 1][j - 1] + cost # substitution
-        ].min
-      end
-    end
-
-    matrix[str1.length][str2.length]
-  end
-
+  
   def handle_ambiguous_time(first_part, second_part)
     {
       error: multiline(
@@ -223,14 +191,7 @@ class TelegramTimeTracker
     }
   end
 
-  def find_similar_projects(slug)
-    available_slugs = available_projects_slugs
-    similar = available_slugs.select do |available_slug|
-      levenshtein_distance(slug.downcase, available_slug.downcase) <= 2
-    end
-    similar.first(5) # Ограничиваем количество предложений
-  end
-
+  
   def time_out_of_range?(str)
     return false unless str.is_a?(String)
 
@@ -251,46 +212,29 @@ class TelegramTimeTracker
     lines.compact.join("\n")
   end
 
-  def numeric?(str)
-    return false unless str.is_a?(String)
-
-    str.match?(/\A\d+([.,]\d+)?\z/)
-  end
-
   def add_time_entry(project_slug, hours, description = nil)
-    project = find_project(project_slug)
-
-    hours_float = hours.to_s.tr(',', '.').to_f
-
-    # Проверяем на предупреждения
-    warning_message = nil
-    if hours_float > 12
-      warning_message = " ⚠️ Много часов за день (#{hours_float})"
-    elsif hours_float < 0.5
-      warning_message = " ℹ️ Мало часов (#{hours_float})"
-    end
-
-    project.time_shifts.create!(
-      date: Time.zone.today,
-      hours: hours_float,
-      description: description || '',
-      user: @user
-    )
-
-    # Формируем сообщение
-    message_parts = ["✅ Отметили #{hours_float}ч в проекте #{project.name}"]
-    message_parts << warning_message if warning_message
-    message_parts << "📝 #{description}" if description.present?
-
-    message_parts.join("\n")
-  rescue StandardError => e
-    Rails.logger.error "Error adding time entry: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-
-    "❌ Ошибка при добавлении времени: #{e.message}\nПопробуйте еще раз или свяжитесь с поддержкой."
+    service = Telegram::TimeShiftOperationsService.new(@user, @controller)
+    service.add_time_entry(project_slug, hours, description)
   end
 
   def find_project(key)
-    @user.available_projects.alive.find_by(slug: key)
+    project_service = Telegram::ProjectService.new(@user)
+    project_service.find_project(key)
+  end
+
+  # Дополнительные методы для работы с проектами
+  def find_project_fuzzy(slug)
+    project_service = Telegram::ProjectService.new(@user)
+    project_service.find_project_fuzzy(slug)
+  end
+
+  def available_projects_slugs
+    project_service = Telegram::ProjectService.new(@user)
+    project_service.available_projects_slugs
+  end
+
+  def find_similar_projects(slug)
+    project_service = Telegram::ProjectService.new(@user)
+    project_service.find_similar_projects(slug)
   end
 end

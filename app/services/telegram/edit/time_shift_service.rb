@@ -4,6 +4,7 @@ module Telegram
   module Edit
     class TimeShiftService
       include Telegram::Concerns::PaginationConcern
+      include Telegram::Concerns::FormattingConcern
 
       attr_reader :controller, :user
 
@@ -83,7 +84,8 @@ module Telegram
       end
 
       def handle_project_selection(project_slug)
-        project = find_project(project_slug)
+        project_service = Telegram::ProjectService.new(user)
+        project = project_service.find_project(project_slug)
 
         unless project
           controller.edit_message :text, text: 'Проект не найден'
@@ -131,7 +133,8 @@ module Telegram
           return
         end
 
-        time_shift = controller.edit_time_shift
+        time_operations_service = Telegram::TimeShiftOperationsService.new(user, controller)
+        time_shift = time_operations_service.edit_time_shift(controller.telegram_session)
         unless time_shift
           controller.handle_missing_time_shift
           return
@@ -157,7 +160,8 @@ module Telegram
       end
 
       def find_project(project_slug)
-        user.available_projects.find_by(slug: project_slug)
+        project_service = Telegram::ProjectService.new(user)
+        project_service.find_project(project_slug)
       end
 
       def show_field_selection(time_shift)
@@ -181,7 +185,8 @@ module Telegram
       end
 
       def show_project_selection
-        time_shift = controller.edit_time_shift
+        time_operations_service = Telegram::TimeShiftOperationsService.new(user, controller)
+        time_shift = time_operations_service.edit_time_shift(controller.telegram_session)
         return unless time_shift
 
         controller.save_context :edit_project_callback_query
@@ -210,14 +215,15 @@ module Telegram
       end
 
       def show_confirmation
-        time_shift = controller.edit_time_shift
+        time_operations_service = Telegram::TimeShiftOperationsService.new(user, controller)
+        time_shift = time_operations_service.edit_time_shift(controller.telegram_session)
         return unless time_shift
 
         data = controller.telegram_session_data
         field = data['field']
         new_values = data['new_values']
 
-        changes = controller.build_changes_text(time_shift, field, new_values)
+        changes = build_changes_text(time_shift, field, new_values)
 
         controller.save_context :edit_confirm_callback_query
 
@@ -241,6 +247,12 @@ module Telegram
           time_shift.update!(description: new_values['description'])
         end
       end
+    end
+
+    # Реализация метода из FormattingConcern
+    def find_project_by_id(project_id)
+      project_service = Telegram::ProjectService.new(user)
+      project_service.find_project(project_id)
     end
   end
 end

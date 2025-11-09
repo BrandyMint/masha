@@ -4,6 +4,11 @@ module Telegram
   module ErrorHandling
     extend ActiveSupport::Concern
 
+    included do
+      rescue_from AbstractController::ActionNotFound, with: :handle_action_not_found
+      rescue_from StandardError, with: :handle_error
+    end
+
     private
 
     def notify_bugsnag(message_or_error)
@@ -17,8 +22,21 @@ module Telegram
       end
     end
 
-    def logger
-      Rails.application.config.telegram_updates_controller.logger
+    def handle_action_not_found(exception)
+      notify_bugsnag(exception)
+      respond_with :message, text: t('telegram.commands.unknown_command')
+    end
+
+    def handle_error(exception)
+      notify_bugsnag(exception) do |payload|
+        payload.add_metadata(:telegram, {
+          from: "#{self.class.name}##{caller_locations(1,1).first.label}",
+          user: current_user&.id,
+          chat_id: chat&.id
+        })
+      end
+
+      respond_with :message, text: t('telegram.commands.error_occurred')
     end
   end
 end

@@ -60,6 +60,10 @@ class User < ApplicationRecord
     authentications.by_provider(prov).first
   end
 
+  def find_project(key)
+    available_projects.alive.find_by(slug: key)
+  end
+
   def email
     # TODO: change :develop to :email
     authentications.where(provider: :developer).pick(:uid) || read_attribute(:email)
