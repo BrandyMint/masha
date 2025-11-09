@@ -140,7 +140,8 @@ end
 
 ### Краткие правила:
 
-1. **Включаем модуль**: `include Telegram::ErrorHandling`
+1. **Включаем модуль**: `include Telegram::ErrorHandling` (используется ТОЛЬКО в
+   телеграм-контроллере)
 2. **При любой ошибке**: `notify_bugsnag(e)`
 3. **Добавляем контекст**: пользователь и важные данные
 
@@ -153,4 +154,8 @@ rescue StandardError => e
   respond_with :message, text: 'Ошибка'
 end
 ```
+###
+
+
+
 

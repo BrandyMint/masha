@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ResetCommand < BaseCommand
-  include Telegram::ErrorHandling
-
   def call(*_args)
     reset_session
     respond_with :message, text: t('telegram.commands.reset.success')
