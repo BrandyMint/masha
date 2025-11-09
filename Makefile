@@ -25,7 +25,8 @@ patch-release: bump-patch push-release
 minor-release: bump-minor push-release
 
 push-release:
-	@gh release create ${SEMVER} --generate-notes
+	@echo "Создание релиза ${SEMVER} с автоматическим changelog..."
+	@gh release create ${SEMVER} --title "Release ${SEMVER}" --notes-file <(./bin/generate_smart_changelog.sh ${SEMVER})
 	@git pull --tags
 
 .PHONY: test
@@ -61,4 +62,19 @@ list:
 
 production-psql:
 	psql ${PRODUCTION_DATABASE_URI}
+
+# Changelog цели
+changelog:
+	@./bin/generate_smart_changelog.sh
+
+changelog-preview:
+	@echo "Предпросмотр changelog для текущих изменений:"
+	@echo "=========================================="
+	@./bin/generate_smart_changelog.sh HEAD
+
+test-changelog:
+	@echo "Тестирование генерации changelog..."
+	@./bin/generate_smart_changelog.sh v0.6.30
+	@echo "=========================================="
+	@echo "Chelog успешно сгенерирован!"
 

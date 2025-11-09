@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module Commands
-    class AdduserCommand < BaseCommand
+class AdduserCommand < BaseCommand
       def call(project_slug = nil, username = nil, role = 'member', *)
         if project_slug.blank?
           show_manageable_projects
@@ -34,6 +33,5 @@ module Commands
                      reply_markup: {
                        inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
                      }
-  end
-end
-end
+      end
+    end

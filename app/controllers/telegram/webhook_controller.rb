@@ -26,7 +26,7 @@ module Telegram
 
     COMMANDS.each do |command|
       define_method "#{command}!" do |*args|
-        command_class = "Commands::#{command.camelize}Command".constantize
+        command_class = "#{command.camelize}Command".constantize
         command_class.new(self).call(*args)
       end
     end

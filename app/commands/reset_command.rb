@@ -36,6 +36,6 @@ module Commands
           key.to_s.start_with?('telegram_') ||
             %w[context edit_client_key client_name edit_project_key].include?(key.to_s)
   end
-end
   end
+end
 end

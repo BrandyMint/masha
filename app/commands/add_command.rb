@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module Commands
-  class AddCommand < BaseCommand
+class AddCommand < BaseCommand
       def call(project_slug = nil, hours = nil, *description)
         if project_slug.nil?
           show_project_selection
@@ -45,4 +44,3 @@ module Commands
         respond_with :message, text: message
       end
     end
-end

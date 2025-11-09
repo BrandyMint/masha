@@ -117,7 +117,7 @@ module Telegram
       page = service.handle_callback(callback_data)
       return unless page
 
-      command = Commands::EditCommand.new(self)
+      command = EditCommand.new(self)
       command.show_time_shifts_list(page)
     end
 

@@ -75,7 +75,9 @@
       "Bash(unset:*)",
       "mcp__serena__search_for_pattern",
       "Bash(do:*)",
-      "Bash(\"$file\")"
+      "Bash(\"$file\")",
+      "Bash(for file in app/commands/attach_command.rb app/commands/client_command.rb app/commands/day_command.rb app/commands/edit_command.rb app/commands/help_command.rb app/commands/hours_command.rb app/commands/merge_command.rb app/commands/projects_command.rb app/commands/rate_command.rb app/commands/rename_command.rb app/commands/report_command.rb app/commands/reset_command.rb app/commands/start_command.rb app/commands/users_command.rb app/commands/version_command.rb:*)",
+      "Bash(chmod:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,99 @@
+name: Release with Changelog
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Получаем всю историю для changelog
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Получаем предыдущий тег
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          # Если нет предыдущего тега, берем первые 100 коммитов
+          if [ -z "$PREVIOUS_TAG" ]; then
+            COMMITS="--max-count=100"
+          else
+            COMMITS="$PREVIOUS_TAG..HEAD"
+          fi
+
+          # Получаем коммиты в безопасном формате
+          git log $COMMITS --pretty=format:"%H|%s|%b" --no-merges > commits.json
+
+          # Создаем JSON для анализа Claude
+          echo '{
+            "version": "'"${{ github.ref_name }}"'",
+            "previous_tag": "'"$PREVIOUS_TAG"'",
+            "commits": [' > commits_data.json
+
+          first=true
+          while IFS='|' read -r hash subject body; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> commits_data.json
+            fi
+
+            # Экранируем JSON специальные символы
+            subject=$(echo "$subject" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed 's/$/\\n/g' | tr -d '\n')
+            body=$(echo "$body" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed 's/$/\\n/g' | tr -d '\n')
+
+            echo '{"hash":"'"$hash"'","subject":"'"$subject"'","body":"'"$body"'"}' >> commits_data.json
+          done < commits.json
+
+          echo ']}' >> commits_data.json
+
+          # Вызываем Claude API для генерации changelog
+          CHANGELOG=$(curl -s -X POST https://api.anthropic.com/v1/messages \
+            -H "x-api-key: ${{ secrets.ANTHROPIC_API_KEY }}" \
+            -H "content-type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d '{
+              "model": "claude-3-sonnet-20240229",
+              "max_tokens": 2000,
+              "messages": [{
+                "role": "user",
+                "content": "Проанализируй список коммитов и создай человекочитаемый changelog на русском языке. Сгруппируй изменения по категориям: Новый функционал, Исправления, Улучшения, Внутренние изменения. Используй эмодзи для наглядности. Коммиты: '"$(cat commits_data.json | sed 's/"/\\"/g' | tr -d '\n')"'
+              }]
+            }' | jq -r '.content[0].text' 2>/dev/null || echo "## Изменения в ${{ github.ref_name }}\n\nАвтоматический релиз")
+
+          # Сохраняем changelog
+          {
+            echo "changelog<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          # Очищаем временные файлы
+          rm -f commits.json commits_data.json
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger Build and Deploy
+        run: |
+          # Триггерим build-and-push workflow
+          gh workflow run build-and-push.yaml
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
