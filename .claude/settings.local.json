@@ -72,7 +72,10 @@
       "Bash(\"https://api.bugsnag.com/projects/$BUGSNAG_PROJECT_ID/errors?per_page=5\")",
       "Bash(python3:*)",
       "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" skill \"bugsnag-lookuper\" \"покажи все ошибки\")",
-      "Bash(unset:*)"
+      "Bash(unset:*)",
+      "mcp__serena__search_for_pattern",
+      "Bash(do:*)",
+      "Bash(\"$file\")"
     ],
     "deny": [],
     "ask": []
