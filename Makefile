@@ -26,7 +26,7 @@ minor-release: bump-minor push-release
 
 push-release:
 	@echo "Создание релиза ${SEMVER} с автоматическим changelog..."
-	@gh release create ${SEMVER} --title "Release ${SEMVER}" --notes-file <(./bin/generate_smart_changelog.sh ${SEMVER})
+	@./bin/generate_smart_changelog.sh ${SEMVER} | gh release create ${SEMVER} --title "Release ${SEMVER}" --notes-file -
 	@git pull --tags
 
 .PHONY: test
