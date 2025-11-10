@@ -32,6 +32,38 @@ RSpec.describe Project, type: :model do
         project.valid?
         expect(project.errors[:slug]).to be_empty
       end
+
+      context 'integer slugs' do
+        it 'does not allow integer slugs' do
+          integer_slugs = %w[1 2 123 999 0]
+
+          integer_slugs.each do |integer_slug|
+            project = build(:project, slug: integer_slug)
+            project.valid?
+            expect(project.errors[:slug]).to include("не может быть целым числом: #{integer_slug}")
+          end
+        end
+
+        it 'allows slugs with numbers mixed with letters' do
+          mixed_slugs = %w[project1 2project test123abc abc123]
+
+          mixed_slugs.each do |mixed_slug|
+            project = build(:project, slug: mixed_slug)
+            project.valid?
+            expect(project.errors[:slug]).to be_empty
+          end
+        end
+
+        it 'allows decimal numbers in slug' do
+          decimal_slugs = %w[1.5 2.0 123.45]
+
+          decimal_slugs.each do |decimal_slug|
+            project = build(:project, slug: decimal_slug)
+            project.valid?
+            expect(project.errors[:slug]).to be_empty
+          end
+        end
+      end
     end
   end
 

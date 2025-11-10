@@ -12,18 +12,18 @@ class RateCommand < BaseCommand
 
   def handle_rate_command(args)
     args = args.split if args.is_a?(String)
-    command = args[1]&.downcase
+    command = args[0]&.downcase
 
     case command
     when 'list'
-      handle_list(args[2])
+      handle_list(args[1])
     when 'remove'
-      handle_remove(args[2], args[3])
+      handle_remove(args[1], args[2])
     when nil
       show_rate_help
     else
       # Попытка установить ставку в формате /rate project username amount currency
-      handle_set_rate(args[1], args[2], args[3], args[4])
+      handle_set_rate(args[0], args[1], args[2], args[3])
     end
   end
 
@@ -162,7 +162,7 @@ class RateCommand < BaseCommand
   end
 
   def show_rate_help
-    help_text = multiline(
+    help_text = [
       t('telegram.commands.rate.help_title'),
       '',
       t('telegram.commands.rate.help_commands_title'),
@@ -175,7 +175,8 @@ class RateCommand < BaseCommand
       t('telegram.commands.rate.help_example_2'),
       '',
       t('telegram.commands.rate.help_access_note')
-    )
+    ].join("\n")
+
     respond_with :message, text: help_text
   end
 
@@ -189,18 +190,18 @@ class RateCommand < BaseCommand
   end
 
   def format_rate_success(project, user, member_rate)
-    multiline(
+    [
       t('telegram.commands.rate.success_title'),
       t('telegram.commands.rate.success_project', project_name: project.name),
       t('telegram.commands.rate.success_member', username: user.telegram_user.username),
       t('telegram.commands.rate.success_amount', amount: member_rate.hourly_rate, currency: member_rate.currency),
       t('telegram.commands.rate.success_updated', timestamp: Time.current.strftime('%d.%m.%Y %H:%M'))
-    )
+    ].join("\n")
   end
 
   def format_project_rates_list(project)
     rates = project.member_rates.includes(:user)
-    text = multiline(t('telegram.commands.rate.rates_list_title', project_name: project.name), nil)
+    text = [t('telegram.commands.rate.rates_list_title', project_name: project.name), '']
 
     project.users.each do |user|
       rate = rates.find { |r| r.user_id == user.id }
@@ -209,14 +210,14 @@ class RateCommand < BaseCommand
       role = membership&.role_cd&.zero? ? t('telegram.commands.rate.owner_role') : ''
       username = user.telegram_user&.username || user.id.to_s
 
-      text += "👤 @#{username}#{role}: #{rate_text}\n"
+      text << "👤 @#{username}#{role}: #{rate_text}\n"
     end
 
-    text
+    text.join
   end
 
   def rate_usage_error
-    multiline(
+    [
       t('telegram.commands.rate.usage_error_title'),
       '',
       t('telegram.commands.rate.usage_correct_formats'),
@@ -225,6 +226,6 @@ class RateCommand < BaseCommand
       t('telegram.commands.rate.usage_format_remove'),
       '',
       t('telegram.commands.rate.usage_example')
-    )
+    ].join("\n")
   end
 end

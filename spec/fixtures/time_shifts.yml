@@ -1,0 +1,55 @@
+# frozen_string_literal: true
+
+# Базовые временные записи
+# ВНИМАНИЕ: TimeShift с динамическими датами остаются в factories!
+# Здесь только статичные записи для базовых тестов
+
+# Базовая временная запись для рабочего проекта
+work_time_today:
+  user: regular_user
+  project: work_project
+  date: <%= Date.current %>
+  hours: 2.0
+  description: Работа над основной задачей
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# Временная запись для пользователя с Telegram
+telegram_time_today:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current %>
+  hours: 3.5
+  description: Разработка функционала
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# Временная запись для тестового проекта
+test_time_yesterday:
+  user: project_member
+  project: test_project
+  date: <%= 1.day.ago.to_date %>
+  hours: 1.5
+  description: Тестирование нового модуля
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Временная запись для проекта разработки
+dev_time_this_week:
+  user: project_owner
+  project: dev_project
+  date: <%= 3.days.ago.to_date %>
+  hours: 4.0
+  description: Архитектурное планирование
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+# Временная запись для личного проекта
+personal_time_last_week:
+  user: admin
+  project: personal_project
+  date: <%= 7.days.ago.to_date %>
+  hours: 1.0
+  description: Обучение и исследование
+  created_at: <%= 7.days.ago %>
+  updated_at: <%= 7.days.ago %>

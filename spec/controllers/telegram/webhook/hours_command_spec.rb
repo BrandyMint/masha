@@ -24,13 +24,13 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :owner)
 
         # Create time shifts for current week
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 4, description: 'Monday work')
-        create(:time_shift, project: project, user: user, date: Date.today - 1.day, hours: 6, description: 'Sunday work')
-        create(:time_shift, project: project, user: user, date: Date.today - 2.days, hours: 5, description: 'Saturday tasks')
-        create(:time_shift, project: project, user: user, date: Date.today - 3.days, hours: 8, description: 'Friday development')
-        create(:time_shift, project: project, user: user, date: Date.today - 4.days, hours: 3, description: 'Thursday meeting')
-        create(:time_shift, project: project, user: user, date: Date.today - 5.days, hours: 7, description: 'Wednesday coding')
-        create(:time_shift, project: project, user: user, date: Date.today - 6.days, hours: 2, description: 'Tuesday planning')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 4, description: 'Monday work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 1.day, hours: 6, description: 'Sunday work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 2.days, hours: 5, description: 'Saturday tasks')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 3.days, hours: 8, description: 'Friday development')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 4.days, hours: 3, description: 'Thursday meeting')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 5.days, hours: 7, description: 'Wednesday coding')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 6.days, hours: 2, description: 'Tuesday planning')
       end
 
       it 'responds to /hours command without errors' do
@@ -49,16 +49,16 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         # Create time shifts across multiple weeks
         # Current week
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 5, description: 'Current week task 1')
-        create(:time_shift, project: project, user: user, date: Date.today - 1.day, hours: 3, description: 'Current week task 2')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 5, description: 'Current week task 1')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 1.day, hours: 3, description: 'Current week task 2')
 
         # Previous week
-        create(:time_shift, project: project, user: user, date: Date.today - 7.days, hours: 8, description: 'Last week task 1')
-        create(:time_shift, project: project, user: user, date: Date.today - 8.days, hours: 6, description: 'Last week task 2')
-        create(:time_shift, project: project, user: user, date: Date.today - 9.days, hours: 4, description: 'Last week task 3')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 7.days, hours: 8, description: 'Last week task 1')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 8.days, hours: 6, description: 'Last week task 2')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 9.days, hours: 4, description: 'Last week task 3')
 
         # Two weeks ago
-        create(:time_shift, project: project, user: user, date: Date.today - 14.days, hours: 7, description: 'Two weeks ago work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today - 14.days, hours: 7, description: 'Two weeks ago work')
       end
 
       it 'responds to /hours command without errors' do
@@ -79,11 +79,11 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project3, user: user, role: :member)
 
         # Create time shifts across different projects for current week
-        create(:time_shift, project: project1, user: user, date: Date.today, hours: 4, description: 'Alpha work')
-        create(:time_shift, project: project2, user: user, date: Date.today - 1.day, hours: 3, description: 'Beta development')
-        create(:time_shift, project: project3, user: user, date: Date.today - 2.days, hours: 5, description: 'Gamma testing')
-        create(:time_shift, project: project1, user: user, date: Date.today - 3.days, hours: 6, description: 'Alpha review')
-        create(:time_shift, project: project2, user: user, date: Date.today - 4.days, hours: 2, description: 'Beta meeting')
+        create(:time_shift, project: project1, user: user, date: Time.zone.today, hours: 4, description: 'Alpha work')
+        create(:time_shift, project: project2, user: user, date: Time.zone.today - 1.day, hours: 3, description: 'Beta development')
+        create(:time_shift, project: project3, user: user, date: Time.zone.today - 2.days, hours: 5, description: 'Gamma testing')
+        create(:time_shift, project: project1, user: user, date: Time.zone.today - 3.days, hours: 6, description: 'Alpha review')
+        create(:time_shift, project: project2, user: user, date: Time.zone.today - 4.days, hours: 2, description: 'Beta meeting')
       end
 
       it 'responds to /hours command without errors' do
@@ -101,9 +101,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :owner)
 
         # Create multiple entries for the same day
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 4, description: 'Morning session')
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 3, description: 'Afternoon coding')
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 2, description: 'Evening review')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 4, description: 'Morning session')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 3, description: 'Afternoon coding')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 2, description: 'Evening review')
       end
 
       it 'responds to /hours command without errors' do

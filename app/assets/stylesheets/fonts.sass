@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, h6
     font-size: $baseFontSize * 1.5
 
 @each $weight in (light 100, normal 300, medium 500, bold 700, black 900)
-  .font-weight-#{nth($weight,1)}
+  .font-weight-#{"" + nth($weight,1)}
     font-weight: nth($weight,2)
 
 

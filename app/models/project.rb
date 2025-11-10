@@ -29,6 +29,7 @@ class Project < ApplicationRecord
   validates :slug, presence: true, uniqueness: true,
                    format: { with: /\A[a-z0-9._+-]+\Z/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
   validate :slug_not_reserved
+  validate :slug_not_integer
 
   before_validation on: :create do
     self.slug = Russian.translit(name.to_s).squish.parameterize if slug.blank?
@@ -63,5 +64,14 @@ class Project < ApplicationRecord
     return unless ApplicationConfig.reserved_project_slugs.include?(slug.downcase)
 
     errors.add(:slug, "не может быть зарезервированным словом: #{slug}")
+  end
+
+  def slug_not_integer
+    return if slug.blank?
+
+    # Проверяем что slug не является целым числом
+    if slug.match?(/\A\d+\z/)
+      errors.add(:slug, "не может быть целым числом: #{slug}")
+    end
   end
 end

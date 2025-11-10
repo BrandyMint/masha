@@ -1,0 +1,49 @@
+# frozen_string_literal: true
+
+# Telegram пользователи для webhook тестов
+# Используется в 21 тесте с трейтом :with_telegram
+
+# Telegram для администратора
+telegram_admin:
+  id: 123456789
+  username: admin_user
+  first_name: Admin
+  last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram для обычного пользователя
+telegram_regular:
+  id: 987654321
+  username: regular_user
+  first_name: Regular
+  last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram для владельца проекта
+telegram_owner:
+  id: 555666777
+  username: project_owner
+  first_name: Project
+  last_name: Owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram для участника проекта
+telegram_member:
+  id: 111222333
+  username: project_member
+  first_name: Project
+  last_name: Member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram для наблюдателя
+telegram_watcher:
+  id: 444555666
+  username: project_watcher
+  first_name: Project
+  last_name: Watcher
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

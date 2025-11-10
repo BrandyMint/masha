@@ -1,0 +1,71 @@
+# frozen_string_literal: true
+
+# Базовые пользователи для тестов
+# Используется в 39 тестах, особенно в telegram webhook
+
+# Администратор системы
+admin:
+  name: Admin User
+  nickname: admin
+  email: admin@example.com
+  pivotal_person_id: 1
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Обычный пользователь
+regular_user:
+  name: Regular User
+  nickname: regular
+  email: regular@example.com
+  pivotal_person_id: 2
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Пользователь с Telegram интеграцией
+user_with_telegram:
+  name: Telegram User
+  nickname: telegram_user
+  email: telegram@example.com
+  pivotal_person_id: 3
+  telegram_user_id: 123456789
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Владелец проектов
+project_owner:
+  name: Project Owner
+  nickname: owner
+  email: owner@example.com
+  pivotal_person_id: 4
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Участник проекта
+project_member:
+  name: Project Member
+  nickname: member
+  email: member@example.com
+  pivotal_person_id: 5
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Наблюдатель проекта
+project_watcher:
+  name: Project Watcher
+  nickname: watcher
+  email: watcher@example.com
+  pivotal_person_id: 6
+  password_digest: <%= BCrypt::Password.create('123') %>
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

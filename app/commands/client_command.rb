@@ -14,9 +14,8 @@ class ClientCommand < BaseCommand
   def add_client_name(message = nil, *)
     name = message&.strip
     if name.blank? || name.length > 255
-      respond_with :message, text: t('telegram.commands.client.name_invalid')
       save_context ADD_CLIENT_NAME
-      return
+      return respond_with :message, text: t('telegram.commands.client.name_invalid')
     end
 
     session[:client_name] = name
@@ -30,16 +29,14 @@ class ClientCommand < BaseCommand
 
     # Валидация ключа
     if key.blank? || !key.match?(/\A[a-z0-9_-]+\z/) || key.length < 2 || key.length > 50
-      respond_with :message, text: t('telegram.commands.client.key_invalid', key: key)
       save_context ADD_CLIENT_KEY
-      return
+      return respond_with :message, text: t('telegram.commands.client.key_invalid', key: key)
     end
 
     # Проверка уникальности ключа
     if current_user.clients.exists?(key: key)
-      respond_with :message, text: t('telegram.commands.client.key_exists', key: key)
       save_context ADD_CLIENT_KEY
-      return
+      return respond_with :message, text: t('telegram.commands.client.key_exists', key: key)
     end
 
     # Создание клиента
@@ -58,9 +55,8 @@ class ClientCommand < BaseCommand
     key = session[:edit_client_key]
 
     if name.blank? || name.length > 255
-      respond_with :message, text: t('telegram.commands.client.name_invalid')
       save_context EDIT_CLIENT_NAME
-      return
+      return respond_with :message, text: t('telegram.commands.client.name_invalid')
     end
 
     client = find_client(key)
@@ -106,8 +102,7 @@ class ClientCommand < BaseCommand
     clients = current_user.clients.includes(:projects)
 
     if clients.empty?
-      respond_with :message, text: t('telegram.commands.client.list_empty')
-      return
+      return respond_with :message, text: t('telegram.commands.client.list_empty')
     end
 
     text = multiline(t('telegram.commands.client.list_title'), nil)
@@ -128,16 +123,14 @@ class ClientCommand < BaseCommand
 
   def handle_show_client(key)
     unless key
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_read?(client)
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     respond_with :message, text: format_client_info(client)
@@ -145,16 +138,14 @@ class ClientCommand < BaseCommand
 
   def handle_edit_client(key)
     unless key
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_update?(client)
-      respond_with :message, text: t('telegram.commands.client.edit_access_denied')
-      return
+      return respond_with :message, text: t('telegram.commands.client.edit_access_denied')
     end
 
     session[:edit_client_key] = key
@@ -164,28 +155,24 @@ class ClientCommand < BaseCommand
 
   def handle_delete_client(key, confirm = nil)
     unless key
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_delete?(client)
-      respond_with :message, text: t('telegram.commands.client.delete_access_denied')
-      return
+      return respond_with :message, text: t('telegram.commands.client.delete_access_denied')
     end
 
     # Проверка на связанные проекты
     if client.projects.exists?
-      respond_with :message, text: t('telegram.commands.client.delete_has_projects', key: key)
-      return
+      return respond_with :message, text: t('telegram.commands.client.delete_has_projects', key: key)
     end
 
     # Запрос подтверждения
     unless confirm == 'confirm'
-      respond_with :message, text: t('telegram.commands.client.delete_confirm', name: client.name, key: key)
-      return
+      return respond_with :message, text: t('telegram.commands.client.delete_confirm', name: client.name, key: key)
     end
 
     # Удаление клиента
@@ -198,22 +185,19 @@ class ClientCommand < BaseCommand
 
   def handle_list_projects(key)
     unless key
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_read?(client)
-      respond_with :message, text: t('telegram.commands.client.projects_access_denied')
-      return
+      return respond_with :message, text: t('telegram.commands.client.projects_access_denied')
     end
 
     projects = client.projects.includes(:memberships)
     if projects.empty?
-      respond_with :message, text: t('telegram.commands.client.projects_empty')
-      return
+      return respond_with :message, text: t('telegram.commands.client.projects_empty')
     end
 
     text = multiline(t('telegram.commands.client.projects_title', name: client.name, key: key), nil)
@@ -226,27 +210,23 @@ class ClientCommand < BaseCommand
 
   def handle_attach_project(key, project_name)
     unless key && project_name
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_update?(client)
-      respond_with :message, text: t('telegram.commands.client.attach_access_denied')
-      return
+      return respond_with :message, text: t('telegram.commands.client.attach_access_denied')
     end
 
     project = find_project(project_name)
     unless project
-      respond_with :message, text: t('telegram.commands.client.attach_project_not_found', project_name: project_name)
-      return
+      return respond_with :message, text: t('telegram.commands.client.attach_project_not_found', project_name: project_name)
     end
 
     unless project.users.include?(current_user)
-      respond_with :message, text: t('telegram.commands.client.attach_project_not_found', project_name: project_name)
-      return
+      return respond_with :message, text: t('telegram.commands.client.attach_project_not_found', project_name: project_name)
     end
 
     if project.update(client: client)
@@ -259,27 +239,23 @@ class ClientCommand < BaseCommand
 
   def handle_detach_project(key, project_name)
     unless key && project_name
-      respond_with :message, text: t('telegram.commands.client.usage_error')
-      return
+      return respond_with :message, text: t('telegram.commands.client.usage_error')
     end
 
     client = find_client(key)
     return unless client
 
     unless current_user.can_update?(client)
-      respond_with :message, text: t('telegram.commands.client.detach_access_denied')
-      return
+      return respond_with :message, text: t('telegram.commands.client.detach_access_denied')
     end
 
     project = find_project(project_name)
     unless project
-      respond_with :message, text: t('telegram.commands.client.detach_project_not_found', project_name: project_name)
-      return
+      return respond_with :message, text: t('telegram.commands.client.detach_project_not_found', project_name: project_name)
     end
 
     unless project.client == client
-      respond_with :message, text: t('telegram.commands.client.detach_project_not_found', project_name: project_name)
-      return
+      return respond_with :message, text: t('telegram.commands.client.detach_project_not_found', project_name: project_name)
     end
 
     if project.update(client: nil)

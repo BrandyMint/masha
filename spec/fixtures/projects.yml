@@ -1,0 +1,52 @@
+# frozen_string_literal: true
+
+# Проекты для тестов
+# Используется в 80 тестах, самый популярный factory
+
+# Рабочий проект (основной проект для тестов)
+work_project:
+  name: Work Project
+  slug: work-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Личный проект
+personal_project:
+  name: Personal Project
+  slug: personal-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Неактивный проект (для тестов фильтрации)
+inactive_project:
+  name: Inactive Project
+  slug: inactive-project
+  active: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тестовый проект для команд
+test_project:
+  name: Test Project
+  slug: test-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Проект для разработки
+dev_project:
+  name: Development Project
+  slug: development-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Проект для отчетов
+reporting_project:
+  name: Reporting Project
+  slug: reporting-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

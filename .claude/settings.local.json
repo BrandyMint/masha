@@ -112,7 +112,17 @@
       "Bash(git log:*)",
       "mcp__serena__get_current_config",
       "mcp__serena__list_memories",
-      "Bash(rspec:*)"
+      "Bash(rspec:*)",
+      "Bash(bundle list:*)",
+      "Bash(gem list:*)",
+      "Bash(sed:*)",
+      "Bash(gem search:*)",
+      "Bash(bundle:*)",
+      "Bash(NO_HTTPCLIENT_DEPRECATION=1 bundle exec rails runner:*)",
+      "Bash(Сравнить команды с планами и без)",
+      "WebFetch(domain:docs.rubocop.org)",
+      "Bash(pkill:*)",
+      "Bash(bin/rsp:*)"
     ],
     "deny": [],
     "ask": []

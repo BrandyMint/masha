@@ -41,7 +41,7 @@ class PeriodParser
 
     raise ArgumentError, 'Period cannot exceed 365 days' if (end_date - start_date).to_i > 365
 
-    return unless start_date < Date.today - 730 # ~2 years
+    return unless start_date < Time.zone.today - 730 # ~2 years
 
     raise ArgumentError, 'Data older than 2 years is not available'
   end

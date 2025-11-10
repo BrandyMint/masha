@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class ProjectRenameService
-  include RenameConfig
+  # Константы валидации названия проекта
+  MIN_NAME_LENGTH = 2
+  MAX_NAME_LENGTH = 255
 
   attr_reader :result
 
@@ -11,25 +13,25 @@ class ProjectRenameService
 
   def call(user, project, new_name, project_slug = nil)
     # Валидация входных данных
-    return error_result(format(MESSAGES[:empty_name])) if new_name.blank?
+    return error_result(format(I18n.t('rename_command.empty_name'))) if new_name.blank?
 
     # Проверка проекта (если передан slug вместо объекта)
     if project.blank? && project_slug.present?
       project = Project.find_by(slug: project_slug)
-      return error_result(format(MESSAGES[:project_not_found], project_slug)) unless project
+      return error_result(format(I18n.t('rename_command.project_not_found'), project_slug)) unless project
     end
 
     return error_result('Проект не указан') if project.blank?
 
     # Валидация названия
-    return error_result(MESSAGES[:too_short]) if new_name.length < MIN_LENGTH
-    return error_result(MESSAGES[:too_long]) if new_name.length > MAX_LENGTH
+    return error_result(I18n.t('rename_command.too_short')) if new_name.length < MIN_NAME_LENGTH
+    return error_result(I18n.t('rename_command.too_long')) if new_name.length > MAX_NAME_LENGTH
 
     # Проверка прав доступа
-    return error_result(MESSAGES[:no_permission]) unless can_rename?(user, project)
+    return error_result(I18n.t('rename_command.no_permission')) unless can_rename?(user, project)
 
     # Проверка уникальности названия
-    return error_result(MESSAGES[:name_taken]) if Project.where.not(id: project.id).exists?(name: new_name)
+    return error_result(I18n.t('rename_command.name_taken')) if Project.where.not(id: project.id).exists?(name: new_name)
 
     # Переименование и результат
     perform_rename(project, new_name)
@@ -37,9 +39,9 @@ class ProjectRenameService
 
   def success_message(old_name, old_slug, new_name, new_slug)
     multiline(
-      MESSAGES[:success_header],
-      format(MESSAGES[:old_name_label], old_name, old_slug),
-      format(MESSAGES[:new_name_label], new_name, new_slug)
+      I18n.t('rename_command.success_header'),
+      format(I18n.t('rename_command.old_name_label'), old_name, old_slug),
+      format(I18n.t('rename_command.new_name_label'), new_name, new_slug)
     )
   end
 
@@ -63,7 +65,7 @@ class ProjectRenameService
 
     success_result(success_message(old_name, old_slug, project.name, project.slug))
   rescue ActiveRecord::RecordInvalid => e
-    error_result(format(MESSAGES[:rename_error], e.message))
+    error_result(format(I18n.t('rename_command.rename_error'), e.message))
   end
 
   def success_result(message)

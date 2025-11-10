@@ -1,0 +1,84 @@
+# frozen_string_literal: true
+
+# Memberships (членства в проектах)
+# Используется в 73 тестах для управления доступом
+
+# Администратор - владелец рабочего проекта
+admin_work:
+  user: admin
+  project: work_project
+  role: owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Обычный пользователь - участник рабочего проекта
+regular_work:
+  user: regular_user
+  project: work_project
+  role: member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Пользователь с Telegram - участник рабочего проекта
+telegram_work:
+  user: user_with_telegram
+  project: work_project
+  role: member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Владелец проекта - владелец тестового проекта
+project_owner_test:
+  user: project_owner
+  project: test_project
+  role: owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Участник проекта - участник тестового проекта
+project_member_test:
+  user: project_member
+  project: test_project
+  role: member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Наблюдатель - наблюдатель тестового проекта
+project_watcher_test:
+  user: project_watcher
+  project: test_project
+  role: viewer
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Администратор - владелец личного проекта
+admin_personal:
+  user: admin
+  project: personal_project
+  role: owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Владелец проекта - владелец проекта для разработки
+owner_dev:
+  user: project_owner
+  project: dev_project
+  role: owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Обычный пользователь - участник проекта для разработки
+member_dev:
+  user: regular_user
+  project: dev_project
+  role: member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Администратор - владелец неактивного проекта
+admin_inactive:
+  user: admin
+  project: inactive_project
+  role: owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

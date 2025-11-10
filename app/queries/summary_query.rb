@@ -104,12 +104,12 @@ class SummaryQuery
 
   def build_period(period)
     case period
-    when 'week' then (Date.today - 6)..Date.today
-    when 'month' then Date.today.beginning_of_month..Date.today
-    when 'last_month' then (Date.today - 1.month).beginning_of_month..(Date.today - 1.month).end_of_month
-    when 'last_week' then (Date.today - 1.week).beginning_of_week..(Date.today - 1.week).end_of_week
-    when 'last_day' then (Date.today - 1.day)..(Date.today - 1.day)
-    when 'day' then Date.today..Date.today
+    when 'week' then (Time.zone.today - 6)..Time.zone.today
+    when 'month' then Time.zone.today.beginning_of_month..Time.zone.today
+    when 'last_month' then (Time.zone.today - 1.month).beginning_of_month..(Time.zone.today - 1.month).end_of_month
+    when 'last_week' then (Time.zone.today - 1.week).beginning_of_week..(Time.zone.today - 1.week).end_of_week
+    when 'last_day' then (Time.zone.today - 1.day)..(Time.zone.today - 1.day)
+    when 'day' then Time.zone.today..Time.zone.today
     when Hash then build_period_from_hash(period)
     else
       # Обратная совместимость для старых форматов

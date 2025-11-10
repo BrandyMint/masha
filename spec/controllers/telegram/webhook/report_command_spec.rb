@@ -32,7 +32,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:time_shift, project: project1, user: user, date: 3.days.ago, hours: 4, description: 'Frontend development')
         create(:time_shift, project: project1, user: user, date: 2.days.ago, hours: 3, description: 'Backend API')
         create(:time_shift, project: project2, user: user, date: 1.day.ago, hours: 5, description: 'Mobile UI')
-        create(:time_shift, project: project2, user: user, date: Date.today, hours: 2, description: 'Bug fixes')
+        create(:time_shift, project: project2, user: user, date: Time.zone.today, hours: 2, description: 'Bug fixes')
       end
 
       it 'responds to /report command without errors' do

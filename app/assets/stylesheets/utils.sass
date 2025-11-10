@@ -54,7 +54,7 @@ hr.no-shadow
 
 
 @each $color in (green $green), (red $red), (blue $blue), (orange $orange)
-  .color-#{nth($color,1)}
+  .color-#{"" + nth($color,1)}
     color: nth($color,2)
 
 

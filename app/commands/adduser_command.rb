@@ -1,43 +1,42 @@
 # frozen_string_literal: true
 
 class AdduserCommand < BaseCommand
-  provides_context_methods :adduser_project
+  provides_context_methods :adduser_project, :adduser_username_input
+
   def call(project_slug = nil, username = nil, role = 'member', *)
     if project_slug.blank?
-      show_manageable_projects
-      return
+      return show_manageable_projects
     end
 
     if username.blank?
-      respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)'
-      return
+      return respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)'
     end
 
     TelegramProjectManager.new(current_user, controller: controller)
       .add_user_to_project(project_slug, username, role)
   end
 
-  private
-
-  def show_manageable_projects
-    manageable_projects = current_user.available_projects.alive.joins(:memberships)
-      .where(memberships: { user: current_user, role_cd: 0 })
-
-    if manageable_projects.empty?
-      respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
-      return
-    end
-
-    save_context :adduser_project_callback_query
-    respond_with :message,
-      text: 'Выберите проект, в который хотите добавить пользователя:',
-      reply_markup: {
-        inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
-      }
-  end
-
   def adduser_project(project_slug)
     call(project_slug)
+  end
+
+  # Публичные методы для context methods
+  def adduser_username_input(username, *)
+    username = username.delete_prefix('@') if username.start_with?('@')
+    tg_session = telegram_session
+    tg_session[:username] = username
+    self.telegram_session = tg_session
+
+    # Контекст будет установлен через callback_query автоматически
+    respond_with :message,
+                 text: "Пользователь: @#{username}\nВыберите роль для пользователя:",
+                 reply_markup: {
+                   inline_keyboard: [
+                     [{ text: 'Владелец (owner)', callback_data: 'adduser_role:owner' }],
+                     [{ text: 'Наблюдатель (viewer)', callback_data: 'adduser_role:viewer' }],
+                     [{ text: 'Участник (member)', callback_data: 'adduser_role:member' }]
+                   ]
+                 }
   end
 
   def adduser_project_callback_query(project_slug)
@@ -55,26 +54,8 @@ class AdduserCommand < BaseCommand
     end
 
     self.telegram_session = TelegramSession.add_user(project_slug: project_slug)
-    save_context :adduser_username_input
+    save_context ADDUSER_USERNAME_INPUT
     edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
-  end
-
-  def adduser_username_input(username, *)
-    username = username.delete_prefix('@') if username.start_with?('@')
-    tg_session = telegram_session
-    tg_session[:username] = username
-    self.telegram_session = tg_session
-
-    save_context :adduser_role_callback_query
-    respond_with :message,
-                 text: "Пользователь: @#{username}\nВыберите роль для пользователя:",
-                 reply_markup: {
-                   inline_keyboard: [
-                     [{ text: 'Владелец (owner)', callback_data: 'adduser_role:owner' }],
-                     [{ text: 'Наблюдатель (viewer)', callback_data: 'adduser_role:viewer' }],
-                     [{ text: 'Участник (member)', callback_data: 'adduser_role:member' }]
-                   ]
-                 }
   end
 
   def adduser_role_callback_query(role)
@@ -88,5 +69,22 @@ class AdduserCommand < BaseCommand
     edit_message :text, text: "Добавляем пользователя @#{username} в проект #{project_slug} с ролью #{role}..."
 
     add_user_to_project(project_slug, username, role)
+  end
+  private
+
+  def show_manageable_projects
+    manageable_projects = current_user.available_projects.alive.joins(:memberships)
+      .where(memberships: { user: current_user, role_cd: 0 })
+
+    if manageable_projects.empty?
+      return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
+    end
+
+    # Контекст будет установлен через callback_query автоматически
+    respond_with :message,
+      text: 'Выберите проект, в который хотите добавить пользователя:',
+      reply_markup: {
+        inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
+      }
   end
 end

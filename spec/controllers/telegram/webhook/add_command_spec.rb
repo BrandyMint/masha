@@ -101,6 +101,56 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect(time_shift.description).to eq('Работа над задачей')
         expect(time_shift.date).to eq(Date.current)
       end
+
+      context 'time-first format support' do
+        it 'now supports time-first format in AddCommand' do
+          # AddCommand теперь поддерживает формат /add time project_slug description
+          expect {
+            dispatch_command :add, '2', project1.slug, 'Работа над задачей'
+          }.to change(TimeShift, :count).by(1)
+
+          # Проверяем что запись создалась с правильными данными
+          time_shift = TimeShift.last
+          expect(time_shift.project).to eq(project1)
+          expect(time_shift.user).to eq(user)
+          expect(time_shift.hours).to eq(2.0)
+          expect(time_shift.description).to eq('Работа над задачей')
+          expect(time_shift.date).to eq(Date.current)
+        end
+
+        it 'still supports project-first format in AddCommand' do
+          # Убедимся что старый формат все еще работает
+          expect {
+            dispatch_command :add, project1.slug, '3', 'Другая задача'
+          }.to change(TimeShift, :count).by(1)
+
+          # Проверяем что запись создалась с правильными данными
+          time_shift = TimeShift.last
+          expect(time_shift.project).to eq(project1)
+          expect(time_shift.user).to eq(user)
+          expect(time_shift.hours).to eq(3.0)
+          expect(time_shift.description).to eq('Другая задача')
+          expect(time_shift.date).to eq(Date.current)
+        end
+
+        it 'supports time-first format through direct message parsing' do
+          # Проверяем что TelegramTimeTracker все еще поддерживает формат time project_slug
+          message_text = '2 slug11 Работа над задачей'
+
+          # Эмулируем отправку сообщения (не команды)
+          expect {
+            dispatch_message(message_text)
+          }.to change(TimeShift, :count).by(1)
+
+          # Проверяем что запись создалась с правильными данными
+          time_shift = TimeShift.last
+          expect(time_shift.project).to eq(project1)
+          expect(time_shift.user).to eq(user)
+          expect(time_shift.hours).to eq(2.0)
+          expect(time_shift.description).to eq('Работа над задачей')
+          expect(time_shift.date).to eq(Date.current)
+        end
+      end
     end
   end
 end

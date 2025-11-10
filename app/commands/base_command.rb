@@ -14,8 +14,16 @@ class BaseCommand
   EDIT_HOURS_INPUT = :edit_hours_input
   EDIT_DESCRIPTION_INPUT = :edit_description_input
 
+  # AddCommand contexts
+  ADD_TIME = :add_time
+
+  # AdduserCommand contexts
+  ADDUSER_USERNAME_INPUT = :adduser_username_input
+
+  # RenameCommand contexts
+  RENAME_NEW_NAME_INPUT = :rename_new_name_input
+
   delegate :developer?, :respond_with,
-           :multiline, :code, :help_message, :format_user_info,
            :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
 
   def session
@@ -36,6 +44,36 @@ class BaseCommand
 
   def call(*args)
     raise NotImplementedError, 'Subclass must implement #call method'
+  end
+
+  # Метод для объединения нескольких строк в одну с переносами
+  def multiline(*args)
+    args.flatten.map(&:to_s).join("\n")
+  end
+
+  # Метод для форматирования текста в блок кода
+  def code(text)
+    multiline '```', text, '```'
+  end
+
+  # Метод для форматирования информации о пользователе
+  def format_user_info(user)
+    telegram_info = if user.telegram_user
+                      "**@#{user.telegram_user.username || 'нет_ника'}** (#{user.telegram_user.name})"
+                    else
+                      '*Telegram не привязан*'
+                    end
+
+    email_info = user.email.present? ? "📧 #{user.email}" : '📧 *Email не указан*'
+
+    projects_info = if user.projects.any?
+                      projects_list = user.projects.map(&:name).join(', ')
+                      "📋 Проекты: #{projects_list}"
+                    else
+                      '📋 *Нет проектов*'
+                    end
+
+    [telegram_info, email_info, projects_info].join("\n")
   end
 
   delegate :find_project, to: :current_user

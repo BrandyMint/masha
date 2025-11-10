@@ -6,7 +6,7 @@ RSpec.describe Reporter do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
   let(:reporter) { described_class.new }
-  let(:today) { Date.today }
+  let(:today) { Time.zone.today }
 
   before do
     # Create membership to allow user to see project

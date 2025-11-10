@@ -120,13 +120,4 @@ class User < ApplicationRecord
     projects.ordered
   end
 
-  def github_repos
-    repos = []
-    authentications.by_provider(:github).each do |authentication|
-      token = authentication.auth_hash['credentials']['token']
-      github = Github.new oauth_token: token
-      repos += github.repos.list
-    end
-    repos
   end
-end

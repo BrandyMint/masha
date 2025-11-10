@@ -31,12 +31,12 @@ class Reporter
 
   def build_period_title(period)
     case period
-    when 'week' then "#{Date.today - 6} - #{Date.today}"
-    when 'month' then Date.today.strftime('%B %Y')
-    when 'last_month' then (Date.today - 1.month).strftime('%B %Y')
+    when 'week' then "#{Time.zone.today - 6} - #{Time.zone.today}"
+    when 'month' then Time.zone.today.strftime('%B %Y')
+    when 'last_month' then (Time.zone.today - 1.month).strftime('%B %Y')
     when 'last_week' then 'Last week'
-    when 'last_day' then (Date.today - 1.day).strftime('%Y-%m-%d')
-    when 'day' then Date.today.strftime('%Y-%m-%d')
+    when 'last_day' then (Time.zone.today - 1.day).strftime('%Y-%m-%d')
+    when 'day' then Time.zone.today.strftime('%Y-%m-%d')
     when Hash
       case period[:type]
       when :date then period[:date].strftime('%Y-%m-%d')
@@ -52,8 +52,8 @@ class Reporter
         if period.first == period.first.beginning_of_month && period.last == period.first.end_of_month.end_of_month
           period.first.strftime('%B %Y')
         # Check if current month period
-        elsif period.last == Date.today && period.first == Date.today.beginning_of_month
-          Date.today.strftime('%B %Y')
+        elsif period.last == Time.zone.today && period.first == Time.zone.today.beginning_of_month
+          Time.zone.today.strftime('%B %Y')
         else
           "#{period.last} - #{period.first}"
         end

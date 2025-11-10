@@ -3,7 +3,6 @@
 module Telegram
   class TimeShiftOperationsService
     include Telegram::Concerns::ValidationsConcern
-    include Telegram::Concerns::FormattingConcern
 
     attr_reader :user, :controller
 

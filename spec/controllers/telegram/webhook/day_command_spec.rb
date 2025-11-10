@@ -25,9 +25,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :member)
 
         # Create time shifts for today
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 3, description: 'Morning work')
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 2, description: 'Afternoon tasks')
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 1, description: 'Meeting')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 3, description: 'Morning work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 2, description: 'Afternoon tasks')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 1, description: 'Meeting')
       end
 
       it 'responds to /day command without errors' do
@@ -45,7 +45,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :owner)
 
         # Create time shifts for different days
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 4, description: 'Today work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 4, description: 'Today work')
         create(:time_shift, project: project, user: user, date: 1.day.ago, hours: 5, description: 'Yesterday tasks')
         create(:time_shift, project: project, user: user, date: 2.days.ago, hours: 3, description: 'Day before')
       end
@@ -69,7 +69,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: old_project, user: user, role: :member)
 
         # Create today's entry only in recent project
-        create(:time_shift, project: recent_project, user: user, date: Date.today, hours: 6, description: 'Current work')
+        create(:time_shift, project: recent_project, user: user, date: Time.zone.today, hours: 6, description: 'Current work')
 
         # Create old entries in old project
         create(:time_shift, project: old_project, user: user, date: 1.week.ago, hours: 4, description: 'Old work')

@@ -8,7 +8,7 @@
   @extend .alert-danger
 
 @each $color in (white $white, gray-lightest $grayLightest, gray-light $grayLight, gray $gray, gray-lighter $grayLighter, gray-dark $grayDark, gray-darkest $grayDarkest, green $green, red $red, orange $orange, blue $blue)
-  .text-color-#{nth($color,1)}
+  .text-color-#{"" + nth($color,1)}
     color: nth($color,2)
   .link-color
     +link-colors(nth($color,2), darken(nth($color,2),20%))

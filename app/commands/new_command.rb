@@ -6,8 +6,7 @@ class NewCommand < BaseCommand
   def call(slug = nil, *)
     if slug.blank?
       save_context NEW_PROJECT_SLUG_INPUT
-      respond_with :message, text: 'Укажите slug (идентификатор) для нового проекта:'
-      return
+      return respond_with :message, text: 'Укажите slug (идентификатор) для нового проекта:'
     end
 
     create_project(slug)
@@ -15,11 +14,12 @@ class NewCommand < BaseCommand
 
   def new_project_slug_input(slug, *)
     if slug.blank?
-      respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:'
-      return
+      return respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:'
     end
 
     project = current_user.projects.create!(name: slug, slug: slug)
+    # Ensure user gets owner role for the new project
+    current_user.set_role(:owner, project)
     respond_with :message, text: "Создан проект `#{project.slug}`"
   rescue ActiveRecord::RecordInvalid => e
     respond_with :message, text: "Ошибка создания проекта: #{e.message}"
@@ -29,6 +29,8 @@ class NewCommand < BaseCommand
 
   def create_project(slug)
     project = current_user.projects.create!(name: slug, slug: slug)
+    # Ensure user gets owner role for the new project
+    current_user.set_role(:owner, project)
     respond_with :message, text: "Создан проект `#{project.slug}`"
   end
 end

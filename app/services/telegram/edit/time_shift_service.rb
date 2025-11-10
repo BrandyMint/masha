@@ -57,7 +57,7 @@ module Telegram
           time_shift_id: time_shift.id
         )
 
-        controller.save_context :edit_field_callback_query
+        # Контекст будет установлен через callback_query автоматически
         show_field_selection(time_shift)
       end
 
@@ -188,7 +188,7 @@ module Telegram
         time_shift = time_operations_service.edit_time_shift(controller.telegram_session)
         return unless time_shift
 
-        controller.save_context :edit_project_callback_query
+        # Контекст будет установлен через callback_query автоматически
         projects = user.available_projects.alive
 
         text = "Выберите новый проект (текущий: #{time_shift.project.name}):"
@@ -224,7 +224,7 @@ module Telegram
 
         changes = build_changes_text(time_shift, field, new_values)
 
-        controller.save_context :edit_confirm_callback_query
+        # Контекст будет установлен через callback_query автоматически
 
         controller.respond_with :message,
                                 text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",

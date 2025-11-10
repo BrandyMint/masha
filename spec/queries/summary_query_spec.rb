@@ -5,20 +5,27 @@ require 'rails_helper'
 RSpec.describe SummaryQuery do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
-  let(:today) { Date.today }
+  let(:today) { Time.zone.today }
 
   before do
     # Create membership to allow user to see project
     create(:membership, user: user, project: project, role: :owner)
 
     # Create some test data
-    create(:time_shift, user: user, project: project, date: today, hours: 5)
-    create(:time_shift, user: user, project: project, date: today - 1.day, hours: 3)
+    begin
+      create(:time_shift, user: user, project: project, date: today, hours: 5)
+      create(:time_shift, user: user, project: project, date: today - 1.day, hours: 3)
+    rescue ActiveRecord::RecordInvalid => e
+      puts "TimeShift validation errors:"
+      e.record.errors.full_messages.each { |msg| puts "  - #{msg}" }
+      puts "TimeShift attributes: #{e.record.attributes.inspect}"
+      raise e
+    end
   end
 
   describe '.for_user' do
     it 'creates query with parsed period' do
-      expected_period = (Date.today - 6)..Date.today
+      expected_period = (today - 6)..today
       query = described_class.for_user(user, period: 'week')
 
       expect(query).to be_a(described_class)
@@ -29,7 +36,7 @@ RSpec.describe SummaryQuery do
       query = described_class.for_user(user)
 
       expect(query.send(:period)).to be_a(Range)
-      expect(query.send(:period)).to include(Date.today)
+      expect(query.send(:period)).to include(today)
     end
   end
 

@@ -9,12 +9,19 @@ class AddCommand < BaseCommand
     if project_slug.nil?
       show_project_selection
     else
-      add_time_to_project(project_slug, hours, description.join(' '))
+      # Проверяем может ли это формат time project_slug description
+      if looks_like_time_format?(project_slug) && project_exists?(hours)
+        # Формат: /add time project_slug description
+        add_time_to_project(hours, project_slug, description.join(' '))
+      else
+        # Формат: /add project_slug time description
+        add_time_to_project(project_slug, hours, description.join(' '))
+      end
     end
   end
 
   def select_project_callback_query(project_slug)
-    save_context :add_time
+    save_context ADD_TIME
     project = find_project project_slug
     controller.telegram_session = TelegramSession.add_time(project_id: project.id)
     edit_message :text,
@@ -67,5 +74,22 @@ class AddCommand < BaseCommand
     end
 
     respond_with :message, text: message
+  end
+
+  def looks_like_time_format?(str)
+    return false unless str.is_a?(String)
+
+    # Проверяем формат времени (как в TelegramTimeTracker)
+    return false unless str.match?(/\A\d+([.,]\d+)?\z/)
+
+    # Конвертируем и проверяем базовый диапазон
+    hours = str.tr(',', '.').to_f
+    hours.positive? && hours <= 100.0
+  end
+
+  def project_exists?(project_slug)
+    return false if project_slug.blank?
+
+    current_user.available_projects.alive.exists?(slug: project_slug)
   end
 end

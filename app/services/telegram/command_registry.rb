@@ -26,14 +26,11 @@ class Telegram::CommandRegistry
       # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
       command_class = class_name.constantize
 
-      # TODO
-      #command_class.context_methods.each do |method|
-        #method_name = method.to_sym
-
-        #unless command_class.method_defined?(method_name) && command_class.public_method_defined?(method_name)
-          #raise ArgumentError, "Context method '#{method_name}' does not exist or is not public in #{command_name}"
-        #end
-      #end
+      (command_class.context_methods || []).each do |method|
+        unless command_class.public_instance_methods.include? method
+          raise ArgumentError, "Context method '#{method}' does not exist or is not public in #{command_class}"
+        end
+      end
 
       @commands[command_name.to_sym] = command_class
       Rails.logger.info "Command registered: #{command_name} -> #{class_name}"

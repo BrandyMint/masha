@@ -31,7 +31,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: design_project, user: user, role: :member)
 
         # Create time shifts across different projects
-        create(:time_shift, project: web_project, user: user, date: Date.today, hours: 4, description: 'Frontend development')
+        create(:time_shift, project: web_project, user: user, date: Time.zone.today, hours: 4, description: 'Frontend development')
         create(:time_shift, project: web_project, user: user, date: 1.day.ago, hours: 3, description: 'Backend API')
         create(:time_shift, project: mobile_project, user: user, date: 2.days.ago, hours: 5, description: 'Mobile UI')
         create(:time_shift, project: mobile_project, user: user, date: 3.days.ago, hours: 2, description: 'Bug fixes')
@@ -54,7 +54,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :owner)
 
         # Create time shifts across different time periods
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 3, description: 'Current work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 3, description: 'Current work')
         create(:time_shift, project: project, user: user, date: 1.week.ago, hours: 5, description: 'Last week')
         create(:time_shift, project: project, user: user, date: 1.month.ago, hours: 8, description: 'Last month')
         create(:time_shift, project: project, user: user, date: 2.months.ago, hours: 6, description: 'Two months ago')
@@ -71,8 +71,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :owner)
 
         # Create multiple entries in one project
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 2, description: 'Task 1')
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 3, description: 'Task 2')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 2, description: 'Task 1')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 3, description: 'Task 2')
         create(:time_shift, project: project, user: user, date: 1.day.ago, hours: 4, description: 'Task 3')
       end
 
@@ -87,7 +87,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         create(:membership, project: project, user: user, role: :member)
 
         # Create entries with significant hours
-        create(:time_shift, project: project, user: user, date: Date.today, hours: 8, description: 'Full day work')
+        create(:time_shift, project: project, user: user, date: Time.zone.today, hours: 8, description: 'Full day work')
         create(:time_shift, project: project, user: user, date: 1.day.ago, hours: 10, description: 'Overtime')
         create(:time_shift, project: project, user: user, date: 2.days.ago, hours: 6, description: 'Regular day')
       end
