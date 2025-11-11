@@ -6,15 +6,15 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
+    let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
 
     context 'as project owner' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user, role: 'owner') }
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:telegram_work) }
 
       it 'responds to /rename command without errors' do
         expect { dispatch_command :rename }.not_to raise_error
@@ -27,8 +27,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as project viewer' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :viewer, project: project, user: user) }
+      let!(:project) { projects(:inactive_project) }
+      let!(:membership) { memberships(:telegram_inactive) }
 
       it 'responds to /rename command without errors' do
         expect { dispatch_command :rename }.not_to raise_error
@@ -41,8 +41,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as project member' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user) }
+      let!(:project) { projects(:test_project) }
+      let!(:membership) { memberships(:telegram_test) }
 
       it 'responds to /rename command without errors' do
         expect { dispatch_command :rename }.not_to raise_error
@@ -66,10 +66,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'with multiple projects as owner' do
-      let!(:project1) { create(:project, name: 'Project 1') }
-      let!(:project2) { create(:project, name: 'Project 2') }
-      let!(:membership1) { create(:membership, :owner, project: project1, user: user) }
-      let!(:membership2) { create(:membership, :owner, project: project2, user: user) }
+      let!(:project1) { projects(:project_with_client1) }
+      let!(:project2) { projects(:project_with_client2) }
+      let!(:membership1) { memberships(:telegram_with_client) }
+      let!(:membership2) { memberships(:telegram_orphan) }
 
       it 'responds to /rename command without errors' do
         expect { dispatch_command :rename }.not_to raise_error

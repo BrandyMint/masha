@@ -5,7 +5,7 @@
 
 # Telegram для администратора
 telegram_admin:
-  id: 123456789
+  id: <%= 123456789 %>
   username: admin_user
   first_name: Admin
   last_name: User
@@ -14,7 +14,7 @@ telegram_admin:
 
 # Telegram для обычного пользователя
 telegram_regular:
-  id: 987654321
+  id: <%= 987654321 %>
   username: regular_user
   first_name: Regular
   last_name: User
@@ -23,7 +23,7 @@ telegram_regular:
 
 # Telegram для владельца проекта
 telegram_owner:
-  id: 555666777
+  id: <%= 555666777 %>
   username: project_owner
   first_name: Project
   last_name: Owner
@@ -32,7 +32,7 @@ telegram_owner:
 
 # Telegram для участника проекта
 telegram_member:
-  id: 111222333
+  id: <%= 111222333 %>
   username: project_member
   first_name: Project
   last_name: Member
@@ -41,9 +41,36 @@ telegram_member:
 
 # Telegram для наблюдателя
 telegram_watcher:
-  id: 444555666
+  id: <%= 444555666 %>
   username: project_watcher
   first_name: Project
   last_name: Watcher
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Чистый telegram пользователь для тестов
+telegram_clean:
+  id: <%= 666666666 %>
+  first_name: Clean
+  last_name: User
+  username: clean_user
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram пользователь без проектов
+telegram_empty:
+  id: <%= 777777777 %>
+  first_name: Empty
+  last_name: User
+  username: empty_user
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram пользователь для добавления в проекты
+telegram_newuser:
+  id: <%= 888888888 %>
+  first_name: New
+  last_name: User
+  username: newuser
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>

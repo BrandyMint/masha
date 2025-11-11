@@ -321,10 +321,3 @@ user_with_telegram_project123:
   role_cd: 2
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
-# Пользователь с Telegram - участник participant_project
-participant_telegram_member:
-  user: user_with_telegram
-  project: participant_project
-  role_cd: 2
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>

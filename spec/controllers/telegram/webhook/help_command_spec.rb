@@ -6,8 +6,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
-    let(:telegram_user) { user.telegram_user }
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'

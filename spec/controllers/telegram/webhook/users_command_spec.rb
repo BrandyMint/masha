@@ -6,7 +6,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated regular user' do
-    let(:user) { create(:user, :with_telegram) }
+    let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { telegram_user.id }
 
@@ -24,7 +24,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
   context 'authenticated developer user' do
     let(:developer_telegram_id) { ApplicationConfig.developer_telegram_id }
-    let(:user) { create(:user, :with_telegram_id, telegram_id: developer_telegram_id) }
+    let(:user) { users(:admin) }  # Используем admin как разработчика
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { developer_telegram_id }
 
@@ -35,8 +35,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     it 'handles user list generation for developer' do
-      # Создаем тестовых пользователей
-      create_list(:user, 2, :with_telegram)
+      # Используем существующих пользователей с Telegram
+      users(:telegram_clean_user)
+      users(:telegram_empty_user)
 
       expect { dispatch_command :users }.not_to raise_error
     end

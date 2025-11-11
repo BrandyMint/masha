@@ -1,0 +1,40 @@
+# frozen_string_literal: true
+
+# MemberRates для тестов
+# Используется для тарифов участников проектов
+
+# Базовый тариф для участника проекта
+basic_member_rate:
+  user: regular_user
+  project: work_project
+  hourly_rate: 50.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Высокий тариф для владельца проекта
+high_member_rate:
+  user: project_owner
+  project: test_project
+  hourly_rate: 100.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тариф в EUR для европейских проектов
+eur_member_rate:
+  user: project_member
+  project: dev_project
+  hourly_rate: 40.0
+  currency: EUR
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Низкий тариф для наблюдателя
+low_member_rate:
+  user: project_watcher
+  project: test_project
+  hourly_rate: 25.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

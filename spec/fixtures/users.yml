@@ -9,7 +9,9 @@ admin:
   nickname: admin
   email: admin@example.com
   pivotal_person_id: 1
-  password_digest: <%= BCrypt::Password.create('123') %>
+  telegram_user_id: <%= 123456789 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
@@ -20,7 +22,8 @@ regular_user:
   nickname: regular
   email: regular@example.com
   pivotal_person_id: 2
-  password_digest: <%= BCrypt::Password.create('123') %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
@@ -31,8 +34,9 @@ user_with_telegram:
   nickname: telegram_user
   email: telegram@example.com
   pivotal_person_id: 3
-  telegram_user_id: 123456789
-  password_digest: <%= BCrypt::Password.create('123') %>
+  telegram_user_id: <%= 987654321 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
@@ -43,7 +47,8 @@ project_owner:
   nickname: owner
   email: owner@example.com
   pivotal_person_id: 4
-  password_digest: <%= BCrypt::Password.create('123') %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
@@ -54,7 +59,8 @@ project_member:
   nickname: member
   email: member@example.com
   pivotal_person_id: 5
-  password_digest: <%= BCrypt::Password.create('123') %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
@@ -65,7 +71,60 @@ project_watcher:
   nickname: watcher
   email: watcher@example.com
   pivotal_person_id: 6
-  password_digest: <%= BCrypt::Password.create('123') %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Пользователь для тестов без проектов (чистый пользователь)
+user_without_projects:
+  name: Clean User
+  nickname: clean_user
+  email: clean@example.com
+  pivotal_person_id: 7
+  telegram_user_id: <%= 666666666 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram пользователь для тестов без проектов
+telegram_clean_user:
+  name: Telegram Clean User
+  nickname: telegram_clean
+  email: telegram_clean@example.com
+  pivotal_person_id: 8
+  telegram_user_id: <%= 666666666 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram пользователь для тестов без проектов (действительно без проектов)
+telegram_empty_user:
+  name: Empty User
+  nickname: empty_user
+  email: empty@example.com
+  pivotal_person_id: 9
+  telegram_user_id: <%= 777777777 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Пользователь для добавления в проекты через adduser команду
+newuser:
+  name: New User
+  nickname: newuser
+  email: newuser@example.com
+  pivotal_person_id: 10
+  telegram_user_id: <%= 888888888 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>

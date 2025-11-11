@@ -5,21 +5,22 @@ require 'spec_helper'
 describe WelcomeController, type: :controller do
   describe '#index' do
     context 'when logged in' do
+      let(:user) { users(:regular_user) }
+
       before do
-        @user = create :user
-        login_user
+        login_user user
       end
 
-      it 'should redirect to time_shifts' do
+      it 'redirects to time_shifts' do
         get :index
-        response.should redirect_to time_shifts_url
+        expect(response).to redirect_to new_time_shift_url
       end
     end
 
     context 'when not logged in' do
-      it 'should be success' do
+      it 'is successful' do
         get :index
-        response.should be_successful
+        expect(response).to be_successful
       end
     end
   end

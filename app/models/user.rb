@@ -106,7 +106,7 @@ class User < ApplicationRecord
       )
   end
 
-  def self.authenticate(data)
+  def self.authenticate_with_telegram(data)
     if defined?(UserSession) && data.is_a?(UserSession)
       yield create_with(locale: I18n.locale).find_or_create_by!(email: data.email)
     else
@@ -120,4 +120,4 @@ class User < ApplicationRecord
     projects.ordered
   end
 
-  end
+end

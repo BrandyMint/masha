@@ -6,7 +6,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
+    let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { telegram_user.id }
 
@@ -20,19 +20,11 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     context 'with time entries' do
       before do
-        # Create test projects
-        project1 = create(:project, name: 'Web Development')
-        project2 = create(:project, name: 'Mobile App')
-
-        # Create memberships for the user
-        create(:membership, project: project1, user: user, role: :owner)
-        create(:membership, project: project2, user: user, role: :member)
-
-        # Create time shifts for current month
-        create(:time_shift, project: project1, user: user, date: 3.days.ago, hours: 4, description: 'Frontend development')
-        create(:time_shift, project: project1, user: user, date: 2.days.ago, hours: 3, description: 'Backend API')
-        create(:time_shift, project: project2, user: user, date: 1.day.ago, hours: 5, description: 'Mobile UI')
-        create(:time_shift, project: project2, user: user, date: Time.zone.today, hours: 2, description: 'Bug fixes')
+        # Use existing fixtures for projects, memberships and time shifts
+        # Projects: web_development, mobile_app
+        # Memberships: user_with_telegram_web_dev_owner, user_with_telegram_mobile_app_member
+        # TimeShifts: report_web_dev_3_days_ago, report_web_dev_2_days_ago,
+        #             report_mobile_app_1_day_ago, report_mobile_app_today
       end
 
       it 'responds to /report command without errors' do
@@ -46,12 +38,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     context 'with old time entries' do
       before do
-        project = create(:project, name: 'Old Project')
-        create(:membership, project: project, user: user, role: :owner)
-
-        # Create time shifts from previous month
-        create(:time_shift, project: project, user: user, date: 1.month.ago, hours: 6, description: 'Legacy work')
-        create(:time_shift, project: project, user: user, date: 2.months.ago, hours: 4, description: 'Maintenance')
+        # Use existing fixtures for old project and time shifts
+        # Project: old_report_project
+        # Membership: user_with_telegram_old_project_owner
+        # TimeShifts: report_old_last_month, report_old_two_months_ago
       end
 
       it 'responds to /report command without errors' do

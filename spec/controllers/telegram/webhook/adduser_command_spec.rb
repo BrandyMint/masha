@@ -6,15 +6,15 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
-    let(:telegram_user) { user.telegram_user }
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
 
     context 'as project owner' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user, role: 'owner') }
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:telegram_work) }
 
       it 'responds to /adduser command without errors' do
         expect { dispatch_command :adduser }.not_to raise_error
@@ -27,8 +27,11 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as project viewer' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :viewer, project: project, user: user) }
+      let!(:project) { projects(:viewer_project) }
+      let!(:user) { users(:telegram_clean_user) }
+      let!(:telegram_user) { telegram_users(:telegram_clean) }
+      let!(:from_id) { telegram_user.id }
+      let!(:membership) { memberships(:clean_user_viewer_project) }
 
       it 'responds to /adduser command without errors' do
         expect { dispatch_command :adduser }.not_to raise_error
@@ -41,8 +44,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as project member' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user) }
+      let!(:project) { projects(:test_project) }
+      let!(:membership) { memberships(:telegram_test) }
 
       it 'responds to /adduser command without errors' do
         expect { dispatch_command :adduser }.not_to raise_error
@@ -66,10 +69,13 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'with multiple projects as owner' do
-      let!(:project1) { create(:project, name: 'Project 1') }
-      let!(:project2) { create(:project, name: 'Project 2') }
-      let!(:membership1) { create(:membership, :owner, project: project1, user: user) }
-      let!(:membership2) { create(:membership, :owner, project: project2, user: user) }
+      let!(:project1) { projects(:project_1) }
+      let!(:project2) { projects(:project_2) }
+      let!(:user) { users(:project_owner) }
+      let!(:telegram_user) { telegram_users(:telegram_owner) }
+      let!(:from_id) { telegram_user.id }
+      let!(:membership1) { memberships(:project_owner_test) }
+      let!(:membership2) { memberships(:owner_dev) }
 
       it 'responds to /adduser command without errors' do
         expect { dispatch_command :adduser }.not_to raise_error
@@ -82,10 +88,13 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'with existing members' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :owner, project: project, user: user) }
-      let!(:other_user) { create(:user, name: 'Other User') }
-      let!(:other_membership) { create(:membership, project: project, user: other_user) }
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:admin_work) }
+      let!(:user) { users(:admin) }
+      let!(:telegram_user) { telegram_users(:telegram_admin) }
+      let!(:from_id) { telegram_user.id }
+      let!(:other_user) { users(:regular_user) }
+      let!(:other_membership) { memberships(:regular_work) }
 
       it 'responds to /adduser command without errors' do
         expect { dispatch_command :adduser }.not_to raise_error
@@ -93,14 +102,16 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'complete adduser workflow with callback queries', :callback_query do
-      let!(:project1) { create(:project, name: 'Work Project', slug: 'work-project') }
-      let!(:target_user) { create(:user, :with_telegram) }
-      let!(:target_telegram_user) { create(:telegram_user, username: 'newuser') }
+      let!(:project1) { projects(:work_project) }
+      let!(:target_user) { users(:newuser) }
+      let!(:target_telegram_user) { telegram_users(:telegram_newuser) }
+      let!(:user) { users(:telegram_clean_user) }
+      let!(:telegram_user) { telegram_users(:telegram_clean) }
+      let!(:from_id) { telegram_user.id }
 
       before do
         # Связываем пользователя с telegram_user имеющим username 'newuser'
         target_user.update!(telegram_user: target_telegram_user)
-        create(:membership, :owner, project: project1, user: user)
       end
 
       it 'adds user through complete interactive workflow' do
@@ -159,9 +170,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       it 'shows error when non-owner tries to add user through workflow' do
-        # Создаем проект где пользователь - member, не owner
-        member_project = create(:project, name: 'Member Project', slug: 'member-project')
-        create(:membership, :member, project: member_project, user: user)
+        # Используем проект где пользователь - member, не owner
+        member_project = projects(:member_project)
 
         # 1. Начинаем workflow
         response = dispatch_command :adduser
@@ -174,11 +184,12 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'handles non-existent project directly' do
         # Тестируем прямое добавление в несуществующий проект
         # Command может вернуть nil, но ошибка должна быть обработана
+        initial_count = Membership.count
         expect {
           dispatch_command :adduser, 'nonexistent-project', 'newuser', 'member'
         }.not_to raise_error
         # Не должно создавать новых membership
-        expect(Membership.count).to eq(1) # только owner membership созданный в before
+        expect(Membership.count).to eq(initial_count)
       end
 
       it 'handles direct add with parameters' do

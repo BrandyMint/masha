@@ -9,8 +9,8 @@ describe ApplicationController, type: :controller do
     end
   end
 
-  it 'should return 401 if NotLogged raised' do
+  it 'returns 401 if NotLogged raised' do
     get :index
-    response.code.should == '401'
+    expect(response.code).to eq('401')
   end
 end

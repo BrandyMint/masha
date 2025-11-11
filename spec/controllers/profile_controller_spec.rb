@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe ProfileController, type: :controller do
   context 'when not logged in' do
-    it 'all actions should return 401' do
+    it 'all actions return 401' do
       actions = %i[edit update]
 
       actions.each do |action|
@@ -20,12 +20,12 @@ describe ProfileController, type: :controller do
     end
 
     before do
-      @user = create :user
-      login_user
+      @user = users(:regular_user)
+      login_user @user
     end
 
     describe '#edit' do
-      it 'should return success' do
+      it 'returns success' do
         get :edit
         expect(response).to be_successful
       end
@@ -33,7 +33,7 @@ describe ProfileController, type: :controller do
 
     describe '#update' do
       context 'with valid params' do
-        it 'should update profile' do
+        it 'updates profile' do
           post :update, params: user_new_attrs
           expect(controller.current_user.email).to eq(user_new_attrs[:user][:email])
         end
@@ -49,7 +49,7 @@ describe ProfileController, type: :controller do
 
     describe '#change_password' do
       context 'with valid params' do
-        it 'should change password' do
+        it 'changes password' do
           user = controller.current_user
           old_password = user.crypted_password
           post :change_password, params: { password_change_form: { password: '1234', password_confirmation: '1234' } }

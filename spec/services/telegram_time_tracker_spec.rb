@@ -3,18 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe TelegramTimeTracker do
-  let(:user) { create(:user) }
-  let(:controller) { double('controller') }
-  let(:project1) { create(:project, slug: 'project1', name: 'Project 1') }
-  let(:project2) { create(:project, slug: 'project2', name: 'Project 2') }
-  let(:project_with_digits) { create(:project, slug: 'project123', name: 'Project 123') }
+  fixtures :users, :projects, :memberships, :time_shifts, :telegram_users
 
-  before do
-    # Setup user memberships
-    create(:membership, user: user, project: project1, role: 'owner')
-    create(:membership, user: user, project: project2, role: 'member')
-    create(:membership, user: user, project: project_with_digits, role: 'member')
-  end
+  let(:user) { users(:user_with_telegram) }
+  let(:controller) { double('controller') }
+  let(:project1) { projects(:project1) }
+  let(:project2) { projects(:project2) }
+  let(:project_with_digits) { projects(:project123) }
 
   describe '#parse_and_add' do
     context 'with valid inputs' do

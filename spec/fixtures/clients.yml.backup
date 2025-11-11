@@ -148,10 +148,3 @@ multi_edit_client:
   user: user_with_telegram
   created_at: <%= 3.days.ago %>
   updated_at: <%= 3.days.ago %>
-# Клиент для тестирования участника проекта (не владелец)
-participant_client:
-  key: participant_client
-  name: Participant Client Test
-  user: regular_user
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>

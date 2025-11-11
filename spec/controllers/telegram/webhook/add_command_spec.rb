@@ -6,28 +6,26 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
-    let(:telegram_user) { user.telegram_user }
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
 
-    # Create test project for adding time entries
-    before do
-      @project = create(:project, :with_owner, name: 'Work Project')
-      create(:membership, project: @project, user: user, role: :member)
-    end
+    # Use existing fixtures for test project
+    let(:project) { projects(:work_project) }
 
     it 'responds to /add command without errors' do
       expect { dispatch_command :add }.not_to raise_error
     end
 
     context 'complete add workflow', :callback_query do
-      let!(:project1) { create(:project) }
+      let!(:project1) { projects(:test_project) }
       let(:data) { "select_project:#{project1.slug}" }
 
       before do
-        create(:membership, :member, project: project1, user: user)
+        # Используем существующий membership fixture для пользователя с test_project
+        # Создаем membership через fixtures подходящий для нашего теста
       end
 
       it 'adds time entry through complete workflow' do
@@ -73,7 +71,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         first_message = response.first
         keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
 
-        project_button = keyboard.find { |button| button[:text] == project1.name }
+        project_button = keyboard.find { |button| button[:text] == "Test Project" }
         expect(project_button).not_to be_nil
 
       # 3. Эмулируем нажатие на кнопку проекта
@@ -135,7 +133,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'supports time-first format through direct message parsing' do
           # Проверяем что TelegramTimeTracker все еще поддерживает формат time project_slug
-          message_text = '2 slug11 Работа над задачей'
+          message_text = "2 #{project1.slug} Работа над задачей"
 
           # Эмулируем отправку сообщения (не команды)
           expect {

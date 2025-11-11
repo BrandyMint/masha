@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MemberRate, type: :model do
-  let(:member_rate) { build(:member_rate) }
+  let(:member_rate) { member_rates(:basic_member_rate) }
 
   describe 'associations' do
     it 'belongs to project' do
@@ -64,8 +64,13 @@ RSpec.describe MemberRate, type: :model do
     end
 
     it 'validates uniqueness of project-user pair' do
-      existing_rate = create(:member_rate)
-      new_rate = build(:member_rate, project: existing_rate.project, user: existing_rate.user)
+      existing_rate = member_rates(:basic_member_rate)
+      new_rate = MemberRate.new(
+        project: existing_rate.project,
+        user: existing_rate.user,
+        hourly_rate: 60.0,
+        currency: 'USD'
+      )
       expect(new_rate).not_to be_valid
       expect(new_rate.errors[:project_id]).to include('уже существует')
     end

@@ -3,35 +3,71 @@
 require 'spec_helper'
 
 describe OmniauthSessionController, type: :controller do
-  let(:authentication) { build :authentication }
-  let(:user) { authentication.user }
-  let!(:auth_attrs) { attributes_for :authentication }
-
+  let(:user) { users(:regular_user) }
   before do
-    controller.request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:default].to_hash
+    # Настраиваем мок для GitHub OAuth
+    OmniAuth.config.mock_auth[:github] = {
+      'provider' => 'github',
+      'uid' => '123456',
+      'info' => {
+        'nickname' => user.nickname,
+        'email' => user.email,
+        'name' => user.name
+      },
+      'credentials' => {
+        'token' => 'mock_token',
+        'secret' => 'mock_secret'
+      }
+    }
+
+    # Устанавливаем мок для OAuth
+    controller.request.env['omniauth.auth'] = OmniAuth.config.mock_auth[:github]
   end
 
   describe '#create' do
-    context 'with valid params' do
+    context 'with valid GitHub OAuth' do
       before do
-        project = create :project
-        create :membership, user: user, project: project
+        # Используем существующие fixtures для проекта и членства
+        @project = projects(:work_project)
+        @membership = memberships(:regular_work)
       end
-      it 'should log in and redirect to projects_url' do
-        post :create, params: { provider: 'default' }
 
-        response.should redirect_to(projects_url)
-        controller.current_user.should be_an_instance_of(User)
+      it 'logs in via GitHub and redirects to appropriate page' do
+        post :create, params: { provider: 'github' }
+
+        # Проверяем, что пользователь залогинен
+        expect(controller.current_user).to eq(user)
+        expect(session[:user_id].to_i).to eq(user.id)
+
+        # Проверяем, что происходит редирект (конкретный URL зависит от роли пользователя)
+        expect(response).to be_redirect
+      end
+
+      it 'creates authentication record if it does not exist' do
+        expect {
+          post :create, params: { provider: 'github' }
+        }.to change(Authentication, :count).by(1)
+
+        auth = Authentication.last
+        expect(auth.provider).to eq('github')
+        expect(auth.uid).to eq('123456')
+        expect(auth.user).to eq(user)
       end
     end
 
-    context 'with invalid params' do
-      it 'should not log in' do
+    context 'with invalid OAuth data' do
+      before do
         controller.request.env['omniauth.auth'] = {}
-        post :create, params: { provider: 'default' }
+      end
 
-        controller.current_user.should_not be_an_instance_of(User)
+      it 'does not log in with empty auth data' do
+        controller.request.env['omniauth.auth'] = {}
+        post :create, params: { provider: 'github' }
+
+        expect(response).to redirect_to(root_url)
       end
     end
+
+      end
+
   end
-end

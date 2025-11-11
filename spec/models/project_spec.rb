@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  subject { build(:project) }
+  subject { projects(:base_project) }
 
   it { should be_valid }
 
@@ -21,14 +21,14 @@ RSpec.describe Project, type: :model do
         reserved_words = %w[list start stop day week projects settings]
 
         reserved_words.each do |reserved_word|
-          project = build(:project, slug: reserved_word)
+          project = Project.new(name: "Test Project", slug: reserved_word)
           project.valid?
           expect(project.errors[:slug]).to include("не может быть зарезервированным словом: #{reserved_word}")
         end
       end
 
       it 'allows normal slugs' do
-        project = build(:project, slug: 'my-awesome-project')
+        project = Project.new(name: "Test Project", slug: 'my-awesome-project')
         project.valid?
         expect(project.errors[:slug]).to be_empty
       end
@@ -38,17 +38,17 @@ RSpec.describe Project, type: :model do
           integer_slugs = %w[1 2 123 999 0]
 
           integer_slugs.each do |integer_slug|
-            project = build(:project, slug: integer_slug)
+            project = Project.new(name: "Test Project", slug: integer_slug)
             project.valid?
             expect(project.errors[:slug]).to include("не может быть целым числом: #{integer_slug}")
           end
         end
 
         it 'allows slugs with numbers mixed with letters' do
-          mixed_slugs = %w[project1 2project test123abc abc123]
+          mixed_slugs = %w[newproject1 2newproject test123abc abc123test]
 
           mixed_slugs.each do |mixed_slug|
-            project = build(:project, slug: mixed_slug)
+            project = Project.new(name: "Test Project", slug: mixed_slug)
             project.valid?
             expect(project.errors[:slug]).to be_empty
           end
@@ -58,7 +58,7 @@ RSpec.describe Project, type: :model do
           decimal_slugs = %w[1.5 2.0 123.45]
 
           decimal_slugs.each do |decimal_slug|
-            project = build(:project, slug: decimal_slug)
+            project = Project.new(name: "Test Project", slug: decimal_slug)
             project.valid?
             expect(project.errors[:slug]).to be_empty
           end
@@ -68,15 +68,17 @@ RSpec.describe Project, type: :model do
   end
 
   describe 'scopes' do
-    let!(:active_project) { create(:project, active: true) }
-    let!(:archived_project) { create(:project, active: false) }
+    let!(:active_project) { projects(:work_project) }
+    let!(:archived_project) { projects(:inactive_project) }
 
     it '.active returns only active projects' do
-      expect(Project.active).to contain_exactly(active_project)
+      expect(Project.active).to include(active_project)
+      expect(Project.active).not_to include(archived_project)
     end
 
     it '.archive returns only archived projects' do
-      expect(Project.archive).to contain_exactly(archived_project)
+      expect(Project.archive).to include(archived_project)
+      expect(Project.archive).not_to include(active_project)
     end
   end
 end

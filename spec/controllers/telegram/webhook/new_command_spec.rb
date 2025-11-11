@@ -6,15 +6,15 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
-    let(:telegram_user) { user.telegram_user }
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
 
     context 'with existing projects' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user, role: 'owner') }
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:telegram_work) }
 
       it 'responds to /new command without errors' do
         expect { dispatch_command :new }.not_to raise_error
@@ -22,10 +22,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'with multiple projects' do
-      let!(:project1) { create(:project, :with_owner) }
-      let!(:project2) { create(:project, :with_owner) }
-      let!(:membership1) { create(:membership, project: project1, user: user, role: 'owner') }
-      let!(:membership2) { create(:membership, project: project2, user: user, role: 'owner') }
+      let!(:project1) { projects(:work_project) }
+      let!(:project2) { projects(:test_project) }
+      let!(:membership1) { memberships(:telegram_work) }
+      let!(:membership2) { memberships(:telegram_test) }
 
       it 'responds to /new command without errors' do
         expect { dispatch_command :new }.not_to raise_error
@@ -33,8 +33,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as viewer role' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :viewer, project: project, user: user) }
+      let!(:project) { projects(:inactive_project) }
+      let!(:membership) { memberships(:clean_user_viewer_project) }
 
       it 'responds to /new command without errors' do
         expect { dispatch_command :new }.not_to raise_error
@@ -42,8 +42,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'as member role' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, project: project, user: user) }
+      let!(:project) { projects(:test_project) }
+      let!(:membership) { memberships(:telegram_test) }
 
       it 'responds to /new command without errors' do
         expect { dispatch_command :new }.not_to raise_error
@@ -51,12 +51,12 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       it 'creates project directly with slug parameter' do
         expect {
-          dispatch_command :new, 'test-project'
+          dispatch_command :new, 'new-test-project'
         }.to change(Project, :count).by(1)
 
         project = Project.last
-        expect(project.name).to eq('test-project')
-        expect(project.slug).to eq('test-project')
+        expect(project.name).to eq('new-test-project')
+        expect(project.slug).to eq('new-test-project')
         expect(project.users).to include(user)
         expect(user.memberships.where(project: project, role_cd: 0)).to exist
       end
@@ -108,19 +108,19 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       it 'handles duplicate project slug gracefully' do
-        # 1. Create existing project
-        existing_project = create(:project, slug: 'existing-project')
-        create(:membership, :member, project: existing_project, user: user)
+        # 1. Use existing project from fixtures
+        existing_project = projects(:work_project)
+        membership = memberships(:telegram_work)
 
         # 2. Try to create project with same slug
         dispatch_command :new
 
         expect {
-          dispatch_message 'existing-project'
+          dispatch_message existing_project.slug
         }.not_to change(Project, :count)
 
         # 3. Verify original project still exists and unchanged
-        expect(Project.find_by(slug: 'existing-project')).to eq(existing_project)
+        expect(Project.find_by(slug: existing_project.slug)).to eq(existing_project)
       end
     end
   end

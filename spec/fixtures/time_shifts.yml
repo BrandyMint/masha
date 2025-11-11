@@ -53,3 +53,520 @@ personal_time_last_week:
   description: Обучение и исследование
   created_at: <%= 7.days.ago %>
   updated_at: <%= 7.days.ago %>
+
+# Дополнительные TimeShift fixtures для telegram тестов
+# test_work_today:
+#   user: user_with_telegram
+#   project: test_project
+#   date: <%= Date.current %>
+#   hours: 2.0
+#   description: Test work
+#   created_at: <%= Time.current %>
+#   updated_at: <%= Time.current %>
+#
+# attach_work_today:
+#   user: user_with_telegram
+#   project: project_1
+#   date: <%= Date.current %>
+#   hours: 2.0
+#   description: Test work for attach
+#   created_at: <%= Time.current %>
+#   updated_at: <%= Time.current %>
+#
+# edit_work_today:
+#   user: user_with_telegram
+#   project: project_2
+#   date: <%= Date.current %>
+#   hours: 2.0
+#   description: Test work for edit
+#   created_at: <%= Time.current %>
+#   updated_at: <%= Time.current %>
+
+# TimeShifts для day command тестов
+today_meeting:
+  user: user_with_telegram
+  project: daily_project
+  date: <%= Date.current %>
+  hours: 1.0
+  description: Meeting
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+today_afternoon:
+  user: user_with_telegram
+  project: daily_project
+  date: <%= Date.current %>
+  hours: 2.0
+  description: Afternoon tasks
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+today_morning:
+  user: user_with_telegram
+  project: daily_project
+  date: <%= Date.current %>
+  hours: 3.0
+  description: Morning work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+today_multi_day:
+  user: user_with_telegram
+  project: multi_day_project
+  date: <%= Date.current %>
+  hours: 4.0
+  description: Today work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+yesterday_work:
+  user: user_with_telegram
+  project: multi_day_project
+  date: <%= 1.day.ago.to_date %>
+  hours: 5.0
+  description: Yesterday tasks
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+day_before_work:
+  user: user_with_telegram
+  project: multi_day_project
+  date: <%= 2.days.ago.to_date %>
+  hours: 3.0
+  description: Day before
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+old_work:
+  user: user_with_telegram
+  project: old_project
+  date: <%= 1.week.ago.to_date %>
+  hours: 4.0
+  description: Old work
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>
+
+recent_work:
+  user: user_with_telegram
+  project: recent_project
+  date: <%= Date.current %>
+  hours: 6.0
+  description: Current work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для summary command тестов - Multiple Projects
+web_dev_today:
+  user: user_with_telegram
+  project: web_development
+  date: <%= Date.current %>
+  hours: 4.0
+  description: Frontend development
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+web_dev_yesterday:
+  user: user_with_telegram
+  project: web_development
+  date: <%= 1.day.ago.to_date %>
+  hours: 3.0
+  description: Backend API
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+mobile_ui_2_days_ago:
+  user: user_with_telegram
+  project: mobile_app
+  date: <%= 2.days.ago.to_date %>
+  hours: 5.0
+  description: Mobile UI
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+mobile_ui_3_days_ago:
+  user: user_with_telegram
+  project: mobile_app
+  date: <%= 3.days.ago.to_date %>
+  hours: 2.0
+  description: Bug fixes
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+design_mockups:
+  user: user_with_telegram
+  project: design_work
+  date: <%= 4.days.ago.to_date %>
+  hours: 6.0
+  description: Mockups
+  created_at: <%= 4.days.ago %>
+  updated_at: <%= 4.days.ago %>
+
+design_wireframes:
+  user: user_with_telegram
+  project: design_work
+  date: <%= 5.days.ago.to_date %>
+  hours: 4.0
+  description: Wireframes
+  created_at: <%= 5.days.ago %>
+  updated_at: <%= 5.days.ago %>
+
+# TimeShifts для разных месяцев - Long-term Project
+long_term_today:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= Date.current %>
+  hours: 3.0
+  description: Current work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+long_term_last_week:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= 1.week.ago.to_date %>
+  hours: 5.0
+  description: Last week
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>
+
+long_term_last_month:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= 1.month.ago.to_date %>
+  hours: 8.0
+  description: Last month
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.month.ago %>
+
+long_term_two_months_ago:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= 2.months.ago.to_date %>
+  hours: 6.0
+  description: Two months ago
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>
+
+# TimeShifts для single project - Single Project
+single_task_1:
+  user: user_with_telegram
+  project: project_beta
+  date: <%= Date.current %>
+  hours: 2.0
+  description: Task 1
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+single_task_2:
+  user: user_with_telegram
+  project: project_beta
+  date: <%= Date.current %>
+  hours: 3.0
+  description: Task 2
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+single_task_3:
+  user: user_with_telegram
+  project: project_beta
+  date: <%= 1.day.ago.to_date %>
+  hours: 4.0
+  description: Task 3
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# TimeShifts для high hours - Heavy Load Project
+heavy_full_day:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= Date.current %>
+  hours: 8.0
+  description: Full day work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+heavy_overtime:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= 1.day.ago.to_date %>
+  hours: 10.0
+  description: Overtime
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+heavy_regular_day:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= 2.days.ago.to_date %>
+  hours: 6.0
+  description: Regular day
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# TimeShifts для report command тестов - текущий месяц
+report_web_dev_3_days_ago:
+  user: user_with_telegram
+  project: web_development
+  date: <%= 3.days.ago.to_date %>
+  hours: 4.0
+  description: Frontend development
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+report_web_dev_2_days_ago:
+  user: user_with_telegram
+  project: web_development
+  date: <%= 2.days.ago.to_date %>
+  hours: 3.0
+  description: Backend API
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+report_mobile_app_1_day_ago:
+  user: user_with_telegram
+  project: mobile_app
+  date: <%= 1.day.ago.to_date %>
+  hours: 5.0
+  description: Mobile UI
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+report_mobile_app_today:
+  user: user_with_telegram
+  project: mobile_app
+  date: <%= Date.current %>
+  hours: 2.0
+  description: Bug fixes
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для report command тестов - старые записи
+report_old_last_month:
+  user: user_with_telegram
+  project: old_report_project
+  date: <%= 1.month.ago.to_date %>
+  hours: 6.0
+  description: Legacy work
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.month.ago %>
+
+report_old_two_months_ago:
+  user: user_with_telegram
+  project: old_report_project
+  date: <%= 2.months.ago.to_date %>
+  hours: 4.0
+  description: Maintenance
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>
+
+# TimeShifts для hours command тестов - текущая неделя
+hours_current_monday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today %>
+  hours: 4.0
+  description: Monday work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+hours_current_sunday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 1.day %>
+  hours: 6.0
+  description: Sunday work
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+hours_current_saturday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 2.days %>
+  hours: 5.0
+  description: Saturday tasks
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+hours_current_friday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 3.days %>
+  hours: 8.0
+  description: Friday development
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+hours_current_thursday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 4.days %>
+  hours: 3.0
+  description: Thursday meeting
+  created_at: <%= 4.days.ago %>
+  updated_at: <%= 4.days.ago %>
+
+hours_current_wednesday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 5.days %>
+  hours: 7.0
+  description: Wednesday coding
+  created_at: <%= 5.days.ago %>
+  updated_at: <%= 5.days.ago %>
+
+hours_current_tuesday:
+  user: user_with_telegram
+  project: current_week_project
+  date: <%= Time.zone.today - 6.days %>
+  hours: 2.0
+  description: Tuesday planning
+  created_at: <%= 6.days.ago %>
+  updated_at: <%= 6.days.ago %>
+
+# TimeShifts для hours command тестов - несколько недель
+hours_multi_current_1:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today %>
+  hours: 5.0
+  description: Current week task 1
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+hours_multi_current_2:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today - 1.day %>
+  hours: 3.0
+  description: Current week task 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+hours_multi_last_1:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today - 7.days %>
+  hours: 8.0
+  description: Last week task 1
+  created_at: <%= 7.days.ago %>
+  updated_at: <%= 7.days.ago %>
+
+hours_multi_last_2:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today - 8.days %>
+  hours: 6.0
+  description: Last week task 2
+  created_at: <%= 8.days.ago %>
+  updated_at: <%= 8.days.ago %>
+
+hours_multi_last_3:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today - 9.days %>
+  hours: 4.0
+  description: Last week task 3
+  created_at: <%= 9.days.ago %>
+  updated_at: <%= 9.days.ago %>
+
+hours_multi_two_weeks:
+  user: user_with_telegram
+  project: multi_week_project
+  date: <%= Time.zone.today - 14.days %>
+  hours: 7.0
+  description: Two weeks ago work
+  created_at: <%= 14.days.ago %>
+  updated_at: <%= 14.days.ago %>
+
+# TimeShifts для hours command тестов - разные проекты
+hours_alpha_today:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= Time.zone.today %>
+  hours: 4.0
+  description: Alpha work
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+hours_beta_yesterday:
+  user: user_with_telegram
+  project: project_beta
+  date: <%= Time.zone.today - 1.day %>
+  hours: 3.0
+  description: Beta development
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+hours_gamma_2_days:
+  user: user_with_telegram
+  project: project_gamma
+  date: <%= Time.zone.today - 2.days %>
+  hours: 5.0
+  description: Gamma testing
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+hours_alpha_3_days:
+  user: user_with_telegram
+  project: project_alpha
+  date: <%= Time.zone.today - 3.days %>
+  hours: 6.0
+  description: Alpha review
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+hours_beta_4_days:
+  user: user_with_telegram
+  project: project_beta
+  date: <%= Time.zone.today - 4.days %>
+  hours: 2.0
+  description: Beta meeting
+  created_at: <%= 4.days.ago %>
+  updated_at: <%= 4.days.ago %>
+
+# TimeShifts для hours command тестов - интенсивный день
+hours_intensive_morning:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= Time.zone.today %>
+  hours: 4.0
+  description: Morning session
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+hours_intensive_afternoon:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= Time.zone.today %>
+  hours: 3.0
+  description: Afternoon coding
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+hours_intensive_evening:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= Time.zone.today %>
+  hours: 2.0
+  description: Evening review
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для hours command тестов - прошлый месяц
+hours_last_month_1:
+  user: user_with_telegram
+  project: last_month_project
+  date: <%= 1.month.ago.to_date %>
+  hours: 5.0
+  description: Last month work
+  created_at: <%= 1.month.ago %>
+  updated_at: <%= 1.month.ago %>
+
+hours_last_month_2:
+  user: user_with_telegram
+  project: last_month_project
+  date: <%= 1.month.ago.to_date - 1.day %>
+  hours: 7.0
+  description: Last month task 2
+  created_at: <%= 1.month.ago - 1.day %>
+  updated_at: <%= 1.month.ago - 1.day %>

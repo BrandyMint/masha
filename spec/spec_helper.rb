@@ -24,6 +24,9 @@ end
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
+# Configure FactoryBot
+require 'factory_bot_rails'
+
 # ResqueSpec.disable_ext = true
 
 RSpec.configure do |config|
@@ -62,15 +65,30 @@ RSpec.configure do |config|
 
   config.fail_fast = false
 
-  config.include FactoryBot::Syntax::Methods
   config.include Sorcery::TestHelpers::Rails::Controller
+  config.include ActiveSupport::Testing::TimeHelpers
   OmniAuth.config.test_mode = true
-  OmniAuth.config.add_mock(:default, FactoryBot.attributes_for(:authentication))
+  OmniAuth.config.add_mock(:default, {
+    provider: 'github',
+    uid: '123456',
+    info: {
+      nickname: 'testuser',
+      email: 'test@example.com',
+      name: 'Test User'
+    }
+  })
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = false
+  # Enable transactional fixtures для ускорения тестов
+  config.use_transactional_fixtures = true
+
+  # Загружаем все fixtures глобально для быстрого доступа
+  config.global_fixtures = :all
+
+  # Добавляем методы для доступа к fixtures
+  config.include ActiveSupport::Testing::TimeHelpers
+
+  # Добавляем методы FactoryBot
+  config.include FactoryBot::Syntax::Methods
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -83,18 +101,6 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = 'random'
 
-  config.before(:suite) do
-    # DatabaseCleaner.strategy = :truncation, {
-    #   :except => %w[]
-    # }
-  end
-  config.before(:each) do
-    DatabaseCleaner.start
-    # Warden.test_reset!
-  end
-  config.after(:each) do
-    DatabaseCleaner.clean
-    # Hotel.tire.index.delete
-    # Hotel.tire.create_elasticsearch_index
-  end
+  # Transactional fixtures handle cleanup for all tests
+  # No DatabaseCleaner needed - using transactional fixtures only
 end

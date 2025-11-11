@@ -3,26 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe Reporter do
-  let(:user) { create(:user) }
-  let(:project) { create(:project) }
+  fixtures :users, :projects, :memberships, :time_shifts, :telegram_users
+
+  let(:user) { users(:regular_user) }
+  let(:project) { projects(:work_project) }
   let(:reporter) { described_class.new }
   let(:today) { Time.zone.today }
 
-  before do
-    # Create membership to allow user to see project
-    create(:membership, user: user, project: project, role: :owner)
-
-    create(:time_shift, user: user, project: project, date: today, hours: 5)
-    create(:time_shift, user: user, project: project, date: today - 1.day, hours: 3)
-  end
+  # No setup needed - using fixtures data
 
   describe '#projects_to_users_matrix' do
     it 'generates matrix table for weekly period' do
       result = reporter.projects_to_users_matrix(user, 'week')
 
       expect(result).to be_a(String)
-      expect(result).to include(user.email) # User email
-      expect(result).to include(project.to_s) # Project name
+      expect(result).to include(user.email) # Regular user shows email
+      expect(result).to include(project.slug) # Project slug
       expect(result).to include('total') # Total column
     end
 
@@ -32,7 +28,7 @@ RSpec.describe Reporter do
       expect(result).to be_a(String)
       expect(result).to include(today.strftime('%B %Y'))
       expect(result).to include(user.to_s)
-      expect(result).to include(project.to_s)
+      expect(result).to include(project.slug)
     end
 
     it 'generates matrix table for last_month period' do

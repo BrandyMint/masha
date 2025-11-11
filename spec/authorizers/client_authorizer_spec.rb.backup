@@ -7,7 +7,7 @@ RSpec.describe ClientAuthorizer, type: :authorizer do
 
   let(:current_user) { users(:regular_user) }
   let(:owner) { users(:user_with_telegram) }
-  let(:resource) { clients(:client1) } # Глобальный ресурс, будет переопределен в контекстах
+  let(:resource) { clients(:client1) }
   let(:other_user) { users(:project_owner) }
   let(:project) { projects(:project_with_client1) }
 
@@ -39,8 +39,7 @@ RSpec.describe ClientAuthorizer, type: :authorizer do
     end
   end
 
-  context "when user is a project participant of the client" do
-    let(:resource) { clients(:participant_client) }
+  context 'when user is a project participant of the client' do
     let(:current_user) { users(:user_with_telegram) }
 
     before do
@@ -132,20 +131,18 @@ RSpec.describe ClientAuthorizer, type: :authorizer do
   end
 
   describe 'edge cases' do
-    context "when client has no projects" do
+    context 'when client has no projects' do
       let(:resource) { clients(:dev_client) }
-      let(:dev_owner) { users(:project_owner) }
-      let(:unrelated_user) { users(:regular_user) }
 
-      it "owner can perform all actions" do
-        expect(subject.creatable_by?(dev_owner)).to be true
-        expect(subject.readable_by?(dev_owner)).to be true
-        expect(subject.updatable_by?(dev_owner)).to be true
-        expect(subject.deletable_by?(dev_owner)).to be true
+      it 'owner can perform all actions' do
+        expect(subject.creatable_by?(owner)).to be true
+        expect(subject.readable_by?(owner)).to be true
+        expect(subject.updatable_by?(owner)).to be true
+        expect(subject.deletable_by?(owner)).to be true
       end
 
-      it "non-owner users cannot read the client" do
-        expect(subject.readable_by?(unrelated_user)).to be false
+      it 'non-owner users cannot read the client' do
+        expect(subject.readable_by?(other_user)).to be false
       end
     end
 

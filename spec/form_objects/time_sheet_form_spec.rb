@@ -8,14 +8,14 @@ describe TimeSheetForm do
   describe 'date format' do
     context 'blank dates' do
       let(:form) { described_class.new date_from: '', date_to: '' }
-      it 'should be invalid' do
+      it 'is invalid' do
         expect(form).not_to be_valid
       end
     end
 
     context 'invalid date format 67-dsf-000' do
       let(:form) { described_class.new date_from: '67-dsf-000', date_to: '67-dsf-000' }
-      it 'should be invalid' do
+      it 'is invalid' do
         expect(form).not_to be_valid
       end
     end

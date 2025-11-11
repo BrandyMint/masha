@@ -6,18 +6,16 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
+    let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
 
     context 'with existing time shift' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :owner, project: project, user: user) }
-      let!(:time_shift) do
-        create(:time_shift, user: user, project: project, date: Time.zone.today, hours: 2, description: 'Test work')
-      end
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:telegram_work) }
+      let!(:time_shift) { time_shifts(:telegram_time_today) }
 
       it 'responds to /edit command without errors' do
         expect { dispatch_command :edit }.not_to raise_error
@@ -30,8 +28,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'without time shifts' do
-      let!(:project) { create(:project, :with_owner) }
-      let!(:membership) { create(:membership, :owner, project: project, user: user) }
+      let!(:project) { projects(:test_project) }
+      let!(:membership) { memberships(:telegram_test) }
 
       it 'responds to /edit command without errors' do
         expect { dispatch_command :edit }.not_to raise_error

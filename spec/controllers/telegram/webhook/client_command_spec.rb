@@ -6,8 +6,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated user' do
-    let(:user) { create(:user, :with_telegram) }
-    let(:telegram_user) { user.telegram_user }
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
     include_context 'authenticated user'
@@ -18,9 +18,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       context 'with existing clients' do
-        let!(:client1) { create(:client, user: user, name: 'Client One', key: 'client1') }
-        let!(:client2) { create(:client, user: user, name: 'Client Two', key: 'client2') }
-        let!(:project) { create(:project, :with_owner, client: client1) }
+        let!(:client1) { clients(:client1) }
+        let!(:client2) { clients(:client2) }
+        let!(:project) { projects(:project_with_client1) }
 
         it 'shows clients list without errors' do
           expect { dispatch_command :client }.not_to raise_error
@@ -33,11 +33,11 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'client subcommands' do
-      let!(:client) { create(:client, user: user, name: 'Test Client', key: 'testclient') }
-      let!(:project) { create(:project, :with_owner) }
+      let!(:client) { clients(:testclient) }
+      let!(:project) { projects(:work_project) }
 
       before do
-        create(:membership, :owner, project: project, user: user)
+        # Используем существующий membership fixture для пользователя с work_project
       end
 
       context 'client show' do
@@ -46,9 +46,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'shows client with projects without errors' do
-          project.update!(client: client)
+          # Use project that already has this client in fixtures
+          project_with_client = projects(:project_with_client1)
 
-          expect { dispatch_command :client, 'show', 'testclient' }.not_to raise_error
+          expect { dispatch_command :client, 'show', 'client1' }.not_to raise_error
         end
 
         it 'handles non-existent client without errors' do
@@ -135,7 +136,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'rejects duplicate client key without errors' do
-          existing_client = create(:client, user: user, key: 'existing')
+          existing_client = clients(:existing_client)
 
           # Запускаем процесс создания клиента
           dispatch_command :client, 'add'
@@ -147,8 +148,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'access control' do
-      let(:other_user) { create(:user, :with_telegram) }
-      let!(:client) { create(:client, user: other_user, name: 'Other Client', key: 'otherclient') }
+      let(:other_user) { users(:regular_user) }
+      let!(:client) { clients(:other_client) }
 
       it 'prevents showing other user client without errors' do
         expect { dispatch_command :client, 'show', 'otherclient' }.not_to raise_error
@@ -165,18 +166,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     context 'without projects' do
       it 'shows client list with no projects without errors' do
-        client = create(:client, user: user, name: 'Test Client', key: 'testclient')
+        client = clients(:testclient)
 
         expect { dispatch_command :client }.not_to raise_error
       end
     end
 
     context 'client editing workflow' do
-      let!(:client) { create(:client, user: user, name: 'Original Name', key: 'testclient') }
-      let!(:project) { create(:project, :with_owner) }
+      let!(:client) { clients(:testclient) }
+      let!(:project) { projects(:work_project) }
 
       before do
-        create(:membership, :owner, project: project, user: user)
+        # Используем существующий membership fixture для пользователя с work_project
       end
 
       context 'client edit' do
@@ -185,8 +186,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'updates client name successfully without errors' do
-          # Create a separate client for editing test
-          edit_client = create(:client, user: user, name: 'Edit Me', key: 'editme')
+          # Use existing client for editing test
+          edit_client = clients(:edit_me_client)
 
           # Start edit process
           dispatch_command :client, 'edit', 'editme'
@@ -230,8 +231,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'deletes client with confirmation without errors' do
-          # Create a fresh client for deletion to avoid conflicts
-          delete_client = create(:client, user: user, name: 'Delete Me', key: 'deleteme')
+          # Use existing client for deletion test
+          delete_client = clients(:delete_me_client)
 
           expect { dispatch_command :client, 'delete', 'deleteme', 'confirm' }.not_to raise_error
         end
@@ -241,9 +242,10 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'prevents deletion with linked projects without errors' do
-          project.update!(client: client)
+          # Use project that already has this client in fixtures
+          project_with_client = projects(:project_with_client1)
 
-          expect { dispatch_command :client, 'delete', 'testclient', 'confirm' }.not_to raise_error
+          expect { dispatch_command :client, 'delete', 'client1', 'confirm' }.not_to raise_error
         end
 
         it 'handles delete without client key parameter without errors' do
@@ -288,14 +290,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       it 'handles editing client to same name' do
-        client = create(:client, user: user, name: 'Same Name', key: 'same')
+        client = clients(:same_name_client)
 
         dispatch_command :client, 'edit', 'same'
         expect { dispatch_message 'Same Name' }.not_to raise_error
       end
 
       it 'handles multiple edit attempts' do
-        client = create(:client, user: user, name: 'Multi Edit', key: 'multi')
+        client = clients(:multi_edit_client)
 
         # First edit attempt
         dispatch_command :client, 'edit', 'multi'

@@ -169,9 +169,7 @@ group :development do
 end
 
 group :test do
-  gem 'factory_bot'
   gem 'factory_bot_rails'
-
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
 
@@ -188,8 +186,6 @@ group :test do
   # gem 'guard-bundler'
   # gem 'guard-cucumber'
   gem 'guard-ctags-bundler'
-
-  gem 'database_cleaner'
 
   gem 'launchy', '>= 2.1.2'
   gem 'turn', require: false

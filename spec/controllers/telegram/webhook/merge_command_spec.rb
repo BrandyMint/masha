@@ -6,7 +6,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   include_context 'telegram webhook base'
 
   context 'authenticated regular user' do
-    let(:user) { create(:user, :with_telegram) }
+    let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { telegram_user.id }
 
@@ -23,10 +23,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   end
 
   context 'authenticated developer user' do
-    let(:developer_telegram_id) { ApplicationConfig.developer_telegram_id }
-    let(:user) { create(:user, :with_telegram_id, telegram_id: developer_telegram_id) }
+    let(:user) { users(:admin) }
     let(:telegram_user) { user.telegram_user }
-    let(:from_id) { developer_telegram_id }
+    let(:from_id) { user.telegram_user_id }
 
     include_context 'authenticated user'
 

@@ -8,8 +8,12 @@ FactoryBot.define do
     sequence(:nickname) { |n| "nick#{n}" }
     sequence(:pivotal_person_id) { |n| n }
     sequence(:email) { |n| "email#{n}@asdf.ru" }
-    password { '123' }
+    password { 'password123' }
     is_root { false }
+
+    before(:create) do |user|
+      user.skip_password_validation = true if user.respond_to?(:skip_password_validation=)
+    end
 
     trait :with_telegram do
       association :telegram_user
