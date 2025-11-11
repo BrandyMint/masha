@@ -107,47 +107,34 @@ other_client:
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
-testclient:
-  key: testclient
-  name: Test Client
-  user: user_with_telegram
-  created_at: <%= 2.days.ago %>
-  updated_at: <%= 2.days.ago %>
+# Дополнительные клиенты для разных сценариев тестирования
+client_for_admin:
+  key: client_for_admin
+  name: Admin Client Company
+  user: admin
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
 
-existing_client:
-  key: existing
-  name: Existing Client
-  user: user_with_telegram
-  created_at: <%= 3.days.ago %>
-  updated_at: <%= 3.days.ago %>
+client_for_project_owner:
+  key: client_for_owner
+  name: Project Owner Client
+  user: project_owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
 
-edit_me_client:
-  key: editme
-  name: Edit Me
-  user: user_with_telegram
-  created_at: <%= 2.days.ago %>
-  updated_at: <%= 2.days.ago %>
+client_for_newuser:
+  key: client_for_newuser
+  name: New User Client
+  user: newuser
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
 
-delete_me_client:
-  key: deleteme
-  name: Delete Me
-  user: user_with_telegram
-  created_at: <%= 2.days.ago %>
-  updated_at: <%= 2.days.ago %>
-
-same_name_client:
-  key: same
-  name: Same Name
-  user: user_with_telegram
-  created_at: <%= 3.days.ago %>
-  updated_at: <%= 3.days.ago %>
-
-multi_edit_client:
-  key: multi
-  name: Multi Edit
-  user: user_with_telegram
-  created_at: <%= 3.days.ago %>
-  updated_at: <%= 3.days.ago %>
+client_for_watcher:
+  key: client_for_watcher
+  name: Watcher Client
+  user: project_watcher
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
 # Клиент для тестирования участника проекта (не владелец)
 participant_client:
   key: participant_client

@@ -4,6 +4,31 @@
 
 ---
 
+## Что нового в v0.8.0
+
+### 🎯 Основные изменения с версии v0.7.0
+
+#### ✨ Новый функционал
+✨ Add automatic context loading for Telegram bot documentation
+#### 🐛 Исправления
+🐛 Fix add_command_spec
+🐛 Fix changelog generation: get previous tag correctly
+🐛 Fix release process: include CHANGELOG.md in version commit
+🐛 Fix specs
+🐛 Fix Telegram bot context methods and add comprehensive documentation
+#### 🔧 Улучшения
+🔧 refactor
+### 📊 Статистика релиза
+
+- **Всего изменений:** 11 коммитов
+- **Новых возможностей:** 1
+- **Исправлений:** 6
+
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
 ## Что нового в v0.7.0
 
 ### 🎯 Основные изменения с версии v0.6.36

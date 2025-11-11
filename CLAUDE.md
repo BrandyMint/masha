@@ -172,3 +172,17 @@ Three role levels per project:
   BaseCommand
 - Мы НЕ запускаем ничего через  bin/rsp
 - В проекте НЕТ ./bin/rsp
+- В командах (command) ответ и возврат НЕЛЬЗЯ делать так:     
+
+```
+respond_with :message, text: t('commands.notify.cancelled')                                                                                                                                                │
+return    
+```
+
+так как это не вернет собщение.
+
+Ответ и возврат в классах команд нужно делать так:
+
+```
+return respond_with :message, text: t('commands.notify.cancelled')
+```

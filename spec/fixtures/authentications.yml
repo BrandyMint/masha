@@ -1,0 +1,152 @@
+# frozen_string_literal: true
+
+# OAuth аутентификация для тестов
+# Связывает пользователей с внешними провайдерами (GitHub, Telegram)
+
+# GitHub аутентификация для админа
+github_admin:
+  user: admin
+  provider: github
+  uid: '123456'
+  auth_hash:
+    provider: github
+    uid: '123456'
+    info:
+      nickname: admin
+      email: admin@example.com
+      name: Admin User
+      image: https://avatars.githubusercontent.com/u/123456
+    credentials:
+      token: github_admin_token
+      expires: false
+    extra:
+      raw_info:
+        login: admin
+        id: 123456
+        url: https://github.com/admin
+        html_url: https://github.com/admin
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# GitHub аутентификация для обычного пользователя
+github_user:
+  user: regular_user
+  provider: github
+  uid: '789012'
+  auth_hash:
+    provider: github
+    uid: '789012'
+    info:
+      nickname: regular
+      email: regular@example.com
+      name: Regular User
+      image: https://avatars.githubusercontent.com/u/789012
+    credentials:
+      token: github_user_token
+      expires: false
+    extra:
+      raw_info:
+        login: regular
+        id: 789012
+        url: https://github.com/regular
+        html_url: https://github.com/regular
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram аутентификация для пользователя с Telegram
+telegram_user:
+  user: user_with_telegram
+  provider: telegram
+  uid: '987654321'
+  auth_hash:
+    provider: telegram
+    uid: '987654321'
+    info:
+      nickname: telegram_user
+      name: Telegram User
+      first_name: Telegram
+      last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# GitHub аутентификация для владельца проекта
+github_project_owner:
+  user: project_owner
+  provider: github
+  uid: '555666777'
+  auth_hash:
+    provider: github
+    uid: '555666777'
+    info:
+      nickname: project_owner
+      email: owner@example.com
+      name: Project Owner
+      image: https://avatars.githubusercontent.com/u/555666777
+    credentials:
+      token: github_owner_token
+      expires: false
+    extra:
+      raw_info:
+        login: project_owner
+        id: 555666777
+        url: https://github.com/project_owner
+        html_url: https://github.com/project_owner
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# GitHub аутентификация для участника проекта
+github_project_member:
+  user: project_member
+  provider: github
+  uid: '111222333'
+  auth_hash:
+    provider: github
+    uid: '111222333'
+    info:
+      nickname: project_member
+      email: member@example.com
+      name: Project Member
+      image: https://avatars.githubusercontent.com/u/111222333
+    credentials:
+      token: github_member_token
+      expires: false
+    extra:
+      raw_info:
+        login: project_member
+        id: 111222333
+        url: https://github.com/project_member
+        html_url: https://github.com/project_member
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram аутентификация для чистого пользователя
+telegram_clean_user:
+  user: telegram_clean_user
+  provider: telegram
+  uid: '666666666'
+  auth_hash:
+    provider: telegram
+    uid: '666666666'
+    info:
+      nickname: clean_user
+      name: Clean User
+      first_name: Clean
+      last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram аутентификация для нового пользователя
+telegram_newuser:
+  user: newuser
+  provider: telegram
+  uid: '888888888'
+  auth_hash:
+    provider: telegram
+    uid: '888888888'
+    info:
+      nickname: newuser
+      name: New User
+      first_name: New
+      last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

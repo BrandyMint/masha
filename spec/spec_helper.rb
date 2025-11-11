@@ -24,8 +24,6 @@ end
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
-# Configure FactoryBot
-require 'factory_bot_rails'
 
 # ResqueSpec.disable_ext = true
 
@@ -61,7 +59,7 @@ RSpec.configure do |config|
   # config.mock_with :rr
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  # config.fixture_path = Rails.root.join('spec/fixtures').to_s
+  config.fixture_paths = [Rails.root.join('spec/fixtures')]
 
   config.fail_fast = false
 
@@ -87,9 +85,7 @@ RSpec.configure do |config|
   # Добавляем методы для доступа к fixtures
   config.include ActiveSupport::Testing::TimeHelpers
 
-  # Добавляем методы FactoryBot
-  config.include FactoryBot::Syntax::Methods
-
+  
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.

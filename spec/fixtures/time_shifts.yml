@@ -570,3 +570,157 @@ hours_last_month_2:
   description: Last month task 2
   created_at: <%= 1.month.ago - 1.day %>
   updated_at: <%= 1.month.ago - 1.day %>
+
+# Дополнительные TimeShifts для полного покрытия тестов
+
+# TimeShifts для разных пользователей
+admin_work_time:
+  user: admin
+  project: work_project
+  date: <%= Date.current %>
+  hours: 6.0
+  description: Administration and planning
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+project_owner_test_time:
+  user: project_owner
+  project: test_project
+  date: <%= Date.current %>
+  hours: 5.0
+  description: Project management
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+newuser_work_time:
+  user: newuser
+  project: work_project
+  date: <%= Date.current %>
+  hours: 3.0
+  description: Initial tasks
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для проектов с клиентами
+client1_project_time:
+  user: admin
+  project: project_with_client1
+  date: <%= Date.current %>
+  hours: 7.0
+  description: Client meeting and development
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+client2_orphan_time:
+  user: user_with_telegram
+  project: project_with_client2
+  date: <%= 1.day.ago.to_date %>
+  hours: 4.0
+  description: Legacy system maintenance
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# TimeShifts для разных ролей (owner, watcher, participant)
+watcher_time:
+  user: project_watcher
+  project: test_project
+  date: <%= Date.current %>
+  hours: 2.0
+  description: Code review and monitoring
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для неактивных проектов
+inactive_project_time:
+  user: admin
+  project: inactive_project
+  date: <%= 1.week.ago.to_date %>
+  hours: 3.0
+  description: Final tasks before deactivation
+  created_at: <%= 1.week.ago %>
+  updated_at: <%= 1.week.ago %>
+
+# TimeShifts для тестов фильтрации по времени
+early_morning_time:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current %>
+  hours: 1.5
+  description: Early morning planning
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+late_evening_time:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current %>
+  hours: 2.5
+  description: Late evening bug fixes
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для разных дней недели
+monday_time:
+  user: regular_user
+  project: dev_project
+  date: <%= Time.zone.now.beginning_of_week.to_date %>
+  hours: 8.0
+  description: Monday planning
+  created_at: <%= 6.days.ago %>
+  updated_at: <%= 6.days.ago %>
+
+friday_time:
+  user: regular_user
+  project: dev_project
+  date: <%= Time.zone.now.end_of_week.to_date - 2.days %>
+  hours: 6.0
+  description: Friday wrap-up
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# TimeShifts с разными значениями часов
+fractional_hours:
+  user: user_with_telegram
+  project: test_project
+  date: <%= Date.current %>
+  hours: 1.75
+  description: Detailed analysis
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+overtime_hours:
+  user: user_with_telegram
+  project: intensive_project
+  date: <%= Date.current %>
+  hours: 12.5
+  description: Emergency deployment
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+# TimeShifts для тестов производительности
+bulk_insert_time_1:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current - 3.days %>
+  hours: 4.0
+  description: Bulk task 1
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+bulk_insert_time_2:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current - 3.days %>
+  hours: 3.0
+  description: Bulk task 2
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>
+
+bulk_insert_time_3:
+  user: user_with_telegram
+  project: work_project
+  date: <%= Date.current - 3.days %>
+  hours: 5.0
+  description: Bulk task 3
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>

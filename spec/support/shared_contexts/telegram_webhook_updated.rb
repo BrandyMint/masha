@@ -54,28 +54,21 @@ RSpec.shared_context 'telegram webhook base updated' do
     end
   end
 
-  # Контекст для сложных сценариев (остается в factories)
+  # Контекст для сложных сценариев с использованием fixtures
   shared_context 'user with dynamic projects' do
     let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
 
+    # Используем существующие fixtures для проектов
+    let(:dynamic_project_1) { projects(:project_1) }
+    let(:dynamic_project_2) { projects(:project_2) }
+
     before do
       allow(controller).to receive(:current_user) { user }
 
-      # Создаем динамические проекты для сложных тестов
-      @dynamic_projects = [
-        create(:project, :with_owner, name: 'Dynamic Project 1'),
-        create(:project, :with_owner, name: 'Dynamic Project 2')
-      ]
-
-      @dynamic_projects.each do |project|
-        create(:membership, project: project, user: user, role: :member)
-      end
-    end
-
-    after do
-      @dynamic_projects&.each(&:destroy!)
+      # Проверяем что membership fixtures существуют для пользователя
+      # user_with_telegram_project1 и user_with_telegram_project2 уже есть в fixtures
     end
   end
 end

@@ -128,3 +128,76 @@ newuser:
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Пользователи для adduser тестов
+test_new_user:
+  name: Test New User
+  nickname: test_new_user
+  email: test_new_user@example.com
+  pivotal_person_id: 11
+  telegram_user_id: <%= 888888889 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+test_owner_user:
+  name: Test Owner User
+  nickname: test_owner_user
+  email: test_owner_user@example.com
+  pivotal_person_id: 12
+  telegram_user_id: <%= 888888890 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+test_viewer_user:
+  name: Test Viewer User
+  nickname: test_viewer_user
+  email: test_viewer_user@example.com
+  pivotal_person_id: 13
+  telegram_user_id: <%= 888888891 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+test_at_user:
+  name: Test At User
+  nickname: test_at_user
+  email: test_at_user@example.com
+  pivotal_person_id: 14
+  telegram_user_id: <%= 888888892 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+test_final_user:
+  name: Test Final User
+  nickname: test_final_user
+  email: test_final_user@example.com
+  pivotal_person_id: 15
+  telegram_user_id: <%= 888888893 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+test_nonexistent_user:
+  name: Test Nonexistent User
+  nickname: test_nonexistent_user
+  email: test_nonexistent_user@example.com
+  pivotal_person_id: 16
+  telegram_user_id: <%= 888888894 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

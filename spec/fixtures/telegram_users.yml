@@ -74,3 +74,52 @@ telegram_newuser:
   username: newuser
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Telegram пользователи для adduser тестов
+telegram_test_new_user:
+  id: <%= 888888889 %>
+  username: test_new_user
+  first_name: Test
+  last_name: New User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_test_owner_user:
+  id: <%= 888888890 %>
+  username: test_owner_user
+  first_name: Test
+  last_name: Owner User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_test_viewer_user:
+  id: <%= 888888891 %>
+  username: test_viewer_user
+  first_name: Test
+  last_name: Viewer User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_test_at_user:
+  id: <%= 888888892 %>
+  username: test_at_user
+  first_name: Test
+  last_name: At User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_test_final_user:
+  id: <%= 888888893 %>
+  username: test_final_user
+  first_name: Test
+  last_name: Final User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_test_nonexistent_user:
+  id: <%= 888888894 %>
+  username: test_nonexistent_user
+  first_name: Test
+  last_name: Nonexistent User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

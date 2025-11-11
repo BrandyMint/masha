@@ -79,7 +79,7 @@ project_member_test:
 project_watcher_test:
   user: project_watcher
   project: test_project
-  role_cd: 2
+  role_cd: 1
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
@@ -256,12 +256,6 @@ user_with_telegram_project_beta:
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
-user_with_telegram_intensive_project:
-  user: user_with_telegram
-  project: intensive_project
-  role_cd: 2
-  created_at: <%= 1.day.ago %>
-  updated_at: <%= 1.day.ago %>
 
 # Memberships для report command тестов
 user_with_telegram_old_project_owner:
@@ -325,6 +319,93 @@ user_with_telegram_project123:
 participant_telegram_member:
   user: user_with_telegram
   project: participant_project
+  role_cd: 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Дополнительные memberships для полного покрытия тестов
+
+# Новые пользователи с разными ролями
+newuser_work_participant:
+  user: newuser
+  project: work_project
+  role_cd: 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+newuser_personal_owner:
+  user: newuser
+  project: member_project
+  role_cd: 0
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Участники для проектов с клиентами
+admin_client1_owner:
+  user: admin
+  project: project_with_client1
+  role_cd: 0
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+regular_client2_participant:
+  user: regular_user
+  project: project_with_client2
+  role_cd: 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Memberships для разных валют и тарифов (project_owner уже владелец dev_project)
+project_owner_mobile_owner:
+  user: project_owner
+  project: mobile_app
+  role_cd: 0
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+telegram_clean_user_daily_participant:
+  user: telegram_clean_user
+  project: daily_project
+  role_cd: 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Memberships для тестирования граничных случаев
+user_without_projects_work_watcher:
+  user: user_without_projects
+  project: work_project
+  role_cd: 1
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# telegram_empty_project_participant: УДАЛЕН - telegram_empty_user должен быть без проектов для тестов
+
+# Множественные memberships для одного пользователя
+admin_multi_project_owner:
+  user: admin
+  project: web_development
+  role_cd: 0
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+regular_multi_participant:
+  user: regular_user
+  project: mobile_app
+  role_cd: 2
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Memberships для интенсивных проектов
+user_with_telegram_intensive_owner:
+  user: user_with_telegram
+  project: intensive_project
+  role_cd: 0
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+project_member_intensive_participant:
+  user: project_member
+  project: intensive_project
   role_cd: 2
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>

@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+# Приглашения в проекты для тестов
+# Используется для тестирования системы приглашений
+
+# Активное приглашение для email
+pending_email_invite:
+  email: invite@example.com
+  role: participant
+  project: work_project
+  user: admin
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Приглашение для Telegram пользователя
+pending_telegram_invite:
+  email: telegram_user@example.com
+  telegram_username: telegram_user
+  role: participant
+  project: test_project
+  user: admin
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Приглашение с ролью watcher
+watcher_invite:
+  email: watcher@example.com
+  role: watcher
+  project: personal_project
+  user: regular_user
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 2.days.ago %>
+
+# Приглашение с ролью owner
+owner_invite:
+  email: owner@example.com
+  role: owner
+  project: inactive_project
+  user: admin
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 3.days.ago %>

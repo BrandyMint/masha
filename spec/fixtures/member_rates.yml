@@ -38,3 +38,48 @@ low_member_rate:
   currency: USD
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Тариф для пользователя с Telegram
+telegram_member_rate:
+  user: user_with_telegram
+  project: work_project
+  hourly_rate: 60.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тариф для админа в личном проекте
+admin_personal_rate:
+  user: admin
+  project: personal_project
+  hourly_rate: 80.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тариф в RUB для локальных проектов
+rub_member_rate:
+  user: telegram_clean_user
+  project: daily_project
+  hourly_rate: 1500.0
+  currency: RUB
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тариф для интенсивного проекта
+intensive_member_rate:
+  user: user_with_telegram
+  project: intensive_project
+  hourly_rate: 120.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Тариф для проекта с клиентом
+client_project_rate:
+  user: user_with_telegram
+  project: project_with_client1
+  hourly_rate: 75.0
+  currency: USD
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

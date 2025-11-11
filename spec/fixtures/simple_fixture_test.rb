@@ -13,7 +13,9 @@ RSpec.describe 'Simple Fixture Test', type: :model do
 
   it 'transactional fixtures work' do
     initial_count = User.count
-    create(:user, name: 'Test User')
+
+    # Создаем пользователя через прямую запись в БД для демонстрации транзакционных fixtures
+    User.create!(name: 'Test User', email: 'test@example.com')
 
     expect(User.count).to eq(initial_count + 1)
 

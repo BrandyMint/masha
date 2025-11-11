@@ -3,12 +3,12 @@
 require 'spec_helper'
 
 describe OmniauthSessionController, type: :controller do
-  let(:user) { users(:regular_user) }
+  let(:user) { users(:telegram_clean_user) }
   before do
     # Настраиваем мок для GitHub OAuth
     OmniAuth.config.mock_auth[:github] = {
       'provider' => 'github',
-      'uid' => '123456',
+      'uid' => '999999',  # Используем другой UID чтобы избежать конфликта с существующей аутентификацией
       'info' => {
         'nickname' => user.nickname,
         'email' => user.email,
@@ -29,7 +29,7 @@ describe OmniauthSessionController, type: :controller do
       before do
         # Используем существующие fixtures для проекта и членства
         @project = projects(:work_project)
-        @membership = memberships(:regular_work)
+        @membership = memberships(:clean_user_work_owner)
       end
 
       it 'logs in via GitHub and redirects to appropriate page' do
@@ -50,7 +50,7 @@ describe OmniauthSessionController, type: :controller do
 
         auth = Authentication.last
         expect(auth.provider).to eq('github')
-        expect(auth.uid).to eq('123456')
+        expect(auth.uid).to eq('999999')  # Ожидаем новый UID
         expect(auth.user).to eq(user)
       end
     end
