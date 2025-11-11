@@ -4,9 +4,11 @@ plugins: rubocop-rails
 
 Rails:
   Enabled: true
+AllCops:
   Exclude:
-    - db/schema.rb
+    - db/*schema.rb
     - db/migrate/*
+    - bin/*
 
 Metrics/MethodLength:
   Enabled: false
