@@ -39,7 +39,7 @@ RSpec.describe ClientAuthorizer, type: :authorizer do
     end
   end
 
-  context "when user is a project participant of the client" do
+  context 'when user is a project participant of the client' do
     let(:resource) { clients(:participant_client) }
     let(:current_user) { users(:user_with_telegram) }
 
@@ -132,19 +132,19 @@ RSpec.describe ClientAuthorizer, type: :authorizer do
   end
 
   describe 'edge cases' do
-    context "when client has no projects" do
+    context 'when client has no projects' do
       let(:resource) { clients(:dev_client) }
       let(:dev_owner) { users(:project_owner) }
       let(:unrelated_user) { users(:regular_user) }
 
-      it "owner can perform all actions" do
+      it 'owner can perform all actions' do
         expect(subject.creatable_by?(dev_owner)).to be true
         expect(subject.readable_by?(dev_owner)).to be true
         expect(subject.updatable_by?(dev_owner)).to be true
         expect(subject.deletable_by?(dev_owner)).to be true
       end
 
-      it "non-owner users cannot read the client" do
+      it 'non-owner users cannot read the client' do
         expect(subject.readable_by?(unrelated_user)).to be false
       end
     end

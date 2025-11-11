@@ -44,9 +44,9 @@ describe OmniauthSessionController, type: :controller do
       end
 
       it 'creates authentication record if it does not exist' do
-        expect {
+        expect do
           post :create, params: { provider: 'github' }
-        }.to change(Authentication, :count).by(1)
+        end.to change(Authentication, :count).by(1)
 
         auth = Authentication.last
         expect(auth.provider).to eq('github')
@@ -67,7 +67,5 @@ describe OmniauthSessionController, type: :controller do
         expect(response).to redirect_to(root_url)
       end
     end
-
-      end
-
   end
+end

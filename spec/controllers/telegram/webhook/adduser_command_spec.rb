@@ -128,9 +128,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect(project_button[:callback_data]).to eq("adduser_project:#{project1.slug}")
 
         # 3. Прямое добавление пользователя с параметрами для простоты
-        expect {
+        expect do
           dispatch_command :adduser, project1.slug, 'newuser', 'member'
-        }.to change(Membership, :count).by(1)
+        end.to change(Membership, :count).by(1)
 
         # 4. Проверяем что пользователь добавлен с правильными данными
         new_membership = Membership.last
@@ -141,9 +141,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       it 'adds user with owner role directly' do
         # Тестируем прямое добавление пользователя с ролью owner
-        expect {
+        expect do
           dispatch_command :adduser, project1.slug, 'newuser', 'owner'
-        }.to change(Membership, :count).by(1)
+        end.to change(Membership, :count).by(1)
 
         new_membership = Membership.last
         expect(new_membership.role_cd).to eq(0) # owner role
@@ -151,9 +151,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       it 'adds user with viewer role directly' do
         # Тестируем прямое добавление пользователя с ролью viewer
-        expect {
+        expect do
           dispatch_command :adduser, project1.slug, 'newuser', 'viewer'
-        }.to change(Membership, :count).by(1)
+        end.to change(Membership, :count).by(1)
 
         new_membership = Membership.last
         expect(new_membership.role_cd).to eq(1) # viewer role
@@ -161,9 +161,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       it 'handles username with @ symbol directly' do
         # Тестируем прямое добавление пользователя с @ символом
-        expect {
+        expect do
           dispatch_command :adduser, project1.slug, '@newuser', 'member'
-        }.to change(Membership, :count).by(1)
+        end.to change(Membership, :count).by(1)
 
         # Проверяем что пользователь добавлен
         expect(Membership.last.user).to eq(target_user)
@@ -185,18 +185,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         # Тестируем прямое добавление в несуществующий проект
         # Command может вернуть nil, но ошибка должна быть обработана
         initial_count = Membership.count
-        expect {
+        expect do
           dispatch_command :adduser, 'nonexistent-project', 'newuser', 'member'
-        }.not_to raise_error
+        end.not_to raise_error
         # Не должно создавать новых membership
         expect(Membership.count).to eq(initial_count)
       end
 
       it 'handles direct add with parameters' do
         # Тестируем прямое добавление пользователя с параметрами
-        expect {
+        expect do
           dispatch_command :adduser, project1.slug, 'newuser', 'member'
-        }.to change(Membership, :count).by(1)
+        end.to change(Membership, :count).by(1)
 
         new_membership = Membership.last
         expect(new_membership.project).to eq(project1)

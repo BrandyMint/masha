@@ -14,15 +14,14 @@ module Telegram
     include Telegram::SessionHelpers
     include Telegram::CommandRegistration
 
-    #before_action do
-    #raise NotAvailableInPublicChat unless personal_chat?
-    #end
+    # before_action do
+    # raise NotAvailableInPublicChat unless personal_chat?
+    # end
 
     use_session!
 
     # use callbacks like in any other controllers
     around_action :with_locale
-
 
     # Core message handlers
     def message(message)
@@ -52,7 +51,7 @@ module Telegram
 
     def callback_query(data)
       Bugsnag.notify "Не определенный callback #{data}"
-      respond_with :message, text: "Ошибка!"
+      respond_with :message, text: 'Ошибка!'
     end
 
     private
@@ -77,9 +76,9 @@ module Telegram
 
     def current_locale
       if from
-        I18n.locale # TODO брать у пользователя
+        I18n.locale # TODO: брать у пользователя
       elsif chat
-        I18n.locale # TODO брать и чата
+        I18n.locale # TODO: брать и чата
       end
     end
 
@@ -91,8 +90,8 @@ module Telegram
 
     def telegram_user
       @telegram_user ||= TelegramUser
-        .create_with(chat.slice(*%w[first_name last_name username]))
-        .create_or_find_by! id: chat.fetch('id')
+                         .create_with(chat.slice(*%w[first_name last_name username]))
+                         .create_or_find_by! id: chat.fetch('id')
     end
   end
 end

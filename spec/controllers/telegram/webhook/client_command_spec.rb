@@ -47,7 +47,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'shows client with projects without errors' do
           # Use project that already has this client in fixtures
-          project_with_client = projects(:project_with_client1)
+          projects(:project_with_client1)
 
           expect { dispatch_command :client, 'show', 'client1' }.not_to raise_error
         end
@@ -108,9 +108,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           dispatch_message 'TestClient'
 
           # Вводим ключ клиента
-          expect {
+          expect do
             dispatch_message 'testkey123'
-          }.to change(Client, :count).by(1)
+          end.to change(Client, :count).by(1)
 
           # Проверяем, что клиент создан с правильными данными
           client = Client.last
@@ -136,7 +136,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         it 'rejects duplicate client key without errors' do
-          existing_client = clients(:existing_client)
+          clients(:existing_client)
 
           # Запускаем процесс создания клиента
           dispatch_command :client, 'add'
@@ -166,7 +166,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     context 'without projects' do
       it 'shows client list with no projects without errors' do
-        client = clients(:testclient)
+        clients(:testclient)
 
         expect { dispatch_command :client }.not_to raise_error
       end
@@ -187,7 +187,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'updates client name successfully without errors' do
           # Use existing client for editing test
-          edit_client = clients(:edit_me_client)
+          clients(:edit_me_client)
 
           # Start edit process
           dispatch_command :client, 'edit', 'editme'
@@ -201,9 +201,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           dispatch_command :client, 'edit', 'testclient'
 
           # Try empty name
-          expect {
+          expect do
             dispatch_message ''
-          }.not_to change { client.reload.name }
+          end.not_to(change { client.reload.name })
         end
 
         it 'rejects too long name during edit without errors' do
@@ -211,9 +211,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           dispatch_command :client, 'edit', 'testclient'
 
           # Try too long name
-          expect {
+          expect do
             dispatch_message 'a' * 300
-          }.not_to change { client.reload.name }
+          end.not_to(change { client.reload.name })
         end
 
         it 'handles edit without client key parameter without errors' do
@@ -232,7 +232,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'deletes client with confirmation without errors' do
           # Use existing client for deletion test
-          delete_client = clients(:delete_me_client)
+          clients(:delete_me_client)
 
           expect { dispatch_command :client, 'delete', 'deleteme', 'confirm' }.not_to raise_error
         end
@@ -243,7 +243,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'prevents deletion with linked projects without errors' do
           # Use project that already has this client in fixtures
-          project_with_client = projects(:project_with_client1)
+          projects(:project_with_client1)
 
           expect { dispatch_command :client, 'delete', 'client1', 'confirm' }.not_to raise_error
         end
@@ -290,14 +290,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       it 'handles editing client to same name' do
-        client = clients(:same_name_client)
+        clients(:same_name_client)
 
         dispatch_command :client, 'edit', 'same'
         expect { dispatch_message 'Same Name' }.not_to raise_error
       end
 
       it 'handles multiple edit attempts' do
-        client = clients(:multi_edit_client)
+        clients(:multi_edit_client)
 
         # First edit attempt
         dispatch_command :client, 'edit', 'multi'
@@ -311,7 +311,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   end
 
   context 'unauthenticated user' do
-    let(:from_id) { 12345 }
+    let(:from_id) { 12_345 }
 
     it 'shows empty clients list without errors' do
       expect { dispatch_command :client }.not_to raise_error

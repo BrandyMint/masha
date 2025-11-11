@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
   fixtures :users, :projects, :memberships, :time_shifts, :telegram_users
   include_context 'telegram webhook base'
-  
+
   context 'authenticated user' do
     let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { telegram_users(:telegram_regular) }

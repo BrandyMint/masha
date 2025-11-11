@@ -87,7 +87,7 @@ RSpec.describe Client, type: :model do
     it 'has many projects' do
       # Используем существующие проекты с уже настроенными клиентами
       project1 = projects(:project_with_client1)
-      project2 = projects(:project_with_client2)
+      projects(:project_with_client2)
 
       expect(client.projects.reload).to include(project1)
     end
@@ -133,7 +133,7 @@ RSpec.describe Client, type: :model do
 
     it 'can find clients by user' do
       # Используем существующих клиентов, которые уже принадлежат нужным пользователям
-      client1 = clients(:other_client)  # принадлежит regular_user
+      client1 = clients(:other_client) # принадлежит regular_user
 
       # Проверяем что клиент принадлежит правильному пользователю
       expect(client1.user).to eq(user)

@@ -3,20 +3,16 @@
 class AddCommand < BaseCommand
   provides_context_methods :add_time
 
-  public
-
   def call(project_slug = nil, hours = nil, *description)
     if project_slug.nil?
       show_project_selection
-    else
+    elsif looks_like_time_format?(project_slug) && project_exists?(hours)
       # Проверяем может ли это формат time project_slug description
-      if looks_like_time_format?(project_slug) && project_exists?(hours)
-        # Формат: /add time project_slug description
-        add_time_to_project(hours, project_slug, description.join(' '))
-      else
-        # Формат: /add project_slug time description
-        add_time_to_project(project_slug, hours, description.join(' '))
-      end
+      # Формат: /add time project_slug description
+      add_time_to_project(hours, project_slug, description.join(' '))
+    else
+      # Формат: /add project_slug time description
+      add_time_to_project(project_slug, hours, description.join(' '))
     end
   end
 

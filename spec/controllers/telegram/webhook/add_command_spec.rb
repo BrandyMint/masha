@@ -33,9 +33,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect { dispatch_command :add }.not_to raise_error
 
         # 2. Пользователь добавляет время прямым вызовом команды с параметрами
-        expect {
+        expect do
           dispatch_command :add, project1.slug, '2', 'Работа над задачей'
-        }.to change(TimeShift, :count).by(1)
+        end.to change(TimeShift, :count).by(1)
 
         # 3. Проверяем что запись создалась с правильными данными
         time_shift = TimeShift.last
@@ -48,9 +48,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       it 'adds time entry directly with parameters' do
         # Пользователь вызывает /add с параметрами
-        expect {
+        expect do
           dispatch_command :add, project1.slug, '2', 'Работа над задачей'
-        }.to change(TimeShift, :count).by(1)
+        end.to change(TimeShift, :count).by(1)
 
         # Проверяем что запись создалась с правильными данными
         time_shift = TimeShift.last
@@ -71,25 +71,25 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         first_message = response.first
         keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
 
-        project_button = keyboard.find { |button| button[:text] == "Test Project" }
+        project_button = keyboard.find { |button| button[:text] == 'Test Project' }
         expect(project_button).not_to be_nil
 
-      # 3. Эмулируем нажатие на кнопку проекта
+        # 3. Эмулируем нажатие на кнопку проекта
         callback_data = project_button[:callback_data]
         response = dispatch(callback_query: {
-          id: 'test_callback_id',
-          from: from,
-          message: { message_id: 22, chat: chat },
-          data: callback_data
-        })
+                              id: 'test_callback_id',
+                              from: from,
+                              message: { message_id: 22, chat: chat },
+                              data: callback_data
+                            })
 
         # 4. Проверяем что бот просит ввести время
         expect(response).not_to be_nil
 
         # 5. Пользователь вводит "2 Работа над задачей"
-        expect {
+        expect do
           response = dispatch_message('2 Работа над задачей')
-        }.to change(TimeShift, :count).by(1)
+        end.to change(TimeShift, :count).by(1)
 
         # 6. Проверяем что запись создалась с правильными данными
         time_shift = TimeShift.last
@@ -103,9 +103,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       context 'time-first format support' do
         it 'now supports time-first format in AddCommand' do
           # AddCommand теперь поддерживает формат /add time project_slug description
-          expect {
+          expect do
             dispatch_command :add, '2', project1.slug, 'Работа над задачей'
-          }.to change(TimeShift, :count).by(1)
+          end.to change(TimeShift, :count).by(1)
 
           # Проверяем что запись создалась с правильными данными
           time_shift = TimeShift.last
@@ -118,9 +118,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         it 'still supports project-first format in AddCommand' do
           # Убедимся что старый формат все еще работает
-          expect {
+          expect do
             dispatch_command :add, project1.slug, '3', 'Другая задача'
-          }.to change(TimeShift, :count).by(1)
+          end.to change(TimeShift, :count).by(1)
 
           # Проверяем что запись создалась с правильными данными
           time_shift = TimeShift.last
@@ -136,9 +136,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           message_text = "2 #{project1.slug} Работа над задачей"
 
           # Эмулируем отправку сообщения (не команды)
-          expect {
+          expect do
             dispatch_message(message_text)
-          }.to change(TimeShift, :count).by(1)
+          end.to change(TimeShift, :count).by(1)
 
           # Проверяем что запись создалась с правильными данными
           time_shift = TimeShift.last

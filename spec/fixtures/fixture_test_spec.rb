@@ -26,7 +26,7 @@ RSpec.describe 'Fixtures Loading', type: :model do
     it 'loads user with telegram correctly' do
       user = users(:user_with_telegram)
       expect(user).to be_present
-      expect(user.telegram_user_id).to eq(987654321)
+      expect(user.telegram_user_id).to eq(987_654_321)
       expect(user.name).to eq('Telegram User')
     end
   end
@@ -67,14 +67,14 @@ RSpec.describe 'Fixtures Loading', type: :model do
     it 'loads telegram admin correctly' do
       telegram_user = telegram_users(:telegram_admin)
       expect(telegram_user).to be_present
-      expect(telegram_user.id).to eq(123456789)
+      expect(telegram_user.id).to eq(123_456_789)
       expect(telegram_user.username).to eq('admin_user')
     end
 
     it 'loads telegram regular correctly' do
       telegram_user = telegram_users(:telegram_regular)
       expect(telegram_user).to be_present
-      expect(telegram_user.id).to eq(987654321)
+      expect(telegram_user.id).to eq(987_654_321)
     end
   end
 

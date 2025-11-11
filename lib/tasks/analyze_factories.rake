@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 namespace :analyze do
-  desc "Анализ использования FactoryBot в тестах"
+  desc 'Анализ использования FactoryBot в тестах'
   task factories: :environment do
-    puts "🔍 Анализ использования FactoryBot в тестах"
-    puts "=" * 50
+    puts '🔍 Анализ использования FactoryBot в тестах'
+    puts '=' * 50
 
     # Анализ использования factory методов
     analyze_factory_usage
@@ -45,7 +45,7 @@ namespace :analyze do
 
     factory_counts = Hash.new(0)
 
-    Dir.glob("spec/**/*_spec.rb").each do |file|
+    Dir.glob('spec/**/*_spec.rb').each do |file|
       content = File.read(file)
       # Ищем паттерны типа create(:user), create(:project, :with_owner)
       content.scan(/create\(:([a-z_]+)/).each do |match|
@@ -63,7 +63,7 @@ namespace :analyze do
 
     trait_usage = Hash.new(0)
 
-    Dir.glob("spec/**/*_spec.rb").each do |file|
+    Dir.glob('spec/**/*_spec.rb').each do |file|
       content = File.read(file)
       # Ищем паттерны типа create(:project, :with_owner)
       content.scan(/create\(:[a-z_]+,\s*:([a-z_]+)/).each do |match|
@@ -76,14 +76,14 @@ namespace :analyze do
         puts "  • #{trait}: #{count} использований"
       end
     else
-      puts "  • Трейты не найдены"
+      puts '  • Трейты не найдены'
     end
   end
 
   def analyze_associations
     puts "\n🔗 Анализ ассоциаций в factory файлах:"
 
-    Dir.glob("spec/factories/*.rb").each do |file|
+    Dir.glob('spec/factories/*.rb').each do |file|
       factory_name = File.basename(file, '.rb')
       content = File.read(file)
 
@@ -92,9 +92,7 @@ namespace :analyze do
         associations << match[0]
       end
 
-      if associations.any?
-        puts "  #{factory_name}: #{associations.join(', ')}"
-      end
+      puts "  #{factory_name}: #{associations.join(', ')}" if associations.any?
     end
   end
 
@@ -113,17 +111,17 @@ namespace :analyze do
     }
 
     test_types.each do |type, path|
-      if Dir.exist?(path)
-        files = Dir.glob("#{path}/*_spec.rb")
-        total_creates = 0
+      next unless Dir.exist?(path)
 
-        files.each do |file|
-          content = File.read(file)
-          total_creates += content.scan(/create\(/).length
-        end
+      files = Dir.glob("#{path}/*_spec.rb")
+      total_creates = 0
 
-        puts "  #{type}: #{files.length} файлов, #{total_creates} create()"
+      files.each do |file|
+        content = File.read(file)
+        total_creates += content.scan(/create\(/).length
       end
+
+      puts "  #{type}: #{files.length} файлов, #{total_creates} create()"
     end
   end
 
@@ -144,22 +142,21 @@ namespace :analyze do
     end
 
     puts "\n📝 Предлагаемая структура fixtures:"
-    puts "  users.yml - базовые пользователи (admin, regular, with_telegram)"
-    puts "  projects.yml - типовые проекты (work, personal, inactive)"
-    puts "  memberships.yml - связи пользователей и проектов с ролями"
-    puts "  telegram_users.yml - telegram аккаунты"
-    puts "  time_shifts.yml - базовые временные записи"
+    puts '  users.yml - базовые пользователи (admin, regular, with_telegram)'
+    puts '  projects.yml - типовые проекты (work, personal, inactive)'
+    puts '  memberships.yml - связи пользователей и проектов с ролями'
+    puts '  telegram_users.yml - telegram аккаунты'
+    puts '  time_shifts.yml - базовые временные записи'
 
     puts "\n⚡ Ожидаемое ускорение:"
-    puts "  • Прямые тесты: 5-10x быстрее"
-    puts "  • Telegram webhook: 3-5x быстрее"
-    puts "  • Интеграционные тесты: 2-3x быстрее"
+    puts '  • Прямые тесты: 5-10x быстрее'
+    puts '  • Telegram webhook: 3-5x быстрее'
+    puts '  • Интеграционные тесты: 2-3x быстрее'
   end
 
   def analyze_common_patterns
     # Анализ частых паттернов для рекомендаций
     fixture_candidates = []
-    complex_scenarios = []
 
     # Самые популярные factory на основе предыдущего анализа
     popular_factories = {
@@ -170,7 +167,7 @@ namespace :analyze do
       'telegram_user' => 0
     }
 
-    Dir.glob("spec/**/*_spec.rb").each do |file|
+    Dir.glob('spec/**/*_spec.rb').each do |file|
       content = File.read(file)
 
       popular_factories.each_key do |factory|

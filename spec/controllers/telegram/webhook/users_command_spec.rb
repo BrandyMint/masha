@@ -24,7 +24,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
   context 'authenticated developer user' do
     let(:developer_telegram_id) { ApplicationConfig.developer_telegram_id }
-    let(:user) { users(:admin) }  # Используем admin как разработчика
+    let(:user) { users(:admin) } # Используем admin как разработчика
     let(:telegram_user) { user.telegram_user }
     let(:from_id) { developer_telegram_id }
 

@@ -69,14 +69,14 @@ RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   OmniAuth.config.test_mode = true
   OmniAuth.config.add_mock(:default, {
-    provider: 'github',
-    uid: '123456',
-    info: {
-      nickname: 'testuser',
-      email: 'test@example.com',
-      name: 'Test User'
-    }
-  })
+                             provider: 'github',
+                             uid: '123456',
+                             info: {
+                               nickname: 'testuser',
+                               email: 'test@example.com',
+                               name: 'Test User'
+                             }
+                           })
 
   # Enable transactional fixtures для ускорения тестов
   config.use_transactional_fixtures = true

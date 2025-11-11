@@ -8,7 +8,6 @@ module Telegram
       rescue_from AbstractController::ActionNotFound, with: :handle_action_not_found
       rescue_from Telegram::WebhookController::NotAvailableInPublicChat, with: :handle_require_personal_chat
       rescue_from StandardError, with: :handle_error
-
     end
 
     private

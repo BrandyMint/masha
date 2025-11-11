@@ -142,7 +142,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   end
 
   context 'unauthenticated user' do
-    let(:from_id) { 12345 }
+    let(:from_id) { 12_345 }
 
     it 'responds with empty projects message' do
       response = dispatch_command :projects
@@ -208,7 +208,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       # Используем существующий membership fixture
 
       before do
-        client.destroy  # Удаляем клиента, оставляя project.client_id указывающим на несуществующую запись
+        client.destroy # Удаляем клиента, оставляя project.client_id указывающим на несуществующую запись
       end
 
       it 'handles projects with orphaned client references' do

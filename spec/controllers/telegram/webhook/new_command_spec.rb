@@ -50,9 +50,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       it 'creates project directly with slug parameter' do
-        expect {
+        expect do
           dispatch_command :new, 'new-test-project'
-        }.to change(Project, :count).by(1)
+        end.to change(Project, :count).by(1)
 
         project = Project.last
         expect(project.name).to eq('new-test-project')
@@ -66,9 +66,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         dispatch_command :new
 
         # 3. User provides project slug
-        expect {
+        expect do
           dispatch_message 'my-awesome-project'
-        }.to change(Project, :count).by(1)
+        end.to change(Project, :count).by(1)
 
         # 4. Verify project was created with correct attributes
         project = Project.last
@@ -86,9 +86,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         dispatch_command :new
 
         # 2. Send empty slug - should not create project
-        expect {
+        expect do
           dispatch_message ''
-        }.not_to change(Project, :count)
+        end.not_to change(Project, :count)
 
         # 3. Verify no project was created
         expect(Project.where(name: '')).not_to exist
@@ -99,9 +99,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         dispatch_command :new
 
         # 2. Send invalid slug with forbidden characters
-        expect {
+        expect do
           dispatch_message 'project@name'
-        }.not_to change(Project, :count)
+        end.not_to change(Project, :count)
 
         # 3. Verify no project was created
         expect(Project.where(slug: 'project@name')).not_to exist
@@ -110,14 +110,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'handles duplicate project slug gracefully' do
         # 1. Use existing project from fixtures
         existing_project = projects(:work_project)
-        membership = memberships(:telegram_work)
+        memberships(:telegram_work)
 
         # 2. Try to create project with same slug
         dispatch_command :new
 
-        expect {
+        expect do
           dispatch_message existing_project.slug
-        }.not_to change(Project, :count)
+        end.not_to change(Project, :count)
 
         # 3. Verify original project still exists and unchanged
         expect(Project.find_by(slug: existing_project.slug)).to eq(existing_project)

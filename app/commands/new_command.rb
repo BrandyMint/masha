@@ -13,9 +13,7 @@ class NewCommand < BaseCommand
   end
 
   def new_project_slug_input(slug, *)
-    if slug.blank?
-      return respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:'
-    end
+    return respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:' if slug.blank?
 
     project = current_user.projects.create!(name: slug, slug: slug)
     # Ensure user gets owner role for the new project

@@ -119,5 +119,4 @@ class User < ApplicationRecord
   def available_projects
     projects.ordered
   end
-
 end

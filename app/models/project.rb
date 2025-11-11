@@ -70,8 +70,8 @@ class Project < ApplicationRecord
     return if slug.blank?
 
     # Проверяем что slug не является целым числом
-    if slug.match?(/\A\d+\z/)
-      errors.add(:slug, "не может быть целым числом: #{slug}")
-    end
+    return unless slug.match?(/\A\d+\z/)
+
+    errors.add(:slug, "не может быть целым числом: #{slug}")
   end
 end

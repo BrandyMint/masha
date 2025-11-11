@@ -4,16 +4,12 @@ class AdduserCommand < BaseCommand
   provides_context_methods :adduser_project, :adduser_username_input
 
   def call(project_slug = nil, username = nil, role = 'member', *)
-    if project_slug.blank?
-      return show_manageable_projects
-    end
+    return show_manageable_projects if project_slug.blank?
 
-    if username.blank?
-      return respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)'
-    end
+    return respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)' if username.blank?
 
     TelegramProjectManager.new(current_user, controller: controller)
-      .add_user_to_project(project_slug, username, role)
+                          .add_user_to_project(project_slug, username, role)
   end
 
   def adduser_project(project_slug)
@@ -70,21 +66,20 @@ class AdduserCommand < BaseCommand
 
     add_user_to_project(project_slug, username, role)
   end
+
   private
 
   def show_manageable_projects
     manageable_projects = current_user.available_projects.alive.joins(:memberships)
-      .where(memberships: { user: current_user, role_cd: 0 })
+                                      .where(memberships: { user: current_user, role_cd: 0 })
 
-    if manageable_projects.empty?
-      return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
-    end
+    return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей' if manageable_projects.empty?
 
     # Контекст будет установлен через callback_query автоматически
     respond_with :message,
-      text: 'Выберите проект, в который хотите добавить пользователя:',
-      reply_markup: {
-        inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
-      }
+                 text: 'Выберите проект, в который хотите добавить пользователя:',
+                 reply_markup: {
+                   inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "adduser_project:#{p.slug}" }] }
+                 }
   end
 end

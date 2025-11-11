@@ -55,9 +55,7 @@ class RenameCommand < BaseCommand
     service = ProjectRenameService.new
     manageable_projects = service.manageable_projects(current_user)
 
-    if manageable_projects.empty?
-      return respond_with :message, text: t('rename_command.no_manageable_projects')
-    end
+    return respond_with :message, text: t('rename_command.no_manageable_projects') if manageable_projects.empty?
 
     respond_with :message,
                  text: t('rename_command.select_project'),
@@ -69,9 +67,7 @@ class RenameCommand < BaseCommand
   end
 
   def rename_new_name_input(new_name, *)
-    if new_name.blank?
-      return respond_with :message, text: t('rename_command.validation_error')
-    end
+    return respond_with :message, text: t('rename_command.validation_error') if new_name.blank?
 
     tg_session = telegram_session
     project_id = tg_session['project_id']
@@ -86,9 +82,7 @@ class RenameCommand < BaseCommand
     service = ProjectRenameService.new
     result = service.call(current_user, project, new_name)
 
-    unless result[:success]
-      return respond_with :message, text: result[:message]
-    end
+    return respond_with :message, text: result[:message] unless result[:success]
 
     # Store new name in session and show confirmation
     tg_session[:new_name] = new_name

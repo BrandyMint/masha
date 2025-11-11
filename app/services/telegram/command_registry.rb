@@ -21,7 +21,7 @@ class Telegram::CommandRegistry
 
     private
 
-    def register_command command_name
+    def register_command(command_name)
       class_name = "#{command_name.camelize}Command"
       # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
       command_class = class_name.constantize
