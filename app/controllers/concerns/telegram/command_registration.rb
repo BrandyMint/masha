@@ -9,6 +9,7 @@ module Telegram
       Telegram::CommandRegistry.available_commands.each do |command|
         command_class = Telegram::CommandRegistry.get(command)
 
+        Rails.logger.info "Initialize command #{command}"
         define_method "#{command}!" do |*args|
           command_class.new(self).call(*args)
         end
