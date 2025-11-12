@@ -12,7 +12,6 @@ module Telegram
     # Раскидать по командным модулям
     include Telegram::ErrorHandling
     include Telegram::SessionHelpers
-    include Telegram::CommandRegistration
 
     # before_action do
     # raise NotAvailableInPublicChat unless personal_chat?
@@ -51,7 +50,7 @@ module Telegram
       respond_with :message, text: 'Ошибка!'
     end
 
-    def test!(*args)
+    def test!(*_args)
       respond_with :message, text: 'test passed'
       reply_with :message, text: 'Replied'
     end
@@ -72,7 +71,11 @@ module Telegram
 
     def respond_with(*args)
       Rails.logger.info "respond_with: #{args}"
-      super *args
+      super(*args)
+    end
+
+    def universal_command!(*_args)
+      debugger
     end
 
     private
@@ -80,6 +83,28 @@ module Telegram
     def with_locale(&block)
       I18n.with_locale(current_locale, &block)
     end
+
+    # def action_for_command(cmd)
+    ## Для всех команда одна команда
+    # "universal_command!"
+    # #"#{cmd.downcase}!"
+    # end
+
+    # def action_for_message_orig
+    # cmd, args = Commands.command_from_text(payload['text'], bot_username)
+    # return unless cmd
+    # [[action_for_command(cmd), {type: :command, command: cmd}], args]
+    # end
+
+    # def action_for_message
+    # val = message_context_session.delete(:context)
+    # context = val&.to_s
+    # action_for_message_orig || (context && begin
+    # args = payload['text']&.split || []
+    # action = action_for_message_context(context)
+    # [[action, {type: :message_context, context: context}], args]
+    # end)
+    # end
 
     def current_locale
       if from

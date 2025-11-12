@@ -3,12 +3,12 @@ class Telegram::CommandRegistry
   class << self
     attr_reader :commands
 
-    def register(command_list)
+    def register(controller, command_list)
       @commands ||= {}
-
       command_list.each do |command_name|
         register_command command_name
       end
+      patch! controller
     end
 
     def get(command_name)
@@ -20,6 +20,37 @@ class Telegram::CommandRegistry
     end
 
     private
+
+    def patch!(controller)
+      Rails.logger.info 'Initialize Telegram::CommandRegistry'
+      Telegram::CommandRegistry.available_commands.each do |command|
+        command_class = Telegram::CommandRegistry.get(command)
+
+        Rails.logger.info "Initialize command #{command}"
+        controller.define_method "#{command}!" do |*args|
+          Rails.logger.info "Call command #{command}"
+          command_class.new(self).safe_call(*args)
+        end
+
+        command_class.context_method_names.each do |context_method|
+          controller.define_method context_method do |*args|
+            # Вызываем контекстный метод в экземпляре команды
+            command_class
+              .new(self)
+              .send(context_method, *args)
+          end
+        end
+
+        command_class.callback_method_names.each do |callback_method|
+          controller.define_method callback_method do |*args|
+            # Вызываем контекстный метод в экземпляре команды
+            command_class
+              .new(self)
+              .send(callback_method, *args)
+          end
+        end
+      end
+    end
 
     def register_command(command_name)
       class_name = "#{command_name.camelize}Command"

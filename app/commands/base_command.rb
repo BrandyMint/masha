@@ -32,7 +32,7 @@ class BaseCommand
 
   def safe_call(*args)
     Rails.logger.info "#{self.class}.call with args #{args}"
-    call *args
+    call(*args)
   end
 
   def session
