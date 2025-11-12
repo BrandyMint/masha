@@ -5,9 +5,6 @@ class BaseCommand
 
   NOTIFY_MESSAGE_INPUT = :notify_message_input
 
-  # Context constants
-  NEW_PROJECT_SLUG_INPUT = :new_project_slug_input
-
   # ClientCommand contexts
   ADD_CLIENT_NAME = :add_client_name
   ADD_CLIENT_KEY = :add_client_key
