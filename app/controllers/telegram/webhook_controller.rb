@@ -65,6 +65,11 @@ module Telegram
       telegram_user.developer?
     end
 
+    def respond_with(*args)
+      Rails.logger.info "respond_with: #{args}"
+      super *args
+    end
+
     private
 
     def with_locale(&block)
