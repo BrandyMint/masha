@@ -16,9 +16,9 @@ class NotifyCommand < BaseCommand
   def notify_message_input(*args)
     message = args.join(' ')
     return respond_with :message, text: t('commands.notify.errors.empty_message') if message.blank?
+    return respond_with :message, text: t('commands.notify.cancelled') if message.downcase.strip == 'cancel'
     return respond_with :message, text: t('commands.notify.errors.too_short') if message.length < MIN_MESSAGE_LENGTH
     return respond_with :message, text: t('commands.notify.errors.too_long') if message.length > MAX_MESSAGE_LENGTH
-    return respond_with :message, text: t('commands.notify.cancelled') if message.downcase.strip == 'cancel'
 
     BroadcastNotificationJob.perform_later(message)
     respond_with :message, text: t('commands.notify.success')
