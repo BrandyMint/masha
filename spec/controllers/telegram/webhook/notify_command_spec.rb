@@ -53,8 +53,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect do
           dispatch_message('Система будет обновлена в 18:00')
         end.to have_enqueued_job(BroadcastNotificationJob).with(
-          'Система будет обновлена в 18:00',
-          kind_of(Array)
+          'Система будет обновлена в 18:00'
         )
       end
 

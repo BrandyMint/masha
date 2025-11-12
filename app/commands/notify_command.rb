@@ -20,8 +20,7 @@ class NotifyCommand < BaseCommand
     return respond_with :message, text: t('commands.notify.errors.too_long') if message.length > MAX_MESSAGE_LENGTH
     return respond_with :message, text: t('commands.notify.cancelled') if message.downcase.strip == 'cancel'
 
-    recipients = TelegramUser.all
-    BroadcastNotificationJob.perform_later(message, recipients.map(&:id))
-    respond_with :message, text: t('commands.notify.success', count: recipients.count)
+    BroadcastNotificationJob.perform_later(message)
+    respond_with :message, text: t('commands.notify.success')
   end
 end
