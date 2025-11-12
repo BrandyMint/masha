@@ -116,6 +116,48 @@ end
 - **`rate`** - Rate management
 - **`client`** - Client management
 - **`reset`** - Reset operations
+- **`notify`** - Mass notification broadcasting (developer only)
+
+### Developer-Only Commands
+
+#### `/notify` - Mass Notification Broadcasting
+
+**Purpose**: Send broadcast notifications to all Telegram users of the system.
+
+**Access**: Restricted to developers only (checked via `developer?` method).
+
+**Workflow**:
+1. Developer types `/notify`
+2. Bot prompts for message text with cancellation option
+3. Developer enters message (3-4000 characters)
+4. Bot validates message and shows confirmation
+5. Message is broadcasted to all `TelegramUser` records via `BroadcastNotificationJob`
+
+**Usage Example**:
+```
+/notify
+📝 Введите текст уведомления (или 'cancel' для отмены):
+Система будет недоступна с 15:00 до 16:00 по МСК
+✅ Уведомление отправлено 150 пользователям
+```
+
+**Validation Rules**:
+- Minimum length: 3 characters
+- Maximum length: 4000 characters
+- Cannot be empty
+- Can be cancelled with 'cancel' (case insensitive)
+
+**Error Handling**:
+- Access denied for non-developers
+- Empty message validation
+- Length validation with appropriate error messages
+- Graceful cancellation handling
+
+**Technical Implementation**:
+- Uses context method `notify_message_input` for multi-step interaction
+- Leverages `BroadcastNotificationJob` for async processing
+- Fetches recipients from `TelegramUser.all`
+- Integrates with i18n for localized messages
 
 ## Context Management
 

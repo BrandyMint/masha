@@ -24,7 +24,7 @@ class BaseCommand
   RENAME_NEW_NAME_INPUT = :rename_new_name_input
 
   delegate :developer?, :respond_with,
-           :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
+           :chat, :telegram_user, :edit_message, :t, :payload, :current_user, to: :controller, allow_nil: true
 
   def session
     controller.send(:session)

@@ -45,6 +45,7 @@ class HelpCommand < BaseCommand
       commands << '# Только для разработчика'
       commands << '/users - Список всех пользователей системы (только для разработчика)'
       commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
+      commands << '/notify - Отправить уведомление всем пользователям (только для разработчика)'
     end
 
     # Add version at the end

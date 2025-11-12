@@ -37,7 +37,7 @@ module Telegram
       parts = text.split(/\s+/)
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if parts.length < 2
 
-      tracker = TelegramTimeTracker.new(current_user, parts, self)
+      tracker = TelegramTimeTracker.new(telegram_user, parts, self)
       result = tracker.parse_and_add
 
       if result[:error]
@@ -54,21 +54,21 @@ module Telegram
       respond_with :message, text: 'Ошибка!'
     end
 
-    private
-
-    # Public methods needed by BaseCommand
-    def find_current_user
-      telegram_user.user || User
-        .create_with(name: telegram_user.name, nickname: telegram_user.username)
-        .find_or_create_by!(telegram_user_id: telegram_user.id)
+    def telegram_user
+      @telegram_user ||= TelegramUser
+                         .create_with(chat.slice(*%w[first_name last_name username]))
+                         .create_or_find_by! id: chat.fetch('id')
     end
 
-    # Public methods needed by BaseCommand
     def current_user
-      return @current_user if defined? @current_user
-
-      @current_user = find_current_user
+      telegram_user.user
     end
+
+    def developer?
+      telegram_user.developer?
+    end
+
+    private
 
     def with_locale(&block)
       I18n.with_locale(current_locale, &block)
@@ -80,18 +80,6 @@ module Telegram
       elsif chat
         I18n.locale # TODO: брать и чата
       end
-    end
-
-    def developer?
-      return false unless from
-
-      from['id'] == ApplicationConfig.developer_telegram_id
-    end
-
-    def telegram_user
-      @telegram_user ||= TelegramUser
-                         .create_with(chat.slice(*%w[first_name last_name username]))
-                         .create_or_find_by! id: chat.fetch('id')
     end
   end
 end

@@ -19,7 +19,18 @@ RSpec.shared_context 'telegram webhook with fixtures' do
 
   shared_context 'authenticated user' do
     before do
-      allow(controller).to receive(:current_user) { user }
+      # Позволяем контроллеру получать chat данные для создания telegram_user
+      allow(controller).to receive(:chat).and_return({
+                                                       'id' => telegram_user.id,
+                                                       'first_name' => telegram_user.first_name,
+                                                       'last_name' => telegram_user.last_name,
+                                                       'username' => telegram_user.username
+                                                     })
+
+      # Устанавливаем from данные
+      allow(controller).to receive(:from).and_return({
+                                                       'id' => telegram_user.id
+                                                     })
     end
   end
 
@@ -29,7 +40,18 @@ RSpec.shared_context 'telegram webhook with fixtures' do
     let(:from_id) { telegram_user.id }
 
     before do
-      allow(controller).to receive(:current_user) { user }
+      # Позволяем контроллеру получать chat данные для создания telegram_user
+      allow(controller).to receive(:chat).and_return({
+                                                       'id' => telegram_user.id,
+                                                       'first_name' => telegram_user.first_name,
+                                                       'last_name' => telegram_user.last_name,
+                                                       'username' => telegram_user.username
+                                                     })
+
+      # Устанавливаем from данные
+      allow(controller).to receive(:from).and_return({
+                                                       'id' => telegram_user.id
+                                                     })
     end
   end
 
@@ -52,7 +74,18 @@ RSpec.shared_context 'telegram webhook with fixtures' do
     # - personal_project: owner (memberships(:admin_personal))
 
     before do
-      allow(controller).to receive(:current_user) { user }
+      # Позволяем контроллеру получать chat данные для создания telegram_user
+      allow(controller).to receive(:chat).and_return({
+                                                       'id' => telegram_user.id,
+                                                       'first_name' => telegram_user.first_name,
+                                                       'last_name' => telegram_user.last_name,
+                                                       'username' => telegram_user.username
+                                                     })
+
+      # Устанавливаем from данные
+      allow(controller).to receive(:from).and_return({
+                                                       'id' => telegram_user.id
+                                                     })
     end
   end
 end

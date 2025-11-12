@@ -82,7 +82,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     context 'TelegramTimeTracker integration' do
       it 'integrates with TelegramTimeTracker service' do
-        expect(TelegramTimeTracker).to receive(:new).with(user, anything, anything).and_call_original
+        expect(TelegramTimeTracker).to receive(:new).with(telegram_user, anything, anything).and_call_original
 
         expect { controller.message('2.5 work-project testing') }.not_to raise_error
       end

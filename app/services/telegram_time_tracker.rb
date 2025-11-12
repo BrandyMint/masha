@@ -2,8 +2,9 @@
 
 class TelegramTimeTracker
   include Telegram::Concerns::ValidationsConcern
-  def initialize(user, message_parts, controller)
-    @user = user
+  def initialize(telegram_user, message_parts, controller)
+    @user = telegram_user.user
+    @telegram_user = telegram_user
     @message_parts = message_parts
     @controller = controller
   end
