@@ -5,6 +5,7 @@ module Telegram
     extend ActiveSupport::Concern
 
     included do
+      Rails.logger.info "Initialize Telegram::CommandRegistry"
       Telegram::CommandRegistry.available_commands.each do |command|
         command_class = Telegram::CommandRegistry.get(command)
 
