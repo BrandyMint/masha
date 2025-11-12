@@ -12,6 +12,12 @@ module Telegram
 
     private
 
+    def action_missing(action, *_args)
+      super
+      Bugsnag.notify "No action found #{action}"
+      reply_with :message, text: 'Такой команды я не знаю. Выполняй /help'
+    end
+
     def notify_bugsnag(message_or_error)
       Rails.logger.error "Error in Telegram controller: #{message_or_error.is_a?(Exception) ? message_or_error.message : message_or_error}"
       Rails.logger.error message_or_error.backtrace.join("\n") if message_or_error.is_a?(Exception)
