@@ -11,7 +11,7 @@ module Telegram
 
         Rails.logger.info "Initialize command #{command}"
         define_method "#{command}!" do |*args|
-          command_class.new(self).call(*args)
+          command_class.new(self).safe_call(*args)
         end
 
         command_class.context_method_names.each do |context_method|

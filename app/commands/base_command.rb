@@ -30,6 +30,11 @@ class BaseCommand
   delegate :developer?, :respond_with,
            :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
 
+  def safe_call(*args)
+    Rails.logger.info "#{self.class}.call with args #{args}"
+    call *args
+  end
+
   def session
     controller.send(:session)
   end
