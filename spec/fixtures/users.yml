@@ -201,3 +201,15 @@ test_nonexistent_user:
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+test_user:
+  name: Test User
+  nickname: test_user
+  email: test_user@example.com
+  pivotal_person_id: 17
+  telegram_user_id: <%= 888888895 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

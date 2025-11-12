@@ -5,7 +5,7 @@
 class TelegramSession
   attr_accessor :type, :data
 
-  VALID_TYPES = %i[edit add_user add_time rename].freeze
+  VALID_TYPES = %i[edit add_user users_add_user add_time rename].freeze
 
   def initialize(type, data = {})
     @type = type.to_sym
@@ -47,6 +47,15 @@ class TelegramSession
   # Фабричный метод для создания сессии добавления пользователя
   def self.add_user(project_slug:)
     new(:add_user, {
+          project_slug: project_slug,
+          username: nil,
+          role: nil
+        })
+  end
+
+  # Фабричный метод для создания сессии добавления пользователя через users command
+  def self.users_add_user(project_slug:)
+    new(:users_add_user, {
           project_slug: project_slug,
           username: nil,
           role: nil

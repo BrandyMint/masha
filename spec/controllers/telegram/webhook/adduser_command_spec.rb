@@ -108,17 +108,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       let!(:from_id) { telegram_user.id }
 
       it 'adds user through complete interactive workflow' do
-        # 1. Пользователь вызывает /adduser без параметров и получает список проектов
+        # 1. Пользователь вызывает /adduser без параметров и получает предупреждение и список проектов
         response = dispatch_command :adduser
         expect(response).not_to be_nil
-        expect(response.first[:text]).to include('Выберите проект')
+        expect(response.first[:text]).to include('⚠️ Команда /adduser устарела')
+        expect(response.second[:text]).to include('Выберите проект')
 
         # 2. Проверяем что в списке есть наш проект
-        first_message = response.first
-        keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+        second_message = response.second
+        keyboard = second_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
         project_button = keyboard.find { |button| button[:text] == project1.name }
         expect(project_button).not_to be_nil
-        expect(project_button[:callback_data]).to eq("adduser_project:#{project1.slug}")
+        expect(project_button[:callback_data]).to eq("users_add_project:#{project1.slug}")
 
         # 3. Прямое добавление пользователя с параметрами для простоты
         expect do
@@ -208,14 +209,32 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         response = dispatch_command :adduser
 
         expect(response).not_to be_nil
-        expect(response.first[:text]).to include('Выберите проект')
+        expect(response.first[:text]).to include('⚠️ Команда /adduser устарела')
+        expect(response.second[:text]).to include('Выберите проект')
       end
 
       it 'shows error when username not specified in direct add' do
         response = dispatch_command :adduser, project1.slug
 
         expect(response).not_to be_nil
-        expect(response.first[:text]).to include('Укажите никнейм')
+        expect(response.first[:text]).to include('⚠️ Команда /adduser устарела')
+        expect(response.second[:text]).to include('Укажите никнейм')
+      end
+    end
+
+    context 'deprecation warning' do
+      let!(:project) { projects(:work_project) }
+      let!(:membership) { memberships(:telegram_work) }
+
+      it 'shows deprecation warning when using /adduser' do
+        response = dispatch_command :adduser
+        expect(response).not_to be_nil
+        expect(response.first[:text]).to include('⚠️ Команда /adduser устарела')
+      end
+
+      it 'delegates to users command functionality' do
+        # Тестируем что старая команда все еще работает через делегирование
+        expect { dispatch_command :adduser, project.slug, 'test_user', 'member' }.not_to raise_error
       end
     end
   end

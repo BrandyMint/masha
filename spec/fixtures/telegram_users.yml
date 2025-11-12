@@ -141,3 +141,11 @@ telegram_test_nonexistent_user:
   last_name: Nonexistent User
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+telegram_test_user:
+  id: <%= 888888895 %>
+  username: test_user
+  first_name: Test
+  last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
