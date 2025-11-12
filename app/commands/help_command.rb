@@ -35,7 +35,9 @@ class HelpCommand < BaseCommand
 
     # Add developer commands if user is developer
     if developer?
+      commands << ''
       commands << '# Только для разработчика'
+      commands << ''
       commands << '/users - Список всех пользователей системы (только для разработчика)'
       commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
       commands << '/notify - Отправить уведомление всем пользователям (только для разработчика)'
@@ -45,6 +47,7 @@ class HelpCommand < BaseCommand
     commands << ''
     commands << "Версия Маши: #{AppVersion}"
     commands << 'Исходный код: https://github.com/dapi/masha'
+    commands << 'Поддержка: @pismenny'
 
     multiline(commands)
   end
