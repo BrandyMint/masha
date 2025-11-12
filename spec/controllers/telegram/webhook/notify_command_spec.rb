@@ -4,6 +4,21 @@ require 'spec_helper'
 
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
   include_context 'telegram webhook base'
+
+  # Helper to set up controller mocks for Telegram user
+  def setup_telegram_user_mocks(telegram_user)
+    allow(controller).to receive(:chat).and_return({
+                                                     'id' => telegram_user.id,
+                                                     'first_name' => telegram_user.first_name,
+                                                     'last_name' => telegram_user.last_name,
+                                                     'username' => telegram_user.username
+                                                   })
+
+    allow(controller).to receive(:from).and_return({
+                                                     'id' => telegram_user.id
+                                                   })
+  end
+
   context 'developer user' do
     let!(:telegram_user) do
       TelegramUser.create_with(first_name: 'Developer', last_name: 'User', username: 'dev')
@@ -12,18 +27,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { ApplicationConfig.developer_telegram_id }
 
     before do
-      # Позволяем контроллеру получать chat данные для создания telegram_user
-      allow(controller).to receive(:chat).and_return({
-                                                       'id' => telegram_user.id,
-                                                       'first_name' => telegram_user.first_name,
-                                                       'last_name' => telegram_user.last_name,
-                                                       'username' => telegram_user.username
-                                                     })
-
-      # Устанавливаем from данные
-      allow(controller).to receive(:from).and_return({
-                                                       'id' => telegram_user.id
-                                                     })
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'responds to /notify command without errors' do

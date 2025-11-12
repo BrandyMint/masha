@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseCommand
+  include FormatHelpers
+
   NOTIFY_MESSAGE_INPUT = :notify_message_input
 
   # Context constants
@@ -26,14 +28,14 @@ class BaseCommand
   RENAME_NEW_NAME_INPUT = :rename_new_name_input
 
   delegate :developer?, :respond_with,
-           :chat, :telegram_user, :edit_message, :t, :current_user, to: :controller, allow_nil: true
+           :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
 
   def session
     controller.send(:session)
   end
 
   def current_user
-    controller.send(:current_user)
+    telegram_user.user
   end
 
   def save_context(*args)
@@ -46,16 +48,6 @@ class BaseCommand
 
   def call(*args)
     raise NotImplementedError, 'Subclass must implement #call method'
-  end
-
-  # Метод для объединения нескольких строк в одну с переносами
-  def multiline(*args)
-    args.flatten.map(&:to_s).join("\n")
-  end
-
-  # Метод для форматирования текста в блок кода
-  def code(text)
-    multiline '```', text, '```'
   end
 
   # Метод для форматирования информации о пользователе

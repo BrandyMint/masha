@@ -49,6 +49,11 @@ RSpec.configure do |config|
     config.filter_run_when_matching :focus
   end
 
+  config.before do
+    $debug_on_exception = !!ENV['DEBUG_ON_EXCEPTION']
+    $raise_exception = true
+  end
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

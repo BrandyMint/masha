@@ -32,12 +32,13 @@ module Telegram
       parts = text.split(/\s+/)
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if parts.length < 2
 
-      tracker = TelegramTimeTracker.new(telegram_user, parts, self)
+      tracker = TelegramTimeTracker.new(telegram_user, text)
       result = tracker.parse_and_add
 
       if result[:error]
         respond_with :message, text: result[:error]
       elsif result[:success]
+        respond_with :message, text: result[:message]
         # Success message is handled by the tracker
       else
         respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'

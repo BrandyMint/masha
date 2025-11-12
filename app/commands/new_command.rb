@@ -12,7 +12,7 @@ class NewCommand < BaseCommand
     create_project(slug)
   end
 
-  def new_project_slug_input(slug, *)
+  def new_project_slug_input(slug = nil, *)
     return respond_with :message, text: 'Slug не может быть пустым. Укажите slug для нового проекта:' if slug.blank?
 
     project = current_user.projects.create!(name: slug, slug: slug)

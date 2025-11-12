@@ -5,9 +5,8 @@ require 'rails_helper'
 RSpec.describe Telegram::Edit::PaginationService do
   fixtures :users, :projects, :memberships, :time_shifts, :telegram_users
 
-  let(:controller) { double('controller', session: session) }
   let(:user) { users(:user_with_telegram) }
-  let(:service) { described_class.new(controller, user) }
+  let(:service) { described_class.new(session, user) }
   let(:session) { {} }
 
   describe '#get_paginated_time_shifts' do
@@ -75,7 +74,7 @@ RSpec.describe Telegram::Edit::PaginationService do
     it 'saves pagination data to session' do
       service.save_pagination_context(pagination)
 
-      expect(controller.session[:edit_pagination]).to eq({
+      expect(session[:edit_pagination]).to eq({
                                                            current_page: 2,
                                                            total_pages: 5
                                                          })
@@ -85,7 +84,7 @@ RSpec.describe Telegram::Edit::PaginationService do
   describe '#validate_page' do
     context 'with pagination context in session' do
       before do
-        controller.session[:edit_pagination] = { current_page: 1, total_pages: 3 }
+        session[:edit_pagination] = { current_page: 1, total_pages: 3 }
       end
 
       it 'returns true for valid page' do
@@ -213,7 +212,7 @@ RSpec.describe Telegram::Edit::PaginationService do
 
   describe '#handle_callback' do
     before do
-      controller.session[:edit_pagination] = { current_page: 1, total_pages: 3 }
+      session[:edit_pagination] = { current_page: 1, total_pages: 3 }
     end
 
     it 'extracts page number from callback data' do
@@ -238,7 +237,7 @@ RSpec.describe Telegram::Edit::PaginationService do
 
     context 'without pagination context' do
       before do
-        controller.session[:edit_pagination] = nil
+        session[:edit_pagination] = nil
       end
 
       it 'returns nil even for valid callback format' do

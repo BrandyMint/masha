@@ -4,11 +4,10 @@ module Telegram
   class TimeShiftOperationsService
     include Telegram::Concerns::ValidationsConcern
 
-    attr_reader :user, :controller
+    attr_reader :user
 
-    def initialize(user, controller = nil)
+    def initialize(user)
       @user = user
-      @controller = controller
     end
 
     # Добавить запись времени

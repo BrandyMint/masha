@@ -5,13 +5,6 @@ class HelpCommand < BaseCommand
     respond_with :message, text: help_message
   end
 
-  private
-
-  # Public methods needed by BaseCommand
-  def multiline(*args)
-    args.flatten.map(&:to_s).join("\n")
-  end
-
   # Public methods needed by BaseCommand
   def help_message
     commands = [
@@ -54,5 +47,11 @@ class HelpCommand < BaseCommand
     commands << 'Исходный код: https://github.com/dapi/masha'
 
     multiline(commands)
+  end
+  private
+
+  # Public methods needed by BaseCommand
+  def multiline(*args)
+    args.flatten.map(&:to_s).join("\n")
   end
 end

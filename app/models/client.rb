@@ -1,4 +1,5 @@
 class Client < ApplicationRecord
+  include Authority::Abilities
   belongs_to :user
   has_many :projects, dependent: :nullify
 

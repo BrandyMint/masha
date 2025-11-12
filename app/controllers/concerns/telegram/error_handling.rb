@@ -24,10 +24,11 @@ module Telegram
     end
 
     def handle_action_not_found(exception)
-      debugger
       notify_bugsnag(exception)
       message_context_session.delete(:context)
       respond_with :message, text: t('telegram.commands.unknown_command')
+      debugger if $debug_on_exception
+      raise exception if $raise_exception
     end
 
     def handle_require_personal_chat
@@ -44,6 +45,8 @@ module Telegram
       end
 
       respond_with :message, text: t('telegram.commands.error_occurred')
+      debugger if $debug_on_exception
+      raise exception if $raise_exception
     end
   end
 end

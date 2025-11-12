@@ -70,10 +70,13 @@ class AdduserCommand < BaseCommand
   private
 
   def show_manageable_projects
+    if current_user.nil?
+      return respond_with :message, text: 'У Вас пока нет проектов'
+    end
     manageable_projects = current_user.available_projects.alive.joins(:memberships)
                                       .where(memberships: { user: current_user, role_cd: 0 })
 
-    return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей' if manageable_projects.empty?
+    return respond_with :message, text: 'У Вас пока нет проектов, в которые можно добавить пользователей' if manageable_projects.empty?
 
     # Контекст будет установлен через callback_query автоматически
     respond_with :message,

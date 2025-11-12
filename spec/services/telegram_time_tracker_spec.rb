@@ -6,7 +6,6 @@ RSpec.describe TelegramTimeTracker do
   fixtures :users, :projects, :memberships, :time_shifts, :telegram_users
 
   let(:telegram_user) { telegram_users(:telegram_regular) }
-  let(:controller) { double('controller') }
   let(:project1) { projects(:project1) }
   let(:project2) { projects(:project2) }
   let(:project_with_digits) { projects(:project123) }
@@ -16,58 +15,57 @@ RSpec.describe TelegramTimeTracker do
       context 'standard format: hours project description' do
         it 'parses correctly' do
           message_parts = ['2.5', 'project1', 'working on feature']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
-          expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 2\.5ч в проекте Project 1/)
           result = tracker.parse_and_add
-
           expect(result[:success]).to be true
+          expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 1'
         end
       end
 
       context 'reverse format: project hours description' do
         it 'parses correctly' do
           message_parts = ['project2', '1.5', 'bug fixing']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
-          expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 1\.5ч в проекте Project 2/)
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
+          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Project 2'
         end
       end
 
       context 'project with digits' do
         it 'handles project123 2.5 format' do
           message_parts = ['project123', '2.5']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
-          expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 2\.5ч в проекте Project 123/)
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
+          expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 123'
         end
 
         it 'handles 2.5 project123 format' do
           message_parts = ['2.5', 'project123']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
-          expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 2\.5ч в проекте Project 123/)
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
+          expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 123'
         end
       end
 
       context 'with decimal comma' do
         it 'handles comma as decimal separator' do
           message_parts = ['1,5', 'project1']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
-          expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 1\.5ч в проекте Project 1/)
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
+          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Project 1'
         end
       end
     end
@@ -76,7 +74,7 @@ RSpec.describe TelegramTimeTracker do
       context 'both parts are time' do
         it 'asks for clarification' do
           message_parts = ['2.5', '1.5']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include('❓ Не понял. Вы имели в виду:')
@@ -88,7 +86,7 @@ RSpec.describe TelegramTimeTracker do
       context 'both parts are projects' do
         it 'asks for clarification' do
           message_parts = %w[project1 project2]
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include('❓ Не понял. Вы имели в виду:')
@@ -102,7 +100,7 @@ RSpec.describe TelegramTimeTracker do
       context 'non-existent project' do
         it 'shows error with available projects' do
           message_parts = ['2.5', 'nonexistent']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include("Не найден проект 'nonexistent'")
@@ -114,7 +112,7 @@ RSpec.describe TelegramTimeTracker do
       context 'invalid time format' do
         it 'shows error for invalid time' do
           message_parts = %w[abc project1]
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include("Первый параметр 'abc' не похож на время")
@@ -124,7 +122,7 @@ RSpec.describe TelegramTimeTracker do
       context 'too few parts' do
         it 'shows generic error' do
           message_parts = ['2.5']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to eq('Я не Алиса, мне нужна конкретика. Жми /help')
@@ -134,7 +132,7 @@ RSpec.describe TelegramTimeTracker do
       context 'time out of range' do
         it 'shows error for too much time' do
           message_parts = %w[25 project1]
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include('Слишком много времени: 25.0. Максимум 24 часа')
@@ -142,7 +140,7 @@ RSpec.describe TelegramTimeTracker do
 
         it 'shows error for too little time' do
           message_parts = ['0.05', 'project1']
-          tracker = described_class.new(telegram_user, message_parts, controller)
+          tracker = described_class.new(telegram_user, message_parts)
 
           result = tracker.parse_and_add
           expect(result[:error]).to include('Слишком мало времени: 0.05. Минимум 0.1 часа')
@@ -153,17 +151,16 @@ RSpec.describe TelegramTimeTracker do
     context 'with typo in project name' do
       it 'suggests similar projects and auto-corrects' do
         message_parts = ['2.5', 'projec'] # typo: missing 't'
-        tracker = described_class.new(telegram_user, message_parts, controller)
+        tracker = described_class.new(telegram_user, message_parts)
 
         # Should work despite the typo - fuzzy matching finds project1
-        expect(controller).to receive(:respond_with).with(:message, text: /✅ Отметили 2\.5ч в проекте Project 1/)
         result = tracker.parse_and_add
-
         expect(result[:success]).to be true
+        expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 1'
       end
 
       it 'actually finds project with typo' do
-        tracker = described_class.new(telegram_user, [], controller)
+        tracker = described_class.new(telegram_user, [])
         fuzzy_project = tracker.send(:find_project_fuzzy, 'projec')
         expect(fuzzy_project).not_to be_nil
         expect(fuzzy_project.slug).to eq('project1')
@@ -172,7 +169,7 @@ RSpec.describe TelegramTimeTracker do
   end
 
   describe '#determine_hours_and_project' do
-    let(:tracker) { described_class.new(telegram_user, [], controller) }
+    let(:tracker) { described_class.new(telegram_user, []) }
 
     context 'when first part is time and second is project' do
       it 'returns correct order' do
@@ -200,7 +197,7 @@ RSpec.describe TelegramTimeTracker do
   end
 
   describe '#time_format?' do
-    let(:tracker) { described_class.new(telegram_user, [], controller) }
+    let(:tracker) { described_class.new(telegram_user, []) }
 
     it 'accepts valid time formats' do
       expect(tracker.send(:time_format?, '2.5')).to be true
@@ -217,7 +214,7 @@ RSpec.describe TelegramTimeTracker do
   end
 
   describe '#add_time_entry' do
-    let(:tracker) { described_class.new(telegram_user, [], controller) }
+    let(:tracker) { described_class.new(telegram_user, []) }
 
     context 'with normal hours' do
       it 'creates time entry successfully' do
