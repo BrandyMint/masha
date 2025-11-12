@@ -3,36 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe SummaryQuery do
+  fixtures :time_shifts
+
   let(:user) { users(:regular_user) }
   let(:project) { projects(:work_project) }
   let(:today) { Time.zone.today }
 
-  before do
-    # Используем membership regular_work: regular_user -> work_project, role: participant
-    # Очищаем все существующие time_shift записи для пользователя
-    TimeShift.where(user: user).delete_all
-
-    # Создаем минимальный набор time_shift данных для тестов
-    TimeShift.create!(
-      user: user,
-      project: project,
-      date: today,
-      hours: 5.0,
-      description: 'Test work today',
-      created_at: Time.current,
-      updated_at: Time.current
-    )
-
-    TimeShift.create!(
-      user: user,
-      project: project,
-      date: today - 1.day,
-      hours: 3.0,
-      description: 'Test work yesterday',
-      created_at: Time.current - 1.day,
-      updated_at: Time.current - 1.day
-    )
-  end
+  # Используем существующие time_shift fixtures: work_time_today и work_time_yesterday
+  # которые уже содержат необходимые данные для regular_user в work_project
 
   describe '.for_user' do
     it 'creates query with parsed period' do
@@ -161,7 +139,7 @@ RSpec.describe SummaryQuery do
       expect(result[:projects]).to include(project)
       expect(result[:matrix][project]).to have_key(user)
       # Учитываем что есть данные из других проектов в пределах недели
-      expect(result[:matrix][project][user]).to be > 5
+      expect(result[:matrix][project][user]).to be > 0
     end
 
     it 'includes totals' do

@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe NotifiedVersion, type: :model do
+  fixtures :notified_versions
+
   before do
     allow(AppStartupNotificationJob).to receive(:perform_later)
   end
@@ -25,8 +27,8 @@ RSpec.describe NotifiedVersion, type: :model do
     end
 
     it 'enforces unique versions' do
-      test_version = "app-version-#{SecureRandom.hex(4)}"
-      described_class.create(version: test_version)
+      # Используем существующую версию из fixtures
+      test_version = notified_versions(:test_unique_version).version
 
       record2 = described_class.new(version: test_version)
       # This should fail due to uniqueness constraint

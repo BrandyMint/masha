@@ -20,10 +20,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
   end
 
   context 'developer user' do
-    let!(:telegram_user) do
-      TelegramUser.create_with(first_name: 'Developer', last_name: 'User', username: 'dev')
-                  .create_or_find_by(id: ApplicationConfig.developer_telegram_id)
-    end
+    let(:telegram_user) { telegram_users(:telegram_developer) }
     let(:from_id) { ApplicationConfig.developer_telegram_id }
 
     before do

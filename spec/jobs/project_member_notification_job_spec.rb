@@ -3,14 +3,13 @@
 require 'spec_helper'
 
 RSpec.describe ProjectMemberNotificationJob, type: :job do
+  fixtures :memberships
+
   let(:project) { projects(:work_project) }
   let(:new_member) { users(:user_with_telegram) }
   let(:existing_member) { users(:admin) }
 
-  before do
-    # Ensure existing_member is a member of the project
-    existing_member.memberships.create(project: project, role_cd: 2) unless existing_member.memberships.exists?(project: project)
-  end
+  # existing_member is already a member of work_project via admin_work fixture
 
   it 'enqueues the job' do
     expect do

@@ -75,6 +75,15 @@ telegram_empty:
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
+# Telegram разработчик
+telegram_developer:
+  id: <%= ApplicationConfig.developer_telegram_id %>
+  username: developer
+  first_name: Developer
+  last_name: User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
 # Telegram пользователь для добавления в проекты
 telegram_newuser:
   id: <%= 888888888 %>

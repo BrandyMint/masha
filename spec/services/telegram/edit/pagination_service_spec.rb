@@ -13,17 +13,8 @@ RSpec.describe Telegram::Edit::PaginationService do
     let!(:project) { projects(:work_project) }
 
     before do
-      # Use existing fixtures - user_with_telegram already has membership for work_project
-      # Add additional time shifts for pagination testing
-      10.times do |i|
-        TimeShift.create!(
-          user: user,
-          project: project,
-          date: Date.current - i.days,
-          hours: (i + 1) % 24 + 1, # Ensure hours between 1-24
-          description: "Test shift #{i + 1}"
-        )
-      end
+      # Use existing time shift fixtures for pagination testing
+      # These fixtures are already loaded via fixtures :time_shifts
     end
 
     it 'returns paginated results' do
