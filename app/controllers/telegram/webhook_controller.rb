@@ -18,18 +18,14 @@ module Telegram
     # raise NotAvailableInPublicChat unless personal_chat?
     # end
 
-    use_session!
-
     # use callbacks like in any other controllers
     around_action :with_locale
 
     # Core message handlers
-    def message(message)
-      text = if message.is_a?(String)
-               message.strip
-             else
-               message['text']&.strip
-             end
+    def message(payload)
+      raise 'message не может передаваться строкой, это нарушает спецификацию gem telegram-bot' if payload.is_a?(String)
+
+      text = payload.fetch('text')&.strip
 
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if text.blank?
 
@@ -37,12 +33,13 @@ module Telegram
       parts = text.split(/\s+/)
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if parts.length < 2
 
-      tracker = TelegramTimeTracker.new(current_user, parts, self)
+      tracker = TelegramTimeTracker.new(telegram_user, text)
       result = tracker.parse_and_add
 
       if result[:error]
         respond_with :message, text: result[:error]
       elsif result[:success]
+        respond_with :message, text: result[:message]
         # Success message is handled by the tracker
       else
         respond_with :message, text: 'Я не Алиса, мне нужна конкретика. Жми /help'
@@ -54,21 +51,21 @@ module Telegram
       respond_with :message, text: 'Ошибка!'
     end
 
-    private
-
-    # Public methods needed by BaseCommand
-    def find_current_user
-      telegram_user.user || User
-        .create_with(name: telegram_user.name, nickname: telegram_user.username)
-        .find_or_create_by!(telegram_user_id: telegram_user.id)
+    def telegram_user
+      @telegram_user ||= TelegramUser
+                         .create_with(chat.slice(*%w[first_name last_name username]))
+                         .create_or_find_by! id: chat.fetch('id')
     end
 
-    # Public methods needed by BaseCommand
     def current_user
-      return @current_user if defined? @current_user
-
-      @current_user = find_current_user
+      telegram_user.user
     end
+
+    def developer?
+      telegram_user.developer?
+    end
+
+    private
 
     def with_locale(&block)
       I18n.with_locale(current_locale, &block)
@@ -80,18 +77,6 @@ module Telegram
       elsif chat
         I18n.locale # TODO: брать и чата
       end
-    end
-
-    def developer?
-      return false unless from
-
-      from['id'] == ApplicationConfig.developer_telegram_id
-    end
-
-    def telegram_user
-      @telegram_user ||= TelegramUser
-                         .create_with(chat.slice(*%w[first_name last_name username]))
-                         .create_or_find_by! id: chat.fetch('id')
     end
   end
 end

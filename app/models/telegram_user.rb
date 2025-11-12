@@ -40,6 +40,10 @@ class TelegramUser < ApplicationRecord
     "@#{username}"
   end
 
+  def developer?
+    id == ApplicationConfig.developer_telegram_id
+  end
+
   private
 
   def check_and_process_invitations

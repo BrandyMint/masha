@@ -2,10 +2,10 @@
 
 class TelegramTimeTracker
   include Telegram::Concerns::ValidationsConcern
-  def initialize(user, message_parts, controller)
-    @user = user
-    @message_parts = message_parts
-    @controller = controller
+  def initialize(telegram_user, text)
+    @user = telegram_user.user
+    @telegram_user = telegram_user
+    @message_parts = text.is_a?(String) ? text.split : text
   end
 
   def parse_and_add
@@ -20,8 +20,7 @@ class TelegramTimeTracker
       # Добавляем подсказку если она есть
       message = "#{message}\n\n💡 #{result[:suggestion]}" if result[:suggestion]
 
-      @controller.respond_with :message, text: message
-      { success: true }
+      { success: true, message: message }
     else
       { error: 'Я не Алиса, мне нужна конкретика. Жми /help' }
     end
@@ -211,7 +210,7 @@ class TelegramTimeTracker
   end
 
   def add_time_entry(project_slug, hours, description = nil)
-    service = Telegram::TimeShiftOperationsService.new(@user, @controller)
+    service = Telegram::TimeShiftOperationsService.new(@user)
     service.add_time_entry(project_slug, hours, description)
   end
 

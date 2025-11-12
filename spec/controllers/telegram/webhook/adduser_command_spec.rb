@@ -104,7 +104,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     context 'complete adduser workflow with callback queries', :callback_query do
       let!(:project1) { projects(:work_project) }
       let!(:user) { users(:telegram_clean_user) }
-      let!(:telegram_user) { telegram_users(:telegram_clean) }
+      let!(:telegram_user) { telegram_users(:telegram_clean_user) }
       let!(:from_id) { telegram_user.id }
 
       it 'adds user through complete interactive workflow' do

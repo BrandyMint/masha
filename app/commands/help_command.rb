@@ -5,13 +5,6 @@ class HelpCommand < BaseCommand
     respond_with :message, text: help_message
   end
 
-  private
-
-  # Public methods needed by BaseCommand
-  def multiline(*args)
-    args.flatten.map(&:to_s).join("\n")
-  end
-
   # Public methods needed by BaseCommand
   def help_message
     commands = [
@@ -45,6 +38,7 @@ class HelpCommand < BaseCommand
       commands << '# Только для разработчика'
       commands << '/users - Список всех пользователей системы (только для разработчика)'
       commands << '/merge {email} {telegram_username} - Объединить аккаунты (только для разработчика)'
+      commands << '/notify - Отправить уведомление всем пользователям (только для разработчика)'
     end
 
     # Add version at the end
@@ -53,5 +47,12 @@ class HelpCommand < BaseCommand
     commands << 'Исходный код: https://github.com/dapi/masha'
 
     multiline(commands)
+  end
+
+  private
+
+  # Public methods needed by BaseCommand
+  def multiline(*args)
+    args.flatten.map(&:to_s).join("\n")
   end
 end

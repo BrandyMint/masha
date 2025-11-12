@@ -5,7 +5,7 @@ class StartCommand < BaseCommand
     if word.to_s.start_with? TelegramHelper::AUTH_PREFIX
       handle_auth_start(word)
     else
-      respond_with :message, text: multiline('С возращением!', nil, nil, help_message)
+      respond_with :message, text: multiline('С возращением!', nil, nil, HelpCommand.new(controller).help_message)
     end
   end
 

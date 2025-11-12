@@ -8,7 +8,7 @@ describe OmniauthSessionController, type: :controller do
     # Настраиваем мок для GitHub OAuth
     OmniAuth.config.mock_auth[:github] = {
       'provider' => 'github',
-      'uid' => '999999',  # Используем другой UID чтобы избежать конфликта с существующей аутентификацией
+      'uid' => '999999', # Используем другой UID чтобы избежать конфликта с существующей аутентификацией
       'info' => {
         'nickname' => user.nickname,
         'email' => user.email,
@@ -50,7 +50,7 @@ describe OmniauthSessionController, type: :controller do
 
         auth = Authentication.last
         expect(auth.provider).to eq('github')
-        expect(auth.uid).to eq('999999')  # Ожидаем новый UID
+        expect(auth.uid).to eq('999999') # Ожидаем новый UID
         expect(auth.user).to eq(user)
       end
     end

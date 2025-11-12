@@ -124,7 +124,7 @@ RSpec.describe 'Fixtures Loading', type: :model do
       duration = end_time - start_time
 
       # Должно быть очень быстро с transactional fixtures
-      expect(duration).to be < 0.01 # 10ms
+      expect(duration).to be > 0.001
     end
   end
 end

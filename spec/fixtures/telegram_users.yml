@@ -48,7 +48,16 @@ telegram_watcher:
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
-# Чистый telegram пользователь для тестов
+# Telegram пользователь для telegram_clean_user (с проектами)
+telegram_clean_user:
+  id: <%= 555555555 %>
+  first_name: Telegram
+  last_name: Clean
+  username: telegram_clean
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Чистый telegram пользователь для тестов (без связей с User)
 telegram_clean:
   id: <%= 666666666 %>
   first_name: Clean
@@ -63,6 +72,15 @@ telegram_empty:
   first_name: Empty
   last_name: User
   username: empty_user
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Telegram разработчик
+telegram_developer:
+  id: <%= ApplicationConfig.developer_telegram_id %>
+  username: developer
+  first_name: Developer
+  last_name: User
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 

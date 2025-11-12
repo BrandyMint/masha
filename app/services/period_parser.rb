@@ -4,7 +4,9 @@ class PeriodParser
   SUPPORTED_RELATIVE = %w[day week month last_month last_week last_day].freeze
 
   def self.parse(arg)
-    return 'week' if arg.nil?
+    arg = 'week' if arg.blank?
+
+    arg = arg.to_s if arg.is_a? Symbol
 
     case arg
     when *SUPPORTED_RELATIVE then arg

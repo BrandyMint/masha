@@ -14,6 +14,16 @@ work_time_today:
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
 
+# Временная запись для regular_user за вчера
+work_time_yesterday:
+  user: regular_user
+  project: work_project
+  date: <%= 1.day.ago.to_date %>
+  hours: 3.0
+  description: Работа над задачей вчера
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
 # Временная запись для пользователя с Telegram
 telegram_time_today:
   user: user_with_telegram

@@ -5,17 +5,13 @@ require 'terminal-table'
 module Telegram
   module Edit
     class TableFormatter
-      attr_reader :controller
-
-      def initialize(controller)
-        @controller = controller
-      end
+      include FormatHelpers
 
       def format_time_shifts_table(time_shifts, pagination)
         table = build_table(time_shifts)
         header = build_header(pagination)
 
-        controller.code("#{header}\n\n#{table}")
+        code("#{header}\n\n#{table}")
       end
 
       private

@@ -5,10 +5,10 @@ module Telegram
     class PaginationService
       include Telegram::Concerns::PaginationConcern
 
-      attr_reader :controller, :user, :per_page
+      attr_reader :session, :user, :per_page
 
-      def initialize(controller, user)
-        @controller = controller
+      def initialize(session, user)
+        @session = session
         @user = user
         @per_page = ApplicationConfig.telegram_edit_per_page
       end
@@ -31,14 +31,14 @@ module Telegram
       end
 
       def save_pagination_context(pagination)
-        controller.session[:edit_pagination] = {
+        session[:edit_pagination] = {
           current_page: pagination[:current_page],
           total_pages: pagination[:total_pages]
         }
       end
 
       def validate_page(page)
-        pagination_context = controller.session[:edit_pagination]
+        pagination_context = session[:edit_pagination]
         return false unless pagination_context
 
         valid_page?(page, pagination_context[:total_pages])

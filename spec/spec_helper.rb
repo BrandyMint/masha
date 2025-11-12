@@ -24,7 +24,6 @@ end
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
-
 # ResqueSpec.disable_ext = true
 
 RSpec.configure do |config|
@@ -84,8 +83,8 @@ RSpec.configure do |config|
 
   # Добавляем методы для доступа к fixtures
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ActiveJob::TestHelper
 
-  
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.

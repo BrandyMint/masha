@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class BaseCommand
+  include FormatHelpers
+
+  NOTIFY_MESSAGE_INPUT = :notify_message_input
+
   # Context constants
   NEW_PROJECT_SLUG_INPUT = :new_project_slug_input
 
@@ -31,7 +35,7 @@ class BaseCommand
   end
 
   def current_user
-    controller.send(:current_user)
+    telegram_user.user
   end
 
   def save_context(*args)
@@ -44,16 +48,6 @@ class BaseCommand
 
   def call(*args)
     raise NotImplementedError, 'Subclass must implement #call method'
-  end
-
-  # Метод для объединения нескольких строк в одну с переносами
-  def multiline(*args)
-    args.flatten.map(&:to_s).join("\n")
-  end
-
-  # Метод для форматирования текста в блок кода
-  def code(text)
-    multiline '```', text, '```'
   end
 
   # Метод для форматирования информации о пользователе
