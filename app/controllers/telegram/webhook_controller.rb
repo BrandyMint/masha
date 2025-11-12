@@ -18,18 +18,13 @@ module Telegram
     # raise NotAvailableInPublicChat unless personal_chat?
     # end
 
-    use_session!
-
     # use callbacks like in any other controllers
     around_action :with_locale
 
     # Core message handlers
-    def message(message)
-      text = if message.is_a?(String)
-               message.strip
-             else
-               message['text']&.strip
-             end
+    def message(payload)
+      raise "message не может передаваться строкой, это нарушает спецификацию gem telegram-bot" if payload.is_a?(String)
+      text = payload.fetch( 'text' )&.strip
 
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if text.blank?
 

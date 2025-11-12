@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseCommand
+  NOTIFY_MESSAGE_INPUT = :notify_message_input
+
   # Context constants
   NEW_PROJECT_SLUG_INPUT = :new_project_slug_input
 

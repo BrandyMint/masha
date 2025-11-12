@@ -3,25 +3,30 @@
 require 'spec_helper'
 
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
+  # Helper to set up controller mocks for Telegram user
+  def setup_telegram_user_mocks(telegram_user)
+    allow(controller).to receive(:chat) do
+      {
+        'id' => telegram_user.id,
+        'first_name' => telegram_user.first_name,
+        'last_name' => telegram_user.last_name,
+        'username' => telegram_user.username
+      }
+    end
+
+    allow(controller).to receive(:from) do
+      { 'id' => telegram_user.id }
+    end
+
+    controller.instance_variable_set(:@telegram_user, nil)
+  end
+
   context 'authenticated user with projects' do
     let(:telegram_user) { telegram_users(:telegram_clean_user) }
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays projects header' do
@@ -47,20 +52,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'responds to /projects command without errors' do
@@ -85,20 +77,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays project with client information' do
@@ -117,20 +96,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays all owned projects' do
@@ -145,20 +111,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays only projects where user is member' do
@@ -173,20 +126,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays projects where user is viewer' do
@@ -200,20 +140,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays all accessible projects regardless of role' do
@@ -229,20 +156,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'displays only active (non-archived) projects' do
@@ -258,20 +172,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       let(:from_id) { telegram_user.id }
 
       before(:each) do
-        allow(controller).to receive(:chat) do
-          {
-            'id' => telegram_user.id,
-            'first_name' => telegram_user.first_name,
-            'last_name' => telegram_user.last_name,
-            'username' => telegram_user.username
-          }
-        end
-
-        allow(controller).to receive(:from) do
-          { 'id' => telegram_user.id }
-        end
-
-        controller.instance_variable_set(:@telegram_user, nil)
+        setup_telegram_user_mocks(telegram_user)
       end
 
       it 'handles very long project names gracefully' do
@@ -286,20 +187,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       let(:from_id) { telegram_user.id }
 
       before(:each) do
-        allow(controller).to receive(:chat) do
-          {
-            'id' => telegram_user.id,
-            'first_name' => telegram_user.first_name,
-            'last_name' => telegram_user.last_name,
-            'username' => telegram_user.username
-          }
-        end
-
-        allow(controller).to receive(:from) do
-          { 'id' => telegram_user.id }
-        end
-
-        controller.instance_variable_set(:@telegram_user, nil)
+        setup_telegram_user_mocks(telegram_user)
       end
 
       it 'handles special characters in project names' do
@@ -314,20 +202,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       let(:from_id) { telegram_user.id }
 
       before do
-        allow(controller).to receive(:chat) do
-          {
-            'id' => telegram_user.id,
-            'first_name' => telegram_user.first_name,
-            'last_name' => telegram_user.last_name,
-            'username' => telegram_user.username
-          }
-        end
-
-        allow(controller).to receive(:from) do
-          { 'id' => telegram_user.id }
-        end
-
-        controller.instance_variable_set(:@telegram_user, nil)
+        setup_telegram_user_mocks(telegram_user)
         client.destroy
       end
 
@@ -344,20 +219,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:from_id) { telegram_user.id }
 
     before(:each) do
-      allow(controller).to receive(:chat) do
-        {
-          'id' => telegram_user.id,
-          'first_name' => telegram_user.first_name,
-          'last_name' => telegram_user.last_name,
-          'username' => telegram_user.username
-        }
-      end
-
-      allow(controller).to receive(:from) do
-        { 'id' => telegram_user.id }
-      end
-
-      controller.instance_variable_set(:@telegram_user, nil)
+      setup_telegram_user_mocks(telegram_user)
     end
 
     it 'responds with empty projects message' do
