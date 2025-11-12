@@ -135,7 +135,12 @@
       "Bash(pg_isready:*)",
       "Bash(sudo:*)",
       "Bash(RAILS_ENV=test DATABASE_URL=postgres://testuser2@localhost:5432/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rspec:*)",
-      "Bash(docker run:*)"
+      "Bash(docker run:*)",
+      "Bash(docker exec:*)",
+      "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5433/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rspec:*)",
+      "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5433/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rails:*)",
+      "Bash(docker ps:*)",
+      "Bash(netstat:*)"
     ],
     "deny": [],
     "ask": []

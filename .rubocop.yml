@@ -9,6 +9,7 @@ AllCops:
     - db/*schema.rb
     - db/migrate/*
     - bin/*
+    - vendor/**/*
 
 Metrics/MethodLength:
   Enabled: false
