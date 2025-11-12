@@ -21,3 +21,5 @@ History favors brief imperative commit summaries (often Russian) such as “БО
 
 ## Security & Configuration Tips
 Secrets live in `config/application.yml` and `config/master.key`; never commit regenerated keys—request them from maintainers. When testing Telegram webhooks, use temporary tunnels locally and re-run `rake telegram:bot:set_webhook RAILS_ENV=production` after deployment.
+
+Все ответы на РУССКОМ языке.

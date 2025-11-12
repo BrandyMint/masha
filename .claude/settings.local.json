@@ -127,7 +127,15 @@
       "WebFetch(domain:)",
       "Bash(set:*)",
       "Bash(set -e HTTP_PROXY:*)",
-      "Bash(env:*)"
+      "Bash(env:*)",
+      "Bash(RAILS_ENV=test bin/rspec:*)",
+      "Bash(RAILS_ENV=test bin/rails:*)",
+      "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5432/masha_test REDIS_URL=redis://localhost:6379/0 bin/rspec:*)",
+      "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5432/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rspec:*)",
+      "Bash(pg_isready:*)",
+      "Bash(sudo:*)",
+      "Bash(RAILS_ENV=test DATABASE_URL=postgres://testuser2@localhost:5432/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rspec:*)",
+      "Bash(docker run:*)"
     ],
     "deny": [],
     "ask": []
