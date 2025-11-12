@@ -2,6 +2,7 @@
 
 class ProjectsCommand < BaseCommand
   def call(_data = nil, *)
+    return respond_with :message, text: 'Вы не аваторизованы для работы с клиентами' if current_user.blank?
     projects = current_user.available_projects.alive.includes(:client)
 
     if projects.empty?

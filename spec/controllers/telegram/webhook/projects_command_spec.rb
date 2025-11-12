@@ -3,6 +3,9 @@
 require 'spec_helper'
 
 RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegram_bot_controller do
+  include_context 'telegram webhook base'
+  include_context 'authenticated user'
+
   # Helper to set up controller mocks for Telegram user
   context 'authenticated user with projects' do
     let(:telegram_user) { telegram_users(:telegram_clean_user) }

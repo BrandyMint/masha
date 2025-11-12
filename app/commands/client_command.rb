@@ -3,7 +3,9 @@
 class ClientCommand < BaseCommand
   # Декларируем контекстные методы, которые эта команда предоставляет контроллеру
   provides_context_methods ADD_CLIENT_NAME, ADD_CLIENT_KEY, EDIT_CLIENT_NAME
+
   def call(subcommand = nil, *args)
+    return respond_with :message, text: 'Вы не аваторизованы для работы с клиентами' if current_user.blank?
     # Если нет аргументов, покажем список клиентов
     return show_clients_list if subcommand.blank?
 
