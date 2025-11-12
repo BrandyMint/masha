@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EditCommand < BaseCommand
-  include  FormatHelpers
+  include FormatHelpers
 
   provides_context_methods EDIT_SELECT_TIME_SHIFT_INPUT, EDIT_HOURS_INPUT, EDIT_DESCRIPTION_INPUT
 
@@ -27,13 +27,13 @@ class EditCommand < BaseCommand
     reply_markup = pagination_service.build_keyboard(result[:pagination])
 
     respond_with :message,
-      text: multiline(
-        text,
-        nil,
-        'Введите ID записи, которую хотите редактировать:'
-      ),
-      reply_markup:,
-      parse_mode: :Markdown
+                 text: multiline(
+                   text,
+                   nil,
+                   'Введите ID записи, которую хотите редактировать:'
+                 ),
+                 reply_markup:,
+                 parse_mode: :Markdown
   end
 
   def edit_select_time_shift_input(time_shift_id, *)
@@ -122,7 +122,7 @@ class EditCommand < BaseCommand
     end
 
     # Save time shift to session using TelegramSession
-    telegram_session = TelegramSession.edit(
+    TelegramSession.edit(
       time_shift_id: time_shift.id
     )
 
@@ -137,7 +137,7 @@ class EditCommand < BaseCommand
       return
     end
 
-    self.telegram_session[:field] = field
+    telegram_session[:field] = field
 
     case field
     when 'project'
@@ -192,15 +192,15 @@ class EditCommand < BaseCommand
       'Что хотите изменить?'
 
     respond_with :message,
-      text: text,
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '📁 Проект', callback_data: 'edit_field:project' }],
-          [{ text: '⏰ Часы', callback_data: 'edit_field:hours' }],
-          [{ text: '📝 Описание', callback_data: 'edit_field:description' }],
-          [{ text: '❌ Отмена', callback_data: 'edit_field:cancel' }]
-        ]
-      }
+                 text: text,
+                 reply_markup: {
+                   inline_keyboard: [
+                     [{ text: '📁 Проект', callback_data: 'edit_field:project' }],
+                     [{ text: '⏰ Часы', callback_data: 'edit_field:hours' }],
+                     [{ text: '📝 Описание', callback_data: 'edit_field:description' }],
+                     [{ text: '❌ Отмена', callback_data: 'edit_field:cancel' }]
+                   ]
+                 }
   end
 
   def show_project_selection
@@ -219,8 +219,8 @@ class EditCommand < BaseCommand
     end
 
     edit_message :text,
-      text: text,
-      reply_markup: { inline_keyboard: inline_keyboard }
+                 text: text,
+                 reply_markup: { inline_keyboard: inline_keyboard }
   end
 
   def show_hours_input
@@ -247,13 +247,13 @@ class EditCommand < BaseCommand
     # Контекст будет установлен через callback_query автоматически
 
     respond_with :message,
-      text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",
-      reply_markup: {
-        inline_keyboard: [
-          [{ text: '✅ Сохранить', callback_data: 'edit_confirm:save' }],
-          [{ text: '❌ Отмена', callback_data: 'edit_confirm:cancel' }]
-        ]
-      }
+                 text: "Подтвердите изменения:\n\n#{changes.join("\n")}\n\nСохранить?",
+                 reply_markup: {
+                   inline_keyboard: [
+                     [{ text: '✅ Сохранить', callback_data: 'edit_confirm:save' }],
+                     [{ text: '❌ Отмена', callback_data: 'edit_confirm:cancel' }]
+                   ]
+                 }
   end
 
   def update_time_shift(time_shift, field, new_values)
@@ -285,5 +285,4 @@ def build_changes_text(time_shift, field, new_values)
   else
     ['Ошибка: неизвестное поле для редактирования']
   end
-
 end

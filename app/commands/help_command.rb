@@ -48,6 +48,7 @@ class HelpCommand < BaseCommand
 
     multiline(commands)
   end
+
   private
 
   # Public methods needed by BaseCommand

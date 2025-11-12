@@ -70,9 +70,8 @@ class AdduserCommand < BaseCommand
   private
 
   def show_manageable_projects
-    if current_user.nil?
-      return respond_with :message, text: 'У Вас пока нет проектов'
-    end
+    return respond_with :message, text: 'У Вас пока нет проектов' if current_user.nil?
+
     manageable_projects = current_user.available_projects.alive.joins(:memberships)
                                       .where(memberships: { user: current_user, role_cd: 0 })
 

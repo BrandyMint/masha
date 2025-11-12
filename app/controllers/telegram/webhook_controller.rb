@@ -23,8 +23,9 @@ module Telegram
 
     # Core message handlers
     def message(payload)
-      raise "message не может передаваться строкой, это нарушает спецификацию gem telegram-bot" if payload.is_a?(String)
-      text = payload.fetch( 'text' )&.strip
+      raise 'message не может передаваться строкой, это нарушает спецификацию gem telegram-bot' if payload.is_a?(String)
+
+      text = payload.fetch('text')&.strip
 
       return respond_with(:message, text: 'Я не Алиса, мне нужна конкретика. Жми /help') if text.blank?
 

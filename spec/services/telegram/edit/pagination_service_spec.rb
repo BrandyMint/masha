@@ -75,9 +75,9 @@ RSpec.describe Telegram::Edit::PaginationService do
       service.save_pagination_context(pagination)
 
       expect(session[:edit_pagination]).to eq({
-                                                           current_page: 2,
-                                                           total_pages: 5
-                                                         })
+                                                current_page: 2,
+                                                total_pages: 5
+                                              })
     end
   end
 
