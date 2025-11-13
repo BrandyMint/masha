@@ -24,6 +24,7 @@ class Project < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :alive, -> { where(active: true) }
   scope :archive, -> { where(active: false) }
+  scope :alphabetically, -> { order(slug: :asc) }
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true,
@@ -54,6 +55,46 @@ class Project < ApplicationRecord
 
   def archivate
     update_attribute(:active, false)
+  end
+
+  def can_be_managed_by?(user)
+    memberships.where(user: user, role: 'owner').exists?
+  end
+
+  def client_name_for_display
+    client&.name || I18n.t('commands.projects.menu.no_client')
+  end
+
+  def deletion_stats
+    {
+      time_shifts_count: time_shifts.count,
+      memberships_count: memberships.count,
+      invites_count: invites.count
+    }
+  end
+
+  def self.generate_unique_slug(base_name)
+    # Генерируем базовый slug из названия
+    base_slug = Russian.translit(base_name.to_s)
+                       .downcase
+                       .strip
+                       .gsub(/[^\w\s-]/, '')  # Удаляем спецсимволы
+                       .gsub(/\s+/, '-')      # Пробелы в дефисы
+                       .gsub(/-+/, '-')       # Множественные дефисы в один
+                       .gsub(/^-|-$/, '')     # Дефисы в начале и конце
+                       .slice(0, 15)          # Ограничение до 15 символов
+
+    # Проверяем уникальность
+    return base_slug unless Project.exists?(slug: base_slug)
+
+    # Добавляем суффикс если slug занят
+    (1..100).each do |i|
+      candidate_slug = "#{base_slug.slice(0, 13)}-#{i}"[0..14]
+      return candidate_slug unless Project.exists?(slug: candidate_slug)
+    end
+
+    # Если не получилось найти уникальный (очень маловероятно)
+    nil
   end
 
   private

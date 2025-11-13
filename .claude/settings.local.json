@@ -140,7 +140,10 @@
       "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5433/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rspec:*)",
       "Bash(RAILS_ENV=test DATABASE_URL=postgres://postgres:postgres@localhost:5433/masha_test REDIS_URL=redis://localhost:6379/0 bundle exec rails:*)",
       "Bash(docker ps:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(/home/danil/code/mashtime.ru/app/services/project_rename_service.rb )",
+      "Bash(/home/danil/code/mashtime.ru/app/commands/rename_command.rb )",
+      "Bash(/home/danil/code/mashtime.ru/spec/controllers/telegram/webhook/rename_command_spec.rb)"
     ],
     "deny": [],
     "ask": []

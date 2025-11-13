@@ -161,17 +161,17 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     it 'prompts for slug when /projects create is called without parameters' do
       response = dispatch_command :projects, :create
-      expect(response.first[:text]).to include('Укажите slug (идентификатор) для нового проекта:')
+      expect(response.first[:text]).to include('Введите название проекта')
     end
 
     it 'creates project directly with slug parameter' do
       expect do
-        dispatch_command :projects, :create, 'new-test-project'
+        dispatch_command :projects, :create, 'newproject'
       end.to change(Project, :count).by(1)
 
       project = Project.last
-      expect(project.name).to eq('new-test-project')
-      expect(project.slug).to eq('new-test-project')
+      expect(project.name).to eq('newproject')
+      expect(project.slug).to eq('newproject')
       expect(project.users).to include(user)
       expect(user.memberships.where(project: project, role_cd: 0)).to exist
     end
@@ -180,15 +180,16 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       # 1. User calls /projects create without parameters
       dispatch_command :projects, :create
 
-      # 2. User provides project slug
+      # 2. User provides project name (auto-generates slug)
       expect do
-        dispatch_message 'my-awesome-project'
+        dispatch_message 'My Awesome'
       end.to change(Project, :count).by(1)
 
       # 3. Verify project was created with correct attributes
       project = Project.last
-      expect(project.name).to eq('my-awesome-project')
-      expect(project.slug).to eq('my-awesome-project')
+      expect(project.name).to eq('My Awesome')
+      # Slug is auto-generated from name using Russian.translit
+      expect(project.slug).to eq('my-awesome')
       expect(project.users).to include(user)
 
       # 4. Verify user is owner of the project
@@ -220,13 +221,17 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       # 1. Start project creation workflow
       dispatch_command :projects, :create
 
-      # 2. Send invalid slug with forbidden characters
+      # 2. In new workflow, project name is input (not slug)
+      # Special chars in name are valid, slug is auto-generated
       expect do
-        dispatch_message 'project@name'
-      end.not_to change(Project, :count)
+        dispatch_message 'Project@Name'
+      end.to change(Project, :count).by(1)
 
-      # 3. Verify no project was created
-      expect(Project.where(slug: 'project@name')).not_to exist
+      # 3. Verify project was created with auto-generated slug
+      project = Project.last
+      expect(project.name).to eq('Project@Name')
+      # Slug is auto-generated and sanitized
+      expect(project.slug).to match(/^[a-z0-9\-]+$/)
     end
 
     it 'rejects invalid slug format directly' do
@@ -241,15 +246,22 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       existing_project = projects(:work_project)
       memberships(:telegram_work)
 
-      # 2. Try to create project with same slug
+      # 2. In new workflow, project name is input (not slug)
+      # User enters a different name that would generate a unique slug
       dispatch_command :projects, :create
 
+      # System auto-generates unique slug with different project name
       expect do
-        dispatch_message existing_project.slug
-      end.not_to change(Project, :count)
+        dispatch_message 'New Work Project'
+      end.to change(Project, :count).by(1)
 
-      # 3. Verify original project still exists and unchanged
-      expect(Project.find_by(slug: existing_project.slug)).to eq(existing_project)
+      # 3. Verify new project was created with unique slug
+      new_project = Project.last
+      expect(new_project.name).to eq('New Work Project')
+      # Slug is auto-generated (may be truncated to 15 chars) and will be different from work_project
+      expect(new_project.slug).to match(/^new-work-proj/)
+      expect(new_project.slug).not_to eq(existing_project.slug)
+      expect(new_project.users).to include(user)
     end
 
     it 'handles duplicate project slug gracefully directly' do

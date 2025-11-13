@@ -32,7 +32,6 @@ class HelpCommand < BaseCommand
     ]
 
     # Deprecated:
-    #'/rename [project_slug] "Новое название" - Переименовать проект (только для владельцев)',
     #'/attach {projects_slug} - Указать проект этого чата',
     #'/reset - Сбросить сессию и контекст',
     # Add developer commands if user is developer
