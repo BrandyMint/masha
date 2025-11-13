@@ -310,34 +310,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
   end
 
-  context 'deprecated /client command' do
-    let(:user) { users(:user_with_telegram) }
-    let(:telegram_user) { telegram_users(:telegram_regular) }
-    let(:from_id) { telegram_user.id }
-
-    include_context 'authenticated user'
-
-    context 'backward compatibility' do
-      it 'shows deprecation warning when using /client' do
-        expect { dispatch_command :client }.not_to raise_error
-      end
-
-      it 'still shows clients list with deprecated /client command' do
-        clients(:testclient)
-
-        expect { dispatch_command :client }.not_to raise_error
-      end
-
-      it 'handles subcommands with deprecated /client' do
-        expect { dispatch_command :client, 'add' }.not_to raise_error
-      end
-
-      it 'shows help with deprecated /client command' do
-        expect { dispatch_command :client, 'help' }.not_to raise_error
-      end
-    end
-  end
-
   context 'unauthenticated user' do
     let(:from_id) { 12_345 }
 
@@ -347,10 +319,6 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
     it 'shows access denied for clients operations without errors' do
       expect { dispatch_command :clients, 'show', 'test' }.not_to raise_error
-    end
-
-    it 'shows access denied for deprecated command without errors' do
-      expect { dispatch_command :client }.not_to raise_error
     end
 
     it 'shows help for unauthenticated user without errors' do

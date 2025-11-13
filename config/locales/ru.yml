@@ -108,7 +108,6 @@ ru:
         usage_format_remove: "• /rate remove project_name @username"
         usage_example: "💡 Пример: /rate Website @john_doe 50 USD"
       clients:
-        deprecated_warning: "⚠️ Команда /client переименована в /clients. Пожалуйста, используйте /clients в будущем."
         help_title: "🏢 Управление клиентами (компаниями)"
         help_commands_title: "📝 Доступные команды:"
         help_list: "• /clients - показать список ваших клиентов"
