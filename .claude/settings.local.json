@@ -143,7 +143,9 @@
       "Bash(netstat:*)",
       "Bash(/home/danil/code/mashtime.ru/app/services/project_rename_service.rb )",
       "Bash(/home/danil/code/mashtime.ru/app/commands/rename_command.rb )",
-      "Bash(/home/danil/code/mashtime.ru/spec/controllers/telegram/webhook/rename_command_spec.rb)"
+      "Bash(/home/danil/code/mashtime.ru/spec/controllers/telegram/webhook/rename_command_spec.rb)",
+      "Bash(git restore:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []
