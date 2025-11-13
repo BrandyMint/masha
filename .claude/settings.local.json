@@ -145,7 +145,8 @@
       "Bash(/home/danil/code/mashtime.ru/app/commands/rename_command.rb )",
       "Bash(/home/danil/code/mashtime.ru/spec/controllers/telegram/webhook/rename_command_spec.rb)",
       "Bash(git restore:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []
