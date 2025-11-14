@@ -4,6 +4,12 @@ SEMVER=`${SEMVER_BIN}`
 # Default target
 release: patch-release
 
+lint:
+	./bin/rubocop -a
+	./bin/rubocop --auto-gen-config
+	git add .
+	git commit -m lint
+
 # Процесс релиза:
 # 1. generate-changelog: генерирует CHANGELOG.md на основе изменений между тегами
 # 2. bump-patch-with-changelog: увеличивает версию и коммитит её вместе с CHANGELOG.md

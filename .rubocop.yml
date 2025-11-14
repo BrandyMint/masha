@@ -5,6 +5,7 @@ plugins: rubocop-rails
 Rails:
   Enabled: true
 AllCops:
+  NewCops: enable
   Exclude:
     - db/*schema.rb
     - db/migrate/*

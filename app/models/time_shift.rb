@@ -4,6 +4,7 @@
 # привязку к проекту и пользователю. Отправляет уведомления при создании.
 class TimeShift < ApplicationRecord
   include Authority::Abilities
+
   self.authorizer_name = 'TimeShiftAuthorizer'
 
   scope :ordered, -> { order 'date desc, created_at desc' }

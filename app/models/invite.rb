@@ -4,6 +4,7 @@
 # при регистрации пользователя.
 class Invite < ApplicationRecord
   include Authority::Abilities
+
   self.authorizer_name = 'InviteAuthorizer'
 
   belongs_to :user

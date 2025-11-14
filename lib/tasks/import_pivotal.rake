@@ -14,7 +14,7 @@ namespace :masha do
   namespace :import do
     desc 'Импортируем данные из пивотала (file_to_import=./pivotal.csv)'
     task pivotal: :environment do
-      file_to_import = ENV['file_to_import'] or raise 'Не указан файл для импорта (file_to_import)'
+      file_to_import = ENV.fetch('file_to_import', nil) or raise 'Не указан файл для импорта (file_to_import)'
 
       CSV.foreach file_to_import do |row|
         date, _, _, person_id, project_id, hours, description = row

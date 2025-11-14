@@ -186,10 +186,10 @@ class EditCommand < BaseCommand
   def show_field_selection(time_shift)
     description = time_shift.description || '(нет)'
     text = "Запись ##{time_shift.id}:\n" \
-      "Проект: #{time_shift.project.name}\n" \
-      "Часы: #{time_shift.hours}\n" \
-      "Описание: #{description}\n\n" \
-      'Что хотите изменить?'
+           "Проект: #{time_shift.project.name}\n" \
+           "Часы: #{time_shift.hours}\n" \
+           "Описание: #{description}\n\n" \
+           'Что хотите изменить?'
 
     respond_with :message,
                  text: text,

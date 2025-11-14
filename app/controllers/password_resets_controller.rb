@@ -7,6 +7,17 @@ class PasswordResetsController < ApplicationController
     @email_form = EmailForm.new
   end
 
+  def edit
+    @user = User.load_from_reset_password_token(params[:id])
+    @token = params[:id]
+
+    if @user.blank?
+      not_authenticated
+      return
+    end
+    @password_form = PasswordChangeForm.new
+  end
+
   def create
     @email_form = EmailForm.new params.require(:email_form).permit(:email)
 
@@ -17,17 +28,6 @@ class PasswordResetsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def edit
-    @user = User.load_from_reset_password_token(params[:id])
-    @token = params[:id]
-
-    if @user.blank?
-      not_authenticated
-      return
-    end
-    @password_form = PasswordChangeForm.new
   end
 
   def update

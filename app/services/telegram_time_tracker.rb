@@ -2,6 +2,7 @@
 
 class TelegramTimeTracker
   include Telegram::Concerns::ValidationsConcern
+
   def initialize(telegram_user, text)
     @user = telegram_user.user
     @telegram_user = telegram_user

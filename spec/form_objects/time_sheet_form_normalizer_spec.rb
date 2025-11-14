@@ -5,6 +5,7 @@ require 'spec_helper'
 describe TimeSheetFormNormalizer do
   include Rack::Test::Methods
   include ActionDispatch::TestProcess::FixtureFile
+
   subject { described_class }
 
   describe 'Нормализация формата даты' do

@@ -70,7 +70,7 @@ module Telegram
 
     def respond_with(*args)
       Rails.logger.info "respond_with: #{args}"
-      super(*args)
+      super
     end
 
     def universal_command!(*_args)
@@ -79,8 +79,8 @@ module Telegram
 
     private
 
-    def with_locale(&block)
-      I18n.with_locale(current_locale, &block)
+    def with_locale(&)
+      I18n.with_locale(current_locale, &)
     end
 
     # def action_for_command(cmd)

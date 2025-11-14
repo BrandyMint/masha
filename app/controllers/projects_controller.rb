@@ -12,8 +12,18 @@ class ProjectsController < ApplicationController
     super
   end
 
+  def show
+    redirect_to new_time_shift_url(time_shift: { project_id: params[:id] })
+  end
+
   def new
     @project = Project.new
+  end
+
+  def edit
+    @project = Project.find(params[:id])
+    authorize_action_for(@project)
+    super
   end
 
   def create
@@ -26,16 +36,6 @@ class ProjectsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    redirect_to new_time_shift_url(time_shift: { project_id: params[:id] })
-  end
-
-  def edit
-    @project = Project.find(params[:id])
-    authorize_action_for(@project)
-    super
   end
 
   def update

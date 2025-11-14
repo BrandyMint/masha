@@ -17,11 +17,11 @@ class Reporter
     title = build_period_title(result[:period])
     columns = [:total] + result[:projects].to_a
     table = Terminal::Table.new title: title do |t|
-      t << [''] + columns.map(&:to_s)
+      t << ([''] + columns.map(&:to_s))
       t << :separator
 
       (result[:users].to_a + [:total]).each do |user|
-        t << [user] + columns.map { |c| result[:matrix].fetch(c, {}).fetch(user, '·') }
+        t << ([user] + columns.map { |c| result[:matrix].fetch(c, {}).fetch(user, '·') })
       end
     end
 
@@ -67,22 +67,22 @@ class Reporter
 
   def tableize_list_by_days(result)
     table = Terminal::Table.new do |t|
-      t << %i[date total] + result[:columns].map(&:name)
+      t << (%i[date total] + result[:columns].map(&:name))
       t << :separator
 
       result[:days].each do |day|
         row = []
         row << day[:date].to_s
-        row << result[:total_by_date][day[:date]] || 0
+        (row << result[:total_by_date][day[:date]]) || 0
 
         row += result[:columns].map { |r| day[:columns][r.id] || '·' }
         t << row
       end
 
       t << :separator
-      t << ['All days', result[:total_by_date].values.compact.sum] + result[:columns].map { |c|
+      t << (['All days', result[:total_by_date].values.compact.sum] + result[:columns].map do |c|
         result[:total_by_column][c.to_s]
-      }
+      end)
     end
 
     table.columns.count.times { |i| table.align_column(i, :right) }

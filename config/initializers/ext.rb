@@ -5,8 +5,8 @@ module SimpleForm
     class Base
       protected
 
-      def arbre(assigns, &block)
-        Arbre::Context.new assigns, template, &block
+      def arbre(assigns, &)
+        Arbre::Context.new(assigns, template, &)
       end
     end
   end

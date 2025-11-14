@@ -60,7 +60,7 @@ class SummaryQuery
 
   def to_csv
     CSV.generate(col_sep: ';') do |csv|
-      csv << ['date'] + columns + ['total']
+      csv << (['date'] + columns + ['total'])
       days.each do |day|
         row = [day[:date]]
         columns.each do |column|
@@ -106,8 +106,8 @@ class SummaryQuery
     case period
     when 'week' then (Time.zone.today - 6)..Time.zone.today
     when 'month' then Time.zone.today.beginning_of_month..Time.zone.today
-    when 'last_month' then (Time.zone.today - 1.month).beginning_of_month..(Time.zone.today - 1.month).end_of_month
-    when 'last_week' then (Time.zone.today - 1.week).beginning_of_week..(Time.zone.today - 1.week).end_of_week
+    when 'last_month' then (Time.zone.today - 1.month).all_month
+    when 'last_week' then (Time.zone.today - 1.week).all_week
     when 'last_day' then (Time.zone.today - 1.day)..(Time.zone.today - 1.day)
     when 'day' then Time.zone.today..Time.zone.today
     when Hash then build_period_from_hash(period)
@@ -133,7 +133,7 @@ class SummaryQuery
   def build_period_from_hash(period_hash)
     case period_hash[:type]
     when :date then period_hash[:date]..period_hash[:date]
-    when :month then period_hash[:date].beginning_of_month..period_hash[:date].end_of_month
+    when :month then period_hash[:date].all_month
     when :range then period_hash[:start_date]..period_hash[:end_date]
     when :month_range then period_hash[:start_date]..period_hash[:end_date].end_of_month
     end

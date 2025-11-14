@@ -44,8 +44,8 @@ class BaseCommand
     telegram_user.user
   end
 
-  def save_context(*args)
-    controller.send(:save_context, *args)
+  def save_context(*)
+    controller.send(:save_context, *)
   end
 
   def initialize(controller)

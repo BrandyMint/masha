@@ -45,13 +45,13 @@ RSpec.describe SummaryQuery do
 
       it 'builds last_month period' do
         result = query.send(:build_period, 'last_month')
-        expected = (today - 1.month).beginning_of_month..(today - 1.month).end_of_month
+        expected = (today - 1.month).all_month
         expect(result).to eq(expected)
       end
 
       it 'builds last_week period' do
         result = query.send(:build_period, 'last_week')
-        expected = (today - 1.week).beginning_of_week..(today - 1.week).end_of_week
+        expected = (today - 1.week).all_week
         expect(result).to eq(expected)
       end
 
@@ -77,7 +77,7 @@ RSpec.describe SummaryQuery do
         month_date = today.beginning_of_month
         month_hash = { type: :month, date: month_date }
         result = query.send(:build_period, month_hash)
-        expect(result).to eq(month_date.beginning_of_month..month_date.end_of_month)
+        expect(result).to eq(month_date.all_month)
       end
 
       it 'builds range period' do

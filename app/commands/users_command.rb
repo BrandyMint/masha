@@ -3,16 +3,16 @@
 class UsersCommand < BaseCommand
   provides_context_methods :users_add_project, :users_add_username_input
 
-  def call(action = nil, *args)
+  def call(action = nil, *)
     case action
     when nil, 'list'
       show_project_users
     when 'all'
       show_all_users
     when 'add'
-      users_add(*args)
+      users_add(*)
     when 'remove'
-      users_remove(*args)
+      users_remove(*)
     when 'help'
       show_users_help
     else

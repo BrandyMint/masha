@@ -118,7 +118,7 @@ namespace :analyze do
 
       files.each do |file|
         content = File.read(file)
-        total_creates += content.scan(/create\(/).length
+        total_creates += content.scan('create(').length
       end
 
       puts "  #{type}: #{files.length} файлов, #{total_creates} create()"

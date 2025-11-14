@@ -3,7 +3,7 @@
 class ApplicationDecorator < Draper::Decorator
   private
 
-  def arbre(assignes = {}, &block)
-    Arbre::Context.new assignes, helpers, &block
+  def arbre(assignes = {}, &)
+    Arbre::Context.new(assignes, helpers, &)
   end
 end

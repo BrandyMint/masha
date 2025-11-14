@@ -6,7 +6,7 @@ class TimeShiftDecorator < Draper::Decorator
   def tr_class
     if object.updated_at != object.created_at
       :warning
-    elsif object.updated_at > Time.zone.now - 1.minute
+    elsif object.updated_at > 1.minute.ago
       :success
     end
   end

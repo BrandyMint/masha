@@ -7,8 +7,8 @@ class NotifyCommand < BaseCommand
   MAX_MESSAGE_LENGTH = 4000
 
   # Shortcut for telegram command translations
-  def t(key, **options)
-    super("telegram.#{key}", **options)
+  def t(key, **)
+    super("telegram.#{key}", **)
   end
 
   provides_context_methods NOTIFY_MESSAGE_INPUT

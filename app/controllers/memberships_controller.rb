@@ -51,19 +51,19 @@ class MembershipsController < ApplicationController
     end
   end
 
-  def destroy
-    @membership = Membership.find params[:id]
-    authorize_action_for(@membership)
-    @membership.destroy
-
-    redirect_to project_memberships_url(parent)
-  end
-
   def update
     @membership = Membership.find params[:id]
     authorize_action_for(@membership)
     @membership.role = membership_params[:role]
     @membership.save!
+
+    redirect_to project_memberships_url(parent)
+  end
+
+  def destroy
+    @membership = Membership.find params[:id]
+    authorize_action_for(@membership)
+    @membership.destroy
 
     redirect_to project_memberships_url(parent)
   end

@@ -39,6 +39,20 @@ class TimeShiftsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to time_shifts_url
+  end
+
+  def new
+    @time_shift = TimeShift.new default_time_shift_form
+    render layout: 'static'
+  end
+
+  def edit
+    @time_shift = TimeShift.find params[:id]
+    authorize_action_for(@time_shift)
+  end
+
   def create
     super do |success, _error|
       success.html do
@@ -49,25 +63,11 @@ class TimeShiftsController < ApplicationController
     end
   end
 
-  def new
-    @time_shift = TimeShift.new default_time_shift_form
-    render layout: 'static'
-  end
-
   def destroy
     @time_shift = TimeShift.find params[:id]
     authorize_action_for(@time_shift)
     @time_shift.destroy
 
-    redirect_to time_shifts_url
-  end
-
-  def edit
-    @time_shift = TimeShift.find params[:id]
-    authorize_action_for(@time_shift)
-  end
-
-  def show
     redirect_to time_shifts_url
   end
 

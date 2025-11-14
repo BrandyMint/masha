@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  def new
+    @session = SessionForm.new params[:session_form]
+  end
+
   def create
     @session = SessionForm.new params[:session_form]
     user = login @session.email, @session.password, @session.remember_me
@@ -16,9 +20,5 @@ class SessionsController < ApplicationController
   def destroy
     logout
     redirect_to root_url
-  end
-
-  def new
-    @session = SessionForm.new params[:session_form]
   end
 end

@@ -6,13 +6,13 @@ module Owner
 
     inherit_resources
 
+    def show
+      redirect_to users_url
+    end
+
     def edit
       @projects = Project.all
       super
-    end
-
-    def show
-      redirect_to users_url
     end
 
     private
