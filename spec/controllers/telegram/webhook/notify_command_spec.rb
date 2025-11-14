@@ -39,7 +39,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         expect(response).not_to be_nil
         # Check that response contains request for message input
-        expect(response.first[:text]).to include(I18n.t('commands.notify.prompts.enter_message'))
+        expect(response.first[:text]).to include(I18n.t('telegram.commands.notify.prompts.enter_message'))
       end
 
       it 'broadcasts notification when valid message is provided' do
@@ -70,7 +70,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         # 2. Send empty message and check error response
         response = dispatch_message('')
-        expect(response.last[:text]).to include(I18n.t('commands.notify.errors.empty_message'))
+        expect(response.last[:text]).to include(I18n.t('telegram.commands.notify.errors.empty_message'))
       end
 
       it 'rejects too short message' do
@@ -79,7 +79,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         # 2. Send short message and check error response
         response = dispatch_message('х')
-        expect(response.last[:text]).to include(I18n.t('commands.notify.errors.too_short'))
+        expect(response.last[:text]).to include(I18n.t('telegram.commands.notify.errors.too_short'))
       end
 
       it 'rejects too long message' do
@@ -89,7 +89,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         # 2. Send long message and check error response
         long_message = 'a' * 4001
         response = dispatch_message(long_message)
-        expect(response.last[:text]).to include(I18n.t('commands.notify.errors.too_long'))
+        expect(response.last[:text]).to include(I18n.t('telegram.commands.notify.errors.too_long'))
       end
 
       it 'accepts message with minimum valid length' do
@@ -137,7 +137,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     it 'denies access for non-developer user' do
       response = dispatch_command :notify
       expect(response).not_to be_nil
-      expect(response.first[:text]).to include(I18n.t('commands.notify.errors.access_denied'))
+      expect(response.first[:text]).to include(I18n.t('telegram.commands.notify.errors.access_denied'))
     end
 
     it 'does not allow any interaction for non-developer user' do
@@ -158,7 +158,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     it 'denies access for unauthenticated user' do
       response = dispatch_command :notify
       expect(response).not_to be_nil
-      expect(response.first[:text]).to include(I18n.t('commands.notify.errors.access_denied'))
+      expect(response.first[:text]).to include(I18n.t('telegram.commands.notify.errors.access_denied'))
     end
   end
 end
