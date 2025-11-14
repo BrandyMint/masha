@@ -146,7 +146,14 @@
       "Bash(/home/danil/code/mashtime.ru/spec/controllers/telegram/webhook/rename_command_spec.rb)",
       "Bash(git restore:*)",
       "Bash(git mv:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(test:*)",
+      "Bash(for key in cancelled errors.access_denied errors.empty_message errors.too_long errors.too_short prompts.enter_message success)",
+      "Bash(git reset:*)",
+      "Bash(git tag:*)",
+      "Bash(git push:*)",
+      "Bash(while read section)",
+      "Bash(for cmd in app/commands/*_command.rb)"
     ],
     "deny": [],
     "ask": []

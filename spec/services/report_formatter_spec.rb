@@ -155,9 +155,7 @@ RSpec.describe ReportFormatter do
 
         # Should show descriptions (or · for empty ones)
         report_data[:entries].each do |entry|
-          if entry[:description].present?
-            expect(result).to include(entry[:description])
-          end
+          expect(result).to include(entry[:description]) if entry[:description].present?
         end
       end
 
@@ -307,7 +305,7 @@ RSpec.describe ReportFormatter do
 
         # Should use Terminal::Table which produces lines with +, - and |
         result = formatter.format_report
-        expect(result).to match(/[+|\-]/)
+        expect(result).to match(/[+|-]/)
       end
     end
 

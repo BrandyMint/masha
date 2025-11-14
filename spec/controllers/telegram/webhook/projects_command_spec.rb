@@ -231,7 +231,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       project = Project.last
       expect(project.name).to eq('Project@Name')
       # Slug is auto-generated and sanitized
-      expect(project.slug).to match(/^[a-z0-9\-]+$/)
+      expect(project.slug).to match(/^[a-z0-9-]+$/)
     end
 
     it 'rejects invalid slug format directly' do

@@ -37,17 +37,15 @@ class UsersCommand < BaseCommand
       show_users_for_project(projects.first)
     else
       respond_with :message,
-        text: 'Выберите проект для просмотра пользователей:',
-        reply_markup: {
-          inline_keyboard: projects.map { |p| [{ text: p.name, callback_data: "users_list_project:#{p.slug}" }] }
-        }
+                   text: 'Выберите проект для просмотра пользователей:',
+                   reply_markup: {
+                     inline_keyboard: projects.map { |p| [{ text: p.name, callback_data: "users_list_project:#{p.slug}" }] }
+                   }
     end
   end
 
   def show_all_users
-    unless developer?
-      return respond_with :message, text: 'Эта команда доступна только разработчику системы'
-    end
+    return respond_with :message, text: 'Эта команда доступна только разработчику системы' unless developer?
 
     # Для разработчика current_user может быть nil, это нормально
     users_text = User.includes(:telegram_user, :projects)
@@ -63,19 +61,15 @@ class UsersCommand < BaseCommand
       return
     end
 
-    if project_slug.blank?
-      return show_manageable_projects_for_add
-    end
+    return show_manageable_projects_for_add if project_slug.blank?
 
-    if username.blank?
-      return respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)'
-    end
+    return respond_with :message, text: 'Укажите никнейм пользователя (например: @username или username)' if username.blank?
 
     TelegramProjectManager.new(current_user, controller: controller)
-      .add_user_to_project(project_slug, username, role)
+                          .add_user_to_project(project_slug, username, role)
   end
 
-  def users_remove(project_slug = nil, username = nil, *)
+  def users_remove(_project_slug = nil, _username = nil, *)
     respond_with :message, text: 'Функция удаления пользователей пока не реализована'
   end
 
@@ -108,7 +102,7 @@ class UsersCommand < BaseCommand
     users_text = memberships.map do |membership|
       user = membership.user
       telegram_user = user.telegram_user
-      status = telegram_user ? "(@#{telegram_user.username})" : "(нет Telegram)"
+      status = telegram_user ? "(@#{telegram_user.username})" : '(нет Telegram)'
       "#{user.name || user.email} #{status} - #{membership.role}"
     end.join("\n")
 
@@ -117,17 +111,15 @@ class UsersCommand < BaseCommand
 
   def show_manageable_projects_for_add
     manageable_projects = current_user.available_projects.alive.joins(:memberships)
-      .where(memberships: { user: current_user, role_cd: 0 })
+                                      .where(memberships: { user: current_user, role_cd: 0 })
 
-    if manageable_projects.empty?
-      return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей'
-    end
+    return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей' if manageable_projects.empty?
 
     respond_with :message,
-      text: 'Выберите проект, в который хотите добавить пользователя:',
-      reply_markup: {
-        inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "users_add_project:#{p.slug}" }] }
-      }
+                 text: 'Выберите проект, в который хотите добавить пользователя:',
+                 reply_markup: {
+                   inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "users_add_project:#{p.slug}" }] }
+                 }
   end
 
   # Public methods needed by BaseCommand
@@ -136,8 +128,8 @@ class UsersCommand < BaseCommand
   end
 
   def format_user_info(user)
-    telegram_info = user.telegram_user ? "(@#{user.telegram_user.username})" : ""
-    projects_info = user.projects.alive.count > 0 ? "Проекты: #{user.projects.alive.map(&:slug).join(', ')}" : ""
+    telegram_info = user.telegram_user ? "(@#{user.telegram_user.username})" : ''
+    projects_info = user.projects.alive.count > 0 ? "Проекты: #{user.projects.alive.map(&:slug).join(', ')}" : ''
     "*#{user.name || user.email}*#{telegram_info}\n#{projects_info}"
   end
 
@@ -207,6 +199,6 @@ class UsersCommand < BaseCommand
   # Public methods needed for delegation
   def add_user_to_project(project_slug, username, role)
     TelegramProjectManager.new(current_user, controller: controller)
-      .add_user_to_project(project_slug, username, role)
+                          .add_user_to_project(project_slug, username, role)
   end
 end

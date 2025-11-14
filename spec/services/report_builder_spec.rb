@@ -221,7 +221,6 @@ RSpec.describe ReportBuilder do
         expect(result[:period][:to]).to eq(Date.new(2025, 1, 15))
       end
     end
-
   end
 
   describe 'project filtering' do
@@ -255,7 +254,6 @@ RSpec.describe ReportBuilder do
         expect(result[:entries]).to be_empty
         expect(result[:total_hours]).to eq(0)
       end
-
     end
 
     describe 'multiple projects filter' do
@@ -340,7 +338,6 @@ RSpec.describe ReportBuilder do
       end
     end
   end
-
 
   describe 'data grouping' do
     describe 'group_by_project' do

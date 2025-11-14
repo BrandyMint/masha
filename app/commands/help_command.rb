@@ -32,8 +32,8 @@ class HelpCommand < BaseCommand
     ]
 
     # Deprecated:
-    #'/attach {projects_slug} - Указать проект этого чата',
-    #'/reset - Сбросить сессию и контекст',
+    # '/attach {projects_slug} - Указать проект этого чата',
+    # '/reset - Сбросить сессию и контекст',
     # Add developer commands if user is developer
     if developer?
       commands << ''

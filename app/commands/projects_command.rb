@@ -78,7 +78,7 @@ class ProjectsCommand < BaseCommand
 
   def callback_data
     controller.callback_query.data
-  rescue
+  rescue StandardError
     nil
   end
 
@@ -87,10 +87,17 @@ class ProjectsCommand < BaseCommand
     name = name_parts.join(' ').strip
     return respond_with :message, text: t('commands.projects.create.cancelled') if cancel_input?(name)
     return respond_with :message, text: t('commands.projects.create.error', reason: 'Название не может быть пустым') if name.blank?
-    return respond_with :message, text: t('commands.projects.create.error', reason: 'Название слишком длинное (макс 100)') if name.length > 100
+
+    if name.length > 100
+      return respond_with :message,
+                          text: t('commands.projects.create.error', reason: 'Название слишком длинное (макс 100)')
+    end
 
     slug = Project.generate_unique_slug(name)
-    return respond_with :message, text: t('commands.projects.create.error', reason: 'Не удалось сгенерировать уникальный идентификатор') unless slug
+    unless slug
+      return respond_with :message,
+                          text: t('commands.projects.create.error', reason: 'Не удалось сгенерировать уникальный идентификатор')
+    end
 
     project = Project.new(name: name, slug: slug)
     if project.save
@@ -168,7 +175,8 @@ class ProjectsCommand < BaseCommand
     text += "\nПредложенный (на основе названия): #{suggested_slug}\n\n⚠️ Нажмите кнопку ниже или введите свой вариант"
 
     buttons = [
-      [{ text: t('commands.projects.rename.use_suggested'), callback_data: "projects:rename_use_suggested:#{current_slug}:#{suggested_slug}" }]
+      [{ text: t('commands.projects.rename.use_suggested'),
+         callback_data: "projects:rename_use_suggested:#{current_slug}:#{suggested_slug}" }]
     ]
 
     respond_with :message, text: text,
@@ -294,7 +302,7 @@ class ProjectsCommand < BaseCommand
     else
       # Добавляем список проектов в текст
       projects.each do |project|
-        client_info = project.client ? " (#{project.client.name})" : ""
+        client_info = project.client ? " (#{project.client.name})" : ''
         text += "\n• #{project.name}#{client_info}"
       end
     end
@@ -558,11 +566,11 @@ class ProjectsCommand < BaseCommand
     if project.save
       Membership.create(user: current_user, project: project, role: 'owner')
       respond_with :message, text: t('commands.projects.create.success',
-                                      name: project.name,
-                                      slug: project.slug)
+                                     name: project.name,
+                                     slug: project.slug)
     else
       respond_with :message, text: t('commands.projects.create.error',
-                                      reason: project.errors.full_messages.join(', '))
+                                     reason: project.errors.full_messages.join(', '))
     end
   end
 
@@ -608,6 +616,6 @@ class ProjectsCommand < BaseCommand
   end
 
   def invalid_slug?(slug)
-    slug.blank? || slug.length > 15 || slug.match?(/[^a-z0-9\-]/) || slug.match?(/^-|-$/)
+    slug.blank? || slug.length > 15 || slug.match?(/[^a-z0-9-]/) || slug.match?(/^-|-$/)
   end
 end
