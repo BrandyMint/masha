@@ -45,20 +45,9 @@ module Telegram
       end
     end
 
-    def callback_query(data)
-      # Route callback query to the appropriate command based on prefix
-      case data
-      when /^projects:/
-        projects_callback_query(data)
-      when /^client:/
-        # Will be handled by client_command if implemented
-        Bugsnag.notify "Callback query для client: #{data}"
-        respond_with :message, text: 'Ошибка!'
-      else
-        Bugsnag.notify "Не определенный callback #{data}"
-        respond_with :message, text: 'Ошибка!'
-      end
-    end
+    # CallbackQueryContext автоматически маршрутизирует callback запросы
+    # к методам *_callback_query на основе префикса в callback_data
+    # Например: "projects:create" -> projects_callback_query("create")
 
     def test!(*_args)
       respond_with :message, text: 'test passed'
