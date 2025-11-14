@@ -293,23 +293,6 @@ class ProjectsCommand < BaseCommand
   def show_projects_list
     projects = current_user.projects.active.alphabetically.limit(30)
 
-    # Формируем текст с заголовком
-    text = t('commands.projects.title')
-
-    # Если проектов нет, добавляем сообщение о пустом списке
-    if projects.empty?
-      text += "\n\nУ вас пока нет проектов."
-    else
-      # Добавляем список проектов в текст
-      projects.each do |project|
-        client_info = project.client ? " (#{project.client.name})" : ''
-        text += "\n• #{project.name}#{client_info}"
-      end
-    end
-
-    # Добавляем подсказку о создании проекта
-    text += "\n\n💡 *Создать новый проект:* /projects create"
-
     buttons = []
     # Кнопка "Добавить проект" - занимает всю ширину
     buttons << [{ text: t('commands.projects.add_button'), callback_data: 'projects:create' }]
@@ -327,8 +310,7 @@ class ProjectsCommand < BaseCommand
       buttons << row
     end
 
-    respond_with :message, text: text,
-                           reply_markup: {
+    respond_with :message, reply_markup: {
                              inline_keyboard: buttons
                            }
   end
