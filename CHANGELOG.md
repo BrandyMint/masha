@@ -11,6 +11,20 @@
 #### ✨ Новый функционал
 ✨ Add .protocol
 #### 🐛 Исправления
+🐛 Fix /projects, add /set_commands
+🐛 Fix /projects callbacks
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
+## Что нового в v0.12.2
+
+### 🎯 Основные изменения с версии v0.12.1
+
+#### ✨ Новый функционал
+✨ Add .protocol
+#### 🐛 Исправления
 🐛 Fix /projects callbacks
 ---
 🤖 *Changelog сгенерирован автоматически для MashTime Bot*
