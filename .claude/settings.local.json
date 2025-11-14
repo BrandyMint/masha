@@ -154,7 +154,8 @@
       "Bash(git push:*)",
       "Bash(while read section)",
       "Bash(for cmd in app/commands/*_command.rb)",
-      "WebFetch(domain:core.telegram.org)"
+      "WebFetch(domain:core.telegram.org)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

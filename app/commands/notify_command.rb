@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class NotifyCommand < BaseCommand
+  command_metadata(developer_only: true)
+
   MIN_MESSAGE_LENGTH = 3
   MAX_MESSAGE_LENGTH = 4000
 
@@ -12,8 +14,6 @@ class NotifyCommand < BaseCommand
   provides_context_methods NOTIFY_MESSAGE_INPUT
 
   def call
-    return respond_with :message, text: t('commands.notify.errors.access_denied') unless developer?
-
     save_context NOTIFY_MESSAGE_INPUT
     respond_with :message, text: t('commands.notify.prompts.enter_message')
   end

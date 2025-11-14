@@ -311,8 +311,8 @@ class ProjectsCommand < BaseCommand
     end
 
     respond_with :message, reply_markup: {
-                             inline_keyboard: buttons
-                           }
+      inline_keyboard: buttons
+    }
   end
 
   def start_project_creation

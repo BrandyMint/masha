@@ -19,6 +19,28 @@ class Telegram::CommandRegistry
       @commands&.keys || []
     end
 
+    # Все классы команд (исключая BaseCommand)
+    def all_command_classes
+      @commands&.values || []
+    end
+
+    # Публичные команды (исключая developer_only)
+    def public_commands
+      all_command_classes.reject(&:developer_only?)
+    end
+
+    # Команды только для разработчиков
+    def developer_commands
+      all_command_classes.select(&:developer_only?)
+    end
+
+    # Получить название команды из класса
+    # AddCommand -> 'add'
+    # NotifyCommand -> 'notify'
+    def command_name(command_class)
+      command_class.name.underscore.sub(/_command$/, '')
+    end
+
     private
 
     def patch!(controller)

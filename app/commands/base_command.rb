@@ -29,6 +29,10 @@ class BaseCommand
 
   def safe_call(*args)
     Rails.logger.info "#{self.class}.call with args #{args}"
+
+    # Автоматическая проверка для developer_only команд
+    return respond_with :message, text: I18n.t('telegram.errors.developer_access_denied') if self.class.developer_only? && !developer?
+
     call(*args)
   end
 
@@ -90,6 +94,20 @@ class BaseCommand
 
     def callback_method_names
       public_instance_methods.select { |m| m.ends_with? '_callback_query' }
+    end
+
+    # Метаданные команды
+    def command_metadata(developer_only: false)
+      @developer_only = developer_only
+    end
+
+    def developer_only?
+      @developer_only || false
+    end
+
+    def command_description_key
+      command_name = name.underscore.sub(/_command$/, '')
+      "telegram.commands.descriptions.#{command_name}"
     end
   end
 
