@@ -338,7 +338,7 @@ GEM
       jquery-rails
       jquery-ui-rails (= 4.0.3)
       railties (>= 3.1.0)
-    json (2.15.1)
+    json (2.16.0)
     jwt (2.10.2)
       base64
     kaminari (1.2.2)
@@ -460,7 +460,7 @@ GEM
       omniauth (~> 2.0)
     ostruct (0.6.1)
     parallel (1.27.0)
-    parser (3.3.9.0)
+    parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
     pg (1.6.2)
@@ -604,10 +604,10 @@ GEM
       rubocop-ast (>= 1.47.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.47.1)
+    rubocop-ast (1.48.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
-    rubocop-rails (2.33.3)
+    rubocop-rails (2.33.4)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
