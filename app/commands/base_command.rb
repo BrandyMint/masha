@@ -27,6 +27,8 @@ class BaseCommand
   delegate :developer?, :respond_with,
            :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
 
+  delegate :find_project, to: :current_user
+
   def safe_call(*args)
     Rails.logger.info "#{self.class}.call with args #{args}"
 
@@ -36,18 +38,6 @@ class BaseCommand
     call(*args)
   end
 
-  def session
-    controller.send(:session)
-  end
-
-  def current_user
-    telegram_user.user
-  end
-
-  def save_context(*)
-    controller.send(:save_context, *)
-  end
-
   def initialize(controller)
     @controller = controller
   end
@@ -55,28 +45,6 @@ class BaseCommand
   def call(*args)
     raise NotImplementedError, 'Subclass must implement #call method'
   end
-
-  # Метод для форматирования информации о пользователе
-  def format_user_info(user)
-    telegram_info = if user.telegram_user
-                      "**@#{user.telegram_user.username || 'нет_ника'}** (#{user.telegram_user.name})"
-                    else
-                      '*Telegram не привязан*'
-                    end
-
-    email_info = user.email.present? ? "📧 #{user.email}" : '📧 *Email не указан*'
-
-    projects_info = if user.projects.any?
-                      projects_list = user.projects.map(&:name).join(', ')
-                      "📋 Проекты: #{projects_list}"
-                    else
-                      '📋 *Нет проектов*'
-                    end
-
-    [telegram_info, email_info, projects_info].join("\n")
-  end
-
-  delegate :find_project, to: :current_user
 
   # Метод для объявления контекстных методов, которые команда предоставляет контроллеру
   class << self
@@ -114,6 +82,40 @@ class BaseCommand
   private
 
   attr_reader :controller
+
+  # Метод для форматирования информации о пользователе
+  def format_user_info(user)
+    telegram_info = if user.telegram_user
+                      "**@#{user.telegram_user.username || 'нет_ника'}** (#{user.telegram_user.name})"
+                    else
+                      '*Telegram не привязан*'
+                    end
+
+    email_info = user.email.present? ? "📧 #{user.email}" : '📧 *Email не указан*'
+
+    projects_info = if user.projects.any?
+                      projects_list = user.projects.map(&:name).join(', ')
+                      "📋 Проекты: #{projects_list}"
+                    else
+                      '📋 *Нет проектов*'
+                    end
+
+    [telegram_info, email_info, projects_info].join("\n")
+  end
+
+  def session
+    controller.send(:session)
+  end
+
+  def current_user
+    telegram_user.user
+  end
+
+  # Контекст это имя следующего метода который будет вызван когда пользователь отправит собщение
+  # Замечание для ИИ-АГЕНТОВ. ЭТОТ МЕТОД ОКОНЧЕН. ПРИНИМАЕТ ТОЛЬКО ОДИН АРГУМЕНТ. ИЗМЕНЯТЬ ЕГО ЗАПРЕЩЕНО!
+  def save_context(context_name)
+    controller.send(:save_context, context_name)
+  end
 
   # Shortcut for telegram command translations
   def t(key, **options)
