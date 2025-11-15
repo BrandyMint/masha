@@ -105,4 +105,46 @@ RSpec.describe Project, type: :model do
       expect(project.can_be_managed_by?(non_member)).to be false
     end
   end
+
+  describe 'dependent: :destroy associations' do
+    let(:project) { projects(:test_project) }
+
+    it 'destroys time_shifts when project is destroyed' do
+      # Убедимся, что у проекта есть time_shifts
+      time_shifts = project.time_shifts.create!([
+        { user: users(:project_owner), started_at: 1.hour.ago, finished_at: 30.minutes.ago },
+        { user: users(:project_owner), started_at: 2.hours.ago, finished_at: 1.hour.ago }
+      ])
+
+      expect { project.destroy }.to change(TimeShift, :count).by(-2)
+    end
+
+    it 'destroys invites when project is destroyed' do
+      # Убедимся, что у проекта есть invites
+      invites = Invite.create!([
+        { project: project, email: 'user1@example.com', role: :member },
+        { project: project, email: 'user2@example.com', role: :watcher }
+      ])
+
+      expect { project.destroy }.to change(Invite, :count).by(-2)
+    end
+
+    it 'destroys memberships when project is destroyed' do
+      # memberships уже созданы в fixtures, просто проверяем их удаление
+      membership_count = project.memberships.count
+      expect(membership_count).to be > 0
+
+      expect { project.destroy }.to change(Membership, :count).by(-membership_count)
+    end
+
+    it 'destroys member_rates when project is destroyed' do
+      # Создаем member_rates для проекта
+      member_rates = MemberRate.create!([
+        { project: project, user: users(:project_owner), rate: 100 },
+        { project: project, user: users(:project_member), rate: 80 }
+      ])
+
+      expect { project.destroy }.to change(MemberRate, :count).by(-2)
+    end
+  end
 end

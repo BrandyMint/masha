@@ -328,11 +328,8 @@ class ProjectsCommand < BaseCommand
       return
     end
 
-    # Удаляем проект
+    # Удаляем проект - Rails автоматически удалит связанные данные (invites, time_shifts, memberships, member_rates)
     project_name = project.name
-    # Удаляем связанные данные перед удалением проекта
-    project.invites.destroy_all
-    project.time_shifts.destroy_all
     project.destroy
     session.delete(:current_project_slug)
     respond_with :message, text: t('commands.projects.delete.success', name: project_name)
