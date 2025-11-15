@@ -117,54 +117,6 @@ class BaseCommand
     controller.send(:save_context, context_name)
   end
 
-  # ВРЕМЕННЫЙ МЕТОД - будет удален после рефакторинга ProjectsCommand
-  # TODO: Удалить после миграции всех команд на новый паттерн работы с контекстом
-  # Reads a value from session by key
-  # @deprecated Use proper context management instead
-  def from_context(key)
-    value = session[key]
-
-    # Log deprecation warning
-    Rails.logger.warn "[DEPRECATED] from_context(#{key}) called from #{caller.first}"
-
-    # Notify Bugsnag
-    Bugsnag.notify(
-      RuntimeError.new('Deprecated from_context method used'),
-      metadata: {
-        context: {
-          key: key,
-          value: value,
-          caller: caller[0..5]
-        }
-      }
-    )
-
-    value
-  end
-
-  # ВРЕМЕННЫЙ МЕТОД - будет удален после рефакторинга ProjectsCommand
-  # TODO: Удалить после миграции всех команд на новый паттерн работы с контекстом
-  # Saves a value to session by key
-  # @deprecated Use save_context(context_name) instead
-  def save_context_with_value(key, value)
-    session[key] = value
-
-    # Log deprecation warning
-    Rails.logger.warn "[DEPRECATED] save_context_with_value(#{key}, #{value}) called from #{caller.first}"
-
-    # Notify Bugsnag
-    Bugsnag.notify(
-      RuntimeError.new('Deprecated save_context_with_value method used'),
-      metadata: {
-        context: {
-          key: key,
-          value: value,
-          caller: caller[0..5]
-        }
-      }
-    )
-  end
-
   # Shortcut for telegram command translations
   def t(key, **options)
     # Если ключ уже начинается с telegram., используем его как полный ключ
