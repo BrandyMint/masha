@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe BaseCommand do
-  let(:controller) { double('controller', developer?: false, respond_with: true, t: 'translated') }
+  let(:user) { double('user') }
+  let(:telegram_user) { double('telegram_user', developer?: false, user: user) }
+  let(:controller) { double('controller', respond_with: true, t: 'translated', telegram_user: telegram_user) }
 
   describe '.command_metadata' do
     it 'sets developer_only flag' do
@@ -53,7 +55,7 @@ RSpec.describe BaseCommand do
       end
 
       it 'allows developers' do
-        allow(controller).to receive(:developer?).and_return(true)
+        allow(telegram_user).to receive(:developer?).and_return(true)
         command = developer_command_class.new(controller)
         allow(command).to receive(:call)
 
