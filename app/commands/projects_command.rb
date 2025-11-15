@@ -159,7 +159,7 @@ class ProjectsCommand < BaseCommand
 
     project = Project.new(name: name, slug: slug)
     if project.save
-      Membership.create(user: current_user, project: project, role: :owner)
+      Membership.create!(user: current_user, project: project, role: :owner)
       respond_with :message, text: t('commands.projects.create.success', name: project.name, slug: project.slug)
       show_projects_list
     else
