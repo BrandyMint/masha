@@ -164,5 +164,6 @@
   "enabledMcpjsonServers": [
     "bugsnag",
     "postgres"
-  ]
+  ],
+  "outputStyle": "Explanatory"
 }

@@ -187,4 +187,301 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       expect(response.first[:text]).to include('Вы не авторизованы для работы с проектами')
     end
   end
+
+  # Tests for rename operations
+  context 'rename operations', :callback_query do
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
+    let(:from_id) { telegram_user.id }
+    let(:project) { projects(:work_project) }
+
+    include_context 'authenticated user'
+
+    before do
+      # Ensure user has owner membership to the project
+      memberships(:telegram_work)
+    end
+
+    context 'rename project title only' do
+      it 'renames project title through workflow' do
+        # 1. User clicks on rename menu
+        dispatch(callback_query: {
+                   id: 'test_callback_id',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename:#{project.slug}"
+                 })
+
+        # 2. User clicks on rename title button
+        dispatch(callback_query: {
+                   id: 'test_callback_id_2',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename_title:#{project.slug}"
+                 })
+
+        # 3. User enters new title
+        old_slug = project.slug
+        expect do
+          dispatch_message('New Project Title')
+        end.to change { project.reload.name }.to('New Project Title')
+
+        # Verify slug didn't change
+        expect(project.slug).to eq(old_slug)
+      end
+    end
+
+    context 'rename project slug only' do
+      it 'renames project slug through workflow' do
+        # 1. User clicks on rename menu
+        dispatch(callback_query: {
+                   id: 'test_callback_id',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename:#{project.slug}"
+                 })
+
+        # 2. User clicks on rename slug button
+        dispatch(callback_query: {
+                   id: 'test_callback_id_2',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename_slug:#{project.slug}"
+                 })
+
+        # 3. User enters new slug
+        old_name = project.name
+        expect do
+          dispatch_message('new-slug')
+        end.to change { project.reload.slug }.to('new-slug')
+
+        # Verify name didn't change
+        expect(project.name).to eq(old_name)
+      end
+    end
+
+    context 'rename project both title and slug' do
+      it 'renames both title and slug through workflow' do
+        # 1. User clicks on rename menu
+        dispatch(callback_query: {
+                   id: 'test_callback_id',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename:#{project.slug}"
+                 })
+
+        # 2. User clicks on rename both button
+        dispatch(callback_query: {
+                   id: 'test_callback_id_2',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename_both:#{project.slug}"
+                 })
+
+        # 3. User enters new title
+        response = dispatch_message('New Title')
+        expect(response).not_to be_nil
+
+        # 4. User enters new slug
+        expect do
+          dispatch_message('new-slug')
+        end.to change { project.reload.name }.to('New Title')
+          .and change { project.slug }.to('new-slug')
+      end
+
+      it 'uses suggested slug when button clicked' do
+        # 1. User clicks on rename menu
+        dispatch(callback_query: {
+                   id: 'test_callback_id',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename:#{project.slug}"
+                 })
+
+        # 2. User clicks on rename both button
+        dispatch(callback_query: {
+                   id: 'test_callback_id_2',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                   data: "projects_rename_both:#{project.slug}"
+                 })
+
+        # 3. User enters new title
+        response = dispatch_message('My Awesome Project')
+
+        # 4. Extract suggested slug button from response (button is in last message)
+        keyboard = response.last.dig(:reply_markup, :inline_keyboard)&.flatten || []
+        suggested_button = keyboard.find { |btn| btn[:text].include?('Использовать') }
+        expect(suggested_button).not_to be_nil
+
+        # 5. User clicks suggested slug button
+        old_slug = project.slug
+        expect do
+          dispatch(callback_query: {
+                     id: 'test_callback_id_3',
+                     from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                     message: { message_id: 24, chat: { id: from_id, type: 'private' } },
+                     data: suggested_button[:callback_data]
+                   })
+        end.to change { project.reload.slug }.from(old_slug)
+          .and change { project.name }.to('My Awesome Project')
+      end
+    end
+  end
+
+  # Tests for client management
+  context 'client management', :callback_query do
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
+    let(:from_id) { telegram_user.id }
+    let(:project) { projects(:work_project) }
+
+    include_context 'authenticated user'
+
+    before do
+      # Ensure user has owner membership to the project
+      memberships(:telegram_work)
+    end
+
+    it 'sets client for project' do
+      # 1. User clicks on client menu
+      dispatch(callback_query: {
+                 id: 'test_callback_id',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                 data: "projects_client:#{project.slug}"
+               })
+
+      # 2. User clicks on edit client button
+      dispatch(callback_query: {
+                 id: 'test_callback_id_2',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                 data: "projects_client_edit:#{project.slug}"
+               })
+
+      # 3. User enters client name
+      expect do
+        dispatch_message('ACME Corporation')
+      end.to change { project.reload.client&.name }.to('ACME Corporation')
+    end
+
+    it 'removes client from project' do
+      # Setup: assign a client to project
+      project.update(client: clients(:work_client))
+
+      # 1. User clicks on client menu
+      dispatch(callback_query: {
+                 id: 'test_callback_id',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                 data: "projects_client:#{project.slug}"
+               })
+
+      # 2. User clicks on delete client button
+      dispatch(callback_query: {
+                 id: 'test_callback_id_2',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                 data: "projects_client_delete:#{project.slug}"
+               })
+
+      # 3. User confirms deletion
+      expect do
+        dispatch(callback_query: {
+                   id: 'test_callback_id_3',
+                   from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                   message: { message_id: 24, chat: { id: from_id, type: 'private' } },
+                   data: "projects_client_delete_confirm:#{project.slug}"
+                 })
+      end.to change { project.reload.client }.to(nil)
+    end
+  end
+
+  # Tests for project deletion
+  context 'delete project', :callback_query do
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
+    let(:from_id) { telegram_user.id }
+    let(:project) { projects(:dev_project) }
+
+    include_context 'authenticated user'
+
+    before do
+      # Ensure user has owner membership to the project
+      memberships(:telegram_test_project)
+    end
+
+    it 'deletes project through workflow' do
+      project_name = project.name
+
+      # 1. User clicks on project menu
+      dispatch(callback_query: {
+                 id: 'test_callback_id',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                 data: "projects_select:#{project.slug}"
+               })
+
+      # 2. User clicks on delete button
+      dispatch(callback_query: {
+                 id: 'test_callback_id_2',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                 data: "projects_delete:#{project.slug}"
+               })
+
+      # 3. User confirms first step (yes button)
+      dispatch(callback_query: {
+                 id: 'test_callback_id_3',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 24, chat: { id: from_id, type: 'private' } },
+                 data: "projects_delete_confirm:#{project.slug}"
+               })
+
+      # 4. User enters project name to confirm deletion
+      expect do
+        dispatch_message(project_name)
+      end.to change(Project, :count).by(-1)
+
+      # Verify project was deleted
+      expect(Project.find_by(slug: project.slug)).to be_nil
+    end
+
+    it 'cancels deletion on wrong name' do
+      project_name = project.name
+
+      # 1. User clicks on project menu
+      dispatch(callback_query: {
+                 id: 'test_callback_id',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 22, chat: { id: from_id, type: 'private' } },
+                 data: "projects_select:#{project.slug}"
+               })
+
+      # 2. User clicks on delete button
+      dispatch(callback_query: {
+                 id: 'test_callback_id_2',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 23, chat: { id: from_id, type: 'private' } },
+                 data: "projects_delete:#{project.slug}"
+               })
+
+      # 3. User confirms first step (yes button)
+      dispatch(callback_query: {
+                 id: 'test_callback_id_3',
+                 from: { id: from_id, first_name: 'Test', last_name: 'User', username: 'testuser' },
+                 message: { message_id: 24, chat: { id: from_id, type: 'private' } },
+                 data: "projects_delete_confirm:#{project.slug}"
+               })
+
+      # 4. User enters wrong project name
+      expect do
+        dispatch_message('Wrong Name')
+      end.not_to change(Project, :count)
+
+      # Verify project still exists
+      expect(Project.find_by(slug: project.slug)).to eq(project)
+    end
+  end
 end

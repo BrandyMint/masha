@@ -90,8 +90,8 @@ class ProjectsCommand < BaseCommand
       Bugsnag.notify(RuntimeError.new('projects_rename_use_suggested_callback_query called without data'))
       return respond_with :message, text: 'Что-то странное..'
     end
-    # Получаем suggested_slug из контекста, data содержит только slug
-    suggested_slug = from_context(CONTEXT_SUGGESTED_SLUG)
+    # Получаем suggested_slug из session, data содержит только slug
+    suggested_slug = session[:suggested_slug]
     use_suggested_slug(data, suggested_slug)
   end
 
@@ -175,12 +175,13 @@ class ProjectsCommand < BaseCommand
     return handle_cancel_input :rename_title if cancel_input?(new_title)
     return respond_with :message, text: t('commands.projects.rename.error') if new_title.blank?
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
     old_name = project.name
     if project.update(name: new_title)
+      session.delete(:current_project_slug)
       text = t('commands.projects.rename.success_title', old_name: old_name, new_name: new_title)
       respond_with :message, text: text
       show_project_menu(current_slug)
@@ -193,7 +194,7 @@ class ProjectsCommand < BaseCommand
     new_slug = slug_parts.join(' ').strip
     return handle_cancel_input :rename_slug if cancel_input?(new_slug)
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
@@ -205,12 +206,19 @@ class ProjectsCommand < BaseCommand
     end
 
     old_slug = project.slug
-    if project.update(slug: new_slug)
+
+    # Попытка обновить slug
+    result = project.update(slug: new_slug)
+
+    if result
+      session.delete(:current_project_slug)
       text = t('commands.projects.rename.success_slug', old_slug: old_slug, new_slug: new_slug)
       respond_with :message, text: text
       show_project_menu(new_slug)
     else
-      respond_with :message, text: t('commands.projects.rename.error')
+      error_message = project.errors.full_messages.join(', ')
+      error_message = "Неизвестная ошибка (проблема с FriendlyId)" if error_message.blank?
+      respond_with :message, text: t('commands.projects.rename.error_with_reason', reason: error_message)
     end
   end
 
@@ -219,17 +227,18 @@ class ProjectsCommand < BaseCommand
     return handle_cancel_input :rename_both if cancel_input?(new_title)
     return respond_with :message, text: t('commands.projects.rename.error') if new_title.blank?
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
     # Сохраняем новое название и просим slug
-    save_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2, new_title)
-    save_context(CONTEXT_RENAME_ACTION, 'both')
+    session[:new_project_title] = new_title
 
     # Генерируем предложенный slug
     suggested_slug = Project.generate_unique_slug(new_title)
-    save_context(CONTEXT_SUGGESTED_SLUG, suggested_slug)
+    session[:suggested_slug] = suggested_slug
+
+    save_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2)
 
     text = t('commands.projects.rename.enter_slug',
              current_slug: current_slug)
@@ -248,8 +257,8 @@ class ProjectsCommand < BaseCommand
     new_slug = slug_parts.join(' ').strip
     return handle_cancel_input :rename_both if cancel_input?(new_slug)
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
-    new_title = from_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2)
+    current_slug = session[:current_project_slug]
+    new_title = session[:new_project_title]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project && new_title
 
@@ -267,7 +276,7 @@ class ProjectsCommand < BaseCommand
     client_name = name_parts.join(' ').strip
     return handle_cancel_input :client_name if cancel_input?(client_name)
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
@@ -281,6 +290,7 @@ class ProjectsCommand < BaseCommand
 
     old_client = project.client&.name || t('commands.projects.menu.no_client')
     if project.update(client: client)
+      session.delete(:current_project_slug)
       text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
       respond_with :message, text: text
       show_client_menu(current_slug)
@@ -294,11 +304,12 @@ class ProjectsCommand < BaseCommand
     return handle_cancel_input :client_delete if cancel_input?(confirmation)
 
     # Пользователь может подтвердить любым сообщением кроме "cancel"
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
     if project.update(client: nil)
+      session.delete(:current_project_slug)
       respond_with :message, text: t('commands.projects.client.delete_success')
       show_client_menu(current_slug)
     else
@@ -310,7 +321,7 @@ class ProjectsCommand < BaseCommand
     confirmation = parts.join(' ').strip
     return handle_cancel_input :delete if cancel_input?(confirmation)
 
-    current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+    current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
     return show_projects_list unless project
 
@@ -324,6 +335,7 @@ class ProjectsCommand < BaseCommand
     # Удаляем проект
     project_name = project.name
     project.destroy
+    session.delete(:current_project_slug)
     respond_with :message, text: t('commands.projects.delete.success', name: project_name)
     show_projects_list
   end
@@ -337,15 +349,18 @@ class ProjectsCommand < BaseCommand
   def handle_cancel_input(context_type)
     case context_type
     when :rename_title, :rename_slug, :rename_both
-      current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+      current_slug = session[:current_project_slug]
+      session.delete(:current_project_slug)
       respond_with :message, text: t('commands.projects.rename.cancelled')
       show_project_menu(current_slug)
     when :client_name, :client_delete
-      current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+      current_slug = session[:current_project_slug]
+      session.delete(:current_project_slug)
       respond_with :message, text: t('commands.projects.client.cancelled')
       show_client_menu(current_slug)
     when :delete
-      current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+      current_slug = session[:current_project_slug]
+      session.delete(:current_project_slug)
       respond_with :message, text: t('commands.projects.delete.cancelled')
       show_project_menu(current_slug)
     end
@@ -417,8 +432,6 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
-
     menu_text = t('commands.projects.rename.title', name: project.name)
     buttons = [
       [{ text: t('commands.projects.rename.title_button'), callback_data: "projects_rename_title:#{slug}" }],
@@ -437,7 +450,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_RENAME_TITLE)
 
     text = t('commands.projects.rename.enter_title',
@@ -449,7 +462,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_RENAME_SLUG)
 
     text = t('commands.projects.rename.enter_slug',
@@ -461,7 +474,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_RENAME_BOTH)
 
     text = t('commands.projects.rename.enter_title',
@@ -473,7 +486,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_CLIENT_NAME)
 
     current_client = project.client&.name || t('commands.projects.menu.no_client')
@@ -488,7 +501,7 @@ class ProjectsCommand < BaseCommand
 
     return show_client_menu(slug) unless project.client
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_CLIENT_DELETE_CONFIRM)
 
     text = t('commands.projects.client.confirm_delete',
@@ -508,7 +521,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     stats = project.deletion_stats
 
     text = t('commands.projects.delete.confirm_first',
@@ -532,7 +545,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    session[:current_project_slug] = slug
     save_context(CONTEXT_AWAITING_DELETE_CONFIRM)
 
     text = t('commands.projects.delete.confirm_final',
@@ -543,8 +556,6 @@ class ProjectsCommand < BaseCommand
   def show_client_menu(slug)
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
-
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
 
     current_client = project.client&.name || t('commands.projects.menu.no_client')
     text = t('commands.projects.client.menu_title',
@@ -570,8 +581,8 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    # Получаем новое название из контекста (должно быть сохранено перед этим)
-    new_name = from_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2)
+    # Получаем новое название из session (должно быть сохранено перед этим)
+    new_name = session[:new_project_title]
     return show_projects_list unless new_name
 
     update_project_both(project, new_name, suggested_slug)
@@ -630,6 +641,11 @@ class ProjectsCommand < BaseCommand
     old_slug = project.slug
 
     if project.update(name: new_name, slug: new_slug)
+      # Очистка session
+      session.delete(:current_project_slug)
+      session.delete(:new_project_title)
+      session.delete(:suggested_slug)
+
       text = t('commands.projects.rename.success_both',
                old_name: old_name,
                new_name: new_name,
