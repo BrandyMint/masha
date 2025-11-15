@@ -365,7 +365,7 @@ RSpec.describe ReportBuilder do
           expect(data[:hours]).to be_a(Numeric)
           expect(data[:count]).to be_a(Integer)
           expect(data[:hours]).to be >= 0
-          expect(data[:count]).to be > 0
+          expect(data[:count]).to be.positive?
         end
       end
 
@@ -458,7 +458,7 @@ RSpec.describe ReportBuilder do
           expect(data[:hours]).to be_a(Numeric)
           expect(data[:count]).to be_a(Integer)
           expect(data[:hours]).to be >= 0
-          expect(data[:count]).to be > 0
+          expect(data[:count]).to be.positive?
         end
       end
 

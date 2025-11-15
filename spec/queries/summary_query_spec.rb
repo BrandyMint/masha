@@ -139,7 +139,7 @@ RSpec.describe SummaryQuery do
       expect(result[:projects]).to include(project)
       expect(result[:matrix][project]).to have_key(user)
       # Учитываем что есть данные из других проектов в пределах недели
-      expect(result[:matrix][project][user]).to be > 0
+      expect(result[:matrix][project][user]).to be.positive?
     end
 
     it 'includes totals' do
@@ -169,20 +169,20 @@ RSpec.describe SummaryQuery do
     it 'includes daily totals' do
       result = query.list_by_days
 
-      expect(result[:total_by_date][today]).to be > 0
-      expect(result[:total_by_date][today - 1.day]).to be > 0
+      expect(result[:total_by_date][today]).to be.positive?
+      expect(result[:total_by_date][today - 1.day]).to be.positive?
     end
 
     it 'includes column totals' do
       result = query.list_by_days
 
-      expect(result[:total_by_column][project.to_s]).to be > 0
+      expect(result[:total_by_column][project.to_s]).to be.positive?
     end
 
     it 'includes total hours' do
       result = query.list_by_days
 
-      expect(result[:total]).to be > 0
+      expect(result[:total]).to be.positive?
     end
   end
 end

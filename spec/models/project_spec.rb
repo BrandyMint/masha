@@ -114,7 +114,7 @@ RSpec.describe Project, type: :model do
       invite_count = project.invites.count
 
       # Для других проектов создаем тестовые записи
-      if invite_count == 0
+      if invite_count.zero?
         Invite.create!(project: project, user: users(:admin), email: 'test1@example.com', role: 'member')
         Invite.create!(project: project, user: users(:admin), email: 'test2@example.com', role: 'viewer')
         invite_count = 2
@@ -128,7 +128,7 @@ RSpec.describe Project, type: :model do
       time_shift_count = project.time_shifts.count
 
       # Для других проектов создаем тестовые записи
-      if time_shift_count == 0
+      if time_shift_count.zero?
         TimeShift.create!(project: project, user: users(:admin), hours: 1.5, date: Date.current, description: 'Test work')
         TimeShift.create!(project: project, user: users(:regular_user), hours: 2.0, date: Date.yesterday, description: 'More work')
         time_shift_count = 2
@@ -142,7 +142,7 @@ RSpec.describe Project, type: :model do
       member_rate_count = project.member_rates.count
 
       # Для других проектов создаем тестовые записи
-      if member_rate_count == 0
+      if member_rate_count.zero?
         MemberRate.create!(project: project, user: users(:regular_user), hourly_rate: 50, currency: 'USD')
         MemberRate.create!(project: project, user: users(:admin), hourly_rate: 100, currency: 'USD')
         member_rate_count = 2
