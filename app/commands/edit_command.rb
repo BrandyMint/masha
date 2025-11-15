@@ -89,7 +89,7 @@ class EditCommand < BaseCommand
     edit_message :text, text: "✅ Запись ##{time_shift.id} успешно обновлена!"
   rescue ActiveRecord::RecordInvalid => e
     Bugsnag.notify e
-    edit_message :text, text: "Ошибка при сохранении: #{e.message}"
+    edit_message :text, text: "Ошибка при сохранении: #{e.record.errors.full_messages.join(', ')}"
   end
 
   private

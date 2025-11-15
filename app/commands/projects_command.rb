@@ -170,7 +170,7 @@ class ProjectsCommand < BaseCommand
   def awaiting_rename_title(*title_parts)
     new_title = title_parts.join(' ').strip
     return handle_cancel_input :rename_title if cancel_input?(new_title)
-    return respond_with :message, text: t('commands.projects.rename.error') if new_title.blank?
+    return respond_with :message, text: t('commands.projects.rename.error', reason: 'Название не может быть пустым') if new_title.blank?
 
     current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
@@ -183,7 +183,7 @@ class ProjectsCommand < BaseCommand
       respond_with :message, text: text
       show_project_menu(current_slug)
     else
-      respond_with :message, text: t('commands.projects.rename.error')
+      respond_with :message, text: t('commands.projects.rename.error', reason: project.errors.full_messages.join(', '))
     end
   end
 
@@ -203,20 +203,18 @@ class ProjectsCommand < BaseCommand
     end
 
     old_slug = project.slug
-    if project.update(slug: new_slug)
-      text = t('commands.projects.rename.success_slug', old_slug: old_slug, new_slug: new_slug)
-      session.delete(:current_project_slug)
-      respond_with :message, text: text
-      return show_project_menu(new_slug)
-    else
-      return respond_with :message, text: t('commands.projects.rename.error')
-    end
+    return respond_with :message, text: t('commands.projects.rename.error', reason: project.errors.full_messages.join(', ')) unless project.update(slug: new_slug)
+
+    text = t('commands.projects.rename.success_slug', old_slug: old_slug, new_slug: new_slug)
+    session.delete(:current_project_slug)
+    respond_with :message, text: text
+    show_project_menu(new_slug)
   end
 
   def awaiting_rename_both(*title_parts)
     new_title = title_parts.join(' ').strip
     return handle_cancel_input :rename_both if cancel_input?(new_title)
-    return respond_with :message, text: t('commands.projects.rename.error') if new_title.blank?
+    return respond_with :message, text: t('commands.projects.rename.error', reason: 'Название не может быть пустым') if new_title.blank?
 
     current_slug = session[:current_project_slug]
     project = current_user.projects.find_by(slug: current_slug)
@@ -265,7 +263,7 @@ class ProjectsCommand < BaseCommand
     session.delete(:new_project_title)
     session.delete(:suggested_slug)
 
-    return update_project_both(project, new_title, new_slug)
+    update_project_both(project, new_title, new_slug)
   end
 
   def awaiting_client_name(*name_parts)
@@ -285,14 +283,12 @@ class ProjectsCommand < BaseCommand
     end
 
     old_client = project.client&.name || t('commands.projects.menu.no_client')
-    if project.update(client: client)
-      text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
-      session.delete(:current_project_slug)
-      respond_with :message, text: text
-      return show_client_menu(current_slug)
-    else
-      return respond_with :message, text: t('commands.projects.client.error')
-    end
+    return respond_with :message, text: t('commands.projects.client.error', reason: project.errors.full_messages.join(', ')) unless project.update(client: client)
+
+    text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
+    session.delete(:current_project_slug)
+    respond_with :message, text: text
+    show_client_menu(current_slug)
   end
 
   def awaiting_client_delete_confirm(*parts)
@@ -309,7 +305,7 @@ class ProjectsCommand < BaseCommand
       session.delete(:current_project_slug)
       show_client_menu(current_slug)
     else
-      respond_with :message, text: t('commands.projects.client.error')
+      respond_with :message, text: t('commands.projects.client.error', reason: project.errors.full_messages.join(', '))
     end
   end
 
@@ -649,7 +645,7 @@ class ProjectsCommand < BaseCommand
       respond_with :message, text: text
       show_project_menu(new_slug)
     else
-      show_error_message(t('commands.projects.rename.error'))
+      show_error_message(t('commands.projects.rename.error', reason: project.errors.full_messages.join(', ')))
     end
   end
 
@@ -661,7 +657,7 @@ class ProjectsCommand < BaseCommand
       respond_with :message, text: t('commands.projects.client.delete_success')
       show_client_menu(slug)
     else
-      show_error_message(t('commands.projects.client.delete_error'))
+      show_error_message(t('commands.projects.client.delete_error', reason: project.errors.full_messages.join(', ')))
     end
   end
 

@@ -6,8 +6,11 @@ class AttachCommand < BaseCommand
       message = 'Укажите первым аргументом проект, к которому присоединяете этот чат'
     elsif chat['id'].to_i.negative?
       project = find_project(project_slug)
-      project.update telegram_chat_id: chat['id']
-      message = "Установили этот чат основным в проекте #{project}"
+      if project.update(telegram_chat_id: chat['id'])
+        message = "Установили этот чат основным в проекте #{project}"
+      else
+        message = "❌ Ошибка при присоединении чата: #{project.errors.full_messages.join(', ')}"
+      end
     else
       message = 'Присоединять можно только чаты, личную переписку нельзя'
     end

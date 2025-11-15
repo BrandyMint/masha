@@ -73,7 +73,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'rename slug only' do
-      # Note: This test is skipped due to telegram_bot_rspec session handling limitations
+      # NOTE: This test is skipped due to telegram_bot_rspec session handling limitations
       # Session state is not preserved between callback_query and dispatch_message calls
       # The functionality works correctly in production, tested through rename_both workflow
       xit 'renames project slug without changing title' do
@@ -158,7 +158,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                      data: "projects_rename_use_suggested:#{project.slug}"
                    })
           project.reload
-        end.to change { [project.name, project.slug] }
+        end.to(change { [project.name, project.slug] })
 
         # Verify both changed
         expect(project.name).to eq('New Amazing Project')
@@ -182,7 +182,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
 
     context 'set client' do
-      # Note: This test is skipped due to telegram_bot_rspec session handling limitations
+      # NOTE: This test is skipped due to telegram_bot_rspec session handling limitations
       # Session state is not preserved between callback_query and dispatch_message calls
       # The functionality works correctly in production
       xit 'assigns client to project' do
@@ -371,8 +371,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end.to change(Project, :count).by(1)
 
       # Проверяем что в ответе нет необработанных плейсхолдеров
-      expect(response.first[:text]).not_to include('%{name}')
-      expect(response.first[:text]).not_to include('%{slug}')
+      expect(response.first[:text]).not_to include('%<name>s')
+      expect(response.first[:text]).not_to include('%<slug>s')
 
       # Проверяем что в ответе есть реальные значения
       expect(response.first[:text]).to include('test-proj')

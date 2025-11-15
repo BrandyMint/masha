@@ -28,15 +28,19 @@ class AddCommand < BaseCommand
     data = controller.telegram_session_data
     project = current_user.available_projects.find(data['project_id']) || raise('Не указан проект')
     description = description.join(' ')
-    project.time_shifts.create!(
+    time_shift = project.time_shifts.create(
       date: Time.zone.today,
       hours: hours.to_s.tr(',', '.').to_f,
       description: description,
       user: current_user
     )
 
-    controller.clear_telegram_session
-    respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
+    if time_shift.valid?
+      controller.clear_telegram_session
+      respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
+    else
+      respond_with :message, text: "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
+    end
   end
 
   private
@@ -57,14 +61,18 @@ class AddCommand < BaseCommand
     project = find_project(project_slug)
 
     if project.present?
-      project.time_shifts.create!(
+      time_shift = project.time_shifts.create(
         date: Time.zone.today,
         hours: hours.to_s.tr(',', '.').to_f,
         description: description,
         user: current_user
       )
 
-      message = "Отметили в #{project.name} #{hours} часов"
+      if time_shift.valid?
+        message = "Отметили в #{project.name} #{hours} часов"
+      else
+        message = "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
+      end
     else
       message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{current_user.available_projects.alive.join(', ')}"
     end
