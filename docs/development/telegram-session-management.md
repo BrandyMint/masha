@@ -63,6 +63,83 @@ def add_client_name(message = nil, *)
 end
 ```
 
+#### ProjectsCommand - многошаговые операции с session
+
+```ruby
+# Пример: Переименование проекта (только slug)
+# 1. Callback устанавливает контекст
+def projects_rename_slug_callback_query(data = nil)
+  project = current_user.projects.find_by(slug: data)
+  return show_projects_list unless project&.can_be_managed_by?(current_user)
+
+  session[:current_project_slug] = data  # Сохраняем текущий slug
+  save_context CONTEXT_AWAITING_RENAME_SLUG  # Устанавливаем контекст
+
+  respond_with :message, text: t('commands.projects.rename.enter_slug', current_slug: project.slug)
+end
+
+# 2. Context method обрабатывает ввод
+def awaiting_rename_slug(*slug_parts)
+  new_slug = slug_parts.join(' ').strip
+  return handle_cancel_input :rename_slug if cancel_input?(new_slug)
+
+  # Получаем сохраненный slug из session
+  current_slug = session[:current_project_slug]
+  project = current_user.projects.find_by(slug: current_slug)
+  return show_projects_list unless project
+
+  # Валидация
+  return respond_with :message, text: t('commands.projects.rename.slug_invalid') if invalid_slug?(new_slug)
+
+  if Project.where.not(id: project.id).exists?(slug: new_slug)
+    return respond_with :message, text: t('commands.projects.rename.slug_taken', slug: new_slug)
+  end
+
+  # Обновление и очистка
+  if project.update(slug: new_slug)
+    session.delete(:current_project_slug)  # ⚠️ Важно: очищаем session
+    respond_with :message, text: t('commands.projects.rename.success_slug', old_slug: current_slug, new_slug: new_slug)
+    return show_project_menu(new_slug)  # ⚠️ Важно: return для правильного ответа
+  else
+    return respond_with :message, text: t('commands.projects.rename.error')
+  end
+end
+```
+
+**Ключевые моменты из ProjectsCommand:**
+
+1. **Константы для контекстов** - используются вместо magic strings:
+   ```ruby
+   CONTEXT_AWAITING_RENAME_SLUG = :awaiting_rename_slug
+   save_context CONTEXT_AWAITING_RENAME_SLUG  # Не 'awaiting_rename_slug'
+   ```
+
+2. **Регистрация context methods** в provides_context_methods:
+   ```ruby
+   provides_context_methods(
+     :awaiting_rename_slug,
+     :awaiting_rename_both,
+     :awaiting_client_name
+   )
+   ```
+
+3. **Очистка session** после завершения операции:
+   ```ruby
+   session.delete(:current_project_slug)
+   session.delete(:new_project_title)
+   session.delete(:suggested_slug)
+   ```
+
+4. **return для respond_with** во всех ветках:
+   ```ruby
+   # ✅ Правильно
+   return respond_with :message, text: 'Ошибка'
+
+   # ❌ Неправильно - ответ не вернется
+   respond_with :message, text: 'Ошибка'
+   return
+   ```
+
 ## TelegramSession (высокоуровневая абстракция)
 
 `TelegramSession` - это ORM-подобная обертка над `session` для сложных операций.

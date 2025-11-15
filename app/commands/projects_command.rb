@@ -207,9 +207,9 @@ class ProjectsCommand < BaseCommand
       text = t('commands.projects.rename.success_slug', old_slug: old_slug, new_slug: new_slug)
       session.delete(:current_project_slug)
       respond_with :message, text: text
-      show_project_menu(new_slug)
+      return show_project_menu(new_slug)
     else
-      respond_with :message, text: t('commands.projects.rename.error')
+      return respond_with :message, text: t('commands.projects.rename.error')
     end
   end
 
@@ -265,7 +265,7 @@ class ProjectsCommand < BaseCommand
     session.delete(:new_project_title)
     session.delete(:suggested_slug)
 
-    update_project_both(project, new_title, new_slug)
+    return update_project_both(project, new_title, new_slug)
   end
 
   def awaiting_client_name(*name_parts)
@@ -289,9 +289,9 @@ class ProjectsCommand < BaseCommand
       text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
       session.delete(:current_project_slug)
       respond_with :message, text: text
-      show_client_menu(current_slug)
+      return show_client_menu(current_slug)
     else
-      respond_with :message, text: t('commands.projects.client.error')
+      return respond_with :message, text: t('commands.projects.client.error')
     end
   end
 
@@ -330,6 +330,9 @@ class ProjectsCommand < BaseCommand
 
     # Удаляем проект
     project_name = project.name
+    # Удаляем связанные данные перед удалением проекта
+    project.invites.destroy_all
+    project.time_shifts.destroy_all
     project.destroy
     session.delete(:current_project_slug)
     respond_with :message, text: t('commands.projects.delete.success', name: project_name)
