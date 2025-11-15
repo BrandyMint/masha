@@ -12,6 +12,9 @@ AllCops:
     - bin/*
     - vendor/**/*
 
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
 Metrics/MethodLength:
   Enabled: false
 Layout/LineLength:
