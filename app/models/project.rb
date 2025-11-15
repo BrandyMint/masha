@@ -11,12 +11,12 @@ class Project < ApplicationRecord
   # belongs_to :owner, class_name: 'User'
   belongs_to :client, optional: true
 
-  has_many :time_shifts
+  has_many :time_shifts, dependent: :destroy
   has_many :timed_projects, through: :time_shift, class_name: 'Project'
 
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
-  has_many :invites
+  has_many :invites, dependent: :destroy
   has_many :member_rates, dependent: :destroy
   has_many :rated_users, through: :member_rates, source: :user
 
@@ -26,7 +26,7 @@ class Project < ApplicationRecord
   scope :archive, -> { where(active: false) }
   scope :alphabetically, -> { order(slug: :asc) }
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
   validates :slug, presence: true, uniqueness: true,
                    format: { with: /\A[a-z0-9._+-]+\Z/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
   validate :slug_not_reserved

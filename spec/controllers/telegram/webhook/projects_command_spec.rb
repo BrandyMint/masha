@@ -309,8 +309,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         # 3. User enters new title
         response = dispatch_message('My Awesome Project')
 
-        # 4. Extract suggested slug button from response
-        keyboard = response.first.dig(:reply_markup, :inline_keyboard)&.flatten || []
+        # 4. Extract suggested slug button from response (button is in last message)
+        keyboard = response.last.dig(:reply_markup, :inline_keyboard)&.flatten || []
         suggested_button = keyboard.find { |btn| btn[:text].include?('Использовать') }
         expect(suggested_button).not_to be_nil
 
@@ -403,7 +403,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
-    let(:project) { projects(:test_project) }
+    let(:project) { projects(:dev_project) }
 
     include_context 'authenticated user'
 
