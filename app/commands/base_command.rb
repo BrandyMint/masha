@@ -128,25 +128,4 @@ class BaseCommand
     end
   end
 
-  # ВРЕМЕННЫЙ МЕТОД - будет удален после рефакторинга ProjectsCommand
-  # TODO: Удалить после миграции на session/TelegramSession
-  def from_context(key)
-    Rails.logger.warn "[DEPRECATED] from_context(#{key}) is deprecated, use session[#{key}] instead. Called from #{caller_locations(1, 1)[0]}"
-    Bugsnag.notify(
-      RuntimeError.new('Deprecated from_context usage'),
-      metadata: {
-        context_key: key,
-        command: self.class.name,
-        caller: caller_locations(1, 3).map(&:to_s)
-      }
-    )
-    session[key]
-  end
-
-  # ВРЕМЕННЫЙ МЕТОД - будет удален после рефакторинга ProjectsCommand
-  # TODO: Удалить после миграции на session
-  def save_context_with_value(key, value)
-    Rails.logger.warn "[DEPRECATED] save_context_with_value is deprecated. Called from #{caller_locations(1, 1)[0]}"
-    session[key] = value
-  end
 end
