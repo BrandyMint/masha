@@ -403,13 +403,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { telegram_users(:telegram_regular) }
     let(:from_id) { telegram_user.id }
-    let(:project) { projects(:test_project) }
+    # Use base_project instead of test_project (no invites or other dependencies)
+    let(:project) { projects(:base_project) }
 
     include_context 'authenticated user'
 
     before do
-      # Ensure user has owner membership to the project
-      memberships(:telegram_test_project)
+      # Create owner membership for deletion tests
+      Membership.create!(
+        user: user,
+        project: project,
+        role_cd: 0 # owner role
+      )
     end
 
     it 'deletes project through workflow' do
