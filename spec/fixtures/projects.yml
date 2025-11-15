@@ -61,21 +61,21 @@ reporting_project:
 
 # Дополнительные проекты для telegram тестов
 project_1:
-  name: Project 1
+  name: Project One
   slug: project-1
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project_2:
-  name: Project 2
+  name: Project Two
   slug: project-2
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 work_project_for_telegram:
-  name: Work Project
+  name: Work Project Telegram
   slug: work-project-telegram
   active: true
   created_at: <%= 1.day.ago %>
@@ -124,7 +124,7 @@ owner_project_2:
   updated_at: <%= 1.day.ago %>
 
 personal_project_for_telegram:
-  name: Personal Project
+  name: Personal Project Telegram
   slug: personal-project-telegram
   active: true
   created_at: <%= 1.day.ago %>
@@ -270,7 +270,7 @@ mobile_app:
   updated_at: <%= 1.day.ago %>
 
 old_report_project:
-  name: Old Project
+  name: Old Report Project
   slug: old-report-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -300,14 +300,14 @@ web_project:
 
 # Проекты для TelegramTimeTracker тестов
 project1:
-  name: Project 1
+  name: Tracker Project 1
   slug: project1
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project2:
-  name: Project 2
+  name: Tracker Project 2
   slug: project2
   active: true
   created_at: <%= 1.day.ago %>

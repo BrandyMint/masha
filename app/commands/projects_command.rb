@@ -280,7 +280,10 @@ class ProjectsCommand < BaseCommand
     end
 
     old_client = project.client&.name || t('commands.projects.menu.no_client')
-    if project.update(client: client)
+    project.client = client
+    update_result = project.save
+
+    if update_result
       text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
       respond_with :message, text: text
       show_client_menu(current_slug)
