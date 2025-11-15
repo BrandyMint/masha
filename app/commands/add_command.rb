@@ -68,11 +68,11 @@ class AddCommand < BaseCommand
         user: current_user
       )
 
-      if time_shift.valid?
-        message = "Отметили в #{project.name} #{hours} часов"
-      else
-        message = "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
-      end
+      message = if time_shift.valid?
+                  "Отметили в #{project.name} #{hours} часов"
+                else
+                  "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
+                end
     else
       message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{current_user.available_projects.alive.join(', ')}"
     end

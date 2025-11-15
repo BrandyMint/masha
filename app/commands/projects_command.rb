@@ -203,7 +203,11 @@ class ProjectsCommand < BaseCommand
     end
 
     old_slug = project.slug
-    return respond_with :message, text: t('commands.projects.rename.error', reason: project.errors.full_messages.join(', ')) unless project.update(slug: new_slug)
+    unless project.update(slug: new_slug)
+      return respond_with :message,
+                          text: t('commands.projects.rename.error',
+                                  reason: project.errors.full_messages.join(', '))
+    end
 
     text = t('commands.projects.rename.success_slug', old_slug: old_slug, new_slug: new_slug)
     session.delete(:current_project_slug)
@@ -283,7 +287,11 @@ class ProjectsCommand < BaseCommand
     end
 
     old_client = project.client&.name || t('commands.projects.menu.no_client')
-    return respond_with :message, text: t('commands.projects.client.error', reason: project.errors.full_messages.join(', ')) unless project.update(client: client)
+    unless project.update(client: client)
+      return respond_with :message,
+                          text: t('commands.projects.client.error',
+                                  reason: project.errors.full_messages.join(', '))
+    end
 
     text = t('commands.projects.client.success', old_client: old_client, new_client: client_name)
     session.delete(:current_project_slug)
