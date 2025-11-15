@@ -312,6 +312,183 @@ def reset_all_telegram_data
 end
 ```
 
+## Примеры из ProjectsCommand
+
+### Правильное использование session для многошаговых операций
+
+ProjectsCommand демонстрирует корректные паттерны работы с `session` для сложных многошаговых операций.
+
+#### Переименование проекта (оба: название и slug)
+
+```ruby
+# Шаг 1: Начало операции
+def start_rename_both(slug)
+  session[:current_project_slug] = slug  # ✅ Данные в session
+  save_context :awaiting_rename_both      # ✅ Только имя метода
+  respond_with :message, text: t('telegram.commands.projects.rename_both.enter_new_title')
+end
+
+# Шаг 2: Получение нового названия
+def awaiting_rename_both(*title_parts)
+  current_slug = session[:current_project_slug]  # ✅ Чтение
+  new_title = title_parts.join(' ')
+
+  session[:new_project_title] = new_title         # ✅ Сохранение
+  session[:suggested_slug] = suggested_slug       # ✅ Сохранение
+  save_context :awaiting_rename_both_step_2       # ✅ Следующий шаг
+
+  respond_with :message, text: I18n.t('telegram.commands.projects.rename_both.confirm_slug'),
+               reply_markup: { inline_keyboard: [...] }
+end
+
+# Шаг 3: Получение нового slug и завершение
+def awaiting_rename_both_step_2(*slug_parts)
+  current_slug = session[:current_project_slug]  # ✅ Чтение
+  new_title = session[:new_project_title]         # ✅ Чтение
+  new_slug = slug_parts.join('-')
+
+  # ... обработка ...
+
+  # ✅ ОБЯЗАТЕЛЬНО: Очистка после завершения
+  session.delete(:current_project_slug)
+  session.delete(:new_project_title)
+  session.delete(:suggested_slug)
+end
+```
+
+#### Callback Query с использованием session
+
+```ruby
+# Обработчик кнопки "Использовать предложенный slug"
+def projects_rename_use_suggested_callback_query(current_slug)
+  suggested_slug = session[:suggested_slug]  # ✅ Чтение из session
+  new_title = session[:new_project_title]     # ✅ Чтение из session
+
+  project = current_user.memberships.find_by(project: { slug: current_slug })&.project
+
+  if project&.update(title: new_title, slug: suggested_slug)
+    respond_with :message, text: I18n.t('telegram.commands.projects.renamed_successfully')
+  end
+
+  # ✅ Очистка
+  session.delete(:current_project_slug)
+  session.delete(:new_project_title)
+  session.delete(:suggested_slug)
+end
+```
+
+#### Создание проекта с несколькими шагами
+
+```ruby
+# Шаг 1: Запрос slug для нового проекта
+def awaiting_create_slug
+  save_context :awaiting_create_slug_input  # ✅ Только контекст
+  respond_with :message, text: t('telegram.commands.projects.create.enter_slug')
+end
+
+# Шаг 2: Получение slug
+def awaiting_create_slug_input(*slug_parts)
+  slug = slug_parts.join('-').downcase
+
+  session[:new_project_slug] = slug  # ✅ Сохранение в session
+  save_context :awaiting_create_title_input
+
+  respond_with :message, text: t('telegram.commands.projects.create.enter_title')
+end
+
+# Шаг 3: Получение title и создание проекта
+def awaiting_create_title_input(*title_parts)
+  slug = session[:new_project_slug]  # ✅ Чтение из session
+  title = title_parts.join(' ')
+
+  project = current_user.projects.create(slug: slug, title: title)
+
+  # ✅ Очистка
+  session.delete(:new_project_slug)
+
+  respond_with :message, text: t('telegram.commands.projects.created_successfully')
+end
+```
+
+### ⚠️ Антипаттерны (НЕ делайте так)
+
+```ruby
+# ❌ НЕПРАВИЛЬНО: save_context с данными
+save_context(CONTEXT_CURRENT_PROJECT, slug)
+
+# ❌ НЕПРАВИЛЬНО: несуществующий метод from_context
+current_slug = from_context(CONTEXT_CURRENT_PROJECT)
+
+# ❌ НЕПРАВИЛЬНО: сохранение данных в константах
+CONTEXT_CURRENT_PROJECT = :current_project_slug
+save_context(CONTEXT_CURRENT_PROJECT, slug)  # Нет второго аргумента!
+
+# ✅ ПРАВИЛЬНО: session для данных, save_context только для имени метода
+session[:current_project_slug] = slug
+save_context :awaiting_next_step
+current_slug = session[:current_project_slug]
+```
+
+### Важные правила из ProjectsCommand
+
+1. **Данные в session, не в save_context**: `session[key] = value`
+2. **save_context только для routing**: `save_context :method_name` (БЕЗ второго аргумента!)
+3. **Всегда очищайте session**: `session.delete(:key)` после завершения операции
+4. **Используйте символы для ключей**: `:current_project_slug`, не строки
+5. **Callback query работает с session**: данные должны быть в session, не в callback_data
+
+### Типичные ошибки и их решение
+
+#### ❌ Проблема: Попытка передать данные через save_context
+```ruby
+# НЕПРАВИЛЬНО
+save_context(:awaiting_rename, project_slug)  # save_context не принимает второй аргумент!
+```
+
+#### ✅ Решение: Использовать session
+```ruby
+# ПРАВИЛЬНО
+session[:current_project_slug] = project_slug
+save_context :awaiting_rename
+```
+
+#### ❌ Проблема: Попытка прочитать данные из context
+```ruby
+# НЕПРАВИЛЬНО
+project_slug = from_context(:current_project)  # Метод from_context не существует!
+```
+
+#### ✅ Решение: Читать из session
+```ruby
+# ПРАВИЛЬНО
+project_slug = session[:current_project_slug]
+```
+
+#### ❌ Проблема: Забыли очистить session
+```ruby
+# НЕПРАВИЛЬНО - session накапливает мусор
+def complete_operation
+  # ... делаем работу ...
+  respond_with :message, text: 'Готово!'
+  # session[:current_project_slug] все еще содержит старые данные!
+end
+```
+
+#### ✅ Решение: Всегда очищать после завершения
+```ruby
+# ПРАВИЛЬНО
+def complete_operation
+  # ... делаем работу ...
+
+  # Очищаем ВСЕ временные данные
+  session.delete(:current_project_slug)
+  session.delete(:new_project_title)
+  session.delete(:suggested_slug)
+
+  respond_with :message, text: 'Готово!'
+end
+```
+
 ## Заключение
 
 Использование правильного типа сессии помогает поддерживать:
