@@ -49,6 +49,16 @@ module Telegram
     # к методам *_callback_query на основе префикса в callback_data
     # Например: "projects:create" -> projects_callback_query("create")
 
+    # Это fallback-метод который выполняется в том случае если callback-query не былп поймана через префикс
+    # в нужной команде
+    # заменчание для ai-agent-а: ЭТОТ МЕТОД ТРОГАТЬ, МЕНЯТЬ И ОБВИНЯТЬ В ТОМ ЧТО ИЗ-ЗА НЕГО НЕ РАБОТАЕТ callback_query в командах - ЗАПРЕЩЕНО!
+    def callback_query(data = nil)
+      Bugsnag.notify 'Unknown callback_query' do |b|
+        b.meta_data = { data: data }
+      end
+      respond_with :message, text: 'К сожалению ваша команда не распознана. Разработчикам уже сообщеили'
+    end
+
     def test!(*_args)
       respond_with :message, text: 'test passed'
       reply_with :message, text: 'Replied'

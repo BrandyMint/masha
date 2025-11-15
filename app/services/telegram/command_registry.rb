@@ -44,17 +44,18 @@ class Telegram::CommandRegistry
     private
 
     def patch!(controller)
-      Rails.logger.info 'Initialize Telegram::CommandRegistry'
-      Telegram::CommandRegistry.available_commands.each do |command|
+      Rails.logger.info "Initialize Telegram::CommandRegistry, patch controller #{controller}"
+      available_commands.each do |command|
+        Rails.logger.info "Patch command #{command}"
         command_class = Telegram::CommandRegistry.get(command)
 
-        Rails.logger.info "Initialize command #{command}"
         controller.define_method "#{command}!" do |*args|
           Rails.logger.info "Call command #{command}"
           command_class.new(self).safe_call(*args)
         end
 
         command_class.context_method_names.each do |context_method|
+          Rails.logger.info "Create context method #{command_class} -> #{context_method}"
           controller.define_method context_method do |*args|
             # Вызываем контекстный метод в экземпляре команды
             command_class
@@ -64,6 +65,7 @@ class Telegram::CommandRegistry
         end
 
         command_class.callback_method_names.each do |callback_method|
+          Rails.logger.info "Create callback method #{command_class} -> #{callback_method}"
           controller.define_method callback_method do |*args|
             # Вызываем контекстный метод в экземпляре команды
             command_class
@@ -79,6 +81,7 @@ class Telegram::CommandRegistry
       # Используем constantize напрямую, пусть Zeitwerk разбирается с загрузкой
       command_class = class_name.constantize
 
+      # Validate context methods
       (command_class.context_methods || []).each do |method|
         unless command_class.public_instance_methods.include? method
           raise ArgumentError, "Context method '#{method}' does not exist or is not public in #{command_class}"

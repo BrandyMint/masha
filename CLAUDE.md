@@ -326,6 +326,12 @@ Three role levels per project:
 
 /file:docs/development/README.md
 
+## Telegram Bot Development
+
+📱 **КРИТИЧЕСКИ ВАЖНО**: Правила работы с Telegram callback_query
+
+/file:docs/development/telegram-callback-guide.md
+
 # ВАЖНО
 
 - Чтобы зайти на боевую (production) базу мы используем `psql $PRODUCTION_DATABASE_URI`

@@ -181,7 +181,7 @@ class RateCommand < BaseCommand
   end
 
   def can_manage_project_rates?(project)
-    project.memberships.where(user: current_user, role_cd: 0).exists? # owner role_cd = 0
+    project.memberships.owners.where(user: current_user).exists?
   end
 
   def find_user_by_username(username)

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class ProjectsCommand < BaseCommand
-  # Shortcut for telegram command translations
-  def t(key, **)
-    super("telegram.#{key}", **)
-  end
   provides_context_methods(
     :awaiting_project_name,
     :awaiting_rename_title,
@@ -40,46 +36,111 @@ class ProjectsCommand < BaseCommand
     end
   end
 
-  def projects_callback_query(data = nil)
-    data ||= callback_data
-    return unless data
-
-    case data
-    when 'projects:create'
-      start_project_creation
-    when /^projects:select:(.+)$/
-      show_project_menu(Regexp.last_match(1))
-    when 'projects:list'
-      show_projects_list
-    when /^projects:rename:(.+)$/
-      show_rename_menu(Regexp.last_match(1))
-    when /^projects:rename_title:(.+)$/
-      start_rename_title(Regexp.last_match(1))
-    when /^projects:rename_slug:(.+)$/
-      start_rename_slug(Regexp.last_match(1))
-    when /^projects:rename_both:(.+)$/
-      start_rename_both(Regexp.last_match(1))
-    when /^projects:rename_use_suggested:(.+):(.+)$/
-      use_suggested_slug(Regexp.last_match(1), Regexp.last_match(2))
-    when /^projects:client:(.+)$/
-      show_client_menu(Regexp.last_match(1))
-    when /^projects:client_edit:(.+)$/
-      start_client_edit(Regexp.last_match(1))
-    when /^projects:client_delete:(.+)$/
-      confirm_client_deletion(Regexp.last_match(1))
-    when /^projects:client_delete_confirm:(.+)$/
-      delete_client(Regexp.last_match(1))
-    when /^projects:delete:(.+)$/
-      confirm_project_deletion(Regexp.last_match(1))
-    when /^projects:delete_confirm:(.+)$/
-      request_deletion_confirmation(Regexp.last_match(1))
-    end
+  # Callback query methods - каждый тип callback имеет свой метод
+  def projects_create_callback_query(_data = nil)
+    start_project_creation
   end
 
-  def callback_data
-    controller.callback_query.data
-  rescue StandardError
-    nil
+  def projects_select_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_select_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    show_project_menu(data)
+  end
+
+  def projects_list_callback_query(_data = nil)
+    show_projects_list
+  end
+
+  def projects_rename_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_rename_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    show_rename_menu(data)
+  end
+
+  def projects_rename_title_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_rename_title_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    start_rename_title(data)
+  end
+
+  def projects_rename_slug_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_rename_slug_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    start_rename_slug(data)
+  end
+
+  def projects_rename_both_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_rename_both_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    start_rename_both(data)
+  end
+
+  def projects_rename_use_suggested_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_rename_use_suggested_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    # Получаем suggested_slug из контекста, data содержит только slug
+    suggested_slug = from_context(CONTEXT_SUGGESTED_SLUG)
+    use_suggested_slug(data, suggested_slug)
+  end
+
+  def projects_client_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_client_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    show_client_menu(data)
+  end
+
+  def projects_client_edit_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_client_edit_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    start_client_edit(data)
+  end
+
+  def projects_client_delete_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_client_delete_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    confirm_client_deletion(data)
+  end
+
+  def projects_client_delete_confirm_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_client_delete_confirm_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    delete_client(data)
+  end
+
+  def projects_delete_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_delete_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    confirm_project_deletion(data)
+  end
+
+  def projects_delete_confirm_callback_query(data = nil)
+    unless data
+      Bugsnag.notify(RuntimeError.new('projects_delete_confirm_callback_query called without data'))
+      return respond_with :message, text: 'Что-то странное..'
+    end
+    request_deletion_confirmation(data)
   end
 
   # Context methods - обработка текстовых сообщений
@@ -101,7 +162,7 @@ class ProjectsCommand < BaseCommand
 
     project = Project.new(name: name, slug: slug)
     if project.save
-      Membership.create(user: current_user, project: project, role: 'owner')
+      Membership.create(user: current_user, project: project, role: :owner)
       respond_with :message, text: t('commands.projects.create.success', name: project.name, slug: project.slug)
       show_projects_list
     else
@@ -176,7 +237,7 @@ class ProjectsCommand < BaseCommand
 
     buttons = [
       [{ text: t('commands.projects.rename.use_suggested'),
-         callback_data: "projects:rename_use_suggested:#{current_slug}:#{suggested_slug}" }]
+         callback_data: "projects_rename_use_suggested:#{current_slug}" }]
     ]
 
     respond_with :message, text: text,
@@ -295,13 +356,13 @@ class ProjectsCommand < BaseCommand
 
     buttons = []
     # Кнопка "Добавить проект" - занимает всю ширину
-    buttons << [{ text: t('commands.projects.add_button'), callback_data: 'projects:create' }]
+    buttons << [{ text: t('commands.projects.add_button'), callback_data: 'projects_create:' }]
 
     # Группируем проекты по 3 в ряд
     project_buttons = projects.map do |project|
       {
         text: project.slug.truncate(15, omission: '...'),
-        callback_data: "projects:select:#{project.slug}"
+        callback_data: "projects_select:#{project.slug}"
       }
     end
 
@@ -334,15 +395,15 @@ class ProjectsCommand < BaseCommand
 
     buttons = if can_manage
                 [
-                  [{ text: t('commands.projects.menu.rename_button'), callback_data: "projects:rename:#{slug}" }],
-                  [{ text: t('commands.projects.menu.client_button'), callback_data: "projects:client:#{slug}" }],
-                  [{ text: t('commands.projects.menu.delete_button'), callback_data: "projects:delete:#{slug}" }],
-                  [{ text: t('commands.projects.menu.back_button'), callback_data: 'projects:list' }]
+                  [{ text: t('commands.projects.menu.rename_button'), callback_data: "projects_rename:#{slug}" }],
+                  [{ text: t('commands.projects.menu.client_button'), callback_data: "projects_client:#{slug}" }],
+                  [{ text: t('commands.projects.menu.delete_button'), callback_data: "projects_delete:#{slug}" }],
+                  [{ text: t('commands.projects.menu.back_button'), callback_data: 'projects_list:' }]
                 ]
               else
                 [
                   [{ text: t('commands.projects.menu.owner_only') }],
-                  [{ text: t('commands.projects.menu.back_button'), callback_data: 'projects:list' }]
+                  [{ text: t('commands.projects.menu.back_button'), callback_data: 'projects_list:' }]
                 ]
               end
 
@@ -354,16 +415,16 @@ class ProjectsCommand < BaseCommand
 
   def show_rename_menu(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
 
     menu_text = t('commands.projects.rename.title', name: project.name)
     buttons = [
-      [{ text: t('commands.projects.rename.title_button'), callback_data: "projects:rename_title:#{slug}" }],
-      [{ text: t('commands.projects.rename.slug_button'), callback_data: "projects:rename_slug:#{slug}" }],
-      [{ text: t('commands.projects.rename.both_button'), callback_data: "projects:rename_both:#{slug}" }],
-      [{ text: t('commands.projects.rename.cancel_button'), callback_data: "projects:select:#{slug}" }]
+      [{ text: t('commands.projects.rename.title_button'), callback_data: "projects_rename_title:#{slug}" }],
+      [{ text: t('commands.projects.rename.slug_button'), callback_data: "projects_rename_slug:#{slug}" }],
+      [{ text: t('commands.projects.rename.both_button'), callback_data: "projects_rename_both:#{slug}" }],
+      [{ text: t('commands.projects.rename.cancel_button'), callback_data: "projects_select:#{slug}" }]
     ]
 
     respond_with :message, text: menu_text,
@@ -374,7 +435,7 @@ class ProjectsCommand < BaseCommand
 
   def start_rename_title(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_TITLE)
@@ -386,7 +447,7 @@ class ProjectsCommand < BaseCommand
 
   def start_rename_slug(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_SLUG)
@@ -398,7 +459,7 @@ class ProjectsCommand < BaseCommand
 
   def start_rename_both(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_BOTH)
@@ -410,7 +471,7 @@ class ProjectsCommand < BaseCommand
 
   def start_client_edit(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_CLIENT_NAME)
@@ -423,7 +484,7 @@ class ProjectsCommand < BaseCommand
 
   def confirm_client_deletion(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     return show_client_menu(slug) unless project.client
 
@@ -433,8 +494,8 @@ class ProjectsCommand < BaseCommand
     text = t('commands.projects.client.confirm_delete',
              client_name: project.client.name)
     buttons = [
-      [{ text: t('commands.projects.client.delete_confirm_yes'), callback_data: "projects:client_delete_confirm:#{slug}" }],
-      [{ text: t('commands.projects.client.delete_cancel'), callback_data: "projects:client:#{slug}" }]
+      [{ text: t('commands.projects.client.delete_confirm_yes'), callback_data: "projects_client_delete_confirm:#{slug}" }],
+      [{ text: t('commands.projects.client.delete_cancel'), callback_data: "projects_client:#{slug}" }]
     ]
 
     respond_with :message, text: text,
@@ -445,7 +506,7 @@ class ProjectsCommand < BaseCommand
 
   def confirm_project_deletion(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     stats = project.deletion_stats
@@ -457,8 +518,8 @@ class ProjectsCommand < BaseCommand
              invites: stats[:invites_count])
 
     buttons = [
-      [{ text: t('commands.projects.delete.confirm_yes'), callback_data: "projects:delete_confirm:#{slug}" }],
-      [{ text: t('commands.projects.delete.confirm_cancel'), callback_data: "projects:select:#{slug}" }]
+      [{ text: t('commands.projects.delete.confirm_yes'), callback_data: "projects_delete_confirm:#{slug}" }],
+      [{ text: t('commands.projects.delete.confirm_cancel'), callback_data: "projects_select:#{slug}" }]
     ]
 
     respond_with :message, text: text,
@@ -469,7 +530,7 @@ class ProjectsCommand < BaseCommand
 
   def request_deletion_confirmation(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_DELETE_CONFIRM)
@@ -481,7 +542,7 @@ class ProjectsCommand < BaseCommand
 
   def show_client_menu(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     save_context(CONTEXT_CURRENT_PROJECT, slug)
 
@@ -491,13 +552,13 @@ class ProjectsCommand < BaseCommand
              client_name: current_client)
 
     buttons = [
-      [{ text: t('commands.projects.client.edit_button'), callback_data: "projects:client_edit:#{slug}" }]
+      [{ text: t('commands.projects.client.edit_button'), callback_data: "projects_client_edit:#{slug}" }]
     ]
 
     # Кнопка удаления клиента только если клиент установлен
-    buttons << [{ text: t('commands.projects.client.delete_button'), callback_data: "projects:client_delete:#{slug}" }] if project.client
+    buttons << [{ text: t('commands.projects.client.delete_button'), callback_data: "projects_client_delete:#{slug}" }] if project.client
 
-    buttons << [{ text: t('commands.projects.menu.back_button'), callback_data: "projects:select:#{slug}" }]
+    buttons << [{ text: t('commands.projects.menu.back_button'), callback_data: "projects_select:#{slug}" }]
 
     respond_with :message, text: text,
                            reply_markup: {
@@ -507,7 +568,7 @@ class ProjectsCommand < BaseCommand
 
   def use_suggested_slug(slug, suggested_slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     # Получаем новое название из контекста (должно быть сохранено перед этим)
     new_name = from_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2)
@@ -546,7 +607,7 @@ class ProjectsCommand < BaseCommand
     # Для совместимости со старым форматом
     project = Project.new(name: slug, slug: slug)
     if project.save
-      Membership.create(user: current_user, project: project, role: 'owner')
+      Membership.create(user: current_user, project: project, role: :owner)
       respond_with :message, text: t('commands.projects.create.success',
                                      name: project.name,
                                      slug: project.slug)
@@ -583,7 +644,7 @@ class ProjectsCommand < BaseCommand
 
   def delete_client(slug)
     project = current_user.projects.find_by(slug: slug)
-    return show_projects_list unless project && project.can_be_managed_by?(current_user)
+    return show_projects_list unless project&.can_be_managed_by?(current_user)
 
     if project.update(client: nil)
       respond_with :message, text: t('commands.projects.client.delete_success')

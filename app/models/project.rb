@@ -58,7 +58,7 @@ class Project < ApplicationRecord
   end
 
   def can_be_managed_by?(user)
-    memberships.where(user: user, role: 'owner').exists?
+    memberships.owners.where(user: user).exists?
   end
 
   def client_name_for_display

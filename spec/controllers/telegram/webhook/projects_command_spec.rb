@@ -58,6 +58,20 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       expect(user.memberships.where(project: project, role_cd: 0)).to exist
     end
 
+    it 'interpolates name and slug in success message' do
+      response = nil
+      expect do
+        response = dispatch_command :projects, :create, 'test-proj'
+      end.to change(Project, :count).by(1)
+
+      # Проверяем что в ответе нет необработанных плейсхолдеров
+      expect(response.first[:text]).not_to include('%{name}')
+      expect(response.first[:text]).not_to include('%{slug}')
+
+      # Проверяем что в ответе есть реальные значения
+      expect(response.first[:text]).to include('test-proj')
+    end
+
     it 'creates project through multi-step workflow' do
       # 1. User calls /projects create without parameters
       dispatch_command :projects, :create

@@ -110,8 +110,9 @@ class UsersCommand < BaseCommand
   end
 
   def show_manageable_projects_for_add
-    manageable_projects = current_user.available_projects.alive.joins(:memberships)
-                                      .where(memberships: { user: current_user, role_cd: 0 })
+    manageable_projects = current_user.available_projects.alive
+                                      .joins(:memberships)
+                                      .merge(Membership.owners.where(user: current_user))
 
     return respond_with :message, text: 'У вас нет проектов, в которые можно добавить пользователей' if manageable_projects.empty?
 

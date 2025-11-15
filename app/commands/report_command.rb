@@ -10,13 +10,6 @@
 #   /report yesterday detailed                 # Yesterday with descriptions
 #   /report 2025-01-01:2025-01-31 detailed     # Date range, detailed
 class ReportCommand < BaseCommand
-  HELP_SECTIONS = {
-    'periods' => :periods_help,
-    'filters' => :filters_help,
-    'options' => :options_help,
-    'examples' => :examples_help,
-    'main' => :main_help
-  }.freeze
   def call(*args)
     # Check for help request
     return show_help if args.first == 'help'
@@ -114,25 +107,44 @@ class ReportCommand < BaseCommand
                  reply_markup: keyboard
   end
 
-  def report_callback_query(data = nil)
-    data ||= callback_data
-    return unless data&.start_with?('report_help_')
-
-    section = data.sub('report_help_', '')
-    return unless HELP_SECTIONS.key?(section)
-
+  # Callback query methods - один метод для каждого раздела справки
+  def report_periods_callback_query
     help_formatter = ReportHelpFormatter.new
-    text = help_formatter.send(HELP_SECTIONS[section])
-    keyboard = help_formatter.navigation_keyboard(section)
+    text = help_formatter.periods_help
+    keyboard = help_formatter.navigation_keyboard('periods')
 
-    edit_message :text,
-                 text: text,
-                 reply_markup: keyboard
+    edit_message :text, text: text, reply_markup: keyboard
   end
 
-  def callback_data
-    controller.callback_query.data
-  rescue StandardError
-    nil
+  def report_filters_callback_query
+    help_formatter = ReportHelpFormatter.new
+    text = help_formatter.filters_help
+    keyboard = help_formatter.navigation_keyboard('filters')
+
+    edit_message :text, text: text, reply_markup: keyboard
+  end
+
+  def report_options_callback_query
+    help_formatter = ReportHelpFormatter.new
+    text = help_formatter.options_help
+    keyboard = help_formatter.navigation_keyboard('options')
+
+    edit_message :text, text: text, reply_markup: keyboard
+  end
+
+  def report_examples_callback_query
+    help_formatter = ReportHelpFormatter.new
+    text = help_formatter.examples_help
+    keyboard = help_formatter.navigation_keyboard('examples')
+
+    edit_message :text, text: text, reply_markup: keyboard
+  end
+
+  def report_main_callback_query
+    help_formatter = ReportHelpFormatter.new
+    text = help_formatter.main_help
+    keyboard = help_formatter.main_keyboard
+
+    edit_message :text, text: text, reply_markup: keyboard
   end
 end

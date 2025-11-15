@@ -64,7 +64,7 @@ RSpec.describe ReportHelpFormatter do
       periods_button = buttons.find { |b| b[:text].include?('Периоды') }
 
       expect(periods_button).not_to be_nil
-      expect(periods_button[:callback_data]).to eq('report_help_periods')
+      expect(periods_button[:callback_data]).to eq('report_periods:')
     end
 
     it 'contains filters button' do
@@ -72,7 +72,7 @@ RSpec.describe ReportHelpFormatter do
       filters_button = buttons.find { |b| b[:text].include?('Фильтры') }
 
       expect(filters_button).not_to be_nil
-      expect(filters_button[:callback_data]).to eq('report_help_filters')
+      expect(filters_button[:callback_data]).to eq('report_filters:')
     end
 
     it 'contains options button' do
@@ -80,7 +80,7 @@ RSpec.describe ReportHelpFormatter do
       options_button = buttons.find { |b| b[:text].include?('Опции') }
 
       expect(options_button).not_to be_nil
-      expect(options_button[:callback_data]).to eq('report_help_options')
+      expect(options_button[:callback_data]).to eq('report_options:')
     end
 
     it 'contains examples button' do
@@ -88,7 +88,7 @@ RSpec.describe ReportHelpFormatter do
       examples_button = buttons.find { |b| b[:text].include?('Примеры') }
 
       expect(examples_button).not_to be_nil
-      expect(examples_button[:callback_data]).to eq('report_help_examples')
+      expect(examples_button[:callback_data]).to eq('report_examples:')
     end
   end
 
@@ -195,7 +195,7 @@ RSpec.describe ReportHelpFormatter do
       back_button = buttons.find { |b| b[:text].include?('Назад') }
 
       expect(back_button).not_to be_nil
-      expect(back_button[:callback_data]).to eq('report_help_main')
+      expect(back_button[:callback_data]).to eq('report_main:')
     end
 
     it 'returns keyboard with back button for filters section' do

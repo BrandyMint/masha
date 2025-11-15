@@ -38,12 +38,12 @@ class ReportHelpFormatter
     {
       inline_keyboard: [
         [
-          { text: '📅 Периоды', callback_data: 'report_help_periods' },
-          { text: '🔍 Фильтры', callback_data: 'report_help_filters' }
+          { text: '📅 Периоды', callback_data: 'report_periods:' },
+          { text: '🔍 Фильтры', callback_data: 'report_filters:' }
         ],
         [
-          { text: '⚙️ Опции', callback_data: 'report_help_options' },
-          { text: '💡 Примеры', callback_data: 'report_help_examples' }
+          { text: '⚙️ Опции', callback_data: 'report_options:' },
+          { text: '💡 Примеры', callback_data: 'report_examples:' }
         ]
       ]
     }
@@ -159,7 +159,7 @@ class ReportHelpFormatter
     buttons = []
 
     # First row: Back button
-    buttons << [{ text: '◀️ Назад', callback_data: 'report_help_main' }]
+    buttons << [{ text: '◀️ Назад', callback_data: 'report_main:' }]
 
     # Second row: Navigation to other sections (excluding current)
     other_sections = section_buttons(current_section)
@@ -170,10 +170,10 @@ class ReportHelpFormatter
 
   def section_buttons(exclude_section)
     sections = {
-      'periods' => { text: '📅 Периоды', callback_data: 'report_help_periods' },
-      'filters' => { text: '🔍 Фильтры', callback_data: 'report_help_filters' },
-      'options' => { text: '⚙️ Опции', callback_data: 'report_help_options' },
-      'examples' => { text: '💡 Примеры', callback_data: 'report_help_examples' }
+      'periods' => { text: '📅 Периоды', callback_data: 'report_periods:' },
+      'filters' => { text: '🔍 Фильтры', callback_data: 'report_filters:' },
+      'options' => { text: '⚙️ Опции', callback_data: 'report_options:' },
+      'examples' => { text: '💡 Примеры', callback_data: 'report_examples:' }
     }
 
     sections.reject { |key, _| key == exclude_section }.values

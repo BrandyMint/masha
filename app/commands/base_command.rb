@@ -114,4 +114,15 @@ class BaseCommand
   private
 
   attr_reader :controller
+
+  # Shortcut for telegram command translations
+  def t(key, **options)
+    # Если ключ уже начинается с telegram., используем его как полный ключ
+    if key.to_s.start_with?('telegram.')
+      I18n.t(key, **options)
+    else
+      # Иначе добавляем scope
+      I18n.t(key, **options.merge(scope: :telegram))
+    end
+  end
 end

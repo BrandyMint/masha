@@ -147,7 +147,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         let(:message) { { message_id: 456, chat: chat } }
 
         context 'periods section' do
-          let(:data) { 'report_help_periods' }
+          let(:data) { 'report_periods' }
 
           it 'shows periods help' do
             response = dispatch(callback_query: {
@@ -162,7 +162,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         context 'filters section' do
-          let(:data) { 'report_help_filters' }
+          let(:data) { 'report_filters' }
 
           it 'shows filters help' do
             response = dispatch(callback_query: {
@@ -177,7 +177,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         context 'options section' do
-          let(:data) { 'report_help_options' }
+          let(:data) { 'report_options' }
 
           it 'shows options help' do
             response = dispatch(callback_query: {
@@ -192,7 +192,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         context 'examples section' do
-          let(:data) { 'report_help_examples' }
+          let(:data) { 'report_examples' }
 
           it 'shows examples help' do
             response = dispatch(callback_query: {
@@ -207,7 +207,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         end
 
         context 'back to main' do
-          let(:data) { 'report_help_main' }
+          let(:data) { 'report_main' }
 
           it 'shows main help' do
             response = dispatch(callback_query: {

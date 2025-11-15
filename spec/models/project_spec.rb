@@ -81,4 +81,28 @@ RSpec.describe Project, type: :model do
       expect(Project.archive).not_to include(active_project)
     end
   end
+
+  describe '#can_be_managed_by?' do
+    let(:project) { projects(:test_project) }
+    let(:owner) { users(:project_owner) }
+    let(:member) { users(:project_member) }
+    let(:watcher) { users(:project_watcher) }
+    let(:non_member) { users(:regular_user) }
+
+    it 'returns true for project owner' do
+      expect(project.can_be_managed_by?(owner)).to be true
+    end
+
+    it 'returns false for project member' do
+      expect(project.can_be_managed_by?(member)).to be false
+    end
+
+    it 'returns false for project watcher' do
+      expect(project.can_be_managed_by?(watcher)).to be false
+    end
+
+    it 'returns false for non-member' do
+      expect(project.can_be_managed_by?(non_member)).to be false
+    end
+  end
 end
