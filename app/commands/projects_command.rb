@@ -224,12 +224,12 @@ class ProjectsCommand < BaseCommand
     return show_projects_list unless project
 
     # Сохраняем новое название и просим slug
-    save_context(CONTEXT_AWAITING_RENAME_BOTH_STEP_2, new_title)
-    save_context(CONTEXT_RENAME_ACTION, 'both')
+    save_context_with_value(CONTEXT_AWAITING_RENAME_BOTH_STEP_2, new_title)
+    save_context_with_value(CONTEXT_RENAME_ACTION, 'both')
 
     # Генерируем предложенный slug
     suggested_slug = Project.generate_unique_slug(new_title)
-    save_context(CONTEXT_SUGGESTED_SLUG, suggested_slug)
+    save_context_with_value(CONTEXT_SUGGESTED_SLUG, suggested_slug)
 
     text = t('commands.projects.rename.enter_slug',
              current_slug: current_slug)
@@ -417,7 +417,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
 
     menu_text = t('commands.projects.rename.title', name: project.name)
     buttons = [
@@ -437,7 +437,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_TITLE)
 
     text = t('commands.projects.rename.enter_title',
@@ -449,7 +449,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_SLUG)
 
     text = t('commands.projects.rename.enter_slug',
@@ -461,7 +461,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_RENAME_BOTH)
 
     text = t('commands.projects.rename.enter_title',
@@ -473,7 +473,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_CLIENT_NAME)
 
     current_client = project.client&.name || t('commands.projects.menu.no_client')
@@ -488,7 +488,7 @@ class ProjectsCommand < BaseCommand
 
     return show_client_menu(slug) unless project.client
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_CLIENT_DELETE_CONFIRM)
 
     text = t('commands.projects.client.confirm_delete',
@@ -508,7 +508,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     stats = project.deletion_stats
 
     text = t('commands.projects.delete.confirm_first',
@@ -532,7 +532,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
     save_context(CONTEXT_AWAITING_DELETE_CONFIRM)
 
     text = t('commands.projects.delete.confirm_final',
@@ -544,7 +544,7 @@ class ProjectsCommand < BaseCommand
     project = current_user.projects.find_by(slug: slug)
     return show_projects_list unless project&.can_be_managed_by?(current_user)
 
-    save_context(CONTEXT_CURRENT_PROJECT, slug)
+    save_context_with_value(CONTEXT_CURRENT_PROJECT, slug)
 
     current_client = project.client&.name || t('commands.projects.menu.no_client')
     text = t('commands.projects.client.menu_title',
