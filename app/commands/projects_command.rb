@@ -310,7 +310,7 @@ class ProjectsCommand < BaseCommand
       buttons << row
     end
 
-    respond_with :message, reply_markup: {
+    respond_with :message, text: t('commands.projects.title'), reply_markup: {
       inline_keyboard: buttons
     }
   end

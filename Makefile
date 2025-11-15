@@ -17,6 +17,9 @@ lint:
 
 patch-release-and-deploy: patch-release watch deploy sleep infra-watch
 
+set_commands:
+	MASHA_BOT_TOKEN=${MASHA_PRODUCTION_BOT_TOKEN} ./bin/rake telegram:bot:set_commands 
+
 minor:
 	@${SEMVER_BIN} inc minor
 

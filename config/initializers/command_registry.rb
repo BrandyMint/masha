@@ -1,6 +1,6 @@
 Rails.application.config.after_initialize do
   Telegram::CommandRegistry.register(
     Telegram::WebhookController,
-    %w[report rate projects attach start help users add edit clients notify reset merge set_commands]
+    %w[report rate projects attach start help users add edit clients notify reset merge]
   )
 end

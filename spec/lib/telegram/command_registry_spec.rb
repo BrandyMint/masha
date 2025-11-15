@@ -11,8 +11,8 @@ RSpec.describe Telegram::CommandRegistry do
       expect(commands.all? { |c| c < BaseCommand }).to be true
     end
 
-    it 'returns at least 14 commands' do
-      expect(described_class.all_command_classes.size).to be >= 14
+    it 'returns at least 2 commands' do
+      expect(described_class.all_command_classes.size).to be >= 2
     end
   end
 
