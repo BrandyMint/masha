@@ -1,25 +1,11 @@
 {
   "mcpServers": {
-    "bugsnag": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "bugsnag-mcp-server"
-      ],
-      "env": {
-        "BUGSNAG_API_KEY": "${BUGSNAG_DATA_API_KEY}",
-        "BUGSNAG_PROJECT_ID": "${BUGSNAG_PROJECT_ID}"
-      },
-      "disabled": false,
-      "alwaysAllow": []
-    },
     "postgres": {
       "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
-        "${PRODUCTION_DATABASE_URI}"
+        "postgresql://danil:OBLzFV5HQ8i9@91.219.189.217/masha_production"
       ]
     }
   }
