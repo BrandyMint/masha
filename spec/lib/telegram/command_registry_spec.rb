@@ -17,11 +17,12 @@ RSpec.describe Telegram::CommandRegistry do
   end
 
   describe '.public_commands' do
-    it 'excludes developer_only commands' do
+    it 'excludes developer_only and hidden commands' do
       commands = described_class.public_commands
 
-      expect(commands).to include(AddCommand, StartCommand, HelpCommand)
+      expect(commands).to include(AddCommand, HelpCommand)
       expect(commands).not_to include(NotifyCommand) # developer_only
+      expect(commands).not_to include(StartCommand) # hidden
     end
   end
 

@@ -19,7 +19,6 @@ RSpec.describe 'telegram:bot:set_commands' do
     expect(Telegram.bots[:default]).to have_received(:set_my_commands).with(
       commands: array_including(
         hash_including(command: 'add', description: String),
-        hash_including(command: 'start', description: String),
         hash_including(command: 'help', description: String)
       )
     )
@@ -38,7 +37,7 @@ RSpec.describe 'telegram:bot:set_commands' do
     Rake::Task['telegram:bot:set_commands'].invoke
 
     expect(Telegram.bots[:default]).to have_received(:set_my_commands) do |args|
-      expect(args[:commands].size).to be >= 11
+      expect(args[:commands].size).to be >= 8
     end
   end
 end
