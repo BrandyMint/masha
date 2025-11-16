@@ -11,17 +11,19 @@ class User < ApplicationRecord
 
   # has_many :owned_projects, class_name: 'Project', foreign_key: :owner_id
 
-  has_many :time_shifts
+  has_many :time_shifts, dependent: :destroy
   has_many :timed_projects, through: :time_shift, class_name: 'Project'
 
   has_many :authentications, dependent: :destroy
   has_many :memberships, dependent: :destroy
-  has_many :active_memberships, -> { joins(:project).where projects: { active: true } }, class_name: 'Membership'
+  has_many :active_memberships, lambda {
+    joins(:project).where projects: { active: true }
+  }, class_name: 'Membership', dependent: :destroy, inverse_of: :user
   has_many :active_available_users, through: :active_memberships, source: :available_users
   has_many :available_users, through: :memberships
 
   has_many :projects, through: :memberships
-  has_many :invites
+  has_many :invites, dependent: :destroy
   has_many :member_rates, dependent: :destroy
   has_many :rated_projects, through: :member_rates, source: :project
   has_many :clients, dependent: :destroy
@@ -40,7 +42,7 @@ class User < ApplicationRecord
   end
 
   before_create do
-    self.is_root = true if User.count.zero?
+    self.is_root = true if User.none?
   end
 
   after_save do
@@ -73,7 +75,7 @@ class User < ApplicationRecord
     memberships.where(project_id: project.id).first unless project.nil?
   end
 
-  def has_role?(role, project)
+  def role?(role, project)
     membership_of(project).try(:role) == role
   end
 

@@ -1,0 +1,60 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.guide.title')
+
+      %p.lead= t('help.guide.subtitle')
+
+      .toc.mb-4.p-3.bg-light.rounded
+        %h3= t('help.guide.table_of_contents')
+        %ul
+          %li= link_to t('help.guide.concepts'), '#concepts'
+          %li= link_to t('help.guide.getting_started'), '#getting-started'
+          %li= link_to t('help.guide.tracking_time'), '#tracking-time'
+          %li= link_to t('help.guide.reports'), '#reports'
+          %li= link_to t('help.guide.projects'), '#projects'
+
+      %h2#concepts= t('help.guide.concepts')
+
+      %h3= t('help.guide.project')
+      %p= t('help.guide.project_desc')
+
+      %h3= t('help.guide.time_entry')
+      %p= t('help.guide.time_entry_desc')
+
+      %h3= t('help.guide.roles')
+      %p= t('help.guide.roles_desc')
+      %ul
+        %li
+          %strong Owner:
+          = t('help.guide.role_owner')
+        %li
+          %strong Watcher:
+          = t('help.guide.role_watcher')
+        %li
+          %strong Participant:
+          = t('help.guide.role_participant')
+
+      %h2#getting-started= t('help.guide.getting_started')
+      %p
+        = t('help.guide.getting_started_desc')
+        = link_to t('help.nav.quick_start'), help_quick_start_path
+
+      %h2#tracking-time= t('help.guide.tracking_time')
+      %p
+        = t('help.guide.tracking_time_desc')
+        = link_to t('help.nav.time_format'), help_time_format_path
+
+      %h2#reports= t('help.guide.reports')
+      %p= t('help.guide.reports_desc')
+      %p
+        %code.d-block.mb-2 /report week
+        %code.d-block.mb-2 /report month
+        %code.d-block.mb-2 /report today
+
+      %h2#projects= t('help.guide.projects')
+      %p
+        = t('help.guide.projects_desc')
+        = link_to t('help.nav.projects'), help_projects_path

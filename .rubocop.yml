@@ -33,3 +33,7 @@ Lint/AssignmentInCondition:
 
 Documentation:
   Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - app/services/authentificator.rb

@@ -1,0 +1,45 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.projects.title')
+
+      %h2= t('help.projects.create')
+      %p= t('help.projects.create_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code /projects create my-project
+
+      %h2= t('help.projects.view')
+      %p= t('help.projects.view_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code /projects
+
+      %h2= t('help.projects.show')
+      %p= t('help.projects.show_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code /projects show my-project
+
+      %h2= t('help.projects.edit')
+      %p= t('help.projects.edit_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code /projects edit my-project
+
+      %h2= t('help.projects.delete')
+      %p= t('help.projects.delete_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code /projects delete my-project
+
+      .alert.alert-warning.mt-4
+        %strong= t('help.projects.warning')
+        %p.mb-0= t('help.projects.warning_desc')

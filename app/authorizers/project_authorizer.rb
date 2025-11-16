@@ -2,11 +2,11 @@
 
 class ProjectAuthorizer < ApplicationAuthorizer
   def creatable_by?(user)
-    has_permission? user
+    permission? user
   end
 
   def updatable_by?(user)
-    has_permission? user
+    permission? user
   end
 
   def deletable_by?(user)
@@ -15,7 +15,7 @@ class ProjectAuthorizer < ApplicationAuthorizer
 
   protected
 
-  def has_permission?(user)
-    user.is_root? || user.has_role?(:owner, resource)
+  def permission?(user)
+    user.is_root? || user.role?(:owner, resource)
   end
 end

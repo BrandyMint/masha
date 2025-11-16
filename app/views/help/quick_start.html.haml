@@ -1,0 +1,48 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.quick_start.title')
+
+      %p.lead= t('help.quick_start.subtitle')
+
+      %h2#what-is-masha= t('help.quick_start.what_is')
+      %p= t('help.quick_start.what_is_desc')
+
+      %h2#three-steps= t('help.quick_start.three_steps')
+
+      .step.mb-4
+        %h3
+          %span.badge.bg-primary 1
+          = t('help.quick_start.step1_title')
+        %p= t('help.quick_start.step1_desc')
+        %pre.bg-light.p-3
+          %code /projects create my-project
+
+      .step.mb-4
+        %h3
+          %span.badge.bg-primary 2
+          = t('help.quick_start.step2_title')
+        %p= t('help.quick_start.step2_desc')
+        %pre.bg-light.p-3
+          %code 2 my-project Первая задача
+
+      .step.mb-4
+        %h3
+          %span.badge.bg-primary 3
+          = t('help.quick_start.step3_title')
+        %p= t('help.quick_start.step3_desc')
+        %pre.bg-light.p-3
+          %code /report week
+
+      %h2#common-mistakes= t('help.quick_start.common_mistakes')
+      .alert.alert-warning
+        %strong= t('help.quick_start.mistake1_title')
+        %p.mb-0= t('help.quick_start.mistake1_desc')
+
+      %h2#next-steps= t('help.quick_start.next_steps')
+      %ul
+        %li= link_to t('help.nav.guide'), help_guide_path
+        %li= link_to t('help.nav.commands'), help_commands_path
+        %li= link_to t('help.nav.faq'), help_faq_path

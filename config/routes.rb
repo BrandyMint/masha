@@ -20,6 +20,15 @@ Masha::Application.routes.draw do
   get 'feedback' => 'pages#feedback', :as => 'feedback'
   get 'noaccess' => 'pages#noaccess', :as => 'noaccess'
   get 'support' => redirect('/feedback')
+
+  # Help routes
+  get 'help', to: 'help#index', as: :help_index
+  get 'help/guide', to: 'help#guide', as: :help_guide
+  get 'help/quick-start', to: 'help#quick_start', as: :help_quick_start
+  get 'help/commands', to: 'help#commands', as: :help_commands
+  get 'help/time-format', to: 'help#time_format', as: :help_time_format
+  get 'help/projects', to: 'help#projects', as: :help_projects
+  get 'help/faq', to: 'help#faq', as: :help_faq
   get 'error' => 'errors#index', :as => 'error'
 
   resources :users, only: %i[new create]

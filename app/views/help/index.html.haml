@@ -1,0 +1,42 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-8
+      %h1= t('help.index.title')
+
+      %p.lead= t('help.index.intro')
+
+      %h2= t('help.index.getting_started')
+      %ol
+        %li
+          %strong= t('help.index.step1_title')
+          %p= t('help.index.step1_desc')
+        %li
+          %strong= t('help.index.step2_title')
+          %p= t('help.index.step2_desc')
+        %li
+          %strong= t('help.index.step3_title')
+          %p= t('help.index.step3_desc')
+
+      %h2= t('help.index.topics')
+      .list-group
+        = link_to t('help.nav.quick_start'), help_quick_start_path, class: 'list-group-item list-group-item-action'
+        = link_to t('help.nav.guide'), help_guide_path, class: 'list-group-item list-group-item-action'
+        = link_to t('help.nav.commands'), help_commands_path, class: 'list-group-item list-group-item-action'
+        = link_to t('help.nav.time_format'), help_time_format_path, class: 'list-group-item list-group-item-action'
+        = link_to t('help.nav.projects'), help_projects_path, class: 'list-group-item list-group-item-action'
+        = link_to t('help.nav.faq'), help_faq_path, class: 'list-group-item list-group-item-action'
+
+    .col-md-4
+      %aside.help-sidebar
+        .card
+          .card-header
+            %h5 💡 = t('help.sidebar.tip')
+          .card-body
+            %p= t('help.sidebar.quick_commands')
+            %div
+              %code.d-block.mb-2= '/start'
+              %code.d-block.mb-2= '/projects'
+              %code.d-block.mb-2= '/add'
+              %code.d-block.mb-2= '/report'

@@ -1,0 +1,21 @@
+.help-navigation
+  %nav.navbar.navbar-expand-sm.navbar-light.bg-light
+    .container
+      %button.navbar-toggler{"aria-controls" => "navbarNav", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-bs-target" => "#navbarNav", "data-bs-toggle" => "collapse", :type => "button"}
+        %span.navbar-toggler-icon
+      #navbarNav.collapse.navbar-collapse
+        %ul.navbar-nav.ms-auto
+          %li.nav-item
+            = link_to t('help.nav.index'), help_index_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.quick_start'), help_quick_start_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.guide'), help_guide_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.commands'), help_commands_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.time_format'), help_time_format_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.projects'), help_projects_path, class: 'nav-link'
+          %li.nav-item
+            = link_to t('help.nav.faq'), help_faq_path, class: 'nav-link'

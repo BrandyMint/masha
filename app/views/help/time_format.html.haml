@@ -1,0 +1,43 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.time_format.title')
+
+      %h2= t('help.time_format.basic_format')
+      %p= t('help.time_format.basic_format_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code
+            2 my-project Работа над задачей
+        %p.small.text-muted
+          = t('help.time_format.basic_example')
+
+      %h2= t('help.time_format.decimal_hours')
+      %p= t('help.time_format.decimal_hours_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code
+            1.5 design Правка дизайна
+        %p.small.text-muted
+          = t('help.time_format.decimal_example')
+
+      %h2= t('help.time_format.time_first')
+      %p= t('help.time_format.time_first_desc')
+
+      .code-example.mb-4
+        %pre.bg-light.p-3
+          %code
+            /add 2 my-project Описание
+        %p.small.text-muted
+          = t('help.time_format.time_first_example')
+
+      %h2= t('help.time_format.validation')
+      %p= t('help.time_format.validation_desc')
+      %ul
+        %li= t('help.time_format.min_hours')
+        %li= t('help.time_format.max_description')
+        %li= t('help.time_format.project_required')

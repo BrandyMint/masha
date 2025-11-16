@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_10_090950) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,7 +75,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_10_090950) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "telegram_username"
-    t.index ["email"], name: "index_invites_on_email", unique: true
+    t.index ["email", "project_id"], name: "index_invites_on_email_and_project_id", unique: true
     t.index ["project_id"], name: "index_invites_on_project_id"
     t.index ["telegram_username", "project_id"], name: "index_invites_on_telegram_username_and_project_id", unique: true
     t.index ["user_id"], name: "index_invites_on_user_id"
@@ -119,6 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_10_090950) do
     t.integer "telegram_chat_id"
     t.bigint "client_id"
     t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["name"], name: "index_projects_on_name", unique: true
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -163,6 +164,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_10_090950) do
     t.string "locale", default: "ru"
     t.bigint "telegram_user_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["nickname"], name: "index_users_on_nickname", unique: true
+    t.index ["pivotal_person_id"], name: "index_users_on_pivotal_person_id", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
   end

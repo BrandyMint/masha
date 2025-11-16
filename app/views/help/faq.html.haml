@@ -1,0 +1,47 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.faq.title')
+
+      .accordion
+        .accordion-item
+          %h2.accordion-header
+            %button.accordion-button{"aria-controls" => "faq1", "aria-expanded" => "true", "data-bs-target" => "#faq1", "data-bs-toggle" => "collapse", :type => "button"}
+              = t('help.faq.q1')
+          #faq1.accordion-collapse.collapse.show{"aria-labelledby" => "headingOne", "data-bs-parent" => ".accordion"}
+            .accordion-body
+              = t('help.faq.a1')
+
+        .accordion-item
+          %h2.accordion-header
+            %button.accordion-button.collapsed{"aria-controls" => "faq2", "aria-expanded" => "false", "data-bs-target" => "#faq2", "data-bs-toggle" => "collapse", :type => "button"}
+              = t('help.faq.q2')
+          #faq2.accordion-collapse.collapse{"aria-labelledby" => "headingTwo", "data-bs-parent" => ".accordion"}
+            .accordion-body
+              = t('help.faq.a2')
+
+        .accordion-item
+          %h2.accordion-header
+            %button.accordion-button.collapsed{"aria-controls" => "faq3", "aria-expanded" => "false", "data-bs-target" => "#faq3", "data-bs-toggle" => "collapse", :type => "button"}
+              = t('help.faq.q3')
+          #faq3.accordion-collapse.collapse{"aria-labelledby" => "headingThree", "data-bs-parent" => ".accordion"}
+            .accordion-body
+              = t('help.faq.a3')
+
+        .accordion-item
+          %h2.accordion-header
+            %button.accordion-button.collapsed{"aria-controls" => "faq4", "aria-expanded" => "false", "data-bs-target" => "#faq4", "data-bs-toggle" => "collapse", :type => "button"}
+              = t('help.faq.q4')
+          #faq4.accordion-collapse.collapse{"aria-labelledby" => "headingFour", "data-bs-parent" => ".accordion"}
+            .accordion-body
+              = t('help.faq.a4')
+
+        .accordion-item
+          %h2.accordion-header
+            %button.accordion-button.collapsed{"aria-controls" => "faq5", "aria-expanded" => "false", "data-bs-target" => "#faq5", "data-bs-toggle" => "collapse", :type => "button"}
+              = t('help.faq.q5')
+          #faq5.accordion-collapse.collapse{"aria-labelledby" => "headingFive", "data-bs-parent" => ".accordion"}
+            .accordion-body
+              = t('help.faq.a5')

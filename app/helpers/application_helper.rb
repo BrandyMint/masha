@@ -150,13 +150,13 @@ module ApplicationHelper
   def available_users_to_view_collection
     # User.find( current_user.projects.map { |p| p.users.map &:id }.compact.uniq)
     #
-    @auvc = current_user.active_available_users.without(current_user)
+    available_users = current_user.active_available_users.without(current_user)
 
-    user = OpenStruct.new(current_user.attributes.clone)
-    user.name = user.name.clone.concat t('helpers.you')
-    @auvc.to_a.unshift user
+    current_user_copy = OpenStruct.new(current_user.attributes.clone)
+    current_user_copy.name = current_user_copy.name.clone.concat t('helpers.you')
+    available_users.to_a.unshift current_user_copy
 
-    @auvc
+    available_users
   end
 
   # TODO: одни проекты ращрешены для ввода, другие для просмотра, не путать
@@ -183,7 +183,7 @@ module ApplicationHelper
   def user_roles_of_project(user, project)
     buffer = ''
     Membership.roles.each_key do |role|
-      buffer << role_label(role) if user.has_role? role, project
+      buffer << role_label(role) if user.role? role, project
     end
     buffer.html_safe
   end
@@ -198,7 +198,7 @@ module ApplicationHelper
 
   def change_role_link(user, project, role)
     return # TODO
-    active = user.has_role?(role, project)
+    active = user.role?(role, project)
     if active
       link_to remove_role_project_url(project, user_id: user.id, role: role), method: :delete do
         role_label role, active
@@ -217,7 +217,7 @@ module ApplicationHelper
   private
 
   def users_cache_key
-    key = current_user.memberships.order('updated_at desc').last.try(:updated_at)
+    key = current_user.memberships.order(updated_at: :desc).last.try(:updated_at)
 
     "#{current_user.id}-#{key}"
   end

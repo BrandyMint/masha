@@ -157,7 +157,9 @@
       "WebFetch(domain:core.telegram.org)",
       "Bash(ls:*)",
       "Bash(tee:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(kill:*)",
+      "Bash(for file in /home/danil/code/masha/master/app/views/help/*.haml)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,44 @@
+= render 'nav'
+
+.container.mt-4
+  .row
+    .col-md-9
+      %h1= t('help.commands.title')
+
+      %h2= t('help.commands.basic')
+
+      .command.mb-4
+        %h3
+          %code /start
+        %p= t('help.commands.start_desc')
+
+      .command.mb-4
+        %h3
+          %code /add
+        %p= t('help.commands.add_desc')
+
+      .command.mb-4
+        %h3
+          %code /report
+        %p= t('help.commands.report_desc')
+
+      .command.mb-4
+        %h3
+          %code /projects
+        %p= t('help.commands.projects_desc')
+
+      .command.mb-4
+        %h3
+          %code /clients
+        %p= t('help.commands.clients_desc')
+
+      %h2= t('help.commands.admin')
+
+      .command.mb-4
+        %h3
+          %code /notify
+        %p= t('help.commands.notify_desc')
+
+      .alert.alert-info.mt-4
+        %strong= t('help.commands.more_info')
+        = link_to t('help.nav.time_format'), help_time_format_path
