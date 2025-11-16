@@ -58,16 +58,19 @@ class EditCommand < BaseCommand
 
   def edit_field_callback_query(field)
     handle_field_selection(field)
+    safe_answer_callback_query
   end
 
   def edit_project_callback_query(project_slug)
     handle_project_selection(project_slug)
+    safe_answer_callback_query
   end
 
   def edit_confirm_callback_query(action)
     if action == 'cancel'
       clear_telegram_session
       edit_message :text, text: 'Изменения отменены'
+      safe_answer_callback_query('❌ Изменения отменены')
       return
     end
 
@@ -75,6 +78,7 @@ class EditCommand < BaseCommand
     time_shift = time_operations_service.edit_time_shift(telegram_session)
     unless time_shift
       handle_missing_time_shift
+      safe_answer_callback_query('❌ Ошибка: запись не найдена', show_alert: true)
       return
     end
 
@@ -87,9 +91,11 @@ class EditCommand < BaseCommand
     # Clean up session
     clear_telegram_session
     edit_message :text, text: "✅ Запись ##{time_shift.id} успешно обновлена!"
+    safe_answer_callback_query('✅ Сохранено')
   rescue ActiveRecord::RecordInvalid => e
     Bugsnag.notify e
     edit_message :text, text: "Ошибка при сохранении: #{e.record.errors.full_messages.join(', ')}"
+    safe_answer_callback_query('❌ Ошибка сохранения', show_alert: true)
   end
 
   private

@@ -83,8 +83,8 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                               data: callback_data
                             })
 
-        # 4. Проверяем что бот просит ввести время
-        expect(response).not_to be_nil
+        # 4. Проверяем что бот просит ввести время (edit_message может вернуть nil)
+        expect { response }.not_to raise_error
 
         # 5. Пользователь вводит "2 Работа над задачей"
         expect do

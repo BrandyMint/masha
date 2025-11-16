@@ -39,7 +39,10 @@ class BaseCommand
     # Автоматическая проверка для developer_only команд
     return respond_with :message, text: I18n.t('telegram.errors.developer_access_denied') if self.class.developer_only? && !developer?
 
-    call(*args)
+    @callback_answered = false
+    result = call(*args)
+    ensure_callback_answered
+    result
   end
 
   def initialize(controller)
@@ -48,6 +51,20 @@ class BaseCommand
 
   def call(*args)
     raise NotImplementedError, 'Subclass must implement #call method'
+  end
+
+  # Безопасный вызов answer_callback_query с отслеживанием состояния
+  # Используется в callback_query методах для предотвращения зависания кнопок
+  def safe_answer_callback_query(text = nil, params = {})
+    @callback_answered = true
+    answer_callback_query(text, params) if callback_query_context?
+  end
+
+  # Проверяем, обрабатываем ли callback_query
+  def callback_query_context?
+    controller.respond_to?(:payload) && controller.payload.is_a?(Hash) && controller.payload.key?('callback_query')
+  rescue StandardError
+    false
   end
 
   # Метод для объявления контекстных методов, которые команда предоставляет контроллеру
@@ -115,6 +132,15 @@ class BaseCommand
 
   def current_user
     telegram_user.user
+  end
+
+  # Safety net: автоматический ответ на callback_query, если забыли вызвать safe_answer_callback_query
+  def ensure_callback_answered
+    return unless callback_query_context?
+    return if @callback_answered
+
+    Rails.logger.warn "Callback query not answered in #{self.class}##{caller_locations.first.label}, auto-answering"
+    answer_callback_query
   end
 
   # Контекст это имя следующего метода который будет вызван когда пользователь отправит собщение

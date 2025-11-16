@@ -160,6 +160,7 @@ class UsersCommand < BaseCommand
     project = find_project(project_slug)
     unless project
       edit_message :text, text: 'Проект не найден'
+      safe_answer_callback_query('❌ Ошибка: проект не найден', show_alert: true)
       return
     end
 
@@ -167,15 +168,19 @@ class UsersCommand < BaseCommand
     membership = current_user.membership_of(project)
     unless membership&.owner?
       edit_message :text, text: 'У вас нет прав для добавления пользователей в этот проект, только владелец (owner) может это сделать.'
+      safe_answer_callback_query('❌ Ошибка доступа', show_alert: true)
       return
     end
 
     self.telegram_session = TelegramSession.users_add_user(project_slug: project_slug)
     save_context :users_add_username_input
     edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
+    safe_answer_callback_query('✅ Проект выбран')
   end
 
   def users_add_role_callback_query(role)
+    safe_answer_callback_query('✅ Роль выбрана')
+    
     data = telegram_session_data
     project_slug = data['project_slug']
     username = data['username']
@@ -192,8 +197,10 @@ class UsersCommand < BaseCommand
     project = find_project(project_slug)
     if project
       show_users_for_project(project)
+      safe_answer_callback_query('✅ Проект выбран')
     else
       edit_message :text, text: 'Проект не найден'
+      safe_answer_callback_query('❌ Ошибка: проект не найден', show_alert: true)
     end
   end
 

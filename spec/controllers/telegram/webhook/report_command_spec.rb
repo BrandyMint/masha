@@ -48,5 +48,65 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect { dispatch_command :report }.not_to raise_error
       end
     end
+
+    context 'callback query handlers', :callback_query do
+      let(:message) { { message_id: 1, chat: chat } }
+      let(:data) { 'report_periods:' }
+
+      it 'handles report_periods_callback_query without errors' do
+        expect {
+          dispatch(callback_query: {
+                     id: 'test_callback_id',
+                     from: from,
+                     message: message,
+                     data: 'report_periods:'
+                   })
+        }.not_to raise_error
+      end
+
+      it 'handles report_filters_callback_query without errors' do
+        expect {
+          dispatch(callback_query: {
+                     id: 'test_callback_id',
+                     from: from,
+                     message: message,
+                     data: 'report_filters:'
+                   })
+        }.not_to raise_error
+      end
+
+      it 'handles report_options_callback_query without errors' do
+        expect {
+          dispatch(callback_query: {
+                     id: 'test_callback_id',
+                     from: from,
+                     message: message,
+                     data: 'report_options:'
+                   })
+        }.not_to raise_error
+      end
+
+      it 'handles report_examples_callback_query without errors' do
+        expect {
+          dispatch(callback_query: {
+                     id: 'test_callback_id',
+                     from: from,
+                     message: message,
+                     data: 'report_examples:'
+                   })
+        }.not_to raise_error
+      end
+
+      it 'handles report_main_callback_query without errors' do
+        expect {
+          dispatch(callback_query: {
+                     id: 'test_callback_id',
+                     from: from,
+                     message: message,
+                     data: 'report_main:'
+                   })
+        }.not_to raise_error
+      end
+    end
   end
 end

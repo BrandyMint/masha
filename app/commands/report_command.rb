@@ -114,6 +114,7 @@ class ReportCommand < BaseCommand
     keyboard = help_formatter.navigation_keyboard('periods')
 
     edit_message :text, text: text, reply_markup: keyboard
+    safe_answer_callback_query
   end
 
   def report_filters_callback_query
@@ -122,6 +123,7 @@ class ReportCommand < BaseCommand
     keyboard = help_formatter.navigation_keyboard('filters')
 
     edit_message :text, text: text, reply_markup: keyboard
+    safe_answer_callback_query
   end
 
   def report_options_callback_query
@@ -130,6 +132,7 @@ class ReportCommand < BaseCommand
     keyboard = help_formatter.navigation_keyboard('options')
 
     edit_message :text, text: text, reply_markup: keyboard
+    safe_answer_callback_query
   end
 
   def report_examples_callback_query
@@ -138,6 +141,7 @@ class ReportCommand < BaseCommand
     keyboard = help_formatter.navigation_keyboard('examples')
 
     edit_message :text, text: text, reply_markup: keyboard
+    safe_answer_callback_query
   end
 
   def report_main_callback_query
@@ -146,5 +150,6 @@ class ReportCommand < BaseCommand
     keyboard = help_formatter.main_keyboard
 
     edit_message :text, text: text, reply_markup: keyboard
+    safe_answer_callback_query
   end
 end

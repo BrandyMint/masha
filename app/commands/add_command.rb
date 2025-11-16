@@ -22,6 +22,7 @@ class AddCommand < BaseCommand
     controller.telegram_session = TelegramSession.add_time(project_id: project.id)
     edit_message :text,
                  text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
+    safe_answer_callback_query('✅ Проект выбран')
   end
 
   def add_time(hours, *description)

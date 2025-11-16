@@ -36,18 +36,22 @@ class ProjectsCommand < BaseCommand
   # Callback query methods - каждый тип callback имеет свой метод
   def projects_create_callback_query(_data = nil)
     start_project_creation
+    safe_answer_callback_query
   end
 
   def projects_select_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_select_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     show_project_menu(data)
+    safe_answer_callback_query
   end
 
   def projects_list_callback_query(_data = nil)
     show_projects_list
+    safe_answer_callback_query
   end
 
   def projects_close_callback_query(_data = nil)
@@ -60,91 +64,113 @@ class ProjectsCommand < BaseCommand
   def projects_rename_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     show_rename_menu(data)
+    safe_answer_callback_query
   end
 
   def projects_rename_title_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_title_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     start_rename_title(data)
+    safe_answer_callback_query
   end
 
   def projects_rename_slug_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_slug_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     start_rename_slug(data)
+    safe_answer_callback_query
   end
 
   def projects_rename_both_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_both_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     start_rename_both(data)
+    safe_answer_callback_query
   end
 
   def projects_rename_use_suggested_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_use_suggested_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     # Получаем suggested_slug из session, data содержит только slug
     suggested_slug = session[:suggested_slug]
     use_suggested_slug(data, suggested_slug)
+    safe_answer_callback_query
   end
 
   def projects_client_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_client_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     show_client_menu(data)
+    safe_answer_callback_query
   end
 
   def projects_client_edit_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_client_edit_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     start_client_edit(data)
+    safe_answer_callback_query
   end
 
   def projects_client_delete_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_client_delete_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     confirm_client_deletion(data)
+    safe_answer_callback_query
   end
 
   def projects_client_delete_confirm_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_client_delete_confirm_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: данные не переданы', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     delete_client(data)
+    safe_answer_callback_query('✅ Клиент удалён из проекта')
   end
 
   def projects_delete_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_delete_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     confirm_project_deletion(data)
+    safe_answer_callback_query
   end
 
   def projects_delete_confirm_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_delete_confirm_callback_query called without data'))
+      safe_answer_callback_query('❌ Ошибка: не переданы данные', show_alert: true)
       return respond_with :message, text: 'Что-то странное..'
     end
     request_deletion_confirmation(data)
+    safe_answer_callback_query('⚠️ Введите название проекта для подтверждения удаления')
   end
 
   # Context methods - обработка текстовых сообщений
