@@ -4,6 +4,32 @@
 
 ---
 
+## Что нового в v0.12.5
+
+### 🎯 Основные изменения с версии v0.12.4
+
+#### ✨ Новый функционал
+✨ Add projects refactor plan
+✨ Add .protocols/callback_query_answer_implementation_plan.md
+✨ add temporary from_context for backward compatibility
+#### 🐛 Исправления
+🐛 Fix rubocop in CI to use custom wrapper
+🐛 Fix specs
+#### 🔧 Улучшения
+🔧 complete ProjectsCommand session management refactoring
+🔧 Improve project depencendy
+🔧 Improve /projects
+### 📊 Статистика релиза
+
+- **Всего изменений:** 23 коммитов
+- **Новых возможностей:** 3
+- **Исправлений:** 2
+
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
 ## Что нового в v0.12.4
 
 ### 🎯 Основные изменения с версии v0.12.3
