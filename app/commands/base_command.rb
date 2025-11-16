@@ -89,12 +89,17 @@ class BaseCommand
     end
 
     # Метаданные команды
-    def command_metadata(developer_only: false)
+    def command_metadata(developer_only: false, hidden: false)
       @developer_only = developer_only
+      @hidden = hidden
     end
 
     def developer_only?
       @developer_only || false
+    end
+
+    def hidden?
+      @hidden || false
     end
   end
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StartCommand < BaseCommand
+  command_metadata(hidden: true)
+
   def call(word = nil, *_other_words)
     if word.to_s.start_with? TelegramHelper::AUTH_PREFIX
       handle_auth_start(word)

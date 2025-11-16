@@ -26,7 +26,7 @@ class Telegram::CommandRegistry
 
     # Публичные команды (исключая developer_only)
     def public_commands
-      all_command_classes.reject(&:developer_only?)
+      all_command_classes.reject(&:developer_only?).reject(&:hidden?)
     end
 
     # Команды только для разработчиков

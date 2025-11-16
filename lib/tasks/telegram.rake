@@ -4,8 +4,10 @@ namespace :telegram do
   namespace :bot do
     desc 'Set bot commands menu for all users'
     task set_commands: :environment do
-      commands = Telegram::CommandRegistry.public_commands
-                                          .map do |cmd|
+      commands = Telegram::CommandRegistry.
+        public_commands.
+        sort_by(&:to_s).
+        map do |cmd|
         command_name = Telegram::CommandRegistry.command_name(cmd)
         description_key = "telegram.commands.descriptions.#{command_name}"
 

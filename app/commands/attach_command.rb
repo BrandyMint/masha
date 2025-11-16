@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AttachCommand < BaseCommand
+  command_metadata(hidden: true)
+
   def call(project_slug = nil, *)
     if project_slug.blank?
       message = 'Укажите первым аргументом проект, к которому присоединяете этот чат'
