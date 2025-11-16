@@ -50,17 +50,12 @@ class ProjectsCommand < BaseCommand
     show_projects_list
   end
   def projects_close_callback_query(_data = nil)
-    message = callback_query.message
-    bot.delete_message(
-      chat_id: message.chat.id,
-      message_id: message.message_id
-    )
-  rescue Telegram::Bot::Error => e
-    # Fallback: если не удалось удалить (например, старое сообщение), редактируем
-    Rails.logger.warn "Failed to delete projects menu: #{e.message}"
+    # В callback_query контексте используем edit_message
     edit_message :text,
                  text: "📋 Меню проектов закрыто",
                  reply_markup: { inline_keyboard: [] }
+  rescue Telegram::Bot::Error => e
+    Rails.logger.warn "Failed to close projects menu: #{e.message}"
   end
 
   def projects_rename_callback_query(data = nil)
