@@ -53,7 +53,7 @@ class ProjectsCommand < BaseCommand
   def projects_close_callback_query(_data = nil)
     # В callback_query контексте используем edit_message
     edit_message :text,
-                 text: "📋 Меню проектов закрыто",
+                 text: '📋 Меню проектов закрыто',
                  reply_markup: { inline_keyboard: [] }
   end
 

@@ -2,6 +2,10 @@ inherit_from: .rubocop_todo.yml
 
 plugins: rubocop-rails
 
+Metrics/ClassLength:
+  Exclude:
+    - app/commands/**
+
 Rails:
   Enabled: true
 AllCops:

@@ -514,21 +514,21 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
       # 2. User clicks "Close" button
       response = dispatch(callback_query: {
-                         id: 'test_callback',
-                         from: from,
-                         message: { message_id: 22, chat: chat },
-                         data: "projects_close:"
-                       })
+                            id: 'test_callback',
+                            from: from,
+                            message: { message_id: 22, chat: chat },
+                            data: 'projects_close:'
+                          })
 
       # Should edit message to show closed state
-      expect(response.first[:text]).to eq("📋 Меню проектов закрыто")
+      expect(response.first[:text]).to eq('📋 Меню проектов закрыто')
       expect(response.first[:reply_markup][:inline_keyboard]).to eq([])
     end
 
     it 'displays close button in projects list' do
       response = dispatch_command :projects
       keyboard = response.first[:reply_markup][:inline_keyboard]
-      
+
       close_button_row = keyboard.last
       expect(close_button_row.size).to eq(1)
       expect(close_button_row.first[:text]).to eq('❌ Закрыть')
@@ -547,15 +547,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       # 3. User clicks "Close" button - error should be handled gracefully
       # In test environment, errors are raised, so we expect them but
       # verify they're properly handled by the error handling system
-      expect {
+      expect do
         dispatch(callback_query: {
-          id: 'test_callback',
-          from: from,
-          message: { message_id: 22, chat: chat },
-          data: "projects_close:"
-        })
-      }.to raise_error(Telegram::Bot::Error, 'bad request')
+                   id: 'test_callback',
+                   from: from,
+                   message: { message_id: 22, chat: chat },
+                   data: 'projects_close:'
+                 })
+      end.to raise_error(Telegram::Bot::Error, 'bad request')
     end
   end
-
 end
