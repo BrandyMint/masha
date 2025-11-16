@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # app/services/telegram/command_registry.rb
 class Telegram::CommandRegistry
   class << self

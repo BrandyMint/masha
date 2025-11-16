@@ -340,7 +340,7 @@ class ClientsCommand < BaseCommand
     )
 
     if projects.any?
-      text += t('telegram.commands.clients.show_projects_list') + "\\n"
+      text += t('telegram.commands.clients.show_projects_list') + '\\n'
       projects.each do |project|
         text += "• #{project.name} (#{project.slug})\\n"
       end
@@ -381,7 +381,7 @@ class ClientsCommand < BaseCommand
     if projects.empty?
       text = t('telegram.commands.clients.projects_empty', name: client.name, key: client.key)
     else
-      text = t('telegram.commands.clients.projects_title', name: client.name, key: client.key) + "\\n"
+      text = t('telegram.commands.clients.projects_title', name: client.name, key: client.key) + '\\n'
       projects.each do |project|
         text += "• #{project.name} (#{project.slug})\\n"
       end
