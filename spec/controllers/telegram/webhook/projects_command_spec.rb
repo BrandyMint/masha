@@ -496,6 +496,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 end
 
   # Tests for close menu functionality
+  # Tests for close menu functionality
   context 'close menu functionality', :callback_query do
     let(:user) { users(:user_with_telegram) }
     let(:telegram_user) { telegram_users(:telegram_regular) }
@@ -508,19 +509,21 @@ end
       memberships(:telegram_work)
     end
 
-    it 'deletes message when close button is clicked' do
+    it 'edits message to show closed state when close button is clicked' do
       # 1. User opens projects menu
       dispatch_command :projects
 
       # 2. User clicks "Close" button
-      expect {
-        dispatch(callback_query: {
-                   id: 'test_callback',
-                   from: from,
-                   message: { message_id: 22, chat: chat },
-                   data: "projects_close:"
-                 })
-      }.to delete_telegram_message(chat_id: chat[:id], message_id: 22)
+      response = dispatch(callback_query: {
+                         id: 'test_callback',
+                         from: from,
+                         message: { message_id: 22, chat: chat },
+                         data: "projects_close:"
+                       })
+
+      # Should edit message to show closed state
+      expect(response.first[:text]).to eq("📋 Меню проектов закрыто")
+      expect(response.first[:reply_markup][:inline_keyboard]).to eq([])
     end
 
     it 'displays close button in projects list' do
@@ -533,24 +536,23 @@ end
       expect(close_button_row.first[:callback_data]).to eq('projects_close:')
     end
 
-    it 'handles Telegram API error gracefully when message is too old to delete' do
+    it 'handles Telegram API error gracefully' do
       # 1. User opens projects menu
       dispatch_command :projects
 
-      # 2. Simulate Telegram API error when trying to delete old message
-      allow_any_instance_of(ProjectsCommand).to receive(:bot).and_raise(
-        Telegram::Bot::Error.new('message to delete not found')
+      # 2. Simulate Telegram API error
+      allow_any_instance_of(ProjectsCommand).to receive(:edit_message).and_raise(
+        Telegram::Bot::Error.new('bad request')
       )
 
-      # 3. User clicks "Close" button - should fallback to editing message
-      response = dispatch(callback_query: {
-                            id: 'test_callback',
-                            from: from,
-                            message: { message_id: 22, chat: chat },
-                            data: "projects_close:"
-                          })
-
-      # Should edit message instead of deleting
-      expect(response.first[:text]).to eq("📋 Меню проектов закрыто")
+      # 3. User clicks "Close" button - error should be logged, not crash
+      expect {
+        dispatch(callback_query: {
+          id: 'test_callback',
+          from: from,
+          message: { message_id: 22, chat: chat },
+          data: "projects_close:"
+        })
+      }.not_to raise_error
     end
   end
