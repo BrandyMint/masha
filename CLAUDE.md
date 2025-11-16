@@ -203,6 +203,28 @@ rake db:create               # Create databases
 rake db:test:prepare         # Prepare test database
 ```
 
+### Git Hooks
+```bash
+make install-hooks           # Install git hooks (pre-commit with RuboCop auto-correction)
+./.githooks/install          # Alternative way to install hooks
+```
+
+The project includes a pre-commit hook that automatically runs RuboCop auto-correction on staged Ruby files.
+
+**Features:**
+- ✅ Auto-corrects style violations before commit
+- ✅ Only processes staged files
+- ✅ Re-adds corrected files to staging automatically
+- ✅ Blocks commit if uncorrectable violations remain
+
+**Skip hook when needed:**
+```bash
+SKIP_RUBOCOP=1 git commit -m "message"  # Skip via environment variable
+git commit --no-verify -m "message"      # Skip via git flag
+```
+
+See `.githooks/README.md` for more details.
+
 ### Development Server
 ```bash
 ./bin/dev                    # Start development server (uses Procfile.dev)

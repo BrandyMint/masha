@@ -85,6 +85,9 @@ deps:
 	brew install oven-sh/bun/bun
 	bundle install
 
+install-hooks:
+	@./.githooks/install
+
 watch:
 	@${GH} run watch ${LATEST_RUN_ID}
 

@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Install git hooks from .githooks directory
+
+set -e
+
+HOOKS_DIR=".githooks"
+GIT_HOOKS_DIR=".git/hooks"
+
+echo "📦 Installing git hooks..."
+
+# Check if we're in a git repository
+if [ ! -d ".git" ]; then
+  echo "❌ Error: Not a git repository"
+  exit 1
+fi
+
+# Check if hooks directory exists
+if [ ! -d "$HOOKS_DIR" ]; then
+  echo "❌ Error: $HOOKS_DIR directory not found"
+  exit 1
+fi
+
+# Install each hook
+for hook in "$HOOKS_DIR"/*; do
+  # Skip the install script itself
+  if [ "$(basename "$hook")" = "install" ] || [ "$(basename "$hook")" = "README.md" ]; then
+    continue
+  fi
+
+  hook_name=$(basename "$hook")
+
+  # Skip if it's not a file
+  if [ ! -f "$hook" ]; then
+    continue
+  fi
+
+  echo "  📝 Installing: $hook_name"
+
+  # Copy hook to .git/hooks
+  cp "$hook" "$GIT_HOOKS_DIR/$hook_name"
+
+  # Make it executable
+  chmod +x "$GIT_HOOKS_DIR/$hook_name"
+done
+
+echo "✅ Git hooks installed successfully!"
+echo ""
+echo "💡 Installed hooks:"
+for hook in "$GIT_HOOKS_DIR"/*; do
+  hook_name=$(basename "$hook")
+  # Skip sample hooks
+  if [[ "$hook_name" != *.sample ]]; then
+    if [ -x "$hook" ]; then
+      echo "   - $hook_name"
+    fi
+  fi
+done
+echo ""
+echo "To skip RuboCop on commit: SKIP_RUBOCOP=1 git commit"
+echo "Or use: git commit --no-verify"

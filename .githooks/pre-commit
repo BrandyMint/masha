@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Pre-commit hook for RuboCop auto-correction
+# This hook runs RuboCop auto-correction on staged Ruby files
+
+set -e
+
+# Check if we should skip RuboCop
+if [ -n "$SKIP_RUBOCOP" ]; then
+  echo "⏭️  Skipping RuboCop (SKIP_RUBOCOP is set)"
+  exit 0
+fi
+
+# Get list of staged Ruby files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.rb$' || true)
+
+# Exit early if no Ruby files are staged
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+echo "🔍 Running RuboCop auto-correction on staged files..."
+
+# Store the result
+RUBOCOP_FAILED=0
+
+# Run RuboCop auto-correction on each file
+for FILE in $STAGED_FILES; do
+  # Only process files that still exist (not deleted)
+  if [ -f "$FILE" ]; then
+    echo "  📝 Checking: $FILE"
+
+    # Run RuboCop with auto-correction
+    if bundle exec rubocop -A "$FILE"; then
+      # Re-add the file to staging if it was modified
+      git add "$FILE"
+    else
+      # RuboCop failed - mark as failed but continue checking other files
+      RUBOCOP_FAILED=1
+      echo "  ❌ RuboCop found issues in: $FILE"
+    fi
+  fi
+done
+
+# Check if RuboCop failed for any files
+if [ $RUBOCOP_FAILED -ne 0 ]; then
+  echo ""
+  echo "❌ RuboCop found issues that couldn't be auto-corrected."
+  echo "   Please fix the remaining issues and try again."
+  echo ""
+  echo "💡 Tip: You can skip this hook with: SKIP_RUBOCOP=1 git commit"
+  echo "   Or use: git commit --no-verify"
+  exit 1
+fi
+
+echo "✅ RuboCop auto-correction completed successfully!"
+exit 0
