@@ -167,9 +167,7 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
     return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
 
-    if client.projects.exists?
-      return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key)
-    end
+    return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key) if client.projects.exists?
 
     text = t('telegram.commands.clients.delete_confirm', name: client.name, key: client.key)
     buttons = [
@@ -186,9 +184,7 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
     return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
 
-    if client.projects.exists?
-      return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key)
-    end
+    return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key) if client.projects.exists?
 
     name = client.name
     key = client.key
@@ -280,9 +276,7 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
 
     # Проверка на связанные проекты
-    if client.projects.exists?
-      return respond_with :message, text: t('telegram.commands.clients.delete_projects_exists')
-    end
+    return respond_with :message, text: t('telegram.commands.clients.delete_projects_exists') if client.projects.exists?
 
     # Запускаем многошаговый диалог для подтверждения
     session[:delete_client_key] = key
@@ -360,9 +354,7 @@ class ClientsCommand < BaseCommand
 
     buttons = []
 
-    if can_manage
-      buttons << [{ text: t('telegram.commands.clients.edit_button'), callback_data: "clients_rename:#{client.key}" }]
-    end
+    buttons << [{ text: t('telegram.commands.clients.edit_button'), callback_data: "clients_rename:#{client.key}" }] if can_manage
 
     buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count), callback_data: "clients_projects:#{client.key}" }]
 
