@@ -5,6 +5,7 @@
 /file:telegram-bot-architecture.md
 /file:telegram-error-handling.md
 /file:telegram-session-management.md
+/file:telegram-response-methods.md
 /file:gems/telegram-bot.md
 
 ## Важные инструкции

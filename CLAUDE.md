@@ -361,6 +361,8 @@ Three role levels per project:
 - В проекте НЕТ ./bin/rsp
 - Запрещено в spec-ах создавать новые записи в базе через .create, .create_with
   и тп. Вместо этого используются fixtures
+- В командах (command) НЕЛЬЗЯ делать вызов respond_with :message, text: text без
+  позващения его результа из метода.
 - В командах (command) ответ и возврат НЕЛЬЗЯ делать так:     
 
 ```
