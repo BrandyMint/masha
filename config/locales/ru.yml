@@ -189,6 +189,7 @@ ru:
       projects:
         title: "Что будем делать с проектами?"
         add_button: "➕ Добавить проект"
+        close_button: "❌ Закрыть"
         cancel_button: "❌ Отмена"
         unauthorized: "❌ Вы не авторизованы для работы с проектами"
         unknown_action: "❌ Неизвестное действие. Используйте: /projects или /projects create [slug]"

@@ -50,6 +50,13 @@ class ProjectsCommand < BaseCommand
     show_projects_list
   end
 
+  def projects_close_callback_query(_data = nil)
+    # В callback_query контексте используем edit_message
+    edit_message :text,
+                 text: '📋 Меню проектов закрыто',
+                 reply_markup: { inline_keyboard: [] }
+  end
+
   def projects_rename_callback_query(data = nil)
     unless data
       Bugsnag.notify(RuntimeError.new('projects_rename_callback_query called without data'))
@@ -385,6 +392,8 @@ class ProjectsCommand < BaseCommand
       buttons << row
     end
 
+    # Кнопка "Закрыть" - отдельной строкой внизу
+    buttons << [{ text: t('commands.projects.close_button'), callback_data: 'projects_close:' }]
     respond_with :message, text: t('commands.projects.title'), reply_markup: {
       inline_keyboard: buttons
     }
