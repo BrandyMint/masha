@@ -19,7 +19,7 @@ RSpec.describe TelegramTimeTracker do
 
           result = tracker.parse_and_add
           expect(result[:success]).to be true
-          expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 1'
+          expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Tracker Project 1'
         end
       end
 
@@ -31,7 +31,7 @@ RSpec.describe TelegramTimeTracker do
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
-          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Project 2'
+          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Tracker Project 2'
         end
       end
 
@@ -65,7 +65,7 @@ RSpec.describe TelegramTimeTracker do
           result = tracker.parse_and_add
 
           expect(result[:success]).to be true
-          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Project 1'
+          expect(result[:message]).to include '✅ Отметили 1.5ч в проекте Tracker Project 1'
         end
       end
     end
@@ -156,7 +156,7 @@ RSpec.describe TelegramTimeTracker do
         # Should work despite the typo - fuzzy matching finds project1
         result = tracker.parse_and_add
         expect(result[:success]).to be true
-        expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Project 1'
+        expect(result[:message]).to include '✅ Отметили 2.5ч в проекте Tracker Project 1'
       end
 
       it 'actually finds project with typo' do
@@ -219,7 +219,7 @@ RSpec.describe TelegramTimeTracker do
     context 'with normal hours' do
       it 'creates time entry successfully' do
         result = tracker.send(:add_time_entry, 'project1', '2.5', 'test description')
-        expect(result).to include('✅ Отметили 2.5ч в проекте Project 1')
+        expect(result).to include('✅ Отметили 2.5ч в проекте Tracker Project 1')
         expect(result).to include('📝 test description')
       end
     end
@@ -227,7 +227,7 @@ RSpec.describe TelegramTimeTracker do
     context 'with many hours' do
       it 'shows warning' do
         result = tracker.send(:add_time_entry, 'project1', '15')
-        expect(result).to include('✅ Отметили 15.0ч в проекте Project 1')
+        expect(result).to include('✅ Отметили 15.0ч в проекте Tracker Project 1')
         expect(result).to include('⚠️ Много часов за день (15.0)')
       end
     end
@@ -235,7 +235,7 @@ RSpec.describe TelegramTimeTracker do
     context 'with few hours' do
       it 'shows info' do
         result = tracker.send(:add_time_entry, 'project1', '0.25')
-        expect(result).to include('✅ Отметили 0.25ч в проекте Project 1')
+        expect(result).to include('✅ Отметили 0.25ч в проекте Tracker Project 1')
         expect(result).to include('ℹ️ Мало часов (0.25)')
       end
     end
