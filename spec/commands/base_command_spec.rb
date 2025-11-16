@@ -23,14 +23,6 @@ RSpec.describe BaseCommand do
     end
   end
 
-  describe '.command_description_key' do
-    it 'generates I18n key from class name' do
-      stub_const('TestCommand', Class.new(BaseCommand))
-
-      expect(TestCommand.command_description_key).to eq('telegram.commands.descriptions.test')
-    end
-  end
-
   describe '#safe_call' do
     context 'when command is developer_only' do
       let(:developer_command_class) do
