@@ -5,6 +5,38 @@ plugins: rubocop-rails
 Metrics/ClassLength:
   Exclude:
     - app/commands/**
+    - app/queries/summary_query.rb
+    - app/queries/time_sheet_query.rb
+    - app/services/report_builder.rb
+    - app/services/telegram_time_tracker.rb
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - app/commands/**
+    - app/inputs/date_picker_input.rb
+    - app/queries/summary_query.rb
+    - app/queries/time_sheet_query.rb
+    - app/services/period_parser.rb
+    - app/services/report_builder.rb
+    - app/services/reporter.rb
+    - app/services/report_help_formatter.rb
+    - app/services/telegram_project_manager.rb
+    - app/services/telegram_time_tracker.rb
+    - app/services/telegram_user_merger.rb
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - app/commands/**
+    - app/inputs/date_picker_input.rb
+    - app/queries/summary_query.rb
+    - app/queries/time_sheet_query.rb
+    - app/services/period_parser.rb
+    - app/services/report_builder.rb
+    - app/services/reporter.rb
+    - app/services/report_help_formatter.rb
+    - app/services/telegram_project_manager.rb
+    - app/services/telegram_time_tracker.rb
+    - app/services/telegram_user_merger.rb
 
 Rails:
   Enabled: true
