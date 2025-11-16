@@ -4,6 +4,29 @@
 
 ---
 
+## Что нового в v0.13.0
+
+### 🎯 Основные изменения с версии v0.12.5
+
+#### ✨ Новый функционал
+✨ Add server target to Makefile
+#### 🐛 Исправления
+🐛 Correct Telegram API exception constant
+🐛 Fix specs
+🐛 Use edit_message instead of delete_message in callback
+#### 🔧 Улучшения
+🔧 Improve answer_call_backs
+### 📊 Статистика релиза
+
+- **Всего изменений:** 14 коммитов
+- **Новых возможностей:** 1
+- **Исправлений:** 3
+
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
 ## Что нового в v0.12.5
 
 ### 🎯 Основные изменения с версии v0.12.4
