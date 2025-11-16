@@ -49,13 +49,12 @@ class ProjectsCommand < BaseCommand
   def projects_list_callback_query(_data = nil)
     show_projects_list
   end
+
   def projects_close_callback_query(_data = nil)
     # В callback_query контексте используем edit_message
     edit_message :text,
                  text: "📋 Меню проектов закрыто",
                  reply_markup: { inline_keyboard: [] }
-  rescue Telegram::Bot::Error => e
-    Rails.logger.warn "Failed to close projects menu: #{e.message}"
   end
 
   def projects_rename_callback_query(data = nil)
