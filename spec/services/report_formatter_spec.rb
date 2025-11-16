@@ -107,7 +107,7 @@ RSpec.describe ReportFormatter do
         # Should display project hours
         report_data[:grouped_by_project].each do |_slug, data|
           hours_str = data[:hours].to_s
-          expect(result).to include(hours_str) if data[:hours] > 0
+          expect(result).to include(hours_str) if data[:hours].positive?
         end
       end
 

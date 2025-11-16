@@ -80,7 +80,7 @@ jobs:
         bundler-cache: true
 
     - name: Run RuboCop
-      run: bundle exec rubocop
+      run: ./bin/rubocop
 
   brakeman:
     runs-on: ubuntu-latest

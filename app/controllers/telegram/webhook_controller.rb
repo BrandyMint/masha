@@ -59,11 +59,6 @@ module Telegram
       respond_with :message, text: 'К сожалению ваша команда не распознана. Разработчикам уже сообщеили'
     end
 
-    def test!(*_args)
-      respond_with :message, text: 'test passed'
-      reply_with :message, text: 'Replied'
-    end
-
     def telegram_user
       @telegram_user ||= TelegramUser
                          .create_with(chat.slice(*%w[first_name last_name username]))

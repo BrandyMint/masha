@@ -24,9 +24,13 @@ class BaseCommand
   # RenameCommand contexts
   RENAME_NEW_NAME_INPUT = :rename_new_name_input
 
-  delegate :developer?, :respond_with,
-           :chat, :telegram_user, :edit_message, :t, to: :controller, allow_nil: true
+  delegate :respond_with, :reply_with,
+           :answer_inline_query, :answer_callback_query,
+           :edit_message,
+           :answer_pre_checkout_query, :answer_shipping_query,
+           :chat, :telegram_user, to: :controller, allow_nil: true
 
+  delegate :developer?, to: :telegram_user
   delegate :find_project, to: :current_user
 
   def safe_call(*args)
@@ -60,8 +64,11 @@ class BaseCommand
       @context_methods || []
     end
 
+    EXCLUDE_CALLBACK_METHODS = [:answer_callback_query]
+
     def callback_method_names
-      public_instance_methods.select { |m| m.ends_with? '_callback_query' }
+      public_instance_methods
+        .select { |m| m.ends_with?('_callback_query') && !EXCLUDE_CALLBACK_METHODS.include?(m) }
     end
 
     # Метаданные команды
@@ -118,13 +125,13 @@ class BaseCommand
   end
 
   # Shortcut for telegram command translations
-  def t(key, **options)
+  def t(key, **)
     # Если ключ уже начинается с telegram., используем его как полный ключ
     if key.to_s.start_with?('telegram.')
-      I18n.t(key, **options)
+      I18n.t(key, **)
     else
       # Иначе добавляем scope
-      I18n.t(key, **options.merge(scope: :telegram))
+      I18n.t(key, **, scope: :telegram)
     end
   end
 end

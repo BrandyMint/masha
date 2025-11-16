@@ -60,7 +60,8 @@ push-version:
 
 .PHONY: test
 test:
-	./bin/rails db:test:prepare test test:system
+	./bin/rails db:test:prepare
+	bundle exec rspec
 
 security:
 	bundle exec brakeman --skip-files bin/generate_changelog.rb,bin/generate_claude_changelog.rb

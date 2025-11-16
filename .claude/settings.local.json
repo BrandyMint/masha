@@ -156,7 +156,8 @@
       "Bash(for cmd in app/commands/*_command.rb)",
       "WebFetch(domain:core.telegram.org)",
       "Bash(ls:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []
