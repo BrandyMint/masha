@@ -4,6 +4,8 @@ class Client < ApplicationRecord
   belongs_to :user
   has_many :projects, dependent: :nullify
 
+  scope :alphabetically, -> { order(key: :asc) }
+
   validates :key, presence: true,
                   uniqueness: { scope: :user_id },
                   format: { with: /\A[a-z0-9_-]+\z/ },

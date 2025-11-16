@@ -4,8 +4,12 @@ SEMVER=`${SEMVER_BIN}`
 # Default target
 release: patch-release
 
+server:
+	./bin/rails s -p 3014 -b 192.168.88.10
+
 lint:
 	./bin/rubocop -a
+	# Дааа!
 	./bin/rubocop --auto-gen-config
 	git add .
 	git commit -m lint

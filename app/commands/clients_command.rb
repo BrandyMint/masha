@@ -2,62 +2,71 @@
 
 class ClientsCommand < BaseCommand
   # Декларируем контекстные методы, которые эта команда предоставляет контроллеру
-  provides_context_methods ADD_CLIENT_NAME, ADD_CLIENT_KEY, EDIT_CLIENT_NAME
+  provides_context_methods :clients_name, :clients_key, :clients_rename, :clients_delete_confirm
 
   def call(subcommand = nil, *args)
-    return respond_with :message, text: 'Вы не аваторизованы для работы с клиентами' if current_user.blank?
-    # Если нет аргументов, покажем список клиентов
+    return respond_with :message, text: 'Вы не авторизованы' if current_user.blank?
+
+    # Если нет аргументов - показать интерактивный UI
     return show_clients_list if subcommand.blank?
 
+    # Legacy формат для обратной совместимости
     handle_client_command(subcommand, args)
   end
 
-  # Public context handler methods - эти методы должны быть доступны для telegram-bot gem
-  def add_client_name(message = nil, *)
-    name = message&.strip
+
+  def clients_name(message = nil, *)
+    return respond_with(:message, text: t('telegram.commands.clients.name_invalid')) unless message
+
+    name = message.strip
     if name.blank? || name.length > 255
-      save_context ADD_CLIENT_NAME
+      save_context :clients_name
       return respond_with :message, text: t('telegram.commands.clients.name_invalid')
     end
 
-    session[:client_name] = name
-    save_context ADD_CLIENT_KEY
+    session[:new_client_name] = name
+    save_context :clients_key
     respond_with :message, text: t('telegram.commands.clients.add_prompt_key')
   end
 
-  def add_client_key(message = nil, *)
-    key = message&.strip&.downcase
-    name = session[:client_name]
+  def clients_key(message = nil, *)
+    return respond_with(:message, text: t('telegram.commands.clients.key_invalid')) unless message
+
+    key = message.strip.downcase
+    name = session[:new_client_name]
 
     # Валидация ключа
-    if key.blank? || !key.match?(/\A[a-z0-9_-]+\z/) || key.length < 2 || key.length > 50
-      save_context ADD_CLIENT_KEY
-      return respond_with :message, text: t('telegram.commands.clients.key_invalid', key: key)
+    if key.blank? || key.length > 50 || !key.match?(/\A[a-z0-9_-]+\z/)
+      save_context :clients_key
+      return respond_with :message, text: t('telegram.commands.clients.key_invalid')
     end
 
     # Проверка уникальности ключа
     if current_user.clients.exists?(key: key)
-      save_context ADD_CLIENT_KEY
-      return respond_with :message, text: t('telegram.commands.clients.key_exists', key: key)
+      save_context :clients_key
+      return respond_with :message, text: t('telegram.commands.clients.key_taken')
     end
 
     # Создание клиента
     client = current_user.clients.build(key: key, name: name)
     if client.save
-      session.delete(:client_name)
+      session.delete(:new_client_name)
       respond_with :message, text: t('telegram.commands.clients.add_success', name: client.name, key: client.key)
+      show_clients_list
     else
       respond_with :message, text: client.errors.full_messages.join(', ')
-      save_context ADD_CLIENT_KEY
+      save_context :clients_key
     end
   end
 
-  def edit_client_name(message = nil, *)
-    name = message&.strip
+  def clients_rename(message = nil, *)
+    return respond_with(:message, text: t('telegram.commands.clients.name_invalid')) unless message
+
+    name = message.strip
     key = session[:edit_client_key]
 
     if name.blank? || name.length > 255
-      save_context EDIT_CLIENT_NAME
+      save_context :clients_rename
       return respond_with :message, text: t('telegram.commands.clients.name_invalid')
     end
 
@@ -67,10 +76,130 @@ class ClientsCommand < BaseCommand
     if client.update(name: name)
       session.delete(:edit_client_key)
       respond_with :message, text: t('telegram.commands.clients.edit_success', key: client.key, name: client.name)
+      show_client_menu(client)
     else
       respond_with :message, text: client.errors.full_messages.join(', ')
-      save_context EDIT_CLIENT_NAME
+      save_context :clients_rename
     end
+  end
+
+  def clients_delete_confirm(message = nil, *)
+    return respond_with(:message, text: t('telegram.commands.clients.delete_confirm_error')) unless message
+
+    key = session[:delete_client_key]
+    client = find_client(key)
+    return unless client
+
+    confirmation = message.strip.downcase
+    expected_confirmation = t('telegram.commands.clients.delete_confirm_word', default: 'удалить')
+
+    if confirmation != expected_confirmation.downcase
+      save_context :clients_delete_confirm
+      return respond_with :message, text: t('telegram.commands.clients.delete_confirm_mismatch', expected: expected_confirmation)
+    end
+
+    name = client.name
+    key_name = client.key
+
+    if client.destroy
+      session.delete(:delete_client_key)
+      respond_with :message, text: t('telegram.commands.clients.delete_success', name: name, key: key_name)
+      show_clients_list
+    else
+      respond_with :message, text: client.errors.full_messages.join(', ')
+      save_context :clients_delete_confirm
+    end
+  end
+
+  # Callback methods
+
+  # Callback methods
+
+  def clients_create_callback_query(_data = nil)
+    session[:new_client_name] = nil
+    save_context :clients_name
+    respond_with :message, text: t('telegram.commands.clients.add_prompt_name')
+    answer_callback_query
+  end
+
+  def clients_select_callback_query(data)
+    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+
+    client = find_client(data)
+
+    return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
+    return respond_with :message, text: t('telegram.commands.clients.show_access_denied') unless current_user.can_read?(client)
+
+    show_client_menu(client)
+    answer_callback_query
+  end
+
+  def clients_list_callback_query(_data = nil)
+    show_clients_list
+    answer_callback_query
+  end
+
+  def clients_rename_callback_query(data)
+    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+    client = find_client(data)
+    return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
+
+    return respond_with :message, text: t('telegram.commands.clients.edit_access_denied') unless current_user.can_update?(client)
+
+    session[:edit_client_key] = client.key
+    save_context :clients_rename
+    respond_with :message, text: t('telegram.commands.clients.edit_prompt_name')
+    answer_callback_query
+  end
+
+  def clients_projects_callback_query(data)
+    client = find_client(data)
+    return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
+    return respond_with :message, text: t('telegram.commands.clients.projects_access_denied') unless current_user.can_read?(client)
+
+    show_client_projects(client)
+    answer_callback_query
+  end
+
+  def clients_delete_callback_query(data)
+    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+    client = find_client(data)
+    return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
+    return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
+
+    if client.projects.exists?
+      return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key)
+    end
+
+    text = t('telegram.commands.clients.delete_confirm', name: client.name, key: client.key)
+    buttons = [
+      [{ text: t('telegram.commands.clients.delete_confirm_button'), callback_data: "clients_delete_confirm:#{client.key}" }],
+      [{ text: t('telegram.commands.clients.back_button'), callback_data: "clients_select:#{client.key}" }]
+    ]
+
+    respond_with :message, text: text, reply_markup: { inline_keyboard: buttons }
+    answer_callback_query
+  end
+
+  def clients_delete_confirm_callback_query(data)
+    client = find_client(data)
+    return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
+    return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
+
+    if client.projects.exists?
+      return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: client.key)
+    end
+
+    name = client.name
+    key = client.key
+
+    if client.destroy
+      respond_with :message, text: t('telegram.commands.clients.delete_success', name: name, key: key)
+      show_clients_list
+    else
+      respond_with :message, text: client.errors.full_messages.join(', ')
+    end
+    answer_callback_query
   end
 
   private
@@ -79,6 +208,8 @@ class ClientsCommand < BaseCommand
     command = subcommand.downcase
 
     case command
+    when 'list'
+      show_clients_list
     when 'add'
       handle_add_client
     when 'show'
@@ -97,23 +228,22 @@ class ClientsCommand < BaseCommand
   end
 
   def show_clients_list
-    clients = current_user.clients.includes(:projects)
+    clients = current_user.clients.alphabetically.limit(30)
 
-    return respond_with :message, text: t('telegram.commands.clients.list_empty') if clients.empty?
+    buttons = []
+    # Добавить кнопку "Добавить клиента"
+    buttons << [{ text: t('telegram.commands.clients.add_button'), callback_data: 'clients_create:' }]
 
-    text = multiline(t('telegram.commands.clients.list_title'), nil)
-    clients.each do |client|
-      text += t('telegram.commands.clients.list_item',
-                key: client.key,
-                name: client.name,
-                count: client.projects_count) + "\n"
-    end
+    # Добавить кнопки клиентов (по 3 в ряд)
+    client_buttons = clients.map { |c| { text: c.name.truncate(15), callback_data: "clients_select:#{c.key}" } }
+    client_buttons.each_slice(3) { |row| buttons << row }
 
-    respond_with :message, text: text
+    respond_with :message, text: t('telegram.commands.clients.list_title'), reply_markup: { inline_keyboard: buttons }
   end
 
   def handle_add_client
-    save_context ADD_CLIENT_NAME
+    session[:new_client_name] = nil
+    save_context :clients_name
     respond_with :message, text: t('telegram.commands.clients.add_prompt_name')
   end
 
@@ -137,11 +267,11 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: t('telegram.commands.clients.edit_access_denied') unless current_user.can_update?(client)
 
     session[:edit_client_key] = key
-    save_context EDIT_CLIENT_NAME
+    save_context :clients_rename
     respond_with :message, text: t('telegram.commands.clients.edit_prompt_name')
   end
 
-  def handle_delete_client(key, confirm = nil)
+  def handle_delete_client(key, _confirm = nil)
     return respond_with :message, text: t('telegram.commands.clients.usage_error') unless key
 
     client = find_client(key)
@@ -150,19 +280,15 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
 
     # Проверка на связанные проекты
-    return respond_with :message, text: t('telegram.commands.clients.delete_has_projects', key: key) if client.projects.exists?
-
-    # Запрос подтверждения
-    unless confirm == 'confirm'
-      return respond_with :message, text: t('telegram.commands.clients.delete_confirm', name: client.name, key: key)
+    if client.projects.exists?
+      return respond_with :message, text: t('telegram.commands.clients.delete_projects_exists')
     end
 
-    # Удаление клиента
-    if client.destroy
-      respond_with :message, text: t('telegram.commands.clients.delete_success', name: client.name, key: key)
-    else
-      respond_with :message, text: client.errors.full_messages.join(', ')
-    end
+    # Запускаем многошаговый диалог для подтверждения
+    session[:delete_client_key] = key
+    save_context :clients_delete_confirm
+
+    respond_with :message, text: t('telegram.commands.clients.delete_confirm_prompt', name: client.name)
   end
 
   def handle_list_projects(key)
@@ -173,15 +299,7 @@ class ClientsCommand < BaseCommand
 
     return respond_with :message, text: t('telegram.commands.clients.projects_access_denied') unless current_user.can_read?(client)
 
-    projects = client.projects.includes(:memberships)
-    return respond_with :message, text: t('telegram.commands.clients.projects_empty') if projects.empty?
-
-    text = multiline(t('telegram.commands.clients.projects_title', name: client.name, key: key), nil)
-    projects.each do |project|
-      text += "• #{project.name} (#{project.slug})\n"
-    end
-
-    respond_with :message, text: text
+    show_client_projects(client)
   end
 
   def show_client_help
@@ -222,14 +340,55 @@ class ClientsCommand < BaseCommand
     )
 
     if projects.any?
-      text += t('telegram.commands.clients.show_projects_list') + "\n"
+      text += t('telegram.commands.clients.show_projects_list') + "\\n"
       projects.each do |project|
-        text += "• #{project.name} (#{project.slug})\n"
+        text += "• #{project.name} (#{project.slug})\\n"
       end
     else
       text += t('telegram.commands.clients.show_empty_projects')
     end
 
     text
+  end
+
+
+  def show_client_menu(client)
+    can_manage = current_user.can_update?(client) && current_user.can_delete?(client)
+    projects_count = client.projects.count
+
+    menu_text = format_client_info(client)
+
+    buttons = []
+
+    if can_manage
+      buttons << [{ text: t('telegram.commands.clients.edit_button'), callback_data: "clients_rename:#{client.key}" }]
+    end
+
+    buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count), callback_data: "clients_projects:#{client.key}" }]
+
+    if can_manage && projects_count == 0
+      buttons << [{ text: t('telegram.commands.clients.delete_button'), callback_data: "clients_delete:#{client.key}" }]
+    end
+
+    buttons << [{ text: t('telegram.commands.clients.back_button'), callback_data: 'clients_list:' }]
+
+    respond_with :message, text: menu_text, reply_markup: { inline_keyboard: buttons }
+  end
+
+  def show_client_projects(client)
+    projects = client.projects.includes(:memberships)
+
+    if projects.empty?
+      text = t('telegram.commands.clients.projects_empty', name: client.name, key: client.key)
+    else
+      text = t('telegram.commands.clients.projects_title', name: client.name, key: client.key) + "\\n"
+      projects.each do |project|
+        text += "• #{project.name} (#{project.slug})\\n"
+      end
+    end
+
+    buttons = [[{ text: t('telegram.commands.clients.back_button'), callback_data: "clients_select:#{client.key}" }]]
+
+    respond_with :message, text: text, reply_markup: { inline_keyboard: buttons }
   end
 end
