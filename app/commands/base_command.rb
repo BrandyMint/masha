@@ -25,7 +25,7 @@ class BaseCommand
   RENAME_NEW_NAME_INPUT = :rename_new_name_input
 
   delegate :respond_with, :reply_with,
-           :answer_inline_query, :answer_callback_query,
+           :answer_inline_query,
            :edit_message,
            :answer_pre_checkout_query, :answer_shipping_query,
            :chat, :telegram_user, to: :controller, allow_nil: true
@@ -79,16 +79,15 @@ class BaseCommand
     def developer_only?
       @developer_only || false
     end
-
-    def command_description_key
-      command_name = name.underscore.sub(/_command$/, '')
-      "telegram.commands.descriptions.#{command_name}"
-    end
   end
 
   private
 
   attr_reader :controller
+
+  def answer_callback_query(text = '')
+    controller.send :answer_callback_query, text
+  end
 
   # Метод для форматирования информации о пользователе
   def format_user_info(user)
