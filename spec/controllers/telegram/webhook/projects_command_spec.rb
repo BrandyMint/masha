@@ -494,3 +494,63 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     end
   end
 end
+
+  # Tests for close menu functionality
+  context 'close menu functionality', :callback_query do
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
+    let(:from_id) { telegram_user.id }
+    let(:project) { projects(:work_project) }
+
+    include_context 'authenticated user'
+
+    before do
+      memberships(:telegram_work)
+    end
+
+    it 'deletes message when close button is clicked' do
+      # 1. User opens projects menu
+      dispatch_command :projects
+
+      # 2. User clicks "Close" button
+      expect {
+        dispatch(callback_query: {
+                   id: 'test_callback',
+                   from: from,
+                   message: { message_id: 22, chat: chat },
+                   data: "projects_close:"
+                 })
+      }.to delete_telegram_message(chat_id: chat[:id], message_id: 22)
+    end
+
+    it 'displays close button in projects list' do
+      response = dispatch_command :projects
+      keyboard = response.first[:reply_markup][:inline_keyboard]
+      
+      close_button_row = keyboard.last
+      expect(close_button_row.size).to eq(1)
+      expect(close_button_row.first[:text]).to eq('❌ Закрыть')
+      expect(close_button_row.first[:callback_data]).to eq('projects_close:')
+    end
+
+    it 'handles Telegram API error gracefully when message is too old to delete' do
+      # 1. User opens projects menu
+      dispatch_command :projects
+
+      # 2. Simulate Telegram API error when trying to delete old message
+      allow_any_instance_of(ProjectsCommand).to receive(:bot).and_raise(
+        Telegram::Bot::Error.new('message to delete not found')
+      )
+
+      # 3. User clicks "Close" button - should fallback to editing message
+      response = dispatch(callback_query: {
+                            id: 'test_callback',
+                            from: from,
+                            message: { message_id: 22, chat: chat },
+                            data: "projects_close:"
+                          })
+
+      # Should edit message instead of deleting
+      expect(response.first[:text]).to eq("📋 Меню проектов закрыто")
+    end
+  end

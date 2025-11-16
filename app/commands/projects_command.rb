@@ -49,6 +49,19 @@ class ProjectsCommand < BaseCommand
   def projects_list_callback_query(_data = nil)
     show_projects_list
   end
+  def projects_close_callback_query(_data = nil)
+    message = callback_query.message
+    bot.delete_message(
+      chat_id: message.chat.id,
+      message_id: message.message_id
+    )
+  rescue Telegram::Bot::Error => e
+    # Fallback: если не удалось удалить (например, старое сообщение), редактируем
+    Rails.logger.warn "Failed to delete projects menu: #{e.message}"
+    edit_message :text,
+                 text: "📋 Меню проектов закрыто",
+                 reply_markup: { inline_keyboard: [] }
+  end
 
   def projects_rename_callback_query(data = nil)
     unless data
@@ -385,6 +398,8 @@ class ProjectsCommand < BaseCommand
       buttons << row
     end
 
+    # Кнопка "Закрыть" - отдельной строкой внизу
+    buttons << [{ text: t('commands.projects.close_button'), callback_data: 'projects_close:' }]
     respond_with :message, text: t('commands.projects.title'), reply_markup: {
       inline_keyboard: buttons
     }
