@@ -5,7 +5,11 @@ class UserDecorator < ApplicationDecorator
 
   def name
     email = object.email.presence || 'no email'
-    "#{object.name} <span class='text-muted'>(#{email})</span>".html_safe
+    h.safe_join([
+      h.content_tag(:span, object.name),
+      ' ',
+      h.content_tag(:span, "(#{email})", class: 'text-muted')
+    ])
   end
 
   def name_as_link

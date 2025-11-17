@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   include Authority::Abilities
   extend FriendlyId
 
-  friendly_id :name, use: :slugged
+  friendly_id :slug, use: :slugged
 
   # belongs_to :owner, class_name: 'User'
   belongs_to :client, optional: true
@@ -20,21 +20,16 @@ class Project < ApplicationRecord
   has_many :member_rates, dependent: :destroy
   has_many :rated_users, through: :member_rates, source: :user
 
-  scope :ordered, -> { order(:name) }
+  scope :ordered, -> { order(:slug) }
   scope :active, -> { where(active: true) }
   scope :alive, -> { where(active: true) }
   scope :archive, -> { where(active: false) }
   scope :alphabetically, -> { order(slug: :asc) }
 
-  validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true,
-                   format: { with: /\A[a-z0-9._+-]+\Z/, message: "can't be blank. Characters can only be [a-z 0-9 . - +]" }
+                   format: { with: /\A[a-z0-9._+-]+\Z/, message: :invalid_slug_format }
   validate :slug_not_reserved
   validate :slug_not_integer
-
-  before_validation on: :create do
-    self.slug = Russian.translit(name.to_s).squish.parameterize if slug.blank?
-  end
 
   # active_admin в упор не видит friendly_id-шный slug
   def to_param
@@ -58,7 +53,7 @@ class Project < ApplicationRecord
   end
 
   def can_be_managed_by?(user)
-    memberships.owners.where(user: user).exists?
+    memberships.owners.exists?(user: user)
   end
 
   def client_name_for_display

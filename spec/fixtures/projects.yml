@@ -5,7 +5,6 @@
 
 # Рабочий проект (основной проект для тестов)
 work_project:
-  name: Work Project
   slug: work-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -13,7 +12,6 @@ work_project:
 
 # Личный проект
 personal_project:
-  name: Personal Project
   slug: personal-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -21,7 +19,6 @@ personal_project:
 
 # Неактивный проект (для тестов фильтрации)
 inactive_project:
-  name: Inactive Project
   slug: inactive-project
   active: false
   created_at: <%= 1.day.ago %>
@@ -29,7 +26,6 @@ inactive_project:
 
 # Тестовый проект для команд
 test_project:
-  name: Test Project
   slug: test-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -37,7 +33,6 @@ test_project:
 
 # Базовый проект для тестов валидации
 base_project:
-  name: Base Project
   slug: base-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -45,7 +40,6 @@ base_project:
 
 # Проект для разработки
 dev_project:
-  name: Development Project
   slug: development-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -53,7 +47,6 @@ dev_project:
 
 # Проект для отчетов
 reporting_project:
-  name: Reporting Project
   slug: reporting-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -61,98 +54,84 @@ reporting_project:
 
 # Дополнительные проекты для telegram тестов
 project_1:
-  name: Project 1
   slug: project-1
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project_2:
-  name: Project 2
   slug: project-2
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 work_project_for_telegram:
-  name: Work Project Telegram
   slug: work-project-telegram
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 member_project:
-  name: Member Project
   slug: member-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 team_project:
-  name: Team Project
   slug: team-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 my_project:
-  name: My Project
   slug: my-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 other_owner_project:
-  name: Other Owner Project
   slug: other-owner-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 owner_project_1:
-  name: Owner Project 1
   slug: owner-project-1
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 owner_project_2:
-  name: Owner Project 2
   slug: owner-project-2
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 personal_project_for_telegram:
-  name: Personal Project Telegram
   slug: personal-project-telegram
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 monitor_project:
-  name: Monitor Project
   slug: monitor-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 viewer_project:
-  name: Viewer Project
   slug: viewer-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 active_project:
-  name: Active Project
   slug: active-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 archived_project:
-  name: Archived Project
   slug: archived-project
   active: false
   created_at: <%= 1.day.ago %>
@@ -160,7 +139,6 @@ archived_project:
 
 # Проекты с клиентами
 project_with_client1:
-  name: Website Project
   slug: website-project
   client: client1
   active: true
@@ -168,7 +146,6 @@ project_with_client1:
   updated_at: <%= 1.day.ago %>
 
 project_with_client2:
-  name: Orphan Project
   slug: orphan-project
   client: client2
   active: true
@@ -177,49 +154,42 @@ project_with_client2:
 
 # Проекты для hours и summary тестов
 project_alpha:
-  name: Project Alpha
   slug: project-alpha
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project_beta:
-  name: Project Beta
   slug: project-beta
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project_gamma:
-  name: Project Gamma
   slug: project-gamma
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 current_week_project:
-  name: Current Week Project
   slug: current-week-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 multi_week_project:
-  name: Multi-week Project
   slug: multi-week-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 last_month_project:
-  name: Last Month Project
   slug: last-month-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 intensive_project:
-  name: Intensive Project
   slug: intensive-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -227,28 +197,24 @@ intensive_project:
 
 # Проекты для day command тестов
 daily_project:
-  name: Daily Project
   slug: daily-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 multi_day_project:
-  name: Multi-day Project
   slug: multi-day-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 old_project:
-  name: Old Project
   slug: old-project
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 recent_project:
-  name: Recent Project
   slug: recent-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -256,21 +222,18 @@ recent_project:
 
 # Проекты для report и summary тестов
 web_development:
-  name: Web Development
   slug: web-development
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 mobile_app:
-  name: Mobile App
   slug: mobile-app
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 old_report_project:
-  name: Old Report Project
   slug: old-report-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -278,21 +241,18 @@ old_report_project:
 
 # Проекты для summary тестов
 design_work:
-  name: Design Work
   slug: design-work
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 mobile_ui:
-  name: Mobile UI
   slug: mobile-ui
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 web_project:
-  name: Web Project
   slug: web-project
   active: true
   created_at: <%= 1.day.ago %>
@@ -300,28 +260,24 @@ web_project:
 
 # Проекты для TelegramTimeTracker тестов
 project1:
-  name: Project One
   slug: project1
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project2:
-  name: Project Two
   slug: project2
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 
 project123:
-  name: Project 123
   slug: project123
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
 # Проект для participant_client
 participant_project:
-  name: Participant Project
   slug: participant-project
   client: participant_client
   active: true

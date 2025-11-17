@@ -6,7 +6,6 @@ describe ProjectsController, type: :controller do
   let!(:project) { projects(:work_project) }
   let!(:project_attrs) do
     {
-      name: 'Test Project',
       slug: 'test-project'
     }
   end
@@ -59,7 +58,7 @@ describe ProjectsController, type: :controller do
 
       context 'with invalid params' do
         it 'renders new' do
-          post :create, params: { project: { name: '' } }
+          post :create, params: { project: { slug: '' } }
           expect(response).to render_template(:new)
         end
       end

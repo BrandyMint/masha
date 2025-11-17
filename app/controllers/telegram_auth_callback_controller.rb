@@ -18,21 +18,21 @@ class TelegramAuthCallbackController < ApplicationController
       data = verifier.verify token, purpose: :login
       unless data.key? :t
         Bugsnag.notify 'invalid auth token'
-        redirect_to new_session_url, notice: 'Невалидный токет авторизации, попробуйте еще раз авторизоваться через сайт'
+        redirect_to new_session_url, notice: I18n.t('telegram_auth.invalid_token')
         return
       end
       if Time.zone.at(data.fetch(:t).to_i) < ApplicationConfig.telegram_auth_expiration.seconds.ago
         Bugsnag.notify 'expired auth token'
-        redirect_to new_session_url, notice: 'Токен ваторизации устарел, попробуйте еще раз'
+        redirect_to new_session_url, notice: I18n.t('telegram_auth.expired_token')
         return
       end
       login data.fetch(:tid)
       redirect_after_login
     else
-      redirect_to new_session_url, notice: 'Неверный токен авторизации (1), попробуйте еще раз'
+      redirect_to new_session_url, notice: I18n.t('telegram_auth.bad_token')
     end
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    redirect_to new_session_url, notice: 'Неверный токен авторизации (2), попробуйте еще раз'
+    redirect_to new_session_url, notice: I18n.t('telegram_auth.invalid_signature')
   end
 
   def create

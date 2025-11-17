@@ -77,6 +77,6 @@ class ProjectsController < ApplicationController
   end
 
   def permited_params
-    params.require(:project).permit(:name, :slug, :description)
+    params.expect(project: %i[slug description])
   end
 end

@@ -175,7 +175,7 @@ RSpec.describe Reporter do
       expect(result).to be_a(String)
       expect(result).to include('date')
       expect(result).to include('total')
-      expect(result).to include(project.name)
+      expect(result).to include(project.slug)
     end
 
     it 'generates list table for monthly period' do
@@ -184,7 +184,7 @@ RSpec.describe Reporter do
       expect(result).to be_a(String)
       expect(result).to include('date')
       expect(result).to include('total')
-      expect(result).to include(project.name)
+      expect(result).to include(project.slug)
     end
 
     it 'generates list table grouped by user' do
@@ -193,7 +193,7 @@ RSpec.describe Reporter do
       expect(result).to be_a(String)
       expect(result).to include('date')
       expect(result).to include('total')
-      expect(result).to include(user.name)
+      expect(result).to include(user.to_s)
     end
   end
 end

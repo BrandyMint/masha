@@ -6,7 +6,7 @@ class DatePickerInput < SimpleForm::Inputs::StringInput
   def input
     # Если мы будем ограничивать, то пропадает возможность смотреть "весь месяц"
     # input_html_options[:max] = Date.today.end_of_week
-    super << shortcuts.to_s.html_safe
+    super << shortcuts.to_s
   end
 
   def input_type

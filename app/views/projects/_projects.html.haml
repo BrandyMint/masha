@@ -10,9 +10,7 @@
     - projects.each do |project|
       %tr
         %th
-          = link_to project.name, project_memberships_url(project.id)
-          - unless project.slug == project.name
-            %code.text-muted= project.slug 
+          = link_to project.slug, project_memberships_url(project.id)
         %td= project.time_shifts.count
         %td= role_human(user.membership_of(project).role)
         %td.text-muted= UserDecorator.decorate_collection(project.users).map(&:link).join(', ').html_safe

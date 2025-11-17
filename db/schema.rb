@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
+ActiveRecord::Schema[8.0].define(version: 20_251_116_181_925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'pg_catalog.plpgsql'
 
@@ -23,9 +25,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.datetime 'created_at', precision: nil
     t.datetime 'updated_at', precision: nil
     t.string 'namespace'
-    t.index ['author_type', 'author_id'], name: 'index_active_admin_comments_on_author_type_and_author_id'
+    t.index %w[author_type author_id], name: 'index_active_admin_comments_on_author_type_and_author_id'
     t.index ['namespace'], name: 'index_active_admin_comments_on_namespace'
-    t.index ['resource_type', 'resource_id'], name: 'index_active_admin_comments_on_resource_type_and_resource_id'
+    t.index %w[resource_type resource_id], name: 'index_active_admin_comments_on_resource_type_and_resource_id'
   end
 
   create_table 'admin_users', force: :cascade do |t|
@@ -52,8 +54,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.datetime 'created_at', precision: nil
     t.datetime 'updated_at', precision: nil
     t.jsonb 'auth_hash'
-    t.index ['provider', 'uid'], name: 'index_authentications_on_provider_and_uid', unique: true
-    t.index ['user_id', 'provider'], name: 'index_authentications_on_user_id_and_provider', unique: true
+    t.index %w[provider uid], name: 'index_authentications_on_provider_and_uid', unique: true
+    t.index %w[user_id provider], name: 'index_authentications_on_user_id_and_provider', unique: true
   end
 
   create_table 'clients', force: :cascade do |t|
@@ -63,7 +65,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['key'], name: 'index_clients_on_key'
-    t.index ['user_id', 'key'], name: 'index_clients_on_user_id_and_key', unique: true
+    t.index %w[user_id key], name: 'index_clients_on_user_id_and_key', unique: true
     t.index ['user_id'], name: 'index_clients_on_user_id'
   end
 
@@ -75,9 +77,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.datetime 'created_at', precision: nil
     t.datetime 'updated_at', precision: nil
     t.string 'telegram_username'
-    t.index ['email', 'project_id'], name: 'index_invites_on_email_and_project_id', unique: true
+    t.index %w[email project_id], name: 'index_invites_on_email_and_project_id', unique: true
     t.index ['project_id'], name: 'index_invites_on_project_id'
-    t.index ['telegram_username', 'project_id'], name: 'index_invites_on_telegram_username_and_project_id', unique: true
+    t.index %w[telegram_username project_id], name: 'index_invites_on_telegram_username_and_project_id', unique: true
     t.index ['user_id'], name: 'index_invites_on_user_id'
   end
 
@@ -88,7 +90,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.string 'currency', limit: 3, default: 'RUB'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['project_id', 'user_id'], name: 'index_member_rates_on_project_id_and_user_id', unique: true
+    t.index %w[project_id user_id], name: 'index_member_rates_on_project_id_and_user_id', unique: true
     t.index ['user_id'], name: 'index_member_rates_on_user_id'
   end
 
@@ -99,7 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.datetime 'created_at', precision: nil
     t.datetime 'updated_at', precision: nil
     t.index ['project_id'], name: 'index_memberships_on_project_id'
-    t.index ['user_id', 'project_id'], name: 'index_memberships_on_user_id_and_project_id', unique: true
+    t.index %w[user_id project_id], name: 'index_memberships_on_user_id_and_project_id', unique: true
     t.index ['user_id'], name: 'index_memberships_on_user_id'
   end
 
@@ -110,7 +112,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
   end
 
   create_table 'projects', force: :cascade do |t|
-    t.string 'name'
     t.datetime 'created_at', precision: nil
     t.datetime 'updated_at', precision: nil
     t.string 'slug', null: false
@@ -119,7 +120,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_16_161829) do
     t.integer 'telegram_chat_id'
     t.bigint 'client_id'
     t.index ['client_id'], name: 'index_projects_on_client_id'
-    t.index ['name'], name: 'index_projects_on_name', unique: true
     t.index ['slug'], name: 'index_projects_on_slug', unique: true
   end
 

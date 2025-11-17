@@ -71,7 +71,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         first_message = response.first
         keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
 
-        project_button = keyboard.find { |button| button[:text] == 'Test Project' }
+        project_button = keyboard.find { |button| button[:text] == 'test-project' }
         expect(project_button).not_to be_nil
 
         # 3. Эмулируем нажатие на кнопку проекта

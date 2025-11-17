@@ -165,10 +165,10 @@ module ApplicationHelper
   end
 
   def user_roles(user)
-    buffer = ''
+    roles = []
     # TODO: Показывтаь все роли на классы и глобальные
-    buffer << role_label(:admin) if user.is_root?
-    buffer.html_safe
+    roles << role_label(:admin) if user.is_root?
+    safe_join(roles)
   end
 
   def role_label(role, active = true, title = nil)
@@ -181,11 +181,11 @@ module ApplicationHelper
   end
 
   def user_roles_of_project(user, project)
-    buffer = ''
+    roles = []
     Membership.roles.each_key do |role|
-      buffer << role_label(role) if user.role? role, project
+      roles << role_label(role) if user.role? role, project
     end
-    buffer.html_safe
+    safe_join(roles)
   end
 
   def roles_select(membership)

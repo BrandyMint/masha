@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
     # @login_process = true
     # @session = Session.new :backurl => request.url
 
-    flash.now[:error] = 'Нет доступа к запрашиваемому ресурсу.'
+    flash.now[:error] = I18n.t('errors.unauthorized_access')
     respond_to do |format|
       format.html { render 'sessions/new', layout: 'application', status: status }
       # Иначе при не авторизованном запросе /posts/16370.pdf падает при поиске sessions/new.pdf

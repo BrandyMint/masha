@@ -155,7 +155,7 @@
       "Bash(git branch:*)",
       "Bash(kill:*)",
       "Bash(for:*)",
-      "Bash(uniq -c echo echo \"Прямые вызовы answer_callback_query (только в BaseCommand):\" grep -r \"answer_callback_query\" app/commands/)"
+      "Bash(pgrep:*)"
     ],
     "deny": [],
     "ask": []

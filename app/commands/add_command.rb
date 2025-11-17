@@ -38,7 +38,7 @@ class AddCommand < BaseCommand
 
     if time_shift.valid?
       controller.clear_telegram_session
-      respond_with :message, text: "Отметили в #{project.name} #{hours} часов"
+      respond_with :message, text: "Отметили в #{project.slug} #{hours} часов"
     else
       respond_with :message, text: "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
     end
@@ -53,7 +53,7 @@ class AddCommand < BaseCommand
                    resize_keyboard: true,
                    inline_keyboard:
                    current_user.available_projects.alive
-                               .map { |p| { text: p.name, callback_data: "select_project:#{p.slug}" } }
+                               .map { |p| { text: p.slug, callback_data: "select_project:#{p.slug}" } }
                                .each_slice(3).to_a
                  }
   end
@@ -70,7 +70,7 @@ class AddCommand < BaseCommand
       )
 
       message = if time_shift.valid?
-                  "Отметили в #{project.name} #{hours} часов"
+                  "Отметили в #{project.slug} #{hours} часов"
                 else
                   "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
                 end

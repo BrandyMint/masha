@@ -83,10 +83,10 @@ class MembershipsController < ApplicationController
   end
 
   def membership_params
-    params.require(:membership).permit(:role)
+    params.expect(membership: [:role])
   end
 
   def invite_params
-    params.require(:invite).permit(:email, :role, :user_id).merge(user: current_user)
+    params.expect(invite: [:email, :role, :user_id]).merge(user: current_user)
   end
 end

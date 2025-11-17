@@ -33,13 +33,13 @@ class UsersCommand < BaseCommand
       return
     end
 
-    if projects.count == 1
+    if projects.one?
       show_users_for_project(projects.first)
     else
       respond_with :message,
                    text: 'Выберите проект для просмотра пользователей:',
                    reply_markup: {
-                     inline_keyboard: projects.map { |p| [{ text: p.name, callback_data: "users_list_project:#{p.slug}" }] }
+                     inline_keyboard: projects.map { |p| [{ text: p.slug, callback_data: "users_list_project:#{p.slug}" }] }
                    }
     end
   end
@@ -95,7 +95,7 @@ class UsersCommand < BaseCommand
     memberships = project.memberships.includes(:user, :telegram_user).order(:role_cd, :created_at)
 
     if memberships.empty?
-      respond_with :message, text: "В проекте '#{project.name}' нет пользователей"
+      respond_with :message, text: "В проекте '#{project.slug}' нет пользователей"
       return
     end
 
@@ -106,7 +106,7 @@ class UsersCommand < BaseCommand
       "#{user.name || user.email} #{status} - #{membership.role}"
     end.join("\n")
 
-    respond_with :message, text: "Пользователи проекта '#{project.name}':\n\n#{users_text}"
+    respond_with :message, text: "Пользователи проекта '#{project.slug}':\n\n#{users_text}"
   end
 
   def show_manageable_projects_for_add
@@ -119,7 +119,7 @@ class UsersCommand < BaseCommand
     respond_with :message,
                  text: 'Выберите проект, в который хотите добавить пользователя:',
                  reply_markup: {
-                   inline_keyboard: manageable_projects.map { |p| [{ text: p.name, callback_data: "users_add_project:#{p.slug}" }] }
+                   inline_keyboard: manageable_projects.map { |p| [{ text: p.slug, callback_data: "users_add_project:#{p.slug}" }] }
                  }
   end
 
@@ -130,7 +130,7 @@ class UsersCommand < BaseCommand
 
   def format_user_info(user)
     telegram_info = user.telegram_user ? "(@#{user.telegram_user.username})" : ''
-    projects_info = user.projects.alive.count > 0 ? "Проекты: #{user.projects.alive.map(&:slug).join(', ')}" : ''
+    projects_info = user.projects.alive.any? ? "Проекты: #{user.projects.alive.map(&:slug).join(', ')}" : ''
     "*#{user.name || user.email}*#{telegram_info}\n#{projects_info}"
   end
 
@@ -174,13 +174,13 @@ class UsersCommand < BaseCommand
 
     self.telegram_session = TelegramSession.users_add_user(project_slug: project_slug)
     save_context :users_add_username_input
-    edit_message :text, text: "Проект: #{project.name}\nТеперь введите никнейм пользователя (например: @username или username):"
+    edit_message :text, text: "Проект: #{project.slug}\nТеперь введите никнейм пользователя (например: @username или username):"
     safe_answer_callback_query('✅ Проект выбран')
   end
 
   def users_add_role_callback_query(role)
     safe_answer_callback_query('✅ Роль выбрана')
-    
+
     data = telegram_session_data
     project_slug = data['project_slug']
     username = data['username']

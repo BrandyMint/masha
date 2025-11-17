@@ -63,7 +63,7 @@ class RateCommand < BaseCommand
       respond_with :message,
                    text: t('telegram.commands.rate.member_not_found_in_project',
                            username: username,
-                           project_name: project.name,
+                           project_name: project.slug,
                            project_name_command: project_name)
       return
     end
@@ -147,7 +147,7 @@ class RateCommand < BaseCommand
       respond_with :message,
                    text: t('telegram.commands.rate.no_rate_set',
                            username: username,
-                           project_name: project.name)
+                           project_name: project.slug)
       return
     end
 
@@ -155,7 +155,7 @@ class RateCommand < BaseCommand
       respond_with :message,
                    text: t('telegram.commands.rate.rate_removed_successfully',
                            username: username,
-                           project_name: project.name)
+                           project_name: project.slug)
     else
       respond_with :message, text: t('telegram.commands.rate.remove_error')
     end
@@ -181,7 +181,7 @@ class RateCommand < BaseCommand
   end
 
   def can_manage_project_rates?(project)
-    project.memberships.owners.where(user: current_user).exists?
+    project.memberships.owners.exists?(user: current_user)
   end
 
   def find_user_by_username(username)
@@ -192,7 +192,7 @@ class RateCommand < BaseCommand
   def format_rate_success(project, user, member_rate)
     [
       t('telegram.commands.rate.success_title'),
-      t('telegram.commands.rate.success_project', project_name: project.name),
+      t('telegram.commands.rate.success_project', project_name: project.slug),
       t('telegram.commands.rate.success_member', username: user.telegram_user.username),
       t('telegram.commands.rate.success_amount', amount: member_rate.hourly_rate, currency: member_rate.currency),
       t('telegram.commands.rate.success_updated', timestamp: Time.current.strftime('%d.%m.%Y %H:%M'))
@@ -201,7 +201,7 @@ class RateCommand < BaseCommand
 
   def format_project_rates_list(project)
     rates = project.member_rates.includes(:user)
-    text = [t('telegram.commands.rate.rates_list_title', project_name: project.name), '']
+    text = [t('telegram.commands.rate.rates_list_title', project_name: project.slug), '']
 
     project.users.each do |user|
       rate = rates.find { |r| r.user_id == user.id }

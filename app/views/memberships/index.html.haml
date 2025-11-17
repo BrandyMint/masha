@@ -1,8 +1,6 @@
 = projects_link
 %h1
-  Проект '#{@project.name}'
-  - unless @project.slug == @project.name
-    %code.text-muted= @project.slug 
+  Проект '#{@project.slug}'
 %div.m-t-md
   = edit_project_link @project if @project.active?
   = change_project_status_link @project

@@ -192,7 +192,7 @@ class EditCommand < BaseCommand
   def show_field_selection(time_shift)
     description = time_shift.description || '(нет)'
     text = "Запись ##{time_shift.id}:\n" \
-           "Проект: #{time_shift.project.name}\n" \
+           "Проект: #{time_shift.project.slug}\n" \
            "Часы: #{time_shift.hours}\n" \
            "Описание: #{description}\n\n" \
            'Что хотите изменить?'
@@ -217,11 +217,11 @@ class EditCommand < BaseCommand
     # Контекст будет установлен через callback_query автоматически
     projects = current_user.available_projects.alive
 
-    text = "Выберите новый проект (текущий: #{time_shift.project.name}):"
+    text = "Выберите новый проект (текущий: #{time_shift.project.slug}):"
 
     inline_keyboard = projects.map do |p|
-      project_name = p.id == time_shift.project_id ? "#{p.name} (текущий)" : p.name
-      [{ text: project_name, callback_data: "edit_project:#{p.slug}" }]
+      project_slug = p.id == time_shift.project_id ? "#{p.slug} (текущий)" : p.slug
+      [{ text: project_slug, callback_data: "edit_project:#{p.slug}" }]
     end
 
     edit_message :text,
@@ -281,7 +281,7 @@ def build_changes_text(time_shift, field, new_values)
     new_project = current_user.find_project project_id new_values['project_id']
     return ['Ошибка: новый проект не найден'] unless new_project
 
-    ["Проект: #{time_shift.project.name} → #{new_project.name}"]
+    ["Проект: #{time_shift.project.slug} → #{new_project.slug}"]
   when 'hours'
     ["Часы: #{time_shift.hours} → #{new_values['hours']}"]
   when 'description'

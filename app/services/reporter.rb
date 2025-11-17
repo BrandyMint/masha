@@ -67,7 +67,7 @@ class Reporter
 
   def tableize_list_by_days(result)
     table = Terminal::Table.new do |t|
-      t << (%i[date total] + result[:columns].map(&:name))
+      t << (%i[date total] + result[:columns].map(&:to_s))
       t << :separator
 
       result[:days].each do |day|

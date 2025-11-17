@@ -42,7 +42,7 @@ class ProjectMemberNotificationJob < ApplicationJob
 
     role = new_member.membership_of(project)&.role || 'неопределена'
 
-    message = "👥 В проект \"#{project.name}\" добавлен новый участник:\n"
+    message = "👥 В проект \"#{project.slug}\" добавлен новый участник:\n"
     message += "• #{telegram_info}"
     message += " (#{name_info})" if name_info.present?
     message += "\n• Роль: #{role_translation(role)}"

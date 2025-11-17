@@ -14,7 +14,6 @@ class ClientsCommand < BaseCommand
     handle_client_command(subcommand, args)
   end
 
-
   def clients_name(message = nil, *)
     return respond_with(:message, text: t('telegram.commands.clients.name_invalid')) unless message
 
@@ -123,7 +122,7 @@ class ClientsCommand < BaseCommand
   end
 
   def clients_select_callback_query(data)
-    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+    raise 'clients_select_callback_query called without data' if data.blank?
 
     client = find_client(data)
 
@@ -140,7 +139,8 @@ class ClientsCommand < BaseCommand
   end
 
   def clients_rename_callback_query(data)
-    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+    raise 'clients_select_callback_query called without data' if data.blank?
+
     client = find_client(data)
     return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
 
@@ -162,7 +162,8 @@ class ClientsCommand < BaseCommand
   end
 
   def clients_delete_callback_query(data)
-    raise RuntimeError, 'clients_select_callback_query called without data' unless data.present?
+    raise 'clients_select_callback_query called without data' if data.blank?
+
     client = find_client(data)
     return respond_with :message, text: 'Такой клиент не найден или у вас нет доступа' unless client
     return respond_with :message, text: t('telegram.commands.clients.delete_access_denied') unless current_user.can_delete?(client)
@@ -334,9 +335,9 @@ class ClientsCommand < BaseCommand
     )
 
     if projects.any?
-      text += t('telegram.commands.clients.show_projects_list') + '\\n'
+      text += "#{t('telegram.commands.clients.show_projects_list')}\\n"
       projects.each do |project|
-        text += "• #{project.name} (#{project.slug})\\n"
+        text += "• #{project.slug}\\n"
       end
     else
       text += t('telegram.commands.clients.show_empty_projects')
@@ -344,7 +345,6 @@ class ClientsCommand < BaseCommand
 
     text
   end
-
 
   def show_client_menu(client)
     can_manage = current_user.can_update?(client) && current_user.can_delete?(client)
@@ -356,9 +356,10 @@ class ClientsCommand < BaseCommand
 
     buttons << [{ text: t('telegram.commands.clients.edit_button'), callback_data: "clients_rename:#{client.key}" }] if can_manage
 
-    buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count), callback_data: "clients_projects:#{client.key}" }]
+    buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count),
+                  callback_data: "clients_projects:#{client.key}" }]
 
-    if can_manage && projects_count == 0
+    if can_manage && projects_count.zero?
       buttons << [{ text: t('telegram.commands.clients.delete_button'), callback_data: "clients_delete:#{client.key}" }]
     end
 
@@ -373,9 +374,9 @@ class ClientsCommand < BaseCommand
     if projects.empty?
       text = t('telegram.commands.clients.projects_empty', name: client.name, key: client.key)
     else
-      text = t('telegram.commands.clients.projects_title', name: client.name, key: client.key) + '\\n'
+      text = "#{t('telegram.commands.clients.projects_title', name: client.name, key: client.key)}\\n"
       projects.each do |project|
-        text += "• #{project.name} (#{project.slug})\\n"
+        text += "• #{project.slug}\\n"
       end
     end
 

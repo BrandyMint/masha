@@ -19,7 +19,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @email_form = EmailForm.new params.require(:email_form).permit(:email)
+    @email_form = EmailForm.new params.expect(email_form: [:email])
 
     if @email_form.valid?
       user = User.find_by(email: params[:email_form][:email])
@@ -53,6 +53,6 @@ class PasswordResetsController < ApplicationController
   private
 
   def permitted_params
-    params.require(:password_change_form).permit(:password, :password_confirmation)
+    params.expect(password_change_form: [:password, :password_confirmation])
   end
 end

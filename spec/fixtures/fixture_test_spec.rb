@@ -35,7 +35,6 @@ RSpec.describe 'Fixtures Loading', type: :model do
     it 'loads work project correctly' do
       project = projects(:work_project)
       expect(project).to be_present
-      expect(project.name).to eq('Work Project')
       expect(project.slug).to eq('work-project')
       expect(project.active).to be true
     end
@@ -109,7 +108,7 @@ RSpec.describe 'Fixtures Loading', type: :model do
 
   describe 'Performance test' do
     it 'loads fixtures quickly' do
-      start_time = Time.now
+      start_time = Time.zone.now
 
       # Загружаем несколько fixtures
       5.times do
@@ -120,7 +119,7 @@ RSpec.describe 'Fixtures Loading', type: :model do
         time_shifts(:work_time_today)
       end
 
-      end_time = Time.now
+      end_time = Time.zone.now
       duration = end_time - start_time
 
       # Должно быть очень быстро с transactional fixtures

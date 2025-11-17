@@ -33,7 +33,7 @@ module Telegram
       )
 
       # Формируем сообщение
-      message_parts = ["✅ Отметили #{hours_float}ч в проекте #{project.name}"]
+      message_parts = ["✅ Отметили #{hours_float}ч в проекте #{project.slug}"]
       message_parts << warning_message if warning_message
       message_parts << "📝 #{description}" if description.present?
 
