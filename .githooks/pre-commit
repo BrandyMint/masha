@@ -30,7 +30,7 @@ for FILE in $STAGED_FILES; do
     echo "  📝 Checking: $FILE"
 
     # Run RuboCop with auto-correction
-    if bundle exec rubocop -A "$FILE"; then
+    if bundle exec rubocop -a "$FILE"; then
       # Re-add the file to staging if it was modified
       git add "$FILE"
     else
