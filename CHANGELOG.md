@@ -8,6 +8,30 @@
 
 ### 🎯 Основные изменения с версии v0.13.0
 
+#### ✨ Новый функционал
+✨ Add hidden commands
+✨ Add metric complexity exclusions to .rubocop.yml
+✨ Add mise.toml
+✨ Add pre-commit
+#### 🐛 Исправления
+🐛 Fix RuboCop Rails violations in models and authorizers
+🐛 Fix Style/IfUnlessModifier in ClientsCommand
+🐛 Fix Style/StringLiterals, Style/WordArray, and Style/FrozenStringLiteralComment
+### 📊 Статистика релиза
+
+- **Всего изменений:** 14 коммитов
+- **Новых возможностей:** 4
+- **Исправлений:** 3
+
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
+## Что нового в v0.13.1
+
+### 🎯 Основные изменения с версии v0.13.0
+
 ---
 🤖 *Changelog сгенерирован автоматически для MashTime Bot*
 
