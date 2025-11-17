@@ -59,30 +59,18 @@ module Telegram
       respond_with :message, text: 'К сожалению ваша команда не распознана. Разработчикам уже сообщеили'
     end
 
-    def telegram_user
-      @telegram_user ||= TelegramUser
-                         .create_with(chat.slice(*%w[first_name last_name username]))
-                         .create_or_find_by! id: chat.fetch('id')
-    end
-
-    def current_user
-      telegram_user.user
-    end
-
-    def developer?
-      telegram_user.developer?
-    end
-
     def respond_with(*args)
       Rails.logger.info "respond_with: #{args}"
       super
     end
 
-    def universal_command!(*_args)
-      debugger
-    end
-
     private
+
+    delegate :telegram_user, :developer?, to: :current_user
+
+    def current_user
+      @current_user ||= User.find_or_create_by_telegram_data!(chat)
+    end
 
     def with_locale(&)
       I18n.with_locale(current_locale, &)
