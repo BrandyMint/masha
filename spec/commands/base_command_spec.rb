@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe BaseCommand do
   let(:user) { double('user') }
   let(:telegram_user) { double('telegram_user', developer?: false, user: user) }
-  let(:controller) { double('controller', respond_with: true, t: 'translated', telegram_user: telegram_user) }
+  let(:controller) { double('controller', payload: {}, respond_with: true, t: 'translated', telegram_user: telegram_user) }
 
   describe '.command_metadata' do
     it 'sets developer_only flag' do

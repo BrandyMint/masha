@@ -119,7 +119,7 @@ class ClientsCommand < BaseCommand
     session[:new_client_name] = nil
     save_context :clients_name
     respond_with :message, text: t('telegram.commands.clients.add_prompt_name')
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_select_callback_query(data)
@@ -131,12 +131,12 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: t('telegram.commands.clients.show_access_denied') unless current_user.can_read?(client)
 
     show_client_menu(client)
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_list_callback_query(_data = nil)
     show_clients_list
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_rename_callback_query(data)
@@ -149,7 +149,7 @@ class ClientsCommand < BaseCommand
     session[:edit_client_key] = client.key
     save_context :clients_rename
     respond_with :message, text: t('telegram.commands.clients.edit_prompt_name')
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_projects_callback_query(data)
@@ -158,7 +158,7 @@ class ClientsCommand < BaseCommand
     return respond_with :message, text: t('telegram.commands.clients.projects_access_denied') unless current_user.can_read?(client)
 
     show_client_projects(client)
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_delete_callback_query(data)
@@ -178,7 +178,7 @@ class ClientsCommand < BaseCommand
     ]
 
     respond_with :message, text: text, reply_markup: { inline_keyboard: buttons }
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   def clients_delete_confirm_callback_query(data)
@@ -199,7 +199,7 @@ class ClientsCommand < BaseCommand
     else
       respond_with :message, text: client.errors.full_messages.join(', ')
     end
-    answer_callback_query
+    safe_answer_callback_query
   end
 
   private

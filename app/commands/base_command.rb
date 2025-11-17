@@ -56,15 +56,16 @@ class BaseCommand
   # Безопасный вызов answer_callback_query с отслеживанием состояния
   # Используется в callback_query методах для предотвращения зависания кнопок
   def safe_answer_callback_query(text = nil, params = {})
-    @callback_answered = true
     answer_callback_query(text, params) if callback_query_context?
   end
 
   # Проверяем, обрабатываем ли callback_query
   def callback_query_context?
-    controller.respond_to?(:payload) && controller.payload.is_a?(Hash) && controller.payload.key?('callback_query')
-  rescue StandardError
-    false
+    payload.key?('callback_query')
+  end
+
+  def payload
+    controller.send :payload
   end
 
   # Метод для объявления контекстных методов, которые команда предоставляет контроллеру
@@ -108,6 +109,7 @@ class BaseCommand
   attr_reader :controller
 
   def answer_callback_query(text = '')
+    @callback_answered = true
     controller.send :answer_callback_query, text
   end
 
