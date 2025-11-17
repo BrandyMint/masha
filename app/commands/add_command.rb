@@ -20,12 +20,29 @@ class AddCommand < BaseCommand
     save_context ADD_TIME
     project = find_project project_slug
     controller.telegram_session = TelegramSession.add_time(project_id: project.id)
+
+    prompt_text = t('commands.add.project_selected_prompt', project: project.slug) +
+                  "\n\n(или 'cancel' для отмены)"
+
+    edit_message :text, text: prompt_text
+    safe_answer_callback_query(t('commands.add.project_selected'))
+  end
+
+  def add_cancel_callback_query(_data = nil)
+    controller.clear_telegram_session
     edit_message :text,
-                 text: "Вы выбрали проект #{project.slug}, теперь укажите время и через пробел комментарий (12 делал то-то)"
-    safe_answer_callback_query('✅ Проект выбран')
+                 text: t('commands.add.cancelled'),
+                 reply_markup: { inline_keyboard: [] }
+    safe_answer_callback_query
   end
 
   def add_time(hours, *description)
+    # Проверка на отмену операции
+    if hours.to_s.downcase == 'cancel'
+      controller.clear_telegram_session
+      return respond_with :message, text: t('commands.add.cancelled')
+    end
+
     data = controller.telegram_session_data
     project = current_user.available_projects.find(data['project_id']) || raise('Не указан проект')
     description = description.join(' ')
@@ -38,24 +55,57 @@ class AddCommand < BaseCommand
 
     if time_shift.valid?
       controller.clear_telegram_session
-      respond_with :message, text: "Отметили в #{project.slug} #{hours} часов"
+      respond_with :message, text: t('commands.add.time_recorded', project: project.slug, hours: hours)
     else
-      respond_with :message, text: "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
+      respond_with :message, text: t('commands.add.error_creating', errors: time_shift.errors.full_messages.join(', '))
     end
   end
 
   private
 
   def show_project_selection
-    respond_with :message,
-                 text: 'Выберите проект, в котором отметить время:',
-                 reply_markup: {
-                   resize_keyboard: true,
-                   inline_keyboard:
-                   current_user.available_projects.alive
-                               .map { |p| { text: p.slug, callback_data: "select_project:#{p.slug}" } }
-                               .each_slice(3).to_a
-                 }
+    projects = current_user.available_projects.alive
+
+    # Empty state - нет проектов
+    if projects.empty?
+      return respond_with :message,
+                          text: t('commands.add.empty_state_title'),
+                          reply_markup: {
+                            inline_keyboard: [[
+                              {
+                                text: t('commands.add.empty_state_create_button'),
+                                callback_data: 'projects_create:'
+                              }
+                            ]]
+                          }
+    end
+
+    # Single project optimization - пропускаем выбор проекта
+    if projects.one?
+      return show_single_project_prompt(projects.first)
+    end
+
+    # Обычное состояние - показываем проекты + кнопка отмены
+    project_buttons = projects.map { |p|
+      { text: p.slug, callback_data: "select_project:#{p.slug}" }
+    }.each_slice(3).to_a
+
+    # Добавляем кнопку отмены в отдельной строке
+    project_buttons << [{ text: t('commands.projects.cancel_button'), callback_data: 'add_cancel:' }]
+
+    return respond_with :message,
+                        text: t('commands.add.project_selection_title'),
+                        reply_markup: {
+                          resize_keyboard: true,
+                          inline_keyboard: project_buttons
+                        }
+  end
+
+  def show_single_project_prompt(project)
+    save_context ADD_TIME
+    controller.telegram_session = TelegramSession.add_time(project_id: project.id)
+
+    respond_with :message, text: t('commands.add.single_project_selected', project: project.slug)
   end
 
   def add_time_to_project(project_slug, hours, description)
@@ -70,12 +120,13 @@ class AddCommand < BaseCommand
       )
 
       message = if time_shift.valid?
-                  "Отметили в #{project.slug} #{hours} часов"
+                  t('commands.add.time_recorded', project: project.slug, hours: hours)
                 else
-                  "❌ Ошибка при создании записи: #{time_shift.errors.full_messages.join(', ')}"
+                  t('commands.add.error_creating', errors: time_shift.errors.full_messages.join(', '))
                 end
     else
-      message = "Не найден такой проект '#{project_slug}'. Вам доступны: #{current_user.available_projects.alive.join(', ')}"
+      available = current_user.available_projects.alive.pluck(:slug).join(', ')
+      message = t('commands.add.project_not_found', project: project_slug, available: available)
     end
 
     respond_with :message, text: message

@@ -283,3 +283,10 @@ participant_project:
   active: true
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Единственный проект для user_single_project
+single_user_project:
+  slug: only-project
+  active: true
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

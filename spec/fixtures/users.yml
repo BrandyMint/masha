@@ -213,3 +213,16 @@ test_user:
   is_root: false
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Пользователь с ровно одним проектом (для single project optimization)
+user_single_project:
+  name: Single Project User
+  nickname: single_proj_user
+  email: single_project@example.com
+  pivotal_person_id: 18
+  telegram_user_id: <%= 999999999 %>
+  salt: "CfASnKhWg7uZXrHQsreU"
+  crypted_password: "$2a$10$nwQSw9ScV4kIjJPWoZ/Azugck1DjI0qD.p0ER9FhsNyWolZJ3dquS"
+  is_root: false
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>

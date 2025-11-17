@@ -149,3 +149,12 @@ telegram_test_user:
   last_name: User
   created_at: <%= 1.day.ago %>
   updated_at: <%= 1.day.ago %>
+
+# Telegram для пользователя с одним проектом
+telegram_single_project:
+  id: <%= 999999999 %>
+  username: single_proj_user
+  first_name: Single
+  last_name: Project User
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
