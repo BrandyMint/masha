@@ -53,6 +53,6 @@ class PasswordResetsController < ApplicationController
   private
 
   def permitted_params
-    params.expect(password_change_form: [:password, :password_confirmation])
+    params.expect(password_change_form: %i[password password_confirmation])
   end
 end

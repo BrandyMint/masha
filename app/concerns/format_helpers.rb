@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module FormatHelpers
   # Метод для объединения нескольких строк в одну с переносами
   def multiline(*args)

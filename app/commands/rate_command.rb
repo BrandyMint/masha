@@ -26,9 +26,7 @@ class RateCommand < BaseCommand
 
     # Получаем данные из контекста
     context_data = session[CONTEXT_AWAITING_RATE_AMOUNT]
-    unless context_data
-      return respond_with :message, text: t('telegram.commands.rate.unknown_error')
-    end
+    return respond_with :message, text: t('telegram.commands.rate.unknown_error') unless context_data
 
     slug = context_data['project_slug']
     user_id = context_data['user_id']
@@ -49,9 +47,7 @@ class RateCommand < BaseCommand
 
     # Валидация суммы
     hourly_rate = amount_text.tr(',', '.').to_f
-    if hourly_rate <= 0
-      return respond_with :message, text: t('telegram.commands.rate.menu.invalid_amount_input')
-    end
+    return respond_with :message, text: t('telegram.commands.rate.menu.invalid_amount_input') if hourly_rate <= 0
 
     # Создание или обновление ставки
     member_rate = MemberRate.find_or_initialize_by(project: project, user: target_user)
@@ -268,9 +264,7 @@ class RateCommand < BaseCommand
   def show_interactive_menu
     projects = owned_projects
 
-    if projects.empty?
-      return respond_with :message, text: t('telegram.commands.rate.menu.no_owned_projects')
-    end
+    return respond_with :message, text: t('telegram.commands.rate.menu.no_owned_projects') if projects.empty?
 
     # Single project optimization
     return show_project_menu(projects.first) if projects.count == 1
@@ -307,9 +301,7 @@ class RateCommand < BaseCommand
   def show_members_menu(project)
     members = project.users.includes(:telegram_user)
 
-    if members.empty?
-      return respond_with :message, text: t('telegram.commands.rate.menu.no_members')
-    end
+    return respond_with :message, text: t('telegram.commands.rate.menu.no_members') if members.empty?
 
     # Получаем существующие ставки для проекта
     rates = project.member_rates.includes(:user).index_by(&:user_id)
@@ -317,7 +309,12 @@ class RateCommand < BaseCommand
     buttons = []
     members.each do |user|
       rate = rates[user.id]
-      rate_text = rate ? t('telegram.commands.rate.menu.current_rate', rate: rate.rate_with_currency) : t('telegram.commands.rate.menu.no_rate')
+      rate_text = if rate
+                    t('telegram.commands.rate.menu.current_rate',
+                      rate: rate.rate_with_currency)
+                  else
+                    t('telegram.commands.rate.menu.no_rate')
+                  end
       username = user.telegram_user&.telegram_nick || user.id.to_s
 
       member_row = [

@@ -54,58 +54,58 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       let(:data) { 'report_periods:' }
 
       it 'handles report_periods_callback_query without errors' do
-        expect {
+        expect do
           dispatch(callback_query: {
                      id: 'test_callback_id',
                      from: from,
                      message: message,
                      data: 'report_periods:'
                    })
-        }.not_to raise_error
+        end.not_to raise_error
       end
 
       it 'handles report_filters_callback_query without errors' do
-        expect {
+        expect do
           dispatch(callback_query: {
                      id: 'test_callback_id',
                      from: from,
                      message: message,
                      data: 'report_filters:'
                    })
-        }.not_to raise_error
+        end.not_to raise_error
       end
 
       it 'handles report_options_callback_query without errors' do
-        expect {
+        expect do
           dispatch(callback_query: {
                      id: 'test_callback_id',
                      from: from,
                      message: message,
                      data: 'report_options:'
                    })
-        }.not_to raise_error
+        end.not_to raise_error
       end
 
       it 'handles report_examples_callback_query without errors' do
-        expect {
+        expect do
           dispatch(callback_query: {
                      id: 'test_callback_id',
                      from: from,
                      message: message,
                      data: 'report_examples:'
                    })
-        }.not_to raise_error
+        end.not_to raise_error
       end
 
       it 'handles report_main_callback_query without errors' do
-        expect {
+        expect do
           dispatch(callback_query: {
                      id: 'test_callback_id',
                      from: from,
                      message: message,
                      data: 'report_main:'
                    })
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
   end

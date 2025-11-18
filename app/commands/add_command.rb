@@ -81,24 +81,22 @@ class AddCommand < BaseCommand
     end
 
     # Single project optimization - пропускаем выбор проекта
-    if projects.one?
-      return show_single_project_prompt(projects.first)
-    end
+    return show_single_project_prompt(projects.first) if projects.one?
 
     # Обычное состояние - показываем проекты + кнопка отмены
-    project_buttons = projects.map { |p|
+    project_buttons = projects.map do |p|
       { text: p.slug, callback_data: "select_project:#{p.slug}" }
-    }.each_slice(3).to_a
+    end.each_slice(3).to_a
 
     # Добавляем кнопку отмены в отдельной строке
     project_buttons << [{ text: t('commands.projects.cancel_button'), callback_data: 'add_cancel:' }]
 
-    return respond_with :message,
-                        text: t('commands.add.project_selection_title'),
-                        reply_markup: {
-                          resize_keyboard: true,
-                          inline_keyboard: project_buttons
-                        }
+    respond_with :message,
+                 text: t('commands.add.project_selection_title'),
+                 reply_markup: {
+                   resize_keyboard: true,
+                   inline_keyboard: project_buttons
+                 }
   end
 
   def show_single_project_prompt(project)

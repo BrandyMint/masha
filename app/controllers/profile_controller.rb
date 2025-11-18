@@ -39,10 +39,10 @@ class ProfileController < ApplicationController
   private
 
   def user_permited_params
-    params.expect(user: [:name, :pivotal_person_id, :email, :subscribed])
+    params.expect(user: %i[name pivotal_person_id email subscribed])
   end
 
   def password_permited_params
-    params.expect(password_change_form: [:password, :password_confirmation])
+    params.expect(password_change_form: %i[password password_confirmation])
   end
 end

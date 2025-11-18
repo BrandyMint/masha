@@ -87,6 +87,6 @@ class MembershipsController < ApplicationController
   end
 
   def invite_params
-    params.expect(invite: [:email, :role, :user_id]).merge(user: current_user)
+    params.expect(invite: %i[email role user_id]).merge(user: current_user)
   end
 end
