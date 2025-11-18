@@ -199,6 +199,13 @@ class ClientsCommand < BaseCommand
     safe_answer_callback_query
   end
 
+  def clients_close_callback_query(_data = nil)
+    edit_message :text,
+                 text: t('telegram.commands.clients.closed_message'),
+                 reply_markup: { inline_keyboard: [] }
+    safe_answer_callback_query
+  end
+
   private
 
   def handle_client_command(subcommand, args)
@@ -234,6 +241,9 @@ class ClientsCommand < BaseCommand
     # Добавить кнопки клиентов (по 3 в ряд)
     client_buttons = clients.map { |c| { text: c.name.truncate(15), callback_data: "clients_select:#{c.key}" } }
     client_buttons.each_slice(3) { |row| buttons << row }
+
+    # Добавить кнопку "Закрыть"
+    buttons << [{ text: t('telegram.commands.clients.close_button'), callback_data: 'clients_close:' }]
 
     respond_with :message, text: t('telegram.commands.clients.list_title'), reply_markup: { inline_keyboard: buttons }
   end
