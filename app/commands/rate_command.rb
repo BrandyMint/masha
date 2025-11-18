@@ -89,8 +89,8 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.access_denied_owner_only')
     end
 
-    show_project_menu(project)
     safe_answer_callback_query
+    return show_project_menu(project)
   end
 
   def rate_view_list_callback_query(slug)
@@ -133,8 +133,8 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.access_denied_owner_only')
     end
 
-    show_members_menu(project)
     safe_answer_callback_query
+    return show_members_menu(project)
   end
 
   def rate_select_member_callback_query(data)
@@ -158,8 +158,8 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.access_denied_owner_only')
     end
 
-    show_currency_selection(project, target_user)
     safe_answer_callback_query
+    return show_currency_selection(project, target_user)
   end
 
   def rate_select_currency_callback_query(data)
@@ -184,7 +184,12 @@ class RateCommand < BaseCommand
     end
 
     # Сохраняем контекст для следующего шага
-    save_context(CONTEXT_AWAITING_RATE_AMOUNT, project_slug: slug, user_id: user_id, currency: currency)
+    save_context CONTEXT_AWAITING_RATE_AMOUNT
+    session[CONTEXT_AWAITING_RATE_AMOUNT] = {
+      'project_slug' => slug,
+      'user_id' => user_id,
+      'currency' => currency
+    }
 
     username = target_user.telegram_user&.telegram_nick || target_user.id.to_s
     safe_answer_callback_query
@@ -242,19 +247,19 @@ class RateCommand < BaseCommand
     if slug.present?
       project = find_project(slug)
       if project
-        show_project_menu(project)
-        return safe_answer_callback_query
+        safe_answer_callback_query
+        return show_project_menu(project)
       end
     end
 
-    show_interactive_menu
     safe_answer_callback_query
+    return show_interactive_menu
   end
 
   def rate_cancel_callback_query(_data = nil)
     clear_rate_context
     safe_answer_callback_query
-    respond_with :message, text: t('telegram.commands.rate.menu.operation_cancelled')
+    return respond_with :message, text: t('telegram.commands.rate.menu.operation_cancelled')
   end
 
   private
@@ -293,9 +298,9 @@ class RateCommand < BaseCommand
       [{ text: t('telegram.commands.rate.menu.back'), callback_data: 'rate_back:' }]
     ]
 
-    respond_with :message,
-                 text: t('telegram.commands.rate.menu.project_menu_title', project_name: project.slug),
-                 reply_markup: { inline_keyboard: buttons }
+    return respond_with :message,
+                        text: t('telegram.commands.rate.menu.project_menu_title', project_name: project.slug),
+                        reply_markup: { inline_keyboard: buttons }
   end
 
   def show_members_menu(project)
@@ -337,9 +342,9 @@ class RateCommand < BaseCommand
 
     buttons << [{ text: t('telegram.commands.rate.menu.back'), callback_data: "rate_back:#{project.slug}" }]
 
-    respond_with :message,
-                 text: t('telegram.commands.rate.menu.select_member'),
-                 reply_markup: { inline_keyboard: buttons }
+    return respond_with :message,
+                        text: t('telegram.commands.rate.menu.select_member'),
+                        reply_markup: { inline_keyboard: buttons }
   end
 
   def show_currency_selection(project, user)
@@ -354,9 +359,9 @@ class RateCommand < BaseCommand
     buttons_rows = buttons.each_slice(3).to_a
     buttons_rows << [{ text: t('telegram.commands.rate.menu.back'), callback_data: "rate_set_rate:#{project.slug}" }]
 
-    respond_with :message,
-                 text: t('telegram.commands.rate.menu.select_currency', username: username),
-                 reply_markup: { inline_keyboard: buttons_rows }
+    return respond_with :message,
+                        text: t('telegram.commands.rate.menu.select_currency', username: username),
+                        reply_markup: { inline_keyboard: buttons_rows }
   end
 
   def owned_projects
