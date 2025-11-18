@@ -15,7 +15,10 @@ class BugsnagCLI
   end
 
   def run(args = [])
-    return show_help if args.empty?
+    if args.empty?
+      puts show_help
+      return
+    end
 
     command = args[0].downcase
     case command
@@ -32,10 +35,10 @@ class BugsnagCLI
     when 'analyze', 'analysis', 'анализ', 'проанализировать'
       analyze_errors
     when 'help', 'помощь', 'h'
-      show_help
+      puts show_help
     else
       puts "❌ Неизвестная команда: #{command}"
-      show_help
+      puts show_help
     end
   rescue StandardError => e
     puts "❌ Ошибка выполнения: #{e.message}"
@@ -182,11 +185,5 @@ class BugsnagCLI
 end
 
 # Handle execution through MCP or direct CLI
-if ARGV.empty?
-  # MCP mode - read from stdin or handle through environment
-  puts "Bugsnag skill initialized. Use 'help' for available commands."
-else
-  # CLI mode - direct execution
-  cli = BugsnagCLI.new
-  cli.run(ARGV)
-end
+cli = BugsnagCLI.new
+cli.run(ARGV)

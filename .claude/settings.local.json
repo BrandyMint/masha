@@ -155,7 +155,10 @@
       "Bash(git branch:*)",
       "Bash(kill:*)",
       "Bash(for:*)",
-      "Bash(pgrep:*)"
+      "Bash(pgrep:*)",
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby .claude/skills/bugsnag/bugsnag.rb list-errors:*)",
+      "Bash(./bugsnag.rb:*)",
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby:*)"
     ],
     "deny": [],
     "ask": []
