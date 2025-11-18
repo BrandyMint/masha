@@ -1,19 +1,5 @@
 {
   "mcpServers": {
-    "bugsnag": {
-      "type": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "bugsnag-mcp-server"
-      ],
-      "env": {
-        "BUGSNAG_API_KEY": "${BUGSNAG_DATA_API_KEY}",
-        "BUGSNAG_PROJECT_ID": "${BUGSNAG_PROJECT_ID}"
-      },
-      "disabled": false,
-      "alwaysAllow": []
-    },
     "postgres": {
       "command": "npx",
       "args": [

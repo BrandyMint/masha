@@ -364,6 +364,10 @@ Three role levels per project:
 - В provides_context_methods методы указываются ТОЛЬКО через константу
 - Мы не добавляем ничего в метод callback_query вместо этого мы разбираемся в
   какую команжу нужно добавить callback_query с нужным префиксом
+- В callback_data НИКОГДА не используем несколько двоеточий для параметров.
+  Используем только ОДНО двоеточие и запятые для разделения параметров:
+  ✅ `callback_data: "action:#{param1},#{param2}"`
+  ❌ `callback_data: "action:param1:param2"` (ЗАПРЕЩЕНО!)
 - @spec/controllers/telegram/webhook/add_command_spec.rb используем как пример
   спека для тестирования поведения конкретной команды
 - в тестах контроллера, telegram мы не проверяем значение session чтобы не
