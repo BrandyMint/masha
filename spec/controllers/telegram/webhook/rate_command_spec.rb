@@ -442,7 +442,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         # Проверяем, что non-owner получает сообщение об ошибке
         first_message = response.first
         # Может быть либо "Проект не найден" (если не имеет доступа), либо "Нет доступа"
-        expect(first_message[:text]).to satisfy { |text| text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа')) }
+        expect(first_message[:text]).to(satisfy do |text|
+          text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа'))
+        end)
       end
 
       it 'handles unauthorized access gracefully when trying to set rates' do
@@ -459,7 +461,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         # Проверяем, что возвращается сообщение об ошибке
         first_message = response.first
         # Может быть либо "Проект не найден" (если не имеет доступа), либо "Нет доступа"
-        expect(first_message[:text]).to satisfy { |text| text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа')) }
+        expect(first_message[:text]).to(satisfy do |text|
+          text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа'))
+        end)
       end
     end
 
@@ -478,7 +482,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
 
         # Should not show project selection menu
         first_message = response.first
-        keyboard = first_message.dig(:reply_markup, :inline_keyboard)
+        first_message.dig(:reply_markup, :inline_keyboard)
 
         # Should show project menu directly
         expect(response).not_to be_nil

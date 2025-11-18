@@ -153,9 +153,9 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       xit 'sanitizes project slug input' do
         # Проверяем самые очевидные невалидные случаи
         clearly_invalid = [
-          '',                  # Пустой slug
-          'project space',      # Пробелы
-          'project@symbol'       # Спецсимволы
+          '', # Пустой slug
+          'project space', # Пробелы
+          'project@symbol' # Спецсимволы
         ]
 
         clearly_invalid.each do |input|
@@ -324,7 +324,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           dispatch_command :projects, :create, 'private-project'
         end.to change(Project, :count).by(1)
 
-        project = Project.find_by(slug: 'private-project')
+        Project.find_by(slug: 'private-project')
         expect do
           dispatch_command :add, 'private-project', '2', 'Private work'
         end.to change(TimeShift, :count).by(1)

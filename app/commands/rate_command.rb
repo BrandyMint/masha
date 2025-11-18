@@ -90,7 +90,7 @@ class RateCommand < BaseCommand
     end
 
     safe_answer_callback_query
-    return show_project_menu(project)
+    show_project_menu(project)
   end
 
   def rate_view_list_callback_query(slug)
@@ -134,7 +134,7 @@ class RateCommand < BaseCommand
     end
 
     safe_answer_callback_query
-    return show_members_menu(project)
+    show_members_menu(project)
   end
 
   def rate_select_member_callback_query(data)
@@ -159,7 +159,7 @@ class RateCommand < BaseCommand
     end
 
     safe_answer_callback_query
-    return show_currency_selection(project, target_user)
+    show_currency_selection(project, target_user)
   end
 
   def rate_select_currency_callback_query(data)
@@ -253,13 +253,13 @@ class RateCommand < BaseCommand
     end
 
     safe_answer_callback_query
-    return show_interactive_menu
+    show_interactive_menu
   end
 
   def rate_cancel_callback_query(_data = nil)
     clear_rate_context
     safe_answer_callback_query
-    return respond_with :message, text: t('telegram.commands.rate.menu.operation_cancelled')
+    respond_with :message, text: t('telegram.commands.rate.menu.operation_cancelled')
   end
 
   private
@@ -298,9 +298,9 @@ class RateCommand < BaseCommand
       [{ text: t('telegram.commands.rate.menu.back'), callback_data: 'rate_back:' }]
     ]
 
-    return respond_with :message,
-                        text: t('telegram.commands.rate.menu.project_menu_title', project_name: project.slug),
-                        reply_markup: { inline_keyboard: buttons }
+    respond_with :message,
+                 text: t('telegram.commands.rate.menu.project_menu_title', project_name: project.slug),
+                 reply_markup: { inline_keyboard: buttons }
   end
 
   def show_members_menu(project)
@@ -342,9 +342,9 @@ class RateCommand < BaseCommand
 
     buttons << [{ text: t('telegram.commands.rate.menu.back'), callback_data: "rate_back:#{project.slug}" }]
 
-    return respond_with :message,
-                        text: t('telegram.commands.rate.menu.select_member'),
-                        reply_markup: { inline_keyboard: buttons }
+    respond_with :message,
+                 text: t('telegram.commands.rate.menu.select_member'),
+                 reply_markup: { inline_keyboard: buttons }
   end
 
   def show_currency_selection(project, user)
@@ -359,9 +359,9 @@ class RateCommand < BaseCommand
     buttons_rows = buttons.each_slice(3).to_a
     buttons_rows << [{ text: t('telegram.commands.rate.menu.back'), callback_data: "rate_set_rate:#{project.slug}" }]
 
-    return respond_with :message,
-                        text: t('telegram.commands.rate.menu.select_currency', username: username),
-                        reply_markup: { inline_keyboard: buttons_rows }
+    respond_with :message,
+                 text: t('telegram.commands.rate.menu.select_currency', username: username),
+                 reply_markup: { inline_keyboard: buttons_rows }
   end
 
   def owned_projects
