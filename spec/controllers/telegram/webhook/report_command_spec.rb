@@ -31,8 +31,80 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
         expect { dispatch_command :report }.not_to raise_error
       end
 
-      it 'handles /report with current month data' do
-        expect { dispatch_command :report }.not_to raise_error
+      it 'generates daily report with table format' do
+        response = dispatch_command :report, 'today'
+        expect(response).not_to be_nil
+
+        # Проверяем, что отчет содержит табличный формат
+        first_message = response.first
+        expect(first_message[:text]).to include('Отчет за')
+        expect(first_message[:text]).to match(/\|\s*Проект\s*\|/) # заголовок таблицы
+        expect(first_message[:text]).to match(/\|\s*Итого\s*\|/) # итоговая строка
+      end
+
+      it 'shows project breakdown in table format' do
+        response = dispatch_command :report, 'today'
+        expect(response).not_to be_nil
+
+        # Проверяем, что в отчете есть табличная разбивка по проектам
+        first_message = response.first
+        expect(first_message[:text]).to match(/\|\s*[a-zA-Z-]+\s*\|/) # название проекта в таблице
+      end
+
+      it 'handles weekly report with date range' do
+        response = dispatch_command :report, 'week'
+        expect(response).not_to be_nil
+
+        # Проверяем, что недельный отчет содержит диапазон дат
+        first_message = response.first
+        expect(first_message[:text]).to include('Отчет за')
+        expect(first_message[:text]).to match(/\d{4}-\d{2}-\d{2} - \d{4}-\d{2}-\d{2}/) # формат дат
+      end
+
+      it 'handles monthly report calculations' do
+        response = dispatch_command :report, 'month'
+        expect(response).not_to be_nil
+
+        # Проверяем, что месячный отчет содержит корректные данные
+        first_message = response.first
+        expect(first_message[:text]).to include('Отчет за')
+        expect(first_message[:text]).to match(/\d{4}-\d{2}-\d{2} - \d{4}-\d{2}-\d{2}/) # диапазон месяца
+        expect(first_message[:text]).to match(/\|\s*Итого\s*\|/) # итоговая строка
+      end
+
+      it 'shows detailed report with time entries' do
+        response = dispatch_command :report, 'today', 'detailed'
+        expect(response).not_to be_nil
+
+        # Проверяем, что детальный отчет содержит таблицу с описаниями
+        first_message = response.first
+        expect(first_message[:text]).to include('```') # формат таблицы
+        expect(first_message[:text]).to include('Описание') # колонка с описаниями
+        expect(first_message[:text]).to match(/\d+\.\d+/) # формат часов
+      end
+
+      it 'handles project filter correctly' do
+        # Используем существующий проект из fixtures
+        response = dispatch_command :report, 'today', 'project:work-project'
+        expect(response).not_to be_nil
+
+        # Проверяем, что отчет содержит только один проект
+        first_message = response.first
+        expect(first_message[:text]).to include('work-project')
+      end
+
+      it 'handles date range reports correctly' do
+        today = Date.current
+        yesterday = today - 1.day
+        date_range = "#{yesterday.strftime('%Y-%m-%d')}:#{today.strftime('%Y-%m-%d')}"
+
+        response = dispatch_command :report, date_range
+        expect(response).not_to be_nil
+
+        # Проверяем, что отчет за период содержит корректные данные
+        first_message = response.first
+        expect(first_message[:text]).to include(yesterday.strftime('%Y-%m-%d'))
+        expect(first_message[:text]).to include(today.strftime('%Y-%m-%d'))
       end
     end
 

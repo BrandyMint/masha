@@ -73,6 +73,14 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                               })
 
           expect(response).not_to be_nil
+
+          # Проверяем, что в сообщении есть список ставок
+          first_message = response.first
+          expect(first_message[:text]).to include(project.slug) # название проекта
+          expect(first_message[:text]).to include('👤') # эмодзи пользователей
+
+          # Проверяем наличие информации о пользователях и ставках
+          expect(first_message[:text]).to match(/@[\w\d]+/) # упоминание пользователей
         end
       end
 
@@ -97,6 +105,18 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                               })
 
           expect(response).not_to be_nil
+
+          # Проверяем, что в ответе есть меню с участниками
+          first_message = response.first
+          keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+
+          # Проверяем наличие кнопок с пользователями
+          user_buttons = keyboard.select { |btn| btn[:text].include?('@') }
+          expect(user_buttons.length).to be > 0 # должна быть хотя бы одна кнопка с пользователем
+
+          # Проверяем наличие кнопки "Назад"
+          back_button = keyboard.find { |btn| btn[:callback_data] == "rate_back:#{project.slug}" }
+          expect(back_button).not_to be_nil
         end
       end
 
@@ -107,7 +127,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                        id: 'test_callback',
                        from: from,
                        message: { message_id: 22, chat: chat },
-                       data: "rate_select_member:#{project.slug}:#{other_user.id}"
+                       data: "rate_select_member:#{project.slug},#{other_user.id}"
                      })
           end.not_to raise_error
         end
@@ -117,10 +137,24 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                                 id: 'test_callback',
                                 from: from,
                                 message: { message_id: 22, chat: chat },
-                                data: "rate_select_member:#{project.slug}:#{other_user.id}"
+                                data: "rate_select_member:#{project.slug},#{other_user.id}"
                               })
 
           expect(response).not_to be_nil
+
+          # Проверяем, что в ответе есть кнопки с валютами
+          first_message = response.first
+          keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+
+          # Проверяем наличие основных валют
+          currency_buttons = keyboard.map { |btn| btn[:text] }
+          expect(currency_buttons).to include('USD')
+          expect(currency_buttons).to include('EUR')
+          expect(currency_buttons).to include('RUB')
+
+          # Проверяем, что есть кнопка "Назад"
+          back_button = keyboard.find { |btn| btn[:callback_data] == "rate_set_rate:#{project.slug}" }
+          expect(back_button).not_to be_nil
         end
       end
 
@@ -131,7 +165,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                        id: 'test_callback',
                        from: from,
                        message: { message_id: 22, chat: chat },
-                       data: "rate_select_currency:#{project.slug}:#{other_user.id}:USD"
+                       data: "rate_select_currency:#{project.slug},#{other_user.id},USD"
                      })
           end.not_to raise_error
         end
@@ -141,10 +175,19 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                                 id: 'test_callback',
                                 from: from,
                                 message: { message_id: 22, chat: chat },
-                                data: "rate_select_currency:#{project.slug}:#{other_user.id}:USD"
+                                data: "rate_select_currency:#{project.slug},#{other_user.id},USD"
                               })
 
           expect(response).not_to be_nil
+
+          # Проверяем, что в сообщении есть запрос на ввод суммы с правильными данными
+          first_message = response.first
+          expect(first_message[:text]).to include('50') # ожидаемая сумма
+          expect(first_message[:text]).to include('USD') # выбранная валюта
+
+          # Проверяем, что в сообщении есть имя пользователя
+          username = other_user.telegram_user&.telegram_nick || other_user.id.to_s
+          expect(first_message[:text]).to include(username.to_s)
         end
       end
 
@@ -158,7 +201,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                          id: 'test_callback',
                          from: from,
                          message: { message_id: 22, chat: chat },
-                         data: "rate_remove:#{project.slug}:#{user.id}"
+                         data: "rate_remove:#{project.slug},#{user.id}"
                        })
             end.not_to raise_error
           end
@@ -169,7 +212,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                          id: 'test_callback',
                          from: from,
                          message: { message_id: 22, chat: chat },
-                         data: "rate_remove:#{project.slug}:#{user.id}"
+                         data: "rate_remove:#{project.slug},#{user.id}"
                        })
             end.to change(MemberRate, :count).by(-1)
           end
@@ -182,7 +225,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                          id: 'test_callback',
                          from: from,
                          message: { message_id: 22, chat: chat },
-                         data: "rate_remove:#{project.slug}:#{other_user.id}"
+                         data: "rate_remove:#{project.slug},#{other_user.id}"
                        })
             end.not_to raise_error
           end
@@ -242,6 +285,53 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       # Используем admin (который является членом work_project, но не имеет MemberRate там)
       let(:target_user) { users(:admin) }
 
+      it 'saves member rate to database' do
+        # Выполняем полный workflow для установки ставки
+        # 1. Выбор проекта
+        dispatch(callback_query: {
+                   id: 'callback_1',
+                   from: from,
+                   message: { message_id: 22, chat: chat },
+                   data: "rate_select_project:#{project.slug}"
+                 })
+
+        # 2. Выбор "Установить ставку"
+        dispatch(callback_query: {
+                   id: 'callback_2',
+                   from: from,
+                   message: { message_id: 23, chat: chat },
+                   data: "rate_set_rate:#{project.slug}"
+                 })
+
+        # 3. Выбор пользователя
+        dispatch(callback_query: {
+                   id: 'callback_3',
+                   from: from,
+                   message: { message_id: 24, chat: chat },
+                   data: "rate_select_member:#{project.slug},#{target_user.id}"
+                 })
+
+        # 4. Выбор валюты
+        dispatch(callback_query: {
+                   id: 'callback_4',
+                   from: from,
+                   message: { message_id: 25, chat: chat },
+                   data: "rate_select_currency:#{project.slug},#{target_user.id},EUR"
+                 })
+
+        # 5. Ввод суммы - проверяем сохранение в базу
+        expect do
+          dispatch_message('75.50')
+        end.to change(MemberRate, :count).by(1)
+
+        # Проверяем корректность сохраненных данных
+        rate = MemberRate.last
+        expect(rate.user).to eq(target_user)
+        expect(rate.project).to eq(project)
+        expect(rate.hourly_rate).to eq(75.50)
+        expect(rate.currency).to eq('EUR')
+      end
+
       it 'completes full rate setting workflow' do
         # 1. Select project
         response1 = dispatch(callback_query: {
@@ -266,7 +356,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                                id: 'callback_3',
                                from: from,
                                message: { message_id: 24, chat: chat },
-                               data: "rate_select_member:#{project.slug}:#{target_user.id}"
+                               data: "rate_select_member:#{project.slug},#{target_user.id}"
                              })
         expect { response3 }.not_to raise_error
 
@@ -275,7 +365,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                                id: 'callback_4',
                                from: from,
                                message: { message_id: 25, chat: chat },
-                               data: "rate_select_currency:#{project.slug}:#{target_user.id}:USD"
+                               data: "rate_select_currency:#{project.slug},#{target_user.id},USD"
                              })
         expect { response4 }.not_to raise_error
 
@@ -319,7 +409,7 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                    id: 'callback_1',
                    from: from,
                    message: { message_id: 22, chat: chat },
-                   data: "rate_select_currency:#{project.slug}:#{target_user.id}:USD"
+                   data: "rate_select_currency:#{project.slug},#{target_user.id},USD"
                  })
 
         # 2. Type "cancel" instead of amount
@@ -348,6 +438,28 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
                             })
 
         expect(response).not_to be_nil
+
+        # Проверяем, что non-owner получает сообщение об ошибке
+        first_message = response.first
+        # Может быть либо "Проект не найден" (если не имеет доступа), либо "Нет доступа"
+        expect(first_message[:text]).to satisfy { |text| text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа')) }
+      end
+
+      it 'handles unauthorized access gracefully when trying to set rates' do
+        # Пытаемся установить ставку от имени не-владельца
+        response = dispatch(callback_query: {
+                              id: 'test_callback',
+                              from: { 'id' => non_owner_telegram.id },
+                              message: { message_id: 22, chat: chat },
+                              data: "rate_set_rate:#{non_owner_project.slug}"
+                            })
+
+        expect(response).not_to be_nil
+
+        # Проверяем, что возвращается сообщение об ошибке
+        first_message = response.first
+        # Может быть либо "Проект не найден" (если не имеет доступа), либо "Нет доступа"
+        expect(first_message[:text]).to satisfy { |text| text.include?('Проект') && (text.include?('не найден') || text.include?('Нет доступа')) }
       end
     end
 

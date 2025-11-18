@@ -12,6 +12,31 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
     it 'responds to /projects command without errors' do
       expect { dispatch_command :projects }.not_to raise_error
     end
+
+    it 'responds to project creation command without errors' do
+      response = dispatch_command :projects, 'create', 'new-test-project'
+      expect(response).not_to be_nil
+    end
+
+    it 'shows project creation menu' do
+      response = dispatch_command :projects, 'create'
+      expect(response).not_to be_nil
+
+      # Проверяем, что появляется меню с опциями
+      first_message = response.first
+      expect(first_message[:text]).not_to be_nil
+    end
+
+    it 'prevents duplicate project creation' do
+      # Создаем первый проект
+      dispatch_command :projects, 'create', 'duplicate-test'
+      expect(Project.where(slug: 'duplicate-test')).to exist
+
+      # Пытаемся создать такой же проект
+      expect do
+        dispatch_command :projects, 'create', 'duplicate-test'
+      end.not_to change(Project, :count)
+    end
   end
 
   context 'edge cases' do
@@ -26,6 +51,48 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       it 'handles projects with orphaned client references' do
         expect { dispatch_command :projects }.not_to raise_error
       end
+    end
+  end
+
+  context 'user with existing projects' do
+    let(:user) { users(:user_with_telegram) }
+    let(:telegram_user) { telegram_users(:telegram_regular) }
+    let(:from_id) { telegram_user.id }
+
+    include_context 'authenticated user'
+
+    it 'shows projects menu without errors' do
+      response = dispatch_command :projects
+      expect(response).not_to be_nil
+
+      # Проверяем, что в ответе есть меню проектов
+      first_message = response.first
+      expect(first_message[:text]).to include('Что будем делать с проектами?')
+    end
+
+    it 'displays project information correctly' do
+      response = dispatch_command :projects
+      expect(response).not_to be_nil
+
+      # Проверяем, что есть кнопки с проектами в клавиатуре
+      first_message = response.first
+      keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+
+      # Должны быть кнопки с проектами
+      project_buttons = keyboard.select { |btn| btn[:callback_data]&.include?('projects_select:') }
+      expect(project_buttons.length).to be > 0
+    end
+
+    it 'shows client information when available' do
+      response = dispatch_command :projects
+      expect(response).not_to be_nil
+
+      # Проверяем, что в меню есть кнопки для работы с проектами
+      first_message = response.first
+      keyboard = first_message.dig(:reply_markup, :inline_keyboard)&.flatten || []
+
+      # Должны быть кнопки для управления проектами
+      expect(keyboard.length).to be > 0
     end
   end
 

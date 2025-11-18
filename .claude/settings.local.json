@@ -158,7 +158,12 @@
       "Bash(pgrep:*)",
       "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby .claude/skills/bugsnag/bugsnag.rb list-errors:*)",
       "Bash(./bugsnag.rb:*)",
-      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby:*)"
+      "Bash(BUGSNAG_PROJECT_ID=5cadf58377bdb800159c3b0d BUGSNAG_DATA_API_KEY=\"$BUGSNAG_DATA_API_KEY\" ruby:*)",
+      "Skill(executing-plans)",
+      "Bash(RAILS_ENV=test bundle exec ruby:*)",
+      "Bash(RAILN_ENV=test bundle exec rails:*)",
+      "Bash(SKIP_RAILS=1 bundle exec rspec:*)",
+      "Bash(SKIP_RAILS=1 bundle exec rails runner:*)"
     ],
     "deny": [],
     "ask": []

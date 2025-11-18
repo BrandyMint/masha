@@ -144,7 +144,7 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.unknown_error')
     end
 
-    slug, user_id = data.split(':')
+    slug, user_id = data.split(',')
     project = find_project(slug)
     target_user = User.find_by(id: user_id)
 
@@ -169,7 +169,7 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.unknown_error')
     end
 
-    slug, user_id, currency = data.split(':')
+    slug, user_id, currency = data.split(',')
     project = find_project(slug)
     target_user = User.find_by(id: user_id)
 
@@ -206,7 +206,7 @@ class RateCommand < BaseCommand
       return respond_with :message, text: t('telegram.commands.rate.unknown_error')
     end
 
-    slug, user_id = data.split(':')
+    slug, user_id = data.split(',')
     project = find_project(slug)
     target_user = User.find_by(id: user_id)
 
@@ -325,7 +325,7 @@ class RateCommand < BaseCommand
       member_row = [
         {
           text: "#{username}#{rate_text}",
-          callback_data: "rate_select_member:#{project.slug}:#{user.id}"
+          callback_data: "rate_select_member:#{project.slug},#{user.id}"
         }
       ]
 
@@ -333,7 +333,7 @@ class RateCommand < BaseCommand
       if rate
         member_row << {
           text: '🗑️',
-          callback_data: "rate_remove:#{project.slug}:#{user.id}"
+          callback_data: "rate_remove:#{project.slug},#{user.id}"
         }
       end
 
@@ -352,7 +352,7 @@ class RateCommand < BaseCommand
     buttons = MemberRate::CURRENCIES.map do |currency|
       {
         text: currency,
-        callback_data: "rate_select_currency:#{project.slug}:#{user.id}:#{currency}"
+        callback_data: "rate_select_currency:#{project.slug},#{user.id},#{currency}"
       }
     end
 

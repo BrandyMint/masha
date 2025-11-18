@@ -18,16 +18,29 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
 
       context 'with existing clients' do
-        let!(:client1) { clients(:client1) }
-        let!(:client2) { clients(:client2) }
-        let!(:project) { projects(:project_with_client1) }
+        # Используем существующие fixtures вместо создания через create!
+        let!(:client) { clients(:testclient) }
 
         it 'shows clients list without errors' do
           expect { dispatch_command :clients }.not_to raise_error
         end
 
-        it 'handles multiple clients with different project counts' do
-          expect { dispatch_command :clients }.not_to raise_error
+        it 'displays client information correctly' do
+          response = dispatch_command :clients
+          expect(response).not_to be_nil
+
+          # Проверяем, что в ответе есть заголовок списка клиентов
+          first_message = response.first
+          expect(first_message[:text]).to include('🏢')
+        end
+
+        it 'shows client count information' do
+          response = dispatch_command :clients
+          expect(response).not_to be_nil
+
+          # Проверяем, что в ответе есть информация о количестве клиентов
+          first_message = response.first
+          expect(first_message[:text]).to include('клиенты')
         end
       end
     end
@@ -80,10 +93,73 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           expect { dispatch_command :clients, 'add' }.not_to raise_error
         end
 
+        it 'prompts for client name' do
+          response = dispatch_command :clients, 'add'
+          expect(response).not_to be_nil
+
+          # Проверяем, что бот запрашивает название клиента
+          first_message = response.first
+          expect(first_message[:text]).to include('название компании')
+        end
+
         it 'handles empty client name without errors' do
           dispatch_command :clients, 'add'
 
-          expect { dispatch_message '' }.not_to raise_error
+          # Проверяем реакцию на пустое название
+          expect { dispatch_message('') }.not_to raise_error
+        end
+
+        it 'starts client creation workflow properly' do
+          response = dispatch_command :clients, 'add'
+          expect(response).not_to be_nil
+
+          # Проверяем, что процесс создания начинается корректно
+          first_message = response.first
+          expect(first_message[:text]).to include('название компании')
+        end
+
+        it 'creates client successfully through complete workflow' do
+          dispatch_command :clients, 'add'
+
+          # Шаг 1: Ввод названия клиента
+          expect { dispatch_message('NewClient') }.not_to raise_error
+
+          # Шаг 2: Ввод ключа клиента
+          expect do
+            dispatch_message('new-test-client')
+          end.to change(Client, :count).by(1)
+
+          # Проверяем, что клиент создался с правильными данными
+          client = Client.last
+          expect(client.name).to eq('NewClient')
+          expect(client.key).to eq('new-test-client')
+        end
+
+        it 'shows client creation confirmation at the end' do
+          dispatch_command :clients, 'add'
+          dispatch_message('AwesomeClient')
+
+          # После успешного создания ключа, клиент должен быть создан
+          initial_count = Client.count
+          dispatch_message('awesome-client')
+          expect(Client.count).to eq(initial_count + 1)
+
+          # Проверяем, что клиент действительно создан
+          expect(Client.where(key: 'awesome-client').exists?).to be true
+        end
+
+        it 'prevents duplicate client keys' do
+          # Создаем первый клиент напрямую в базе с простыми данными
+          Client.create!(user: user, name: 'Test', key: 'test')
+
+          dispatch_command :clients, 'add'
+          dispatch_message('Another')
+          response = dispatch_message('test') # Пытаемся использовать существующий ключ
+
+          # Проверяем, что бот сообщает об ошибке
+          expect(response).not_to be_nil
+          first_message = response.first
+          expect(first_message[:text]).to include('Введите название компании') # остается в контексте
         end
 
         it 'accepts valid client name without errors' do
