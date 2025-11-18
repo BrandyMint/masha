@@ -8,6 +8,21 @@
 
 ### 🎯 Основные изменения с версии v0.16.1
 
+#### ✨ Новый функционал
+✨ Add extra tests
+#### 🐛 Исправления
+🐛 Fix .claude
+🐛 fix /rate
+🐛 Fix RateCommand callback methods registration
+---
+🤖 *Changelog сгенерирован автоматически для MashTime Bot*
+
+
+
+## Что нового в v0.17.0
+
+### 🎯 Основные изменения с версии v0.16.1
+
 #### 🐛 Исправления
 🐛 Fix .claude
 🐛 fix /rate
