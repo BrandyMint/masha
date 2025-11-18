@@ -69,8 +69,6 @@ class RateCommand < BaseCommand
     end
   end
 
-  private
-
   # ==================== Callback Query Methods ====================
 
   def rate_select_project_callback_query(slug)
@@ -258,6 +256,8 @@ class RateCommand < BaseCommand
     safe_answer_callback_query
     respond_with :message, text: t('telegram.commands.rate.menu.operation_cancelled')
   end
+
+  private
 
   # ==================== Helper Methods ====================
 

@@ -6,7 +6,84 @@
 
 Каждый callback должен обрабатываться отдельным методом. Telegram-бот gem автоматически маршрутизирует callback на нужный метод по префиксу.
 
-## ⚠️ КРИТИЧЕСКИ ВАЖНОЕ ПРАВИЛО
+## ⚠️ КРИТИЧЕСКИ ВАЖНЫЕ ПРАВИЛА
+
+### Правило 1: Callback методы ДОЛЖНЫ быть публичными!
+
+**Все методы `*_callback_query` должны быть определены ДО секции `private`!**
+
+Система регистрации команд (`CommandRegistry`) ищет callback методы через `public_instance_methods`. Если метод определен после `private`, он **НЕ будет зарегистрирован** и callback **НЕ сработает**.
+
+**❌ Неправильно - callback методы НЕ сработают:**
+```ruby
+class RateCommand < BaseCommand
+  def call(*args)
+    # ...
+  end
+
+  private  # ❌ callback методы ниже НЕ будут зарегистрированы!
+
+  def rate_select_project_callback_query(slug)
+    # Этот метод НЕ будет найден системой!
+  end
+
+  def rate_view_list_callback_query(slug)
+    # Этот метод НЕ будет найден системой!
+  end
+end
+```
+
+**✅ Правильно - callback методы сработают:**
+```ruby
+class RateCommand < BaseCommand
+  def call(*args)
+    # ...
+  end
+
+  # Callback методы ПЕРЕД private - они публичные!
+  def rate_select_project_callback_query(slug)
+    # Этот метод будет найден системой ✅
+  end
+
+  def rate_view_list_callback_query(slug)
+    # Этот метод будет найден системой ✅
+  end
+
+  private  # ✅ private идет ПОСЛЕ всех callback методов
+
+  def helper_method
+    # Вспомогательные методы
+  end
+end
+```
+
+**Структура команды:**
+```ruby
+class YourCommand < BaseCommand
+  # 1. Метод call
+  def call(*args)
+  end
+
+  # 2. Публичные callback методы (до private!)
+  def action_callback_query(data)
+  end
+
+  def another_callback_query(data)
+  end
+
+  # 3. Контекстные методы (если есть)
+  def awaiting_input(*args)
+  end
+
+  private  # 4. ТОЛЬКО ЗДЕСЬ начинается private секция
+
+  # 5. Вспомогательные приватные методы
+  def helper_method
+  end
+end
+```
+
+### Правило 2: Двоеточие в callback_data обязательно ВСЕГДА
 
 **Двоеточие в callback_data обязательно ВСЕГДА, даже без параметров!**
 
@@ -412,13 +489,30 @@ end
 
 Перед коммитом проверь:
 
-1. ✅ Есть ли двоеточие в КАЖДОМ `callback_data` (даже без параметров)?
-2. ✅ Нет ли `case`/`when` в `*_callback_query` методах?
-3. ✅ Нет ли `if`/`elsif` для разбора callback_data?
-4. ✅ Нет ли `start_with?`, `match?`, `sub` для парсинга префиксов?
-5. ✅ Максимум один разделитель в каждом `callback_data`?
-6. ✅ Каждому callback соответствует отдельный метод?
+1. ✅ **Все callback методы определены ДО `private`?** (самая частая ошибка!)
+2. ✅ Есть ли двоеточие в КАЖДОМ `callback_data` (даже без параметров)?
+3. ✅ Нет ли `case`/`when` в `*_callback_query` методах?
+4. ✅ Нет ли `if`/`elsif` для разбора callback_data?
+5. ✅ Нет ли `start_with?`, `match?`, `sub` для парсинга префиксов?
+6. ✅ Максимум один разделитель в каждом `callback_data`?
+7. ✅ Каждому callback соответствует отдельный метод?
 
 Если хоть на один вопрос ответ "нет" - рефактори код!
+
+### Проверка регистрации callback методов
+
+Чтобы убедиться, что все callback методы зарегистрированы:
+
+```ruby
+# В rails console или через ruby -e
+require_relative 'config/environment'
+
+# Проверить конкретную команду
+command = Telegram::CommandRegistry.get(:rate)
+puts command.callback_method_names.inspect
+
+# Должны быть все методы вида *_callback_query
+# Если список пустой или не хватает методов - они в private!
+```
 
 
