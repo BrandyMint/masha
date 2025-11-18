@@ -51,7 +51,7 @@ class ProjectsCommand < BaseCommand
   def projects_close_callback_query(_data = nil)
     # В callback_query контексте используем edit_message
     edit_message :text,
-                 text: '📋 Меню проектов закрыто',
+                 text: t('telegram.commands.projects.closed_message'),
                  reply_markup: { inline_keyboard: [] }
   end
 

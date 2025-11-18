@@ -37,7 +37,11 @@ class TelegramUser < ApplicationRecord
   end
 
   def telegram_nick
-    "@#{username}"
+    if username.present?
+      "@#{username}"
+    else
+      "@#{id}"
+    end
   end
 
   def developer?

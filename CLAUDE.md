@@ -402,3 +402,4 @@ return
 ```
 return respond_with :message, text: t('commands.notify.cancelled')
 ```
+- Отвечай только на РУССКОМ языке

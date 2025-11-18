@@ -172,6 +172,64 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
       end
     end
 
+    context 'projects button visibility' do
+      context 'when client has no projects' do
+        let!(:client_no_projects) { clients(:testclient) }
+
+        it 'does not include projects callback in menu' do
+          # Проверяем что controller.respond_with вызывается без кнопки "Проекты"
+          expect(controller).to receive(:respond_with).with(
+            :message,
+            hash_including(
+              reply_markup: hash_including(
+                inline_keyboard: satisfy do |keyboard|
+                  buttons = keyboard.flatten
+                  # Проверяем что нет кнопки с clients_projects:
+                  buttons.none? { |b| b[:callback_data]&.start_with?('clients_projects:') }
+                end
+              )
+            )
+          )
+
+          dispatch(callback_query: {
+                     id: 'test_callback_no_projects',
+                     from: from,
+                     message: { message_id: 100, chat: chat },
+                     data: "clients_select:#{client_no_projects.key}"
+                   })
+        end
+      end
+
+      context 'when client has projects' do
+        let!(:client_with_projects) { clients(:client1) }
+        let!(:project) { projects(:project_with_client1) }
+
+        it 'includes projects button in menu' do
+          # Проверяем что controller.respond_with вызывается С кнопкой "Проекты"
+          expect(controller).to receive(:respond_with).with(
+            :message,
+            hash_including(
+              reply_markup: hash_including(
+                inline_keyboard: satisfy do |keyboard|
+                  buttons = keyboard.flatten
+                  # Проверяем что есть кнопка с clients_projects:
+                  expected_callback = "clients_projects:#{client_with_projects.key}"
+                  buttons.any? { |b| b[:callback_data] == expected_callback }
+                end
+              )
+            )
+          )
+
+          dispatch(callback_query: {
+                     id: 'test_callback_with_projects',
+                     from: from,
+                     message: { message_id: 101, chat: chat },
+                     data: "clients_select:#{client_with_projects.key}"
+                   })
+        end
+      end
+    end
+
     context 'client editing workflow' do
       let!(:client) { clients(:testclient) }
       let!(:project) { projects(:work_project) }

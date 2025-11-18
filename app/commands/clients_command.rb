@@ -366,8 +366,10 @@ class ClientsCommand < BaseCommand
 
     buttons << [{ text: t('telegram.commands.clients.edit_button'), callback_data: "clients_rename:#{client.key}" }] if can_manage
 
-    buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count),
-                  callback_data: "clients_projects:#{client.key}" }]
+    if projects_count.positive?
+      buttons << [{ text: t('telegram.commands.clients.projects_button', count: projects_count),
+                    callback_data: "clients_projects:#{client.key}" }]
+    end
 
     if can_manage && projects_count.zero?
       buttons << [{ text: t('telegram.commands.clients.delete_button'), callback_data: "clients_delete:#{client.key}" }]
