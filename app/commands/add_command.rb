@@ -45,13 +45,20 @@ class AddCommand < BaseCommand
 
     data = controller.telegram_session_data
     project = current_user.available_projects.find(data['project_id']) || raise('Не указан проект')
-    description = description.join(' ')
-    time_shift = project.time_shifts.create(
-      date: Time.zone.today,
-      hours: hours.to_s.tr(',', '.').to_f,
-      description: description,
-      user: current_user
-    )
+
+    hours_float = hours.to_s.tr(',', '.').to_f
+    if looks_like_time_format?(hours)
+      description = description.join(' ')
+      time_shift = project.time_shifts.create(
+        date: Time.zone.today,
+        hours: hours.to_s.tr(',', '.').to_f,
+        description: description,
+        user: current_user
+      )
+    else
+      # Параметр не выглядит как время, это или текст или что-то другое. Нужно исправить и повторить ввод
+      return respond_with :message, text: t('commands.add.broken_hours', hours: hours)
+    end
 
     if time_shift.valid?
       controller.clear_telegram_session
@@ -138,7 +145,7 @@ class AddCommand < BaseCommand
 
     # Конвертируем и проверяем базовый диапазон
     hours = str.tr(',', '.').to_f
-    hours.positive? && hours <= 100.0
+    hours.positive?
   end
 
   def project_exists?(project_slug)

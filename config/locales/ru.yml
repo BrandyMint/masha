@@ -243,6 +243,7 @@ ru:
         # Success/Error messages
         time_recorded: "Отметили в %{project} %{hours} часов"
         error_creating: "❌ Ошибка при создании записи: %{errors}"
+        broken_hours: "❌ '%{hours}' - не похоже на время. Укажите время в формате '2.5' или '2'"
         project_not_found: "Не найден такой проект '%{project}'. Вам доступны: %{available}"
         cancelled: "❌ Операция отменена"
       projects:

@@ -293,6 +293,51 @@ RSpec.describe Telegram::WebhookController, telegram_bot: :rails, type: :telegra
           end
         end
       end
+
+      context 'invalid input handling' do
+        it 'handles non-time input like "программировал" after project selection' do
+          # 1. Выбираем проект через callback
+          callback_data = "select_project:#{project1.slug}"
+          dispatch(callback_query: {
+                     id: 'test_callback_programming',
+                     from: from,
+                     message: { message_id: 26, chat: chat },
+                     data: callback_data
+                   })
+
+          # 2. Пользователь вводит "программировал" вместо времени
+          expect do
+            response = dispatch_message('программировал')
+            expect(response).not_to be_nil
+
+            # Проверяем что время не создано и получено сообщение об ошибке формата времени
+            # "программировал" не похоже на формат времени, поэтому используется broken_hours
+            expect(response.first[:text]).to include('не похоже на время')
+          end.not_to change(TimeShift, :count)
+
+          # 3. Проверяем что пользователь может исправиться и ввести правильное время
+          # Сначала сбрасываем контекст и выбираем проект заново
+          dispatch(callback_query: {
+                     id: 'test_callback_programming_retry',
+                     from: from,
+                     message: { message_id: 27, chat: chat },
+                     data: callback_data
+                   })
+
+          # Теперь вводим правильное время
+          expect do
+            dispatch_message('2 Программировал что-то полезное')
+          end.to change(TimeShift, :count).by(1)
+
+          # 4. Проверяем что запись создалась с правильными данными
+          time_shift = TimeShift.last
+          expect(time_shift.project).to eq(project1)
+          expect(time_shift.user).to eq(user)
+          expect(time_shift.hours).to eq(2.0)
+          expect(time_shift.description).to eq('Программировал что-то полезное')
+          expect(time_shift.date).to eq(Date.current)
+        end
+      end
     end
   end
 end
