@@ -1,0 +1,63 @@
+name: Security
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+  schedule:
+    # Run security scan daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  brakeman:
+    name: Brakeman Security Scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Run Brakeman security scan
+      run: make security
+
+    - name: Upload Brakeman report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: brakeman-report
+        path: brakeman_report.html
+        retention-days: 30
+
+  bundle-audit:
+    name: Bundle Audit
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Run bundle audit
+      run: bundle exec bundle audit check --update
+
+  dependabot-alerts:
+    name: Dependabot Alerts Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Check for Dependabot alerts
+      uses: github/dependabot-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        skip-condition: "false"

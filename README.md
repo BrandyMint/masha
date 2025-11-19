@@ -3,6 +3,8 @@
 Сервис для учета потраченного на работу время в виде телеграм бота https://t.me/MashTimeBot и веб-сервиса https://mashtime.ru
 
 [![Tests](https://github.com/BrandyMint/masha/actions/workflows/tests.yml/badge.svg)](https://github.com/BrandyMint/masha/actions/workflows/tests.yml)
+[![Linting](https://github.com/BrandyMint/masha/actions/workflows/linting.yml/badge.svg)](https://github.com/BrandyMint/masha/actions/workflows/linting.yml)
+[![Security](https://github.com/BrandyMint/masha/actions/workflows/security.yml/badge.svg)](https://github.com/BrandyMint/masha/actions/workflows/security.yml)
 
 ## Лицензия
 
