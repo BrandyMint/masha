@@ -47,7 +47,7 @@ jobs:
       contents: write
       packages: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup vars
         id: vars
         shell: bash
@@ -114,7 +114,7 @@ jobs:
     needs: [build]
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: |
           gh --repo ${{ env.INFRA_REPO }} workflow run ${{ env.WORKFLOW }} -F tag=${{ needs.build.outputs.version }} -F app=${{ github.event.repository.name }} -F stage=${{ env.STAGE }}
           runId=$(gh --repo ${{ env.INFRA_REPO }} run list --workflow=${{ env.WORKFLOW }} --limit 1 --json databaseId -q '.[].databaseId')

@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: |
           gh --repo ${{ env.INFRA_REPO }} workflow run ${{ env.WORKFLOW }} -F tag=${{ inputs.tag }} -F app=${{ github.event.repository.name }} -F stage=${{ env.STAGE }}
           runId=$(gh --repo ${{ env.INFRA_REPO }} run list --workflow=${{ env.WORKFLOW }} --limit 1 --json databaseId -q '.[].databaseId')
